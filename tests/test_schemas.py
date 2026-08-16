@@ -60,7 +60,9 @@ def test_a_placeholder_source_url_is_rejected() -> None:
 
 
 def test_a_url_that_is_not_a_uri_at_all_is_rejected() -> None:
-    document = {**VALID_BOARD, "sources": [{"url": "https://a b.invalid/x"}]}
+    # Matches the schema's `pattern`, so only the `format: uri` checker can
+    # reject it: '[' is not a legal character outside an IPv6 host literal.
+    document = {**VALID_BOARD, "sources": [{"url": "https://ex[ample.com/x"}]}
     assert schema_issues(document, "board", "a.yaml")
 
 

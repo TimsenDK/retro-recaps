@@ -9,7 +9,7 @@ description = "Validation and site generation for the Retro Recaps dataset"
 requires-python = ">=3.11"
 dependencies = [
     "PyYAML>=6.0",
-    "jsonschema[format]>=4.20",
+    "jsonschema[format-nongpl]>=4.20",
 ]
 
 [project.optional-dependencies]
