@@ -33,9 +33,15 @@ def test_the_series_the_project_standardised_on_are_present() -> None:
 
 def test_every_series_is_rated_at_least_105c_where_it_applies() -> None:
     dataset, _ = load_dataset(ROOT)
-    for series in dataset.series.values():
-        if series.type.startswith("electrolytic") or series.type == "bipolar":
-            assert series.temperature_c == 105, series.id
+    applicable = [
+        series
+        for series in dataset.series.values()
+        if series.type.startswith("electrolytic") or series.type == "bipolar"
+    ]
+    assert applicable
+    for series in applicable:
+        assert series.temperature_c is not None, series.id
+        assert series.temperature_c >= 105, series.id
 
 
 def test_suppliers_can_all_build_a_search_link() -> None:
