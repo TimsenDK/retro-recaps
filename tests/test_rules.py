@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from tools.loader import load_dataset
-from tools.model import Board, Dataset, Machine, Part, Series
+from tools.model import Board, Dataset, Machine, Part, Series, Supplier
 from tools.rules import check
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -182,6 +182,45 @@ def test_missing_designators_is_a_warning() -> None:
 def test_unknown_offer_supplier_is_an_error() -> None:
     dataset = make_dataset(board_document(), offers={"ghost": {"eeufr1e332": "1"}})
     assert "unknown-offer-supplier" in codes(dataset)
+
+
+def test_unknown_offer_part_is_an_error() -> None:
+    supplier = Supplier.from_dict(
+        {
+            "id": "mouser",
+            "name": "Mouser",
+            "search_url": "https://www.mouser.com/c/?q={query}",
+        }
+    )
+    dataset = make_dataset(
+        board_document(),
+        suppliers={"mouser": supplier},
+        offers={"mouser": {"not-a-part": "1"}},
+    )
+    assert "unknown-offer-part" in codes(dataset)
+    assert "unknown-offer-supplier" not in codes(dataset)
+
+
+def test_verified_position_without_a_source_is_an_error() -> None:
+    document = board_document(verification="unverified")
+    document["capacitors"][0]["verification"] = "verified"
+    assert "verified-without-source" in codes(make_dataset(document))
+
+
+def test_derived_or_unverified_positions_without_a_source_is_fine() -> None:
+    document = board_document(verification="unverified")
+    document["capacitors"][0]["verification"] = "derived"
+    document["capacitors"].append(
+        {
+            "designators": ["C402"],
+            "type": "electrolytic-radial",
+            "capacitance_uf": 100,
+            "voltage_v": 16,
+            "quantity": 1,
+            "verification": "unverified",
+        }
+    )
+    assert "verified-without-source" not in codes(make_dataset(document))
 
 
 def test_machine_without_boards_is_a_warning() -> None:

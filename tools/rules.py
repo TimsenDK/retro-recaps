@@ -28,15 +28,34 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
     location = _board_location(board)
 
-    if board.verification == "verified" and not board.sources:
-        issues.append(
-            Issue(
-                ERROR,
-                "verified-without-source",
-                location,
-                "verification is 'verified' but the board has no sources",
-            )
+    if not board.sources:
+        verified_capacitor = next(
+            (
+                capacitor
+                for capacitor in board.capacitors
+                if capacitor.effective_verification(board.verification) == "verified"
+            ),
+            None,
         )
+        if board.verification == "verified":
+            issues.append(
+                Issue(
+                    ERROR,
+                    "verified-without-source",
+                    location,
+                    "verification is 'verified' but the board has no sources",
+                )
+            )
+        elif verified_capacitor is not None:
+            index = board.capacitors.index(verified_capacitor)
+            issues.append(
+                Issue(
+                    ERROR,
+                    "verified-without-source",
+                    f"{location}:capacitors/{index}",
+                    "verification is 'verified' but the board has no sources",
+                )
+            )
 
     if not board.sources:
         issues.append(
