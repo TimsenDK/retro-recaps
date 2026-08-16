@@ -33,6 +33,8 @@ def _read(path: Path, root: Path, issues: list[Issue]) -> object | None:
                 str(error).replace("\n", " "),
             )
         )
+    except UnicodeDecodeError as error:
+        issues.append(Issue(ERROR, "unreadable", _relative(path, root), str(error)))
     except OSError as error:
         issues.append(Issue(ERROR, "unreadable", _relative(path, root), str(error)))
     return None

@@ -79,6 +79,18 @@ def test_duplicate_board_id_is_an_issue(tmp_path: Path) -> None:
     assert any(issue.code == "duplicate-id" for issue in issues)
 
 
+def test_non_utf8_file_becomes_an_issue(tmp_path: Path) -> None:
+    (tmp_path / "data" / "amiga-500").mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (tmp_path / "data" / "amiga-500" / "machine.yaml").write_bytes(b"id: \xff\xfe\n")
+    dataset, issues = load_dataset(tmp_path)
+    assert dataset.machines == {}
+    assert issues
+    assert any(
+        issue.location == "data/amiga-500/machine.yaml" for issue in issues
+    )
+
+
 def test_missing_directories_are_tolerated(tmp_path: Path) -> None:
     dataset, issues = load_dataset(tmp_path)
     assert dataset.machines == {}
