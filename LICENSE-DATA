@@ -1,0 +1,32 @@
+Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+
+Copyright (c) 2026 Retro Recaps contributors
+
+The dataset in `data/` and `reference/`, and the documentation in `docs/`, are
+licensed under the Creative Commons Attribution-ShareAlike 4.0 International
+License.
+
+You are free to share and adapt this material for any purpose, including
+commercially, provided that you give appropriate credit and distribute your
+contributions under the same licence.
+
+Full licence text:
+    https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+Summary:
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+Attribution is asked for as:
+
+    Retro Recaps — https://github.com/<owner>/retro-recaps — CC BY-SA 4.0
+
+Individual capacitor lists were compiled from third-party sources, each cited in
+the board file it belongs to. Facts about which capacitors a circuit board
+contains are not themselves copyrightable; this licence covers the compilation,
+the annotations and the accompanying text.
+
+The code in this repository is licensed separately under the MIT License. See
+LICENSE.
+
+NO WARRANTY. This material is provided as-is, without warranty of any kind. See
+SAFETY.md.

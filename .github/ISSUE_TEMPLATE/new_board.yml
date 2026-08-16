@@ -1,0 +1,57 @@
+name: New machine or board
+description: Add a machine, board or revision the dataset does not cover
+title: "[board] "
+labels: ["data", "new-board"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A partial list is welcome. An entry that says which capacitors are known
+        and which are still to be counted is more useful than nothing, as long
+        as it is marked honestly.
+
+  - type: input
+    id: machine
+    attributes:
+      label: Machine
+      placeholder: Commodore 1551
+    validations:
+      required: true
+
+  - type: input
+    id: board
+    attributes:
+      label: Board and revision
+      description: Include the assembly number if the board carries one
+      placeholder: Logic board, ASSY 251860
+    validations:
+      required: true
+
+  - type: textarea
+    id: capacitors
+    attributes:
+      label: Capacitor list
+      description: |
+        Designator, capacitance, voltage and type per position, as far as you
+        have them. Note the original voltage rating where you are proposing an
+        upgrade.
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: URLs, or "counted on my own board" with photos attached
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes and gotchas
+      description: |
+        Physical fit constraints, positions you could not read, differences from
+        a neighbouring revision, batteries on the board.
+    validations:
+      required: false

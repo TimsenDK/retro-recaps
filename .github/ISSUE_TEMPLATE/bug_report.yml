@@ -1,0 +1,45 @@
+name: Bug report
+description: The site or the tooling misbehaves
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a wrong capacitor value, use the data correction template instead —
+        that is a data issue, not a bug.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - The site
+        - Validation (`tools validate`)
+        - Site build (`tools build-site`)
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the page URL, or the command and its output
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, or Python version and operating system
+    validations:
+      required: false

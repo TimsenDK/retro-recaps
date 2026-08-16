@@ -1,0 +1,32 @@
+# Build output
+/build/
+/site/_output/
+/.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Migration scratch — drafts are reviewed and moved into data/, never committed
+/data/_draft/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Office lock files
+~$*.xlsx
