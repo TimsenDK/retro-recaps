@@ -114,9 +114,10 @@ class Machine:
     aliases: tuple[str, ...] = ()
     notes: tuple[str, ...] = ()
     batteries: tuple[Battery, ...] = ()
+    path: Path | None = field(default=None, compare=False)
 
     @classmethod
-    def from_dict(cls, document: dict) -> Machine:
+    def from_dict(cls, document: dict, path: Path | None = None) -> Machine:
         return cls(
             id=document["id"],
             name=document["name"],
@@ -127,6 +128,7 @@ class Machine:
             batteries=tuple(
                 Battery.from_dict(item) for item in document.get("batteries", ())
             ),
+            path=path,
         )
 
 

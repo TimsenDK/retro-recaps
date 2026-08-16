@@ -19,7 +19,15 @@ def _relative(path: Path, root: Path) -> str:
         return path.as_posix()
 
 
-def _read(path: Path, root: Path, issues: list[Issue]) -> object | None:
+UNREADABLE = object()
+"""Returned by :func:`_read` when the file could not be parsed at all.
+
+A file that parses to ``None`` — empty, or nothing but comments — is a
+different thing entirely, and must not be mistaken for a reported failure.
+"""
+
+
+def _read(path: Path, root: Path, issues: list[Issue]) -> object:
     """Parse one YAML file, recording a problem rather than raising."""
     try:
         with path.open(encoding="utf-8") as handle:
@@ -37,16 +45,26 @@ def _read(path: Path, root: Path, issues: list[Issue]) -> object | None:
         issues.append(Issue(ERROR, "unreadable", _relative(path, root), str(error)))
     except OSError as error:
         issues.append(Issue(ERROR, "unreadable", _relative(path, root), str(error)))
-    return None
+    return UNREADABLE
 
 
 def _checked(
     path: Path, root: Path, schema_name: str, issues: list[Issue]
 ) -> object | None:
     document = _read(path, root, issues)
-    if document is None:
+    if document is UNREADABLE:
         return None
     location = _relative(path, root)
+    if document is None:
+        issues.append(
+            Issue(
+                ERROR,
+                "empty-document",
+                location,
+                "the file is empty or holds nothing but comments",
+            )
+        )
+        return None
     violations = schema_issues(document, schema_name, location)
     if violations:
         issues.extend(violations)
@@ -66,12 +84,24 @@ def _load_machines_and_boards(
     for machine_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()):
         if machine_dir.name.startswith("_"):
             continue
-        for path in sorted(machine_dir.glob("*.yaml")):
+        candidates = list(machine_dir.glob("*.yaml")) + list(machine_dir.glob("*.yml"))
+        for path in sorted(candidates):
+            if path.suffix == ".yml":
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "unexpected-extension",
+                        _relative(path, root),
+                        "data files use the .yaml extension; rename this file to "
+                        f"{path.stem}.yaml",
+                    )
+                )
+                continue
             if path.name == "machine.yaml":
                 document = _checked(path, root, "machine", issues)
                 if document is None:
                     continue
-                machine = Machine.from_dict(document)
+                machine = Machine.from_dict(document, path=path)
                 if machine.id in machines:
                     issues.append(
                         Issue(

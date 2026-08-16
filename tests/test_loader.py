@@ -91,6 +91,45 @@ def test_non_utf8_file_becomes_an_issue(tmp_path: Path) -> None:
     )
 
 
+def test_an_empty_board_file_is_an_issue(tmp_path: Path) -> None:
+    machine_dir = tmp_path / "data" / "amiga-2000"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "machine.yaml").write_text(
+        "id: amiga-2000\nname: A2000\nfamily: amiga\nboard_order: [mainboard]\n",
+        encoding="utf-8",
+    )
+    (machine_dir / "mainboard-rev6x.yaml").write_text(
+        "# nothing here yet\n", encoding="utf-8"
+    )
+    dataset, issues = load_dataset(tmp_path)
+    assert dataset.boards == {}
+    assert [issue.code for issue in issues] == ["empty-document"]
+    assert issues[0].location == "data/amiga-2000/mainboard-rev6x.yaml"
+    assert issues[0].level == "error"
+
+
+def test_a_yml_board_file_is_reported_rather_than_ignored(tmp_path: Path) -> None:
+    machine_dir = tmp_path / "data" / "amiga-500"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "mainboard-rev6a.yml").write_text(
+        "id: amiga-500-mainboard-rev6a\n", encoding="utf-8"
+    )
+    dataset, issues = load_dataset(tmp_path)
+    assert dataset.boards == {}
+    assert [issue.code for issue in issues] == ["unexpected-extension"]
+    assert issues[0].location == "data/amiga-500/mainboard-rev6a.yml"
+    assert "mainboard-rev6a.yaml" in issues[0].message
+
+
+def test_a_machine_keeps_its_path() -> None:
+    dataset, _ = load_dataset(FIXTURES / "good")
+    machine = dataset.machines["amiga-500"]
+    assert machine.path is not None
+    assert machine.path.name == "machine.yaml"
+
+
 def test_missing_directories_are_tolerated(tmp_path: Path) -> None:
     dataset, issues = load_dataset(tmp_path)
     assert dataset.machines == {}
