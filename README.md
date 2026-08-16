@@ -60,6 +60,20 @@ Corrections are welcome, and the requirement is simple: a change to capacitor
 data needs either a source URL or "I counted this on my own board" with a photo.
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Working on the data locally
+
+```bash
+python -m pip install -e ".[dev]"
+python -m tools validate --root .
+python -m pytest
+```
+
+`validate` checks the dataset against the schema and against the project's
+domain rules — that voltage is never revised downward, that a list marked
+`verified` cites a source, that a pinned part actually fits the position. Errors
+fail the build; warnings tell you what is still incomplete. The same command runs
+on every pull request.
+
 ## Licence
 
 Code is MIT. Data and documentation are CC BY-SA 4.0. See [LICENSE](LICENSE) and
