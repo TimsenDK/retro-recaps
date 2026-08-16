@@ -1,0 +1,48 @@
+id: amiga-500-mainboard-rev3
+machine: amiga-500
+board: mainboard
+revisions:
+  - "3"
+verification: derived
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
+    note: >-
+      Combined Rev 3/5 capacitor list with quantities and values.
+notes:
+  - >-
+    Rev 3 and rev 5 use the same capacitor values and quantities. The two
+    boards differ in physical layout, so a position is not guaranteed to sit
+    in the same place on both revisions.
+  - Positions are radial, 5 mm lead pitch.
+  - Reference designators for this revision are not established.
+capacitors:
+  - type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 4
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 16
+    quantity: 6
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    series: panasonic-fr

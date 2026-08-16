@@ -62,9 +62,42 @@ Always ask first for operations that are destructive or irreversible:
   would be broken for everyone but us.
 - Raw source material lives in `docs/input/` and is read-only input, not
   project output.
+- **The handover is a lead, not an authority.** `docs/input/HANDOVER_retro_recap_BOM.md`
+  and the spreadsheet beside it were an exploratory clarification written before
+  this repository existed. They say where someone once looked; they do not say
+  what is true. A value resting only on them is `derived` at best, never
+  `verified`, however confident the handover sounds — and where it disagrees
+  with a source that was actually retrieved, the retrieved source wins. The
+  handover is never cited in `sources:` and never named in a note. Establishing
+  these values independently is the reason this repository exists.
 - Stack: YAML data validated by JSON Schema, Python tooling under `tools/`,
   Jinja2 to static HTML, GitHub Pages. Data under `data/` and `reference/`.
 - Licensing is split: code MIT, data and documentation CC BY-SA 4.0.
+
+## What belongs in a YAML note
+
+A `note` in `data/` states a fact about the board or the position, and nothing
+else. Physical constraints, what a revision differs on, which variant a list
+describes, that a value is unconfirmed. Present tense, about the hardware.
+
+Three things never go in a note:
+
+- **Citations.** The `sources:` block is where a source belongs. A note must not
+  name a site, quote one, or say which source a value came from.
+- **Provenance narrative.** How a value was arrived at, which source disagreed
+  with which, what the spreadsheet said — that is research history, not a fact
+  about the board.
+- **Our own corrections.** A note never records that this project previously had
+  something wrong. The reader is recapping a board; our earlier mistakes are
+  noise to them, and a dataset that narrates its own history reads as unsure of
+  itself.
+
+All three belong in `docs/NOTES.md` — provenance, disagreements between sources,
+and corrections — with the exact retrieved URLs in `docs/SOURCES.md`. Both are
+local, so they can be as candid as they need to be.
+
+The test: would this sentence still be worth reading to someone holding the
+board, who has never heard of this project? If not, it goes in `docs/`.
 
 ## Amending these rules
 
