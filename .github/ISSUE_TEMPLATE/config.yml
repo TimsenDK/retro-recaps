@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Safety
-    url: https://github.com/Timsen/retro-recaps/blob/main/SAFETY.md
+    url: https://github.com/TimsenDK/retro-recaps/blob/main/SAFETY.md
     about: Read this before opening a power supply. Mains voltage and charged capacitors.
   - name: Security vulnerability
-    url: https://github.com/Timsen/retro-recaps/security/advisories/new
+    url: https://github.com/TimsenDK/retro-recaps/security/advisories/new
     about: Report tooling or site vulnerabilities privately, not as a public issue.

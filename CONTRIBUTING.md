@@ -20,7 +20,7 @@ file can record the disagreement in a note.
 
 ## What to work on
 
-The [status page](https://github.com/<owner>/retro-recaps) lists what is
+The [status page](https://github.com/TimsenDK/retro-recaps) lists what is
 missing: boards marked `unverified`, positions without reference designators,
 and machines still to be migrated.
 
