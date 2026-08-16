@@ -18,6 +18,9 @@ htmlcov/
 # Migration scratch — drafts are reviewed and moved into data/, never committed
 /data/_draft/
 
+# Controller scratch (system design documents, task briefs, reports)
+/.superpowers/
+
 # Supplier-side working files (Mouser BOM upload templates and similar).
 # Local only for now; revisit when the BOM generator lands.
 /integration/
