@@ -21,6 +21,10 @@ htmlcov/
 # Controller scratch (system design documents, task briefs, reports)
 /.superpowers/
 
+# Working documents: specs, plans, session logs, and the source material the
+# project was seeded from. Kept locally, deliberately outside the public repo.
+/docs/
+
 # Supplier-side working files (Mouser BOM upload templates and similar).
 # Local only for now; revisit when the BOM generator lands.
 /integration/
@@ -37,3 +41,5 @@ desktop.ini
 
 # Office lock files
 ~$*.xlsx
+
+docs/

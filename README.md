@@ -11,10 +11,8 @@ and is honest about which entries nobody has verified yet.
 
 ## Status
 
-Early. The dataset is being migrated from a private spreadsheet; the site
-generator is not built yet. See
-[`docs/superpowers/specs/2026-08-16-retro-recaps-design.md`](docs/superpowers/specs/2026-08-16-retro-recaps-design.md)
-for the design.
+Early. The schema and the validator are in place; the dataset is being migrated
+from a private spreadsheet, and the site generator is not built yet.
 
 ## Machines covered
 
