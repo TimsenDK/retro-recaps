@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retro-recaps-tools"
+version = "0.1.0"
+description = "Validation and site generation for the Retro Recaps dataset"
+requires-python = ">=3.11"
+dependencies = [
+    "PyYAML>=6.0",
+    "jsonschema[format-nongpl]>=4.20",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[tool.setuptools]
+packages = ["tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retro-recaps.invalid/schema/machine.schema.json",
+  "title": "Machine",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "family", "board_order"],
+  "properties": {
+    "id": { "$ref": "#/$defs/slug" },
+    "name": { "type": "string", "minLength": 1 },
+    "family": { "enum": ["amiga", "commodore-8bit", "commodore-drive", "macintosh"] },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "board_order": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "enum": ["logic", "mainboard", "daughterboard", "analog", "psu"] }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "batteries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "action"],
+        "properties": {
+          "kind": { "enum": ["nicd", "pram", "other"] },
+          "action": { "enum": ["remove", "replace"] },
+          "note": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+  }
+}

@@ -1,0 +1,9 @@
+- id: mouser
+  name: Mouser Electronics
+  region: DK
+  product_url: "https://www.mouser.dk/ProductDetail/{sku}"
+  search_url: "https://www.mouser.dk/c/?q={mpn}"
+- id: digikey
+  name: DigiKey
+  region: DK
+  search_url: "https://www.digikey.dk/en/products/result?keywords={mpn}"

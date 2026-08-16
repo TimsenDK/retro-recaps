@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retro-recaps.invalid/schema/offers.schema.json",
+  "title": "Supplier offers",
+  "description": "Maps part id to that supplier's stock number. No prices, ever.",
+  "type": "object",
+  "minProperties": 1,
+  "propertyNames": { "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+  "additionalProperties": { "type": "string", "minLength": 1 }
+}

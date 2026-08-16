@@ -1,0 +1,72 @@
+# Capacitor series this project recommends. 105 °C throughout; low ESR in
+# power supplies. Adding a series here is what makes it usable in board data.
+
+- id: panasonic-fr
+  manufacturer: Panasonic
+  name: FR
+  type: electrolytic-radial
+  temperature_c: 105
+  low_esr: true
+  note: The default radial choice. Low impedance, long life.
+
+- id: panasonic-fk
+  manufacturer: Panasonic
+  name: FK
+  type: electrolytic-smd
+  temperature_c: 105
+  low_esr: true
+  note: Surface mount. Consider tantalum or polymer instead on Macintosh logic boards.
+
+- id: nichicon-upw
+  manufacturer: Nichicon
+  name: UPW
+  type: electrolytic-radial
+  temperature_c: 105
+  low_esr: true
+  note: Radial alternative to Panasonic FR where a value or size is unavailable.
+
+- id: nichicon-ues
+  manufacturer: Nichicon
+  name: UES
+  type: bipolar
+  temperature_c: 105
+  note: Bipolar, for the non-polarised positions on Macintosh analog boards.
+
+- id: nichicon-lgn
+  manufacturer: Nichicon
+  name: LGN
+  type: electrolytic-snap-in
+  temperature_c: 105
+  note: >-
+    For the large primary filter capacitors in power supplies. Snap-in
+    terminals do not fit a radial-leaded footprint.
+
+- id: kemet-r46
+  manufacturer: Kemet
+  name: R46
+  type: film-x2
+  temperature_c: 110
+  note: X2 mains film. Replaces the RIFA capacitors, which are replaced unconditionally.
+
+- id: tdk-b32922
+  manufacturer: TDK
+  name: B32922
+  type: film-x2
+  temperature_c: 110
+  note: X2 mains film, alternative to the Kemet R46.
+
+- id: vishay-021-asm
+  manufacturer: Vishay
+  name: 021 ASM
+  type: electrolytic-axial
+  temperature_c: 105
+  note: Axial positions. Check lead spacing, diameter and height before ordering.
+
+- id: kemet-t491
+  manufacturer: Kemet
+  name: T491
+  type: tantalum
+  temperature_c: 125
+  note: >-
+    Tantalum for Macintosh surface-mount positions. The 47 uF positions must be
+    rated 25 V.

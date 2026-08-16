@@ -11,10 +11,8 @@ and is honest about which entries nobody has verified yet.
 
 ## Status
 
-Early. The dataset is being migrated from a private spreadsheet; the site
-generator is not built yet. See
-[`docs/superpowers/specs/2026-08-16-retro-recaps-design.md`](docs/superpowers/specs/2026-08-16-retro-recaps-design.md)
-for the design.
+Early. The schema and the validator are in place; the dataset is being migrated
+from a private spreadsheet, and the site generator is not built yet.
 
 ## Machines covered
 
@@ -59,6 +57,20 @@ the machine is unplugged. Read [SAFETY.md](SAFETY.md) before opening one.
 Corrections are welcome, and the requirement is simple: a change to capacitor
 data needs either a source URL or "I counted this on my own board" with a photo.
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Working on the data locally
+
+```bash
+python -m pip install -e ".[dev]"
+python -m tools validate --root .
+python -m pytest
+```
+
+`validate` checks the dataset against the schema and against the project's
+domain rules — that voltage is never revised downward, that a list marked
+`verified` cites a source, that a pinned part actually fits the position. Errors
+fail the build; warnings tell you what is still incomplete. The same command runs
+on every pull request.
 
 ## Licence
 

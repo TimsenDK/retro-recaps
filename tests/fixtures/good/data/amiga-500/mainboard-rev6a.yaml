@@ -1,0 +1,32 @@
+id: amiga-500-mainboard-rev6a
+machine: amiga-500
+board: mainboard
+revisions:
+  - 6A
+verification: verified
+sources:
+  - url: https://example.invalid/a500-rev6a
+    note: Full list with reference designators.
+notes:
+  - C401 and C402 must not exceed 24 mm in height because of the shield.
+capacitors:
+  - designators:
+      - C401
+      - C402
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    max_height_mm: 24
+    series: panasonic-fr
+    part: eeufr1e332
+    note: Maximum height 24 mm, because of the shield.
+  - designators:
+      - C321
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
