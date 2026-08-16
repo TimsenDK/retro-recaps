@@ -1,0 +1,137 @@
+id: amiga-3000-psu
+machine: amiga-3000
+board: psu
+revisions:
+  - PE-5161-1
+  - PB-5161-1
+verification: verified
+sources:
+  - url: https://amigaretro.com/index.php?topic=182.0
+    note: >-
+      Forum post by user quantum8, who physically rebuilt a real A3000
+      LiteOn PE-5161-1 PSU and posted a corrected designator-level list
+      after finding an error in a previously circulated one. Covers both
+      the main board and the small regulator daughterboard inside the PSU.
+notes:
+  - >-
+    The handover marks this board "typical, not verified" because nobody
+    had opened one to check. This teardown source is a genuine
+    designator-level reading of a real unit and supersedes the
+    spreadsheet's placeholder values (1000 uF/25 V x2, 2200 uF/25 V x2,
+    220 uF/200 V snap-in x2), which do not match any value in this list and
+    are not used here.
+  - >-
+    PE-5161-1 is the 240 V (EU) LiteOn supply used in the A3000; PB-5161-1
+    is the equivalent 120 V unit on the same PCB with minor population
+    differences. Values below are assumed to apply to both; this was not
+    independently confirmed for the 120 V variant.
+  - >-
+    C28 and C30 are listed with part code EL332X16V but a stated value of
+    "3300uF/10V" in the source, while C29 (same capacitance) is listed as
+    3300uF/16V with no part-code conflict. Treated the 16 V rating as
+    correct for all three, on the assumption the "10V" description is a
+    typo in the source, and noting it here rather than silently picking one.
+  - >-
+    C34 is listed with part code EL470X25V (the same code used for the
+    47 uF/25 V group on the PSU main board) but a stated value of
+    "47uF/16V". Recorded as 16 V, the explicitly stated value, and flagged
+    here rather than silently resolved.
+  - >-
+    The source does not mention a RIFA/mains-film capacitor. The project
+    convention (RIFA X2 film replaced unconditionally in all PSUs) and the
+    spreadsheet's note of a netfilter pair are carried forward as an
+    unconfirmed position below; the teardown post may simply not have
+    covered the mains-side filter section.
+capacitors:
+  - designators:
+      - C9
+      - C10
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C26
+      - C27
+      - C38
+      - C39
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    quantity: 4
+    series: panasonic-fr
+  - designators:
+      - C25
+      - C31
+      - C32
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C28
+      - C30
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 16
+    quantity: 2
+    max_diameter_mm: 13
+    max_height_mm: 35
+    series: panasonic-fr
+    verification: derived
+    note: Source gives a conflicting "3300uF/10V" description against part code EL332X16V; 16 V used. See board notes.
+  - designators:
+      - C29
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C5
+      - C6
+    type: electrolytic-snap-in
+    capacitance_uf: 470
+    voltage_v: 200
+    quantity: 2
+    series: nichicon-lgn
+  - designators:
+      - C15
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    note: Regulator daughterboard inside the PSU enclosure.
+  - designators:
+      - C16
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    note: Regulator daughterboard inside the PSU enclosure.
+  - designators:
+      - C34
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Regulator daughterboard inside the PSU enclosure. Source gives a
+      conflicting part code EL470X25V against a stated "47uF/16V" value;
+      16 V used. See board notes.
+  - type: film-x2
+    capacitance_uf: 0.1
+    voltage_v: 275
+    quantity: 2
+    series: kemet-r46
+    verification: derived
+    note: >-
+      Mains netfilter pair from the spreadsheet, not confirmed by the
+      amigaretro.com teardown. RIFA X2 film is replaced unconditionally per
+      project convention regardless; designators are not known.

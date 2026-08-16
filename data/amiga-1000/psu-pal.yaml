@@ -1,0 +1,78 @@
+id: amiga-1000-psu-pal
+machine: amiga-1000
+board: psu
+revisions:
+  - PAL / 240V
+verification: verified
+sources:
+  - url: https://funwithretrocomputers.blogspot.com/2019/09/amiga-1000-psu-recap.html
+    note: Shindengen CA1000PS/EC (PAL/240V) teardown with full reference designators.
+  - url: https://jbretro.wordpress.com/2020/04/15/ca1000ps/
+    note: Independent confirmation of the same PAL/240V board and values. Its table omits C04; otherwise matches exactly.
+notes:
+  - The spreadsheet listed this PSU as 2x 1000 uF/25V, 2x 2200 uF/25V and 2x 220 uF/200V snap-in, without separating NTSC and PAL, marked "typical, not verified." None of that matches the independently sourced values below.
+  - No mains-side X2/RIFA film capacitor was found on any source checked; omitted rather than invented (see psu-ntsc.yaml for the sources checked).
+capacitors:
+  - designators:
+      - C04
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: Listed by funwithretrocomputers.blogspot.com but absent from jbretro.wordpress.com's table (likely an editorial omission there). Corroborated by worldofjani's NTSC/110V value of 10 uF/35V at the equivalent position.
+  - designators:
+      - C09
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C10
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C11
+      - C12
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 10
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C15
+      - C17
+      - C19
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C16
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C18
+    type: electrolytic-radial
+    capacitance_uf: 330
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C50
+    type: electrolytic-snap-in
+    capacitance_uf: 180
+    voltage_v: 400
+    quantity: 1
+    series: nichicon-lgn
+    note: Primary-side bulk/filter capacitor for the 240V/PAL mains input. PAL/240V-specific value; do not substitute the NTSC 470 uF/200V part from psu-ntsc.yaml.

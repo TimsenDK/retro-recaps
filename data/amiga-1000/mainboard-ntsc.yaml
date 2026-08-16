@@ -1,0 +1,64 @@
+id: amiga-1000-mainboard-ntsc
+machine: amiga-1000
+board: mainboard
+revisions:
+  - Rev A
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
+    note: Full mainboard and WCS daughterboard list with reference designators, NTSC.
+  - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
+    note: Independent confirmation of the same designators and values.
+notes:
+  - C94 is an unpopulated position on this board; no capacitor is fitted there.
+capacitors:
+  - designators:
+      - C48
+      - C49
+      - C50
+      - C63
+      - C64
+      - C65
+      - C66
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 7
+    series: panasonic-fr
+  - designators:
+      - C92
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: Not present on all mainboard revisions.
+  - designators:
+      - C78
+      - C79
+      - C80
+      - C175
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 4
+    series: panasonic-fr
+  - designators:
+      - C93
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C95
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

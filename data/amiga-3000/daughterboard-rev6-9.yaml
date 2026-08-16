@@ -1,0 +1,65 @@
+id: amiga-3000-daughterboard-rev6-9
+machine: amiga-3000
+board: daughterboard
+revisions:
+  - 6.x
+  - 7.x
+  - 8.x
+  - 9.x
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
+    note: Daughterboard section of the mainboard cap list blog, cited by the handover.
+  - url: https://forum.amiga.org/index.php?topic=64983.0
+    note: >-
+      Independent physical reading of "A3000 DAUGHTER BD REV 7/01", quoting
+      original manufacturer part markings per designator.
+notes:
+  - >-
+    Through-hole (radial and axial), not SMD, consistent with the mainboard
+    correction noted on machine.yaml.
+  - >-
+    The spreadsheet counted only 2 axial capacitors here (C600, C601, at
+    25 V). Both independent sources found agree on 4 axial positions
+    (C600-C603) on this board. The 4-position count is used here as the
+    better-evidenced reading; treat the spreadsheet's 2-count as superseded.
+  - >-
+    C600-C602 agree between both sources at 220 uF, originally 16 V.
+    C603 is disputed: retrorewind lists it as 220 uF/50 V (native), while
+    forum.amiga.org's board reading lists it identically to C600-C602 at
+    220 uF/16 V (native). The two sources disagree and neither is clearly
+    better evidenced, so C603 is recorded separately at a voltage high
+    enough to be a safe upward revision under either reading, without
+    asserting an original_voltage_v.
+capacitors:
+  - designators:
+      - C751
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C600
+      - C601
+      - C602
+    type: electrolytic-axial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 3
+    series: vishay-021-asm
+  - designators:
+      - C603
+    type: electrolytic-axial
+    capacitance_uf: 220
+    voltage_v: 63
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: >-
+      Native voltage disputed between sources (16 V per forum.amiga.org,
+      50 V per retrorewind). 63 V is a safe upward revision under either
+      reading; original_voltage_v is omitted because the true original is
+      not settled.

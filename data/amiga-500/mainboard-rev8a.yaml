@@ -1,0 +1,56 @@
+id: amiga-500-mainboard-rev8a
+machine: amiga-500
+board: mainboard
+revisions:
+  - 8A
+verification: derived
+sources:
+  - url: https://www.amibay.com/threads/a500-rev-8a-1-which-capacitors-i-need.47238/
+    note: >-
+      Forum transcription of the A500+ (rev 8A) service manual, page 24 —
+      the same primary document the project handover cites. Lists values
+      and package sizes; no 3300 uF filter capacitors appear on this board.
+notes:
+  - >-
+    Only one primary source could be located: the OEM A500+ service manual,
+    quoted here via AmiBay. No independent second value list was found
+    despite searching AmiBay, console5, Sordan and AmigaStore; those vendor
+    kits bundle a 3300 uF pair as part of an all-revision superset kit for
+    A500/A500+, which is not evidence about the A500+ board specifically.
+    Marked derived rather than verified for that reason.
+  - >-
+    The A500+ drops the 3300 uF filter capacitors used on rev 3/5/6A. The
+    source gives values and package sizes but not reference designators;
+    confirm designators against the physical board before ordering.
+capacitors:
+  - type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 3
+    series: panasonic-fr
+    note: Original package 10x16 mm (10 V, 1000 uF); designators not given in the source.
+  - type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 6
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 4
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr

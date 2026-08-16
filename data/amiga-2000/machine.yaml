@@ -1,0 +1,26 @@
+id: amiga-2000
+name: Commodore Amiga 2000
+family: amiga
+aliases:
+  - A2000
+  - A2000-A
+  - B2000
+board_order:
+  - mainboard
+  - psu
+notes:
+  - >-
+    Two mainboard families are in scope: rev 4.x (German A2000-A) and rev 6.x
+    (B2000). They are genuinely different boards and are recorded as separate
+    files, not variants of one file.
+  - >-
+    The EU/230 V power supply is documented as shared between rev 4.4 and
+    rev 6 boards; see the psu board file for source conflicts on the exact
+    electrolytic values.
+batteries:
+  - kind: nicd
+    action: remove
+    note: >-
+      NiCd barrel/bulge battery on the mainboard for the real-time clock. Known
+      to leak and destroy PCB traces; remove and replace with an external
+      battery holder rather than reinstalling NiCd on the board.

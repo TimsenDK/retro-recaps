@@ -1,0 +1,23 @@
+id: amiga-1000-daughterboard-ntsc
+machine: amiga-1000
+board: daughterboard
+revisions:
+  - Rev A
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
+    note: Full WCS daughterboard list with reference designators, NTSC.
+  - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
+    note: Independent confirmation of the same designators and values.
+notes:
+  - WCS (Writable Control Store) piggyback daughterboard. Present on NTSC Rev A boards only; on PAL boards the WCS is integrated onto the mainboard - see mainboard-pal.yaml.
+capacitors:
+  - designators:
+      - C10
+      - C11
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr

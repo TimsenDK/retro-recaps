@@ -1,0 +1,113 @@
+id: amiga-3000-mainboard-rev6-9
+machine: amiga-3000
+board: mainboard
+revisions:
+  - 6.x
+  - 7.x
+  - 8.x
+  - 9.x
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
+    note: >-
+      Full mainboard list with reference designators, cited by the handover.
+      Kit description confirms Rubycon/Nichicon/Panasonic through-hole parts.
+  - url: https://forum.amiga.org/index.php?topic=64983.0
+    note: >-
+      Independent physical board reading of "A3000 COMMODORE B2 FAB 313312
+      REV 9/03", quoting original manufacturer part markings and package
+      sizes per designator. Confirms through-hole (radial), not SMD, and
+      gives original (pre-recap) voltage ratings.
+notes:
+  - >-
+    Confirmed through-hole (radial), not SMD, by the forum.amiga.org board
+    reading. An earlier version of this dataset described these as SMD;
+    that was wrong.
+  - >-
+    The forum.amiga.org reading gives original (pre-recap) voltage ratings
+    of 35 V for the 4.7 uF and 22 uF groups; retrorewind's list only shows
+    the already-upgraded 50 V value with no original noted. Both agree on
+    the 50 V replacement value.
+  - >-
+    The 470 uF 50 V pair is listed in the AmiBay all-revision kit
+    composition but does not appear in either the retrorewind or
+    forum.amiga.org designator-level lists for this revision range. It may
+    belong to a revision not covered here, or be generic kit padding.
+    Treated as unconfirmed; designators are not known.
+capacitors:
+  - designators:
+      - C190
+      - C404
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C105
+      - C107
+      - C113
+      - C317
+      - C318
+      - C433
+      - C443
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 7
+    series: panasonic-fr
+  - designators:
+      - C112
+      - C162
+      - C163
+      - C164
+      - C165
+      - C166
+      - C167
+      - C168
+      - C169
+      - C171
+      - C173
+      - C175
+      - C407
+      - C408
+      - C899
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 15
+    series: panasonic-fr
+  - designators:
+      - C178
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C160
+      - C416
+      - C423
+      - C454
+      - C460
+      - C492
+      - C493
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 7
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 50
+    quantity: 2
+    verification: derived
+    note: >-
+      From the AmiBay all-revision kit composition only; no designators
+      found in either designator-level source. May be revision-specific or
+      kit padding. Count on the physical board before ordering.

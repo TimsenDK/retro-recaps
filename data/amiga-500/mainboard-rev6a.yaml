@@ -1,0 +1,82 @@
+id: amiga-500-mainboard-rev6a
+machine: amiga-500
+board: mainboard
+revisions:
+  - 6A
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
+    note: >-
+      Rev 6/6A capacitor list with reference designators (the source the
+      project handover cites for these revisions).
+  - url: https://shred.zone/en/retro/amiga-500-restauration-part-2/
+    note: >-
+      Independent rev 6A restoration write-up. Matches designators and
+      quantities, confirms radial mounting with 5 mm lead spacing, and
+      independently states the 24 mm height limit on C401/C402.
+  - url: https://forum.amiga.org/index.php?topic=64983.0
+    note: >-
+      Forum transcription of the Commodore A500/A3000 service manuals,
+      giving original (pre-recap) voltages and package sizes for rev 6A
+      positions, e.g. C401/C402 at 3300 uF 10 V, 24x13 mm.
+notes:
+  - C401 and C402 must not exceed 24 mm in height because of the shield.
+capacitors:
+  - designators:
+      - C303
+      - C304
+      - C324
+      - C334
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    quantity: 4
+    series: panasonic-fr
+  - designators:
+      - C306
+      - C712
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C307
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C811
+      - C812
+      - C813
+      - C814
+      - C815
+      - C816
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 50
+    original_voltage_v: 16
+    quantity: 6
+    series: panasonic-fr
+  - designators:
+      - C821
+      - C822
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C401
+      - C402
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    max_height_mm: 24
+    series: panasonic-fr
+    note: Maximum height 24 mm, because of the shield.

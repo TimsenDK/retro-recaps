@@ -1,0 +1,21 @@
+id: amiga-500
+name: Commodore Amiga 500
+family: amiga
+aliases:
+  - A500
+  - A500+
+board_order:
+  - mainboard
+notes:
+  - >-
+    Rev 8A is the A500+: a materially different board from rev 3/5/6A. Its
+    power section drops the 3300 uF filter capacitors used on the earlier
+    revisions, and it carries a barrel-style NiCd battery for the real-time
+    clock that the earlier revisions do not have.
+batteries:
+  - kind: nicd
+    action: remove
+    note: >-
+      Barrel-style NiCd RTC backup battery, present on the A500+ (rev 8A)
+      only. Leaks and corrodes the board; remove, and replace with an
+      isolated cell off-board if RTC retention is wanted.

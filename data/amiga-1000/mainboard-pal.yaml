@@ -1,0 +1,53 @@
+id: amiga-1000-mainboard-pal
+machine: amiga-1000
+board: mainboard
+revisions:
+  - PAL
+verification: derived
+sources:
+  - url: https://amiga1000parceiro.blogspot.com/
+    note: Only source found describing the PAL variant. States the PAL board takes the NTSC mainboard-plus-WCS kit values, plus one extra 220 uF, because the WCS is integrated onto the mainboard. Does not give reference designators.
+  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
+    note: Baseline NTSC mainboard and WCS daughterboard designators and values that the PAL variant is described as extending.
+notes:
+  - PAL boards integrate the WCS onto the mainboard, so this list folds in the two 100 uF WCS positions that are a separate daughterboard on NTSC.
+  - Designators for the PAL board are not published in the source found; only quantities and values are confirmed. Omitted rather than invented - counts on the physical board should still be checked against this list.
+capacitors:
+  - type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 7
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: Not present on all mainboard revisions.
+  - type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 6
+    series: panasonic-fr
+    verification: derived
+    note: Includes the two positions that are on a separate WCS daughterboard on NTSC boards.
+  - type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+    note: One extra 220 uF position compared with the NTSC board, per amiga1000parceiro.blogspot.com.
+  - type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived

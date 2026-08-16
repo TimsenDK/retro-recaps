@@ -1,0 +1,21 @@
+id: amiga-3000
+name: Commodore Amiga 3000
+family: amiga
+aliases:
+  - A3000
+  - A3000D
+board_order:
+  - mainboard
+  - daughterboard
+  - psu
+notes:
+  - Desktop revisions 6.x through 9.x share one mainboard capacitor set and are
+    documented together in a single board file.
+  - The A3000T (tower) uses a different board and is explicitly out of scope
+    for this dataset.
+  - The A3000 mainboard and daughterboard use through-hole electrolytics, not
+    SMD. An earlier version of this dataset had that wrong.
+batteries:
+  - kind: nicd
+    action: remove
+    note: NiCd barrel battery on the mainboard. Remove and do not replace.
