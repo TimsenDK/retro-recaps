@@ -35,9 +35,11 @@
 - id: nichicon-lgn
   manufacturer: Nichicon
   name: LGN
-  type: electrolytic-radial
+  type: electrolytic-snap-in
   temperature_c: 105
-  note: Snap-in, for the large primary filter capacitors in power supplies.
+  note: >-
+    For the large primary filter capacitors in power supplies. Snap-in
+    terminals do not fit a radial-leaded footprint.
 
 - id: kemet-r46
   manufacturer: Kemet

@@ -39,9 +39,18 @@ def test_every_series_is_rated_at_least_105c_where_it_applies() -> None:
         if series.type.startswith("electrolytic") or series.type == "bipolar"
     ]
     assert applicable
+    # Snap-in is an electrolytic type, so retyping nichicon-lgn must not have
+    # quietly moved it outside this rule.
+    assert "nichicon-lgn" in {series.id for series in applicable}
     for series in applicable:
         assert series.temperature_c is not None, series.id
         assert series.temperature_c >= 105, series.id
+
+
+def test_the_snap_in_series_is_typed_as_snap_in() -> None:
+    """A snap-in can does not fit a radial-leaded footprint."""
+    dataset, _ = load_dataset(ROOT)
+    assert dataset.series["nichicon-lgn"].type == "electrolytic-snap-in"
 
 
 def test_suppliers_can_all_build_a_search_link() -> None:

@@ -67,6 +67,7 @@
         "type": {
           "enum": [
             "electrolytic-radial",
+            "electrolytic-snap-in",
             "electrolytic-axial",
             "electrolytic-smd",
             "bipolar",

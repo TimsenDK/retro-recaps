@@ -55,6 +55,32 @@ def test_matching_rejects_the_wrong_type() -> None:
     assert candidate_parts(position(type="tantalum"), dataset) == []
 
 
+def test_a_snap_in_part_is_not_offered_for_a_radial_position() -> None:
+    """Different terminals, different pin count, different footprint."""
+    dataset = load()
+    snap_in = replace(
+        dataset.parts["eeufr1e332"], id="snap", type="electrolytic-snap-in"
+    )
+    dataset = replace(dataset, parts={**dataset.parts, "snap": snap_in})
+    assert "snap" not in {part.id for part in candidate_parts(position(), dataset)}
+
+
+def test_a_radial_part_is_not_offered_for_a_snap_in_position() -> None:
+    dataset = load()
+    parts = candidate_parts(position(type="electrolytic-snap-in"), dataset)
+    assert parts == []
+
+
+def test_a_snap_in_part_is_offered_for_a_snap_in_position() -> None:
+    dataset = load()
+    snap_in = replace(
+        dataset.parts["eeufr1e332"], id="snap", type="electrolytic-snap-in"
+    )
+    dataset = replace(dataset, parts={**dataset.parts, "snap": snap_in})
+    parts = candidate_parts(position(type="electrolytic-snap-in"), dataset)
+    assert [part.id for part in parts] == ["snap"]
+
+
 def test_a_part_with_an_offer_gets_a_product_link() -> None:
     dataset = load()
     links = supplier_links(dataset.parts["eeufr1e332"], dataset)

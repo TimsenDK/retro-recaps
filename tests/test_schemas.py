@@ -48,6 +48,19 @@ def test_unknown_capacitor_type_is_an_error() -> None:
     assert [issue.location for issue in issues] == ["a.yaml:capacitors/0/type"]
 
 
+def test_a_snap_in_position_is_a_legal_type() -> None:
+    document = {**VALID_BOARD}
+    document["capacitors"] = [
+        {
+            key: value
+            for key, value in VALID_BOARD["capacitors"][0].items()
+            if key != "series"
+        }
+        | {"type": "electrolytic-snap-in"}
+    ]
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
 def test_unknown_property_is_rejected() -> None:
     issues = schema_issues({**VALID_BOARD, "colour": "beige"}, "board", "a.yaml")
     assert len(issues) == 1
