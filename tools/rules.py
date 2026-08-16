@@ -9,10 +9,26 @@ from __future__ import annotations
 
 from tools.issues import ERROR, WARNING, Issue
 from tools.model import Board, Dataset, Machine
-from tools.resolve import matches, same_capacitance
+from tools.resolve import fit_violations, same_capacitance
 
 X2_MINIMUM_VOLTAGE_V = 275
 """A film-X2 capacitor sits across live and neutral. 275 VAC is the floor."""
+
+FIT_NOTE_WORD = "max"
+"""Deliberately narrow: 'max' also covers 'maximum', and nothing else."""
+
+
+def _note_states_a_limit(note: str | None) -> bool:
+    """Whether a note reads as a physical limit that no field enforces.
+
+    Narrow on purpose: a case-insensitive 'max' (which covers 'maximum') and
+    'mm' in the same note. The A500 rev 6A shield limit lived in prose for a
+    while; this is what stops it going back there.
+    """
+    if note is None:
+        return False
+    lowered = note.lower()
+    return FIT_NOTE_WORD in lowered and "mm" in lowered
 
 
 def _board_location(board: Board) -> str:
@@ -219,6 +235,25 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     )
                 )
 
+        stated_limits = (
+            capacitor.max_height_mm,
+            capacitor.max_diameter_mm,
+            capacitor.max_lead_spacing_mm,
+        )
+        if _note_states_a_limit(capacitor.note) and all(
+            limit is None for limit in stated_limits
+        ):
+            issues.append(
+                Issue(
+                    WARNING,
+                    "unenforceable-fit-note",
+                    where,
+                    "the note states a physical limit but the position declares "
+                    "no max_height_mm, max_diameter_mm or max_lead_spacing_mm, "
+                    "so nothing enforces it",
+                )
+            )
+
         if capacitor.part is None:
             continue
 
@@ -234,10 +269,9 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
             )
             continue
 
-        if matches(part, capacitor):
-            continue
-
+        mismatched = False
         if part.type != capacitor.type:
+            mismatched = True
             issues.append(
                 Issue(
                     ERROR,
@@ -248,6 +282,7 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
         if not same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
+            mismatched = True
             issues.append(
                 Issue(
                     ERROR,
@@ -258,6 +293,7 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
         if part.voltage_v < capacitor.voltage_v:
+            mismatched = True
             issues.append(
                 Issue(
                     ERROR,
@@ -265,6 +301,22 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     where,
                     f"pinned part {part.id!r} is rated {part.voltage_v} V, below "
                     f"the position's {capacitor.voltage_v} V",
+                )
+            )
+
+        # The wrong part is the wrong part; its dimensions are beside the
+        # point, and reporting both would read as contradictory advice.
+        if mismatched:
+            continue
+
+        for label, value, limit in fit_violations(part, capacitor):
+            issues.append(
+                Issue(
+                    ERROR,
+                    "part-does-not-fit",
+                    where,
+                    f"pinned part {part.id!r} has a {label} of {value} mm, above "
+                    f"the position's limit of {limit} mm",
                 )
             )
 

@@ -81,6 +81,47 @@ def test_a_snap_in_part_is_offered_for_a_snap_in_position() -> None:
     assert [part.id for part in parts] == ["snap"]
 
 
+def test_matching_rejects_a_part_that_is_too_tall() -> None:
+    dataset = load()
+    part = dataset.parts["eeufr1e332"]  # 20 mm tall
+    assert not matches(part, position(max_height_mm=15))
+    assert matches(part, position(max_height_mm=20))
+
+
+def test_matching_rejects_a_part_that_is_too_wide() -> None:
+    dataset = load()
+    part = dataset.parts["eeufr1e332"]  # 12.5 mm diameter
+    assert not matches(part, position(max_diameter_mm=10))
+    assert matches(part, position(max_diameter_mm=12.5))
+
+
+def test_matching_rejects_a_part_whose_leads_are_too_far_apart() -> None:
+    dataset = load()
+    part = dataset.parts["eeufr1e332"]  # 5 mm lead spacing
+    assert not matches(part, position(max_lead_spacing_mm=3.5))
+    assert matches(part, position(max_lead_spacing_mm=5))
+
+
+def test_an_undeclared_dimension_never_rejects_a_part() -> None:
+    """An incomplete catalogue must not silently drop every candidate."""
+    dataset = load()
+    unmeasured = replace(
+        dataset.parts["eeufr1e332"],
+        diameter_mm=None,
+        height_mm=None,
+        lead_spacing_mm=None,
+    )
+    assert matches(
+        unmeasured,
+        position(max_height_mm=1, max_diameter_mm=1, max_lead_spacing_mm=1),
+    )
+
+
+def test_an_over_height_part_is_not_offered_as_a_candidate() -> None:
+    dataset = load()
+    assert candidate_parts(position(max_height_mm=15), dataset) == []
+
+
 def test_a_part_with_an_offer_gets_a_product_link() -> None:
     dataset = load()
     links = supplier_links(dataset.parts["eeufr1e332"], dataset)
@@ -117,7 +158,8 @@ def test_the_rules_and_the_resolver_agree_on_fit() -> None:
                 boards={board.id: replace(board, capacitors=(pinned,))},
             )
             rejected = any(
-                issue.code == "part-mismatch" for issue in check(candidate)
+                issue.code in ("part-mismatch", "part-does-not-fit")
+                for issue in check(candidate)
             )
             assert rejected != matches(part, pinned), (part.id, index)
             unpinned = replace(pinned, part=None)

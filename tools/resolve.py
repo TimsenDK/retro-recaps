@@ -30,17 +30,52 @@ def same_capacitance(left: float, right: float) -> bool:
     return math.isclose(left, right, rel_tol=CAPACITANCE_TOLERANCE)
 
 
+FIT_DIMENSIONS = (
+    ("height", "height_mm", "max_height_mm"),
+    ("diameter", "diameter_mm", "max_diameter_mm"),
+    ("lead spacing", "lead_spacing_mm", "max_lead_spacing_mm"),
+)
+"""(label, the part's field, the position's limit) for each physical dimension."""
+
+
+def fit_violations(
+    part: Part, capacitor: Capacitor
+) -> list[tuple[str, float, float]]:
+    """Every stated dimension limit this part exceeds, as (label, value, limit).
+
+    A dimension the part does not declare never counts as a violation. The
+    catalogue is allowed to be incomplete, and dropping every candidate whose
+    height nobody has recorded would be worse than offering it.
+    """
+    violations: list[tuple[str, float, float]] = []
+    for label, part_field, limit_field in FIT_DIMENSIONS:
+        limit = getattr(capacitor, limit_field)
+        value = getattr(part, part_field)
+        if limit is None or value is None:
+            continue
+        if value > limit:
+            violations.append((label, value, limit))
+    return violations
+
+
+def matches_electrically(part: Part, capacitor: Capacitor) -> bool:
+    """Type, capacitance and voltage — everything but physical fit."""
+    if part.type != capacitor.type:
+        return False
+    if not same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
+        return False
+    return part.voltage_v >= capacitor.voltage_v
+
+
 def matches(part: Part, capacitor: Capacitor) -> bool:
     """Whether this part will do for this position.
 
     The single definition of fit. ``rules`` uses it too, so a pinned part can
     never pass validation and then be rejected by :func:`candidate_parts`.
     """
-    if part.type != capacitor.type:
+    if not matches_electrically(part, capacitor):
         return False
-    if not same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
-        return False
-    return part.voltage_v >= capacitor.voltage_v
+    return not fit_violations(part, capacitor)
 
 
 def candidate_parts(capacitor: Capacitor, dataset: Dataset) -> list[Part]:

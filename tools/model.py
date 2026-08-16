@@ -39,6 +39,9 @@ class Capacitor:
     quantity: int
     designators: tuple[str, ...] = ()
     original_voltage_v: float | None = None
+    max_height_mm: float | None = None
+    max_diameter_mm: float | None = None
+    max_lead_spacing_mm: float | None = None
     series: str | None = None
     part: str | None = None
     verification: str | None = None
@@ -53,6 +56,9 @@ class Capacitor:
             quantity=document["quantity"],
             designators=tuple(document.get("designators", ())),
             original_voltage_v=document.get("original_voltage_v"),
+            max_height_mm=document.get("max_height_mm"),
+            max_diameter_mm=document.get("max_diameter_mm"),
+            max_lead_spacing_mm=document.get("max_lead_spacing_mm"),
             series=document.get("series"),
             part=document.get("part"),
             verification=document.get("verification"),

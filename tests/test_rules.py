@@ -163,6 +163,128 @@ def test_pinned_part_with_the_wrong_capacitance_is_an_error() -> None:
     assert "part-mismatch" in codes(dataset)
 
 
+def fitting_part(**overrides) -> Part:
+    base = {
+        "id": "big",
+        "manufacturer": "Panasonic",
+        "mpn": "X",
+        "series": "panasonic-fr",
+        "type": "electrolytic-radial",
+        "capacitance_uf": 3300,
+        "voltage_v": 25,
+        "diameter_mm": 12.5,
+        "height_mm": 20,
+        "lead_spacing_mm": 5,
+    }
+    return Part.from_dict({**base, **overrides})
+
+
+def pinned_dataset(part: Part, **capacitor_fields) -> Dataset:
+    series = Series.from_dict(series_document())
+    document = board_document()
+    document["capacitors"][0].update({"part": part.id, **capacitor_fields})
+    return make_dataset(
+        document, parts={part.id: part}, series={"panasonic-fr": series}
+    )
+
+
+def fit_issues(dataset: Dataset) -> list:
+    return [issue for issue in check(dataset) if issue.code == "part-does-not-fit"]
+
+
+def test_a_pinned_part_that_is_too_tall_does_not_fit() -> None:
+    dataset = pinned_dataset(fitting_part(), max_height_mm=15)
+    issues = fit_issues(dataset)
+    assert len(issues) == 1
+    assert issues[0].level == "error"
+    assert "height" in issues[0].message
+    assert "20" in issues[0].message and "15" in issues[0].message
+
+
+def test_a_pinned_part_that_is_too_wide_does_not_fit() -> None:
+    issues = fit_issues(pinned_dataset(fitting_part(), max_diameter_mm=10))
+    assert len(issues) == 1
+    assert "diameter" in issues[0].message
+
+
+def test_a_pinned_part_with_too_wide_a_lead_spacing_does_not_fit() -> None:
+    issues = fit_issues(pinned_dataset(fitting_part(), max_lead_spacing_mm=3.5))
+    assert len(issues) == 1
+    assert "lead spacing" in issues[0].message
+
+
+def test_a_pinned_part_within_every_limit_fits() -> None:
+    dataset = pinned_dataset(
+        fitting_part(),
+        max_height_mm=20,
+        max_diameter_mm=12.5,
+        max_lead_spacing_mm=5,
+    )
+    assert "part-does-not-fit" not in codes(dataset)
+
+
+def test_a_pinned_part_of_unknown_height_is_not_a_fit_error() -> None:
+    """The catalogue may be incomplete; that is not the board file's fault."""
+    part = Part.from_dict(
+        {
+            "id": "unmeasured",
+            "manufacturer": "Panasonic",
+            "mpn": "X",
+            "series": "panasonic-fr",
+            "type": "electrolytic-radial",
+            "capacitance_uf": 3300,
+            "voltage_v": 25,
+        }
+    )
+    dataset = pinned_dataset(part, max_height_mm=5)
+    assert "part-does-not-fit" not in codes(dataset)
+
+
+def test_a_fit_error_is_not_reported_as_a_part_mismatch() -> None:
+    """The Status page must tell 'wrong part' from 'right part, will not fit'."""
+    dataset = pinned_dataset(fitting_part(), max_height_mm=15)
+    assert "part-does-not-fit" in codes(dataset)
+    assert "part-mismatch" not in codes(dataset)
+
+
+def test_a_wrong_part_is_not_also_reported_as_not_fitting() -> None:
+    part = fitting_part(capacitance_uf=470)
+    dataset = pinned_dataset(part, max_height_mm=15)
+    assert "part-mismatch" in codes(dataset)
+    assert "part-does-not-fit" not in codes(dataset)
+
+
+def test_a_note_stating_a_limit_without_a_field_is_a_warning() -> None:
+    document = board_document()
+    document["capacitors"][0]["note"] = "Maximum height 24 mm."
+    issues = [
+        issue
+        for issue in check(make_dataset(document))
+        if issue.code == "unenforceable-fit-note"
+    ]
+    assert len(issues) == 1
+    assert issues[0].level == "warning"
+
+
+def test_a_note_stating_a_limit_alongside_a_field_is_fine() -> None:
+    document = board_document()
+    document["capacitors"][0]["note"] = "Maximum height 24 mm."
+    document["capacitors"][0]["max_height_mm"] = 24
+    assert "unenforceable-fit-note" not in codes(make_dataset(document))
+
+
+def test_an_ordinary_note_raises_no_fit_warning() -> None:
+    document = board_document()
+    document["capacitors"][0]["note"] = "Radial in the original, axial on rev 3."
+    assert "unenforceable-fit-note" not in codes(make_dataset(document))
+
+
+def test_a_note_without_a_unit_raises_no_fit_warning() -> None:
+    document = board_document()
+    document["capacitors"][0]["note"] = "Maximum ripple current matters here."
+    assert "unenforceable-fit-note" not in codes(make_dataset(document))
+
+
 def test_missing_sources_is_only_a_warning() -> None:
     issues = check(make_dataset(board_document()))
     no_sources = [issue for issue in issues if issue.code == "no-sources"]

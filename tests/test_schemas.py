@@ -61,6 +61,30 @@ def test_a_snap_in_position_is_a_legal_type() -> None:
     assert schema_issues(document, "board", "a.yaml") == []
 
 
+def test_fit_limits_are_accepted_on_a_position() -> None:
+    document = {**VALID_BOARD}
+    document["capacitors"] = [
+        {
+            **VALID_BOARD["capacitors"][0],
+            "max_height_mm": 24,
+            "max_diameter_mm": 16,
+            "max_lead_spacing_mm": 7.5,
+        }
+    ]
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_a_fit_limit_of_zero_is_rejected() -> None:
+    document = {**VALID_BOARD}
+    document["capacitors"] = [
+        {**VALID_BOARD["capacitors"][0], "max_height_mm": 0}
+    ]
+    issues = schema_issues(document, "board", "a.yaml")
+    assert [issue.location for issue in issues] == [
+        "a.yaml:capacitors/0/max_height_mm"
+    ]
+
+
 def test_unknown_property_is_rejected() -> None:
     issues = schema_issues({**VALID_BOARD, "colour": "beige"}, "board", "a.yaml")
     assert len(issues) == 1

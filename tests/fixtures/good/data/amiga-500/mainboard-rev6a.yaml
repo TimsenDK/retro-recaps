@@ -18,9 +18,10 @@ capacitors:
     voltage_v: 25
     original_voltage_v: 16
     quantity: 2
+    max_height_mm: 24
     series: panasonic-fr
     part: eeufr1e332
-    note: Maximum height 24 mm.
+    note: Maximum height 24 mm, because of the shield.
   - designators:
       - C321
     type: electrolytic-radial
