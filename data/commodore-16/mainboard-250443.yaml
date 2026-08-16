@@ -14,11 +14,15 @@ sources:
       Independent list; agrees on designators/values/quantities for
       C3/C4/C16/C18/C19/C31 (10uF) but does not list a C1 position, and
       gives C2 as 47uF 16V and C17 as 1uF 50V.
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/C16_Service_Manual_314001-03_(1984_Oct).pdf
+    note: >-
+      Commodore factory parts list for C-16 PCB Assembly #250443-01 (service
+      manual 314001-03, Oct. 1984): C1 Elect 1uF 25V, C2 Elect 47uF 25V, C3
+      Elect 10uF 25V, C4 Elect 10uF 25V, C16 Elect 10uF 25V, C17 Elect 1uF
+      16V, C18 Elect 10uF 25V, C19 Elect 10uF 25V, C31 Elect 10uF 25V.
+      Confirms retrorewind's designators and voltages exactly; worldofjani's
+      C2 (16V) and C17 (50V) do not match this factory list.
 notes:
-  - >-
-    Two positions carry conflicting documented voltage ratings: C2 is given
-    as both 16 V and 25 V, and C17 as both 16 V and 50 V. This file uses 25
-    V for C2 and 16 V for C17.
   - >-
     C1 is absent from some capacitor lists for this board. It is included
     here, giving a nine-position list.
@@ -28,6 +32,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
     note: Absent from some capacitor lists for this board.
@@ -36,9 +41,9 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 47
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    note: Also documented as 47 uF 16 V.
   - designators:
       - C3
       - C4
@@ -49,6 +54,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 6
     series: panasonic-fr
   - designators:
@@ -56,6 +62,6 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: Also documented as 1 uF 50 V.

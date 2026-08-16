@@ -15,11 +15,22 @@ sources:
       Independent list; agrees on all 10 designators and quantities, and on
       C7 (2200uF 16V axial), but rates the other nine positions at 50V
       instead of 16V.
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/manual/p4-05.gif
+    note: >-
+      Commodore factory parts list for Plus/4 PCB Assembly #310163-01, page
+      1: C7 Elect 2200uF 16V, C8 Elect 10uF 16V. Also lists C1 as Elect
+      0.1uF 25V, which does not match either retrieved capacitor-kit
+      listing's 100uF figure for that designator.
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/manual/p4-06.gif
+    note: >-
+      Same factory parts list, page 2: C17/C18 Elect 10uF 16V, C20 Elect
+      10uF 16V, C22 Elect 10uF 16V, C23 Elect 1uF 16V, C27 Elect 10uF 16V,
+      C30 Elect 10uF 16V. Confirms retrorewind's 16V for all six of these
+      designators; worldofjani's 50V does not match this factory list.
 notes:
   - >-
-    Nine of the ten positions - C1, C8, C17, C18, C20, C22, C23, C27 and C30
-    - carry conflicting documented voltage ratings, 16 V or 50 V. 16 V is
-    used here, matching the rail these boards run on. C7 is undisputed.
+    C1's voltage rating is unconfirmed; the higher of two documented
+    ratings is used here.
   - >-
     ASSY 250455 and 310164 are reported to share this capacitor set;
     unconfirmed.
@@ -28,15 +39,17 @@ capacitors:
       - C1
     type: electrolytic-radial
     capacitance_uf: 100
-    voltage_v: 16
+    voltage_v: 50
     quantity: 1
     series: panasonic-fr
-    note: Also documented as 100 uF 50 V.
+    verification: derived
+    note: Voltage rating unconfirmed.
   - designators:
       - C7
     type: electrolytic-axial
     capacitance_uf: 2200
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: vishay-021-asm
   - designators:
@@ -50,14 +63,14 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 7
     series: panasonic-fr
-    note: Also documented as 10 uF 50 V.
   - designators:
       - C23
     type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: Also documented as 1 uF 50 V.
