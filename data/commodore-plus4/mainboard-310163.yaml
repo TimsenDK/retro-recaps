@@ -17,16 +17,12 @@ sources:
       instead of 16V.
 notes:
   - >-
-    worldofjani.com rates C1, C8, C17, C18, C20, C22, C23, C27 and C30 at
-    50V; retrorewind.ca (used here) rates the same nine positions at 16V.
-    Both sources fully agree on designators, quantities, capacitance values
-    and on the C7 position. retrorewind.ca is used as the better-evidenced
-    figure (matches the as-populated 16V rail these boards run on); the
-    disagreement is recorded rather than silently resolved.
+    Nine of the ten positions - C1, C8, C17, C18, C20, C22, C23, C27 and C30
+    - carry conflicting documented voltage ratings, 16 V or 50 V. 16 V is
+    used here, matching the rail these boards run on. C7 is undisputed.
   - >-
-    console5.com's kit listing (title only, page itself blocked by a 403 on
-    fetch) suggests ASSY 250455 and 310164 share this cap set; not
-    independently confirmed here.
+    ASSY 250455 and 310164 are reported to share this capacitor set;
+    unconfirmed.
 capacitors:
   - designators:
       - C1
@@ -35,7 +31,7 @@ capacitors:
     voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: worldofjani.com gives this position as 100uF 50V, not 16V.
+    note: Also documented as 100 uF 50 V.
   - designators:
       - C7
     type: electrolytic-axial
@@ -56,7 +52,7 @@ capacitors:
     voltage_v: 16
     quantity: 7
     series: panasonic-fr
-    note: worldofjani.com gives these positions as 10uF 50V, not 16V.
+    note: Also documented as 10 uF 50 V.
   - designators:
       - C23
     type: electrolytic-radial
@@ -64,4 +60,4 @@ capacitors:
     voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: worldofjani.com gives this position as 1uF 50V, not 16V.
+    note: Also documented as 1 uF 50 V.

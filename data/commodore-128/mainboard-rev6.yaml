@@ -16,19 +16,14 @@ sources:
     note: Confirms ASSY 310379 is used by C128 and C128D, not the C128DCR.
 notes:
   - >-
-    Rev 7 of this board differs at two positions, not only C63 as commonly
-    stated: C63 becomes 100 uF 6.3 V (was 10 uF 16 V), and C69 is not
-    populated at all on rev 7. Confirmed independently via the Lemon64 forum
-    thread above in addition to Retro Rewind's own rev 6/rev 7 comparison.
-    Because of the second, undocumented difference, this is split into two
-    files (this one and mainboard-rev7.yaml) rather than one "superset" file
-    with a single note, since rev 6 is not simply a superset of rev 7's
-    positions plus one changed value.
+    Rev 7 of this board differs at two positions, not only at C63: C63
+    becomes 100 uF 6.3 V (10 uF 16 V here), and C69 is not populated at all
+    on rev 7. Rev 6 is therefore not simply a superset of rev 7, which is
+    why the two revisions are separate files.
   - >-
-    C101 is a separate position from the 10 uF/16 V batch: it is 10 uF but
-    rated 35 V originally, confirmed independently. It is not being upgraded
-    to 25 V as the spreadsheet's blanket batch grouping might suggest, since
-    that would be a voltage downgrade from its true original rating.
+    C101 is 10 uF but was originally rated 35 V, unlike the other 10 uF
+    positions, which were 16 V. It is not grouped with them and is not
+    reduced to 25 V.
 capacitors:
   - designators:
       - C61

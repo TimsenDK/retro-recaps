@@ -13,17 +13,13 @@ sources:
       revision.
 notes:
   - >-
-    Single-sourced: no second independent list of this specific assembly
-    group's capacitors was found. Capacitance values match the same
-    recurring family used on the earlier 1540001 and 1540048 assembly
-    groups of this machine (1 uF, 47 uF, 4700 uF, 6800 uF), so voltage
-    ratings are inferred from those better-evidenced revisions rather than
-    invented — same nominal component, different designator numbering.
+    Voltage ratings here are carried over from this machine's earlier
+    assembly groups, which use the same nominal values (1 uF, 47 uF, 4700
+    uF, 6800 uF). They are not confirmed for this revision.
   - >-
-    This revision spreads the 47 uF value across four designators instead
-    of two, and both large filter capacitors keep separate positions (as on
-    the 1540048 group), consistent with the two-position PSU filter
-    structure documented across this machine's boards.
+    This revision spreads the 47 uF value across four designators instead of
+    two; both large filter capacitors keep separate positions, as on the
+    1540048 group.
 capacitors:
   - designators:
       - C1
@@ -35,7 +31,9 @@ capacitors:
     quantity: 2
     series: panasonic-fr
     verification: derived
-    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+    note: >-
+      Voltage carried over from this machine's earlier board revisions,
+      which use the same nominal value; it is not confirmed for this one.
   - designators:
       - C4
       - C6
@@ -48,7 +46,9 @@ capacitors:
     quantity: 4
     series: panasonic-fr
     verification: derived
-    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+    note: >-
+      Voltage carried over from this machine's earlier board revisions,
+      which use the same nominal value; it is not confirmed for this one.
   - designators:
       - C7
     type: electrolytic-axial
@@ -57,7 +57,9 @@ capacitors:
     quantity: 1
     series: vishay-021-asm
     verification: derived
-    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+    note: >-
+      Voltage carried over from this machine's earlier board revisions,
+      which use the same nominal value; it is not confirmed for this one.
   - designators:
       - C8
     type: electrolytic-axial
@@ -66,4 +68,6 @@ capacitors:
     quantity: 1
     series: vishay-021-asm
     verification: derived
-    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+    note: >-
+      Voltage carried over from this machine's earlier board revisions,
+      which use the same nominal value; it is not confirmed for this one.

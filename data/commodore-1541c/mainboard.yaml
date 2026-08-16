@@ -12,16 +12,14 @@ sources:
       cross-checked against a second independent source.
 notes:
   - >-
-    This is not a full capacitor list. It records the single 1541C-specific
-    position independently found during this migration pass; every other
-    position on the board is an open question. "unspecified" is used for
-    revisions because no 1541C mainboard assembly/revision number could be
-    matched to this position from a public source in this pass.
+    This is not a full capacitor list. It records the one 1541C-specific
+    position that is known; every other position on the board is an open
+    question. The assembly or revision number this position belongs to is
+    not known either, hence "unspecified".
   - >-
-    Open question: complete capacitor count, designators, and values for
-    the 1541C mainboard, and which of the multiple documented 1541C board
-    revisions (it is known to exist in more than one) this position and any
-    future positions belong to.
+    The complete capacitor count, designators and values for this mainboard
+    are unknown, as is which of the several 1541C board revisions each
+    position belongs to.
 capacitors:
   - designators:
       - C22
@@ -31,7 +29,3 @@ capacitors:
     quantity: 1
     series: panasonic-fr
     verification: derived
-    note: >-
-      Single-sourced from a Lemon64 forum thread specifically about this
-      position; not cross-checked against a second independent source or a
-      schematic.

@@ -4,7 +4,7 @@ board: psu
 revisions:
   - PE-5161-1
   - PB-5161-1
-verification: verified
+verification: derived
 sources:
   - url: https://amigaretro.com/index.php?topic=182.0
     note: >-
@@ -14,34 +14,21 @@ sources:
       the main board and the small regulator daughterboard inside the PSU.
 notes:
   - >-
-    The handover marks this board "typical, not verified" because nobody
-    had opened one to check. This teardown source is a genuine
-    designator-level reading of a real unit and supersedes the
-    spreadsheet's placeholder values (1000 uF/25 V x2, 2200 uF/25 V x2,
-    220 uF/200 V snap-in x2), which do not match any value in this list and
-    are not used here.
-  - >-
     PE-5161-1 is the 240 V (EU) LiteOn supply used in the A3000; PB-5161-1
     is the equivalent 120 V unit on the same PCB with minor population
-    differences. Values below are assumed to apply to both; this was not
-    independently confirmed for the 120 V variant.
+    differences. The values here are assumed to apply to both and are not
+    confirmed for the 120 V variant.
   - >-
-    C28 and C30 are listed with part code EL332X16V but a stated value of
-    "3300uF/10V" in the source, while C29 (same capacitance) is listed as
-    3300uF/16V with no part-code conflict. Treated the 16 V rating as
-    correct for all three, on the assumption the "10V" description is a
-    typo in the source, and noting it here rather than silently picking one.
+    C28, C29 and C30 are all 3300 uF. The rating on C28 and C30 is
+    documented inconsistently as 10 V and as 16 V; 16 V is recorded here,
+    matching C29.
   - >-
-    C34 is listed with part code EL470X25V (the same code used for the
-    47 uF/25 V group on the PSU main board) but a stated value of
-    "47uF/16V". Recorded as 16 V, the explicitly stated value, and flagged
-    here rather than silently resolved.
+    C34's rating is documented inconsistently as 16 V and as 25 V; 16 V is
+    recorded here.
   - >-
-    The source does not mention a RIFA/mains-film capacitor. The project
-    convention (RIFA X2 film replaced unconditionally in all PSUs) and the
-    spreadsheet's note of a netfilter pair are carried forward as an
-    unconfirmed position below; the teardown post may simply not have
-    covered the mains-side filter section.
+    No mains-side X2/RIFA film capacitor is documented for this supply. The
+    netfilter pair listed below is unconfirmed; RIFA X2 film is replaced
+    unconditionally wherever it is found.
 capacitors:
   - designators:
       - C9
@@ -81,7 +68,9 @@ capacitors:
     max_height_mm: 35
     series: panasonic-fr
     verification: derived
-    note: Source gives a conflicting "3300uF/10V" description against part code EL332X16V; 16 V used. See board notes.
+    note: >-
+      Voltage rating documented inconsistently as 10 V and 16 V; 16 V is
+      used. See board notes.
   - designators:
       - C29
     type: electrolytic-radial
@@ -122,9 +111,9 @@ capacitors:
     series: panasonic-fr
     verification: derived
     note: >-
-      Regulator daughterboard inside the PSU enclosure. Source gives a
-      conflicting part code EL470X25V against a stated "47uF/16V" value;
-      16 V used. See board notes.
+      Regulator daughterboard inside the PSU enclosure. Voltage rating
+      documented inconsistently as 16 V and 25 V; 16 V is used. See board
+      notes.
   - type: film-x2
     capacitance_uf: 0.1
     voltage_v: 275
@@ -132,6 +121,6 @@ capacitors:
     series: kemet-r46
     verification: derived
     note: >-
-      Mains netfilter pair from the spreadsheet, not confirmed by the
-      amigaretro.com teardown. RIFA X2 film is replaced unconditionally per
-      project convention regardless; designators are not known.
+      Mains netfilter pair; presence on this supply is unconfirmed and no
+      designators are known. RIFA X2 film is replaced unconditionally
+      wherever it is found.

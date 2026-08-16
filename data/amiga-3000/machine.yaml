@@ -9,12 +9,15 @@ board_order:
   - daughterboard
   - psu
 notes:
-  - Desktop revisions 6.x through 9.x share one mainboard capacitor set and are
-    documented together in a single board file.
-  - The A3000T (tower) uses a different board and is explicitly out of scope
+  - >-
+    Desktop revisions 6.x through 9.x share one mainboard capacitor set and
+    are documented together in a single board file.
+  - >-
+    The A3000T (tower) uses a different board and is explicitly out of scope
     for this dataset.
-  - The A3000 mainboard and daughterboard use through-hole electrolytics, not
-    SMD. An earlier version of this dataset had that wrong.
+  - >-
+    The A3000 mainboard and daughterboard use through-hole electrolytics,
+    not SMD.
 batteries:
   - kind: nicd
     action: remove

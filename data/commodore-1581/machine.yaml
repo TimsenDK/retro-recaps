@@ -5,14 +5,13 @@ board_order:
   - logic
   - psu
 notes:
-  - The external PSU brick's reverse-engineered schematic (P/N 312551-01)
-    covers the 1541-II, 1571-II and 1581 as one shared design. Another agent
-    is writing the 1541-II; reconcile its PSU data against
-    data/commodore-1581/psu.yaml if the two disagree.
-  - Unlike the C64's PSU brick, this unit's internals have been successfully
-    reverse-engineered into a full component-level schematic, which suggests
-    it is a conventional PCB in a sealed case rather than an epoxy-potted
-    block. Whether a given physical unit can be opened non-destructively for
-    recapping, versus being better replaced whole, is still a judgement call
-    for whoever has it on the bench — the "potted brick, replace it" argument
-    used for the C64 supply is not established here as strongly.
+  - >-
+    The external PSU brick, P/N 312551-01, is one shared design across the
+    1541-II, 1571-II and 1581; see psu.yaml.
+  - >-
+    Unlike the C64's PSU brick, this unit appears to be a conventional PCB
+    in a sealed case rather than an epoxy-potted block - it has been
+    reverse-engineered into a full component-level schematic. Whether a
+    given unit can be opened non-destructively for recapping, rather than
+    being replaced whole, is a judgement call for whoever has it on the
+    bench.

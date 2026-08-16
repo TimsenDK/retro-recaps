@@ -10,13 +10,12 @@ board_order:
   - psu
 notes:
   - >-
-    Two mainboard families are in scope: rev 4.x (German A2000-A) and rev 6.x
-    (B2000). They are genuinely different boards and are recorded as separate
-    files, not variants of one file.
+    Two mainboard families are in scope: rev 4.x (German A2000-A) and rev
+    6.x (B2000). They are genuinely different boards and are recorded as
+    separate files, not variants of one file.
   - >-
-    The EU/230 V power supply is documented as shared between rev 4.4 and
-    rev 6 boards; see the psu board file for source conflicts on the exact
-    electrolytic values.
+    The EU/230 V power supply is shared between rev 4.4 and rev 6 boards.
+    Its exact electrolytic values are unconfirmed; see the psu board file.
 batteries:
   - kind: nicd
     action: remove

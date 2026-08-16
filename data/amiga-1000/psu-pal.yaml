@@ -10,8 +10,9 @@ sources:
   - url: https://jbretro.wordpress.com/2020/04/15/ca1000ps/
     note: Independent confirmation of the same PAL/240V board and values. Its table omits C04; otherwise matches exactly.
 notes:
-  - The spreadsheet listed this PSU as 2x 1000 uF/25V, 2x 2200 uF/25V and 2x 220 uF/200V snap-in, without separating NTSC and PAL, marked "typical, not verified." None of that matches the independently sourced values below.
-  - No mains-side X2/RIFA film capacitor was found on any source checked; omitted rather than invented (see psu-ntsc.yaml for the sources checked).
+  - >-
+    No mains-side X2/RIFA film capacitor position is known on this supply.
+    Inspect the unit before assuming one is present to replace.
 capacitors:
   - designators:
       - C04
@@ -21,7 +22,9 @@ capacitors:
     quantity: 1
     series: panasonic-fr
     verification: derived
-    note: Listed by funwithretrocomputers.blogspot.com but absent from jbretro.wordpress.com's table (likely an editorial omission there). Corroborated by worldofjani's NTSC/110V value of 10 uF/35V at the equivalent position.
+    note: >-
+      Not listed in every capacitor list for this board. The equivalent
+      position on the NTSC/110V supply is 10 uF 35 V.
   - designators:
       - C09
     type: electrolytic-radial

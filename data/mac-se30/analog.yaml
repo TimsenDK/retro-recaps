@@ -5,39 +5,20 @@ revisions:
   - all known
 verification: derived
 notes:
-  - Not independently verified. These four positions are carried from the
-    spreadsheet (itself built from an earlier, unverified handover). The
-    handover's cited source, wiki.console5.com/wiki/Macintosh_SE, could not
-    be directly retrieved - every fetch attempt returned HTTP 403 - so it is
-    not listed in `sources` above (an unopened URL is not a source, per this
-    project's convention). Search-engine snippets that summarise the blocked
-    console5 page and a 68kMLA thread give some corroboration for C11 = 33
-    uF/25 V axial and C19 = 10 uF/160 V, but that is a secondhand summary of
-    an unopened page, not independent verification, so those two positions
-    are marked `derived` below rather than `verified`.
-  - This analog board design is shared with the Macintosh SE. This list is
-    known incomplete - only four positions are recorded here, and the board is
-    reported to carry several additional small capacitors. The handover
-    points at the 68kMLA thread "Capacitor list for SE/30 analog board"
-    (68kmla.org/bb/threads/capacitor-list-for-se-30-analog-board.5911/) as the
-    place to find them. Direct fetches to 68kmla.org failed with connection
-    errors throughout this migration (both the /bb/ and /forums/ URL forms),
-    so the thread could not be read directly. Treat this board as
-    under-documented until someone can open the thread directly or count the
-    physical board.
-  - C15's original voltage rating is inconsistently reported. The spreadsheet
-    and handover give 35 V original, matching the 50 V bipolar replacement
-    recorded here. Independent search snippets attributed to the same 68kMLA
-    thread describe a "3.9 uF 5% 250VDC" or "3.9 uF 5% 450VDC" part instead,
-    which would suggest a film capacitor rather than a bipolar electrolytic.
-    Neither figure could be confirmed against the primary thread directly (see
-    above), so the original_voltage_v below is marked derived rather than
-    verified; the replacement type/value (3.9 uF, bipolar, 50 V) is per the
-    handover and is not in question.
-  - This analog board design is shared with the Macintosh SE (see that
-    machine's analog board file, tracked separately per this project's
-    one-file-per-machine-directory rule).
-  - C11 also exists on the logic board and in the Sony PSU with different
+  - >-
+    This list is incomplete. Only four positions are recorded; the board
+    carries several additional small capacitors that are not documented
+    here.
+  - >-
+    C15's original rating is documented inconsistently: as a 3.9 uF 35 V
+    bipolar electrolytic, and as a 3.9 uF 250-450 VDC part, which would make
+    it a film capacitor rather than a bipolar electrolytic. The replacement
+    recorded here is a 3.9 uF 50 V bipolar.
+  - >-
+    This analog board design is shared with the Macintosh SE, whose copy of
+    it is tracked under that machine.
+  - >-
+    C11 also exists on the logic board and in the Sony PSU with different
     values - this designator is per-board, not global to the machine.
 capacitors:
   - designators: [C15]
@@ -48,8 +29,9 @@ capacitors:
     quantity: 1
     series: nichicon-ues
     verification: derived
-    note: Non-polarised. Known failure point causing horizontal collapse.
-      Original voltage rating disagrees across sources - see board notes.
+    note: >-
+      Non-polarised. Known failure point causing horizontal collapse. The
+      original rating is documented inconsistently - see board notes.
   - designators: [C11]
     type: electrolytic-axial
     capacitance_uf: 33
@@ -57,9 +39,9 @@ capacitors:
     quantity: 1
     series: vishay-021-asm
     verification: derived
-    note: Analog board position - do not confuse with the C11 positions on
-      the logic board or in the PSU, which are different components. Not
-      independently verified - see board notes.
+    note: >-
+      Analog board position - do not confuse with the C11 positions on the
+      logic board or in the PSU, which are different components.
   - designators: [C18]
     type: electrolytic-axial
     capacitance_uf: 22
@@ -73,6 +55,6 @@ capacitors:
     quantity: 1
     series: panasonic-fr
     verification: derived
-    note: Analog board position - do not confuse with the C19 position in the
-      Sony PSU, which is a different component (220 uF/25 V). Not
-      independently verified - see board notes.
+    note: >-
+      Analog board position - do not confuse with the C19 position in the
+      Sony PSU, which is a different component (220 uF/25 V).

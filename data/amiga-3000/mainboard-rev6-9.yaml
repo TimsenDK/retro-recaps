@@ -19,21 +19,15 @@ sources:
       sizes per designator. Confirms through-hole (radial), not SMD, and
       gives original (pre-recap) voltage ratings.
 notes:
+  - Through-hole (radial), not SMD.
   - >-
-    Confirmed through-hole (radial), not SMD, by the forum.amiga.org board
-    reading. An earlier version of this dataset described these as SMD;
-    that was wrong.
+    The 4.7 uF and 22 uF groups were originally rated 35 V; 50 V is the
+    replacement value.
   - >-
-    The forum.amiga.org reading gives original (pre-recap) voltage ratings
-    of 35 V for the 4.7 uF and 22 uF groups; retrorewind's list only shows
-    the already-upgraded 50 V value with no original noted. Both agree on
-    the 50 V replacement value.
-  - >-
-    The 470 uF 50 V pair is listed in the AmiBay all-revision kit
-    composition but does not appear in either the retrorewind or
-    forum.amiga.org designator-level lists for this revision range. It may
-    belong to a revision not covered here, or be generic kit padding.
-    Treated as unconfirmed; designators are not known.
+    The 470 uF 50 V pair is unconfirmed for this revision range. It appears
+    in an all-revision kit but at no known designator on these boards, so it
+    may belong to a revision not covered here. Count the board before
+    ordering.
 capacitors:
   - designators:
       - C190
@@ -108,6 +102,6 @@ capacitors:
     quantity: 2
     verification: derived
     note: >-
-      From the AmiBay all-revision kit composition only; no designators
-      found in either designator-level source. May be revision-specific or
-      kit padding. Count on the physical board before ordering.
+      Unconfirmed for this revision range; no designators are known and the
+      pair may belong to another revision. Count on the physical board
+      before ordering.

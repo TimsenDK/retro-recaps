@@ -16,14 +16,11 @@ sources:
       values or voltages.
 notes:
   - >-
-    Reported values are inconsistent across sources and PSU variants. At
-    least two supply designs exist (an "Ismet"
-    2-capacitor board and a "Mitsumi" board reported elsewhere as having up
-    to 5 capacitors), and forum mentions of designators C4/C7 give
-    conflicting values (10 V/16 V/35 V/40 V depending on source) for what
-    may or may not be the same positions.
+    At least two supply designs exist: an Ismet board carrying two
+    capacitors, and a Mitsumi board reported to carry up to five. Reported
+    values are inconsistent between them, including for designators C4 and
+    C7, which may not be the same positions on both designs.
   - >-
-    Open question: count and measure the capacitors on the specific PSU
-    variant in hand before recapping. Do not treat the 2200 uF 40 V /
-    4700 uF 16 V figures reported in one forum thread as confirmed.
+    No capacitor list is confirmed for either design. Count and measure the
+    supply in hand before recapping.
 capacitors: []

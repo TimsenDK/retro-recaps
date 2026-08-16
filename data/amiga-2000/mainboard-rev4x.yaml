@@ -12,39 +12,26 @@ sources:
       No designators or voltage ratings are given on the page.
 notes:
   - >-
-    DERIVED, no designator-level source found for this revision. The
-    handover's original assumption ("rev 4.x = the 32-piece all-revision kit
-    minus the three 4.7 uF positions, inferred by subtracting the 29-piece
-    Alinea rev-4 kit from the 32-piece all-revision kit") turned out to be
-    wrong: reading the Alinea rev-4 and rev-6 kit descriptions directly shows
-    rev 4.x DOES include 3x 4.7 uF, same as rev 6.x. The real difference is
-    that rev 4.x has 4 fewer 47 uF positions (9 vs. 13 on rev 6.x) and one
-    47 uF position on rev 6.x is instead a single 100 uF position unique to
-    rev 4.x. Net difference: 29 vs 32 pieces, matching both kits' stated
-    totals, but for a different reason than originally assumed.
+    Rev 4.x differs from rev 6.x in the 47 uF group: nine positions here
+    against thirteen there. It also carries one 100 uF position that rev 6.x
+    does not have. Both revisions carry three 4.7 uF positions. 29 positions
+    in total, against 32 on rev 6.x.
   - >-
-    Quantities and capacitance values below come from the Alinea kit content
-    list, which is a real vendor bill of materials, not a subtraction
-    inference — but it still gives no reference designators and no voltage
-    ratings, so it cannot be upgraded past "derived" without a designator- or
-    photo-level source.
+    No reference designators and no voltage ratings are known for this
+    revision.
   - >-
-    Voltage assumed to match rev 6.x on the four value groups shared between
-    both revisions (4.7 uF, 22 uF, 47 uF, 470 uF), since both boards share the
-    same schematic family and rev 6.x's 16 V original / 25 V replacement
-    pattern is independently confirmed there. Not treated as confirmed for
-    rev 4.x itself.
+    Voltages on the four value groups shared with rev 6.x (4.7 uF, 22 uF, 47
+    uF and 470 uF) are assumed to match that revision. They are not
+    confirmed for rev 4.x itself.
   - >-
-    The unique 100 uF position has no original voltage given by any source
-    found. 25 V is used as the replacement rating, consistent with every
-    other position on this board family, but this is a project convention
-    applied in the absence of data, not a confirmed original rating -
-    original_voltage_v is deliberately omitted.
+    The 100 uF position has no known original voltage rating. 25 V is used
+    as the replacement rating, consistent with the rest of this board
+    family, and original_voltage_v is deliberately omitted.
   - >-
-    The Alinea rev-4 listing splits the 47 uF group into "4x Radial 47 uF"
-    and "5x Radial 47 uF (other diameter)" - two physical case sizes. Combined
-    into one 9-piece entry here since no dimensions were given for either
-    group; do not assume they are interchangeable on the physical board.
+    The nine 47 uF positions come in two physical case sizes, four of one
+    and five of the other. They are recorded as one group because no
+    dimensions are known; do not assume the parts are interchangeable on the
+    board.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 4.7
@@ -53,10 +40,6 @@ capacitors:
     quantity: 3
     series: panasonic-fr
     verification: derived
-    note: >-
-      Contradicts the handover's subtraction-derived assumption that rev 4.x
-      lacks the 4.7 uF positions entirely. The Alinea rev-4 kit listing
-      states 3x 4.7 uF, same as rev 6.x. Needs designator-level confirmation.
   - type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 25
@@ -72,8 +55,8 @@ capacitors:
     series: panasonic-fr
     verification: derived
     note: >-
-      Alinea lists this as two groups of different physical diameter (4 +
-      5) with no dimensions given; combined into one position here.
+      Two physical case sizes on the board, four of one and five of the
+      other; combined into one entry here because no dimensions are known.
   - type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
@@ -81,9 +64,9 @@ capacitors:
     series: panasonic-fr
     verification: derived
     note: >-
-      Present only on rev 4.x per Alinea's kit listing; rev 6.x has no 100 uF
-      position. No original voltage found anywhere; 25 V chosen as a project-
-      convention replacement rating, not a confirmed upgrade.
+      Present only on rev 4.x; rev 6.x has no 100 uF position. No original
+      voltage rating is known; 25 V is a project-convention replacement
+      rating, not a confirmed upgrade.
   - type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 25

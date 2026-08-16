@@ -11,15 +11,11 @@ sources:
       giving 3x 10 uF 25 V radial for the mainboard; single source, no
       designators given.
 notes:
-  - >-
-    Single-sourced: no second independent source itemising this board's own
-    capacitors (as distinct from the 1541 longboard's mainboard) was found
-    in this pass. No reference designators were found either.
+  - Reference designators for this board are not known.
   - >-
     Not to be confused with the 1541 longboard's mainboard, which carries a
-    much larger capacitor set including the PSU filter capacitors — those
-    live in the external brick on this model instead. Deliberately not
-    reusing any of the 1541 longboard's board data here.
+    much larger capacitor set including the PSU filter capacitors; on this
+    model those live in the external brick.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 10
@@ -27,4 +23,3 @@ capacitors:
     quantity: 3
     series: panasonic-fr
     verification: derived
-    note: No reference designators found in any source reachable during this pass.

@@ -13,17 +13,13 @@ sources:
       motherboard as the c128"; the C128DCR later used a different board.
 notes:
   - >-
-    No independent capacitor count was performed on a physical C128D unit
-    for this file. The capacitor list below is inferred entirely from the
-    flat Commodore 128 mainboard rev 6 file
-    (../commodore-128/mainboard-rev6.yaml), because two independent sources
-    confirm the 128D uses the identical ASSY 310379 PCB rather than a
-    modified one. Marked derived, not verified, for that reason.
+    The C128D uses the same ASSY 310379 mainboard as the flat C128, so this
+    list is the C128 rev 6 list (../commodore-128/mainboard-rev6.yaml). It
+    has not been counted against a physical C128D.
   - >-
-    If a specific 128D unit is found to carry a rev 7 board instead, the
-    C63/C69 differences documented in ../commodore-128/mainboard-rev7.yaml
-    apply there instead of the list below — this was not checked against a
-    physical 128D board.
+    A 128D carrying a rev 7 board instead follows the C63 and C69
+    differences in ../commodore-128/mainboard-rev7.yaml. Which revision a
+    given unit carries is unconfirmed.
 capacitors:
   - designators:
       - C61

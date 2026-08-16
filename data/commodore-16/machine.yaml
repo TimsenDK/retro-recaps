@@ -7,12 +7,11 @@ board_order:
   - mainboard
 notes:
   - >-
-    Absent from the original BOM handover; researched from scratch with no
-    spreadsheet input. Only board revision ASSY 250443-01 is confirmed by an
-    opened source; other C16 board revisions are unconfirmed.
+    Only board revision ASSY 250443-01 is documented here; other C16 board
+    revisions are unconfirmed.
   - >-
-    Uses an external PSU brick, presumed the same TED-family design as the
-    Plus/4's (see commodore-plus4/machine.yaml). No source opened here
-    addresses the C16 brick specifically; treating it as non-recappable and
-    replaced as a whole unit is derived by analogy, not independently
-    verified. No PSU board file is provided either way.
+    Uses an external PSU brick, presumed to be the same TED-family design as
+    the Plus/4's (see commodore-plus4/machine.yaml). It is treated as
+    replaced whole rather than recapped, by analogy with that unit; this is
+    not confirmed for the C16 brick specifically. No PSU board file is
+    provided either way.

@@ -6,12 +6,8 @@ revisions:
 verification: unverified
 capacitors: []
 notes:
-  - The SE could ship with an Astec AA13800 PSU instead of the Sony CR-44
-    (tracked in psu-sony.yaml). Its capacitor set is known to differ, but no
-    reliable public designator/value list was found during this migration.
-    Search results that appeared to describe Astec PSU values reused the SE
-    logic board's own 33 uF designators (C4, C11, C13...), which is almost
-    certainly a search-summary mixup rather than real Astec PSU data, so
-    nothing from that lead was recorded here. Identify the PSU manufacturer
-    fitted to the physical machine and count this board before ordering
-    parts.
+  - >-
+    The SE could ship with an Astec AA13800 PSU instead of the Sony CR-44
+    (tracked in psu-sony.yaml). Its capacitor set differs, but no list for
+    it is known. Identify which supply is fitted to the physical machine and
+    count this board before ordering parts.

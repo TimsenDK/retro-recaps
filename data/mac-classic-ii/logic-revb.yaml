@@ -3,7 +3,7 @@ machine: mac-classic-ii
 board: logic
 revisions:
   - B
-verification: verified
+verification: derived
 sources:
   - url: https://wiki.retrotechcollection.com/Macintosh_Classic_II_Capacitor_Replacement_Guide
     note: Confirms Rev B has 17 SMD positions (3x47uF, 12x10uF, 2x1uF); this
@@ -14,10 +14,11 @@ sources:
       states the 47 uF SMD positions must be 25 V rated if replaced with
       tantalum.
 notes:
-  - No reference designators are published for this board by any source found;
-    both the spreadsheet and the independent sources give counts per value
-    only.
-  - The 10 uF positions are reported to leak more often than other logic
+  - >-
+    No reference designators are known for this board; positions are counts
+    per value only.
+  - >-
+    The 10 uF positions are reported to leak more often than other logic
     board positions on this revision.
   - Recap logic board before analog board.
 capacitors:

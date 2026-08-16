@@ -13,21 +13,19 @@ sources:
       section (bridge rectifiers DB1/DB2, REG1 = LM340-12, REG2 = LM340-05)
       and its capacitor designators and values.
 notes:
-  - The handover found no public capacitor list for the 1551 and, for lack of
-    one, assumed the 1541's cap set applied. That assumption does not hold up
-    against this schematic. Only C25 (4700 uF/16 V, the +5V rail primary
-    filter) matches a value the spreadsheet guessed; the spreadsheet's other
-    guessed values (1 uF, 47 uF, 100 uF, 220 uF) do not appear anywhere on
-    this board. The values below replace the spreadsheet's assumption
-    entirely.
-  - The schematic also shows small ceramic bypass capacitors throughout the
-    logic section (C1-C14-ish range, values 0.01-0.1 uF) and three 0.1 uF
-    ceramics on the PSU rails (C24, C26, C28). These are bypass capacitors,
-    not electrolytics, and are out of scope for this recap list.
-  - Nobody has counted these positions against a physical board since this
-    schematic was transcribed for this dataset. Confirm designators and
-    values against the actual PCB before ordering, in case later board
-    revisions moved or changed values.
+  - >-
+    This board is not capacitor-equivalent to the 1541. Only C25 (4700 uF/16
+    V) coincides with a 1541 value; the 1 uF, 47 uF, 100 uF and 220 uF
+    positions found on 1541 boards do not exist here.
+  - >-
+    Small ceramic bypass capacitors run throughout the logic section
+    (roughly the C1-C14 range, 0.01-0.1 uF) and on the PSU rails (C24, C26,
+    C28, 0.1 uF). These are not electrolytics and are out of scope for this
+    recap list.
+  - >-
+    These positions have not been counted against a physical board. Confirm
+    designators and values against the PCB before ordering, in case later
+    board revisions moved or changed values.
 capacitors:
   - designators:
       - C21
@@ -61,10 +59,7 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: >-
-      +5V rail primary filter, after bridge rectifier DB1. The one position
-      that coincidentally matches the spreadsheet's assumed 1541-equivalent
-      value.
+    note: +5V rail primary filter, after bridge rectifier DB1.
   - designators:
       - C27
     type: electrolytic-radial

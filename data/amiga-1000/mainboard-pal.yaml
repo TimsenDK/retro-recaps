@@ -10,8 +10,12 @@ sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
     note: Baseline NTSC mainboard and WCS daughterboard designators and values that the PAL variant is described as extending.
 notes:
-  - PAL boards integrate the WCS onto the mainboard, so this list folds in the two 100 uF WCS positions that are a separate daughterboard on NTSC.
-  - Designators for the PAL board are not published in the source found; only quantities and values are confirmed. Omitted rather than invented - counts on the physical board should still be checked against this list.
+  - >-
+    PAL boards integrate the WCS onto the mainboard, so this list folds in
+    the two 100 uF WCS positions that are a separate daughterboard on NTSC.
+  - >-
+    Reference designators for the PAL board are not known; only quantities
+    and values. Check counts against the physical board.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 22
@@ -43,7 +47,7 @@ capacitors:
     quantity: 2
     series: panasonic-fr
     verification: derived
-    note: One extra 220 uF position compared with the NTSC board, per amiga1000parceiro.blogspot.com.
+    note: One extra 220 uF position compared with the NTSC board.
   - type: electrolytic-radial
     capacitance_uf: 470
     voltage_v: 25

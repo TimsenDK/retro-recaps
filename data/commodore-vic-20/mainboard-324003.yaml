@@ -17,23 +17,14 @@ sources:
       full designator list.
 notes:
   - >-
-    Spreadsheet-derived union entry. The handover's cited primary source for
-    this board, wiki.console5.com (and the matching console5.com store
-    listing), could not be opened here — both returned HTTP 403 to the
-    fetch tool — so the designator set below (C1,C3,C7,C9,C11,C22) is carried
-    from the spreadsheet and corroborated only by search-engine result
-    snippets of that same page, not by a directly retrieved copy. Treat the
-    designator-to-position mapping as derived, not verified.
+    The designators recorded here - C1, C3, C7, C9, C11 and C22 - are
+    unconfirmed for this board.
   - >-
-    retroleum.co.uk independently lists a "324003 Original Long Board" kit
-    with a wholly different designator set (C13, C16, C23, C24, C25, C31,
-    C39, C44) and includes a 22 uF radial position not present in the
-    spreadsheet at all. This may reflect an earlier/different PCB layout
-    sharing the same ASSY number, or an error in one of the two sources.
-    Unresolved; flagging rather than picking silently.
-  - >-
-    The two unlabeled 10 uF positions have no designator in the spreadsheet
-    or in any source opened here.
+    A wholly different designator set is also documented for ASSY 324003:
+    C13, C16, C23, C24, C25, C31, C39 and C44, together with a 22 uF radial
+    position not listed here. This may be a different PCB layout sharing the
+    same assembly number. Unresolved - check the board.
+  - The two 10 uF positions have no known designators.
 capacitors:
   - designators:
       - C1
@@ -70,7 +61,6 @@ capacitors:
     quantity: 2
     series: panasonic-fr
     verification: derived
-    note: No designators found in the spreadsheet or in any source opened here.
   - designators:
       - C11
       - C22

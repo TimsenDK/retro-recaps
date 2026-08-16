@@ -13,16 +13,11 @@ sources:
       list on the same page; single source, no designators given.
 notes:
   - >-
-    Single-sourced: no second independent source for this board's values
-    was found in this pass. The source does not state whether this
-    capacitor set is the same across the Newtronics/Mitsumi and Chinon
-    mechanism variants documented for the 1541-II, or specific to one of
-    them; both revisions are listed here provisionally. This is an open
-    question — confirm mechanism-specific values before relying on this for
-    a Chinon-mechanism drive.
-  - >-
-    No reference designators were found in any source reachable during this
-    pass.
+    This capacitor set is not known to be the same on the Newtronics/Mitsumi
+    and Chinon mechanism variants; it is listed here for both provisionally.
+    Confirm against the mechanism in hand before relying on it for a Chinon
+    drive.
+  - Reference designators for this board are not known.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 10

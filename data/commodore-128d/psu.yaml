@@ -12,19 +12,13 @@ sources:
       plastic-case C128D's internal switching PSU, part 310639-02.
 notes:
   - >-
-    No prior data existed for this machine at all; it was researched from
-    scratch. This board's capacitor list rests on a single independent
-    source (World of Jani); no
-    second corroborating source was found, so the board is marked derived
-    rather than verified despite the source giving precise measured values.
-    Confirm before ordering in quantity.
+    This is the plastic-case C128D's internal switching PSU, part 310639-02.
+    It is distinct from the metal-case C128DCR's internal PSU, which uses
+    different components entirely and is not covered by this file.
   - >-
-    This is the plastic-case C128D's internal PSU, distinct from the
-    metal-case C128DCR's internal PSU (which uses different components
-    entirely and is not covered by this file).
-  - >-
-    Values above are as measured on the original board by the source; no
-    voltage upgrades are asserted here beyond what was documented.
+    Values here are the original as-built ratings; no voltage upgrades are
+    applied. They are unconfirmed against a second unit, so confirm before
+    ordering in quantity.
 capacitors:
   - designators:
       - C23

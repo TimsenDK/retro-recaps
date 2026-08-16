@@ -4,10 +4,7 @@ family: commodore-drive
 board_order:
   - mainboard
 notes:
-  - The 1551 has an internal power supply (regulators mounted on the single
-    main PCB). An earlier pass of this dataset listed it as external; that was
-    an error and has been corrected.
-  - No public capacitor list for the 1551 was known when this entry was first
-    drafted; the source spreadsheet assumed the board was cap-equivalent to
-    the 1541. That assumption turned out to be wrong once the official
-    Commodore schematic was located — see the mainboard notes.
+  - >-
+    The 1551 has an internal power supply: the regulators are mounted on the
+    single main PCB.
+  - The 1551 is not capacitor-equivalent to the 1541; see mainboard.yaml.

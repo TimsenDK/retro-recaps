@@ -8,6 +8,15 @@ board_order:
   - daughterboard
   - psu
 notes:
-  - Two regional variants exist and are documented as separate boards - NTSC/110V (Rev A mainboard, with a separate WCS daughterboard) and PAL/240V (WCS integrated onto the mainboard, no separate daughterboard). Use the matching *-ntsc.yaml or *-pal.yaml files only; do not mix designators or capacitor values across variants.
-  - The PAL mainboard's capacitor values are confirmed but its reference designators are not published anywhere found during this migration; see mainboard-pal.yaml.
-  - The PSU differs between the NTSC/110V and PAL/240V units, most notably in the primary-side bulk capacitor; see psu-ntsc.yaml and psu-pal.yaml.
+  - >-
+    Two regional variants exist and are documented as separate boards -
+    NTSC/110V (Rev A mainboard, with a separate WCS daughterboard) and
+    PAL/240V (WCS integrated onto the mainboard, no separate daughterboard).
+    Use the matching *-ntsc.yaml or *-pal.yaml files only; do not mix
+    designators or capacitor values across variants.
+  - >-
+    The PAL mainboard's capacitor values are known but its reference
+    designators are not; see mainboard-pal.yaml.
+  - >-
+    The PSU differs between the NTSC/110V and PAL/240V units, most notably
+    in the primary-side bulk capacitor; see psu-ntsc.yaml and psu-pal.yaml.

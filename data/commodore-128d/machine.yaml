@@ -6,12 +6,10 @@ board_order:
   - psu
 notes:
   - >-
-    No prior spreadsheet data existed for this machine; it was researched
-    from scratch, independently, for this file. It is the plastic-case
-    C128D with a detachable keyboard and internal power supply,
-    not the later metal-case C128DCR ("cost-reduced"), which uses a
-    different mainboard and a different internal PSU. Do not merge data
-    between the two; if C128DCR data is added, it belongs to a separate
+    This is the plastic-case C128D with a detachable keyboard and internal
+    power supply, not the later metal-case C128DCR ("cost-reduced"), which
+    uses a different mainboard and a different internal PSU. Do not merge
+    data between the two; if C128DCR data is added, it belongs to a separate
     machine id.
   - >-
     The 128D has a built-in 1571 disk drive on its own board. Recapping that

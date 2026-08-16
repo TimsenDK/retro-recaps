@@ -13,20 +13,15 @@ sources:
       logic board.
 notes:
   - >-
-    The handover found no public capacitor list for this board and marked it
-    "count on the board." This service-manual scan is that list, and it
-    disagrees with the spreadsheet's guessed values (10 uF x2, 47 uF, 100 uF,
-    470 uF) — the official parts list shows only C18/C22 (10 uF/25 V) and C20
-    (47 uF, originally rated 10 V, -10/+50%). No 100 uF or 470 uF electrolytic
-    position exists anywhere in the official parts list. The spreadsheet's
-    100 uF and 470 uF entries could not be corroborated and are dropped from
-    this list rather than carried forward unverified.
-  - C1-C14 (0.1 uF/16 V ceramic) and C15 (0.1 uF/50 V ceramic) are bypass
-    capacitors per the same parts list and are out of scope for this
-    electrolytic recap list.
-  - Only one source was found for this board; nobody has cross-checked it
-    against a second independent list or against a physical unit. Count on
-    the board before ordering.
+    The board carries three electrolytic positions: C18 and C22 (10 uF 25 V)
+    and C20 (47 uF, originally 10 V). There is no 100 uF and no 470 uF
+    electrolytic position anywhere on it.
+  - >-
+    C1-C14 (0.1 uF/16 V) and C15 (0.1 uF/50 V) are ceramic bypass capacitors
+    and are out of scope for this electrolytic recap list.
+  - >-
+    This list has not been checked against a physical unit. Count on the
+    board before ordering.
 capacitors:
   - designators:
       - C18
@@ -36,7 +31,7 @@ capacitors:
     voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    note: "Official parts list: CAP. 10uF 25V ELECTR., Commodore part 900100-01."
+    note: Original Commodore part 900100-01.
   - designators:
       - C20
     type: electrolytic-radial
@@ -46,6 +41,5 @@ capacitors:
     quantity: 1
     series: panasonic-fr
     note: >-
-      Official parts list: CAP. 47uF 10V -10+50 ELECTR., Commodore part
-      900100-12. Voltage upgraded per project convention; original part was
-      rated only 10 V (-10/+50% tolerance).
+      Original Commodore part 900100-12, rated 47 uF 10 V with -10/+50%
+      tolerance. Voltage upgraded per project convention.

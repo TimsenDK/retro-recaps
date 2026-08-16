@@ -17,14 +17,10 @@ sources:
       retrorewind's list; also gives the original (pre-recap) voltages.
 notes:
   - >-
-    Rev 3 and Rev 5 are treated as one capacitor set: retrorewind lists them
-    together, and dfarq.homeip.net's rev-by-rev comparison describes rev 3
-    vs rev 5 as differing only in RAM-chip identification and
-    expansion-connector via routing, not in the power or audio section. No
-    source found gives a rev-3-specific capacitor list distinct from rev 5.
-  - >-
-    Positions are radial, 5 mm lead pitch. An earlier version of this
-    dataset had them recorded as axial; that was wrong.
+    Rev 3 and Rev 5 share one capacitor set. The two revisions differ in
+    RAM-chip identification and expansion-connector via routing, not in the
+    power or audio section.
+  - Positions are radial, 5 mm lead pitch.
 capacitors:
   - designators:
       - C303

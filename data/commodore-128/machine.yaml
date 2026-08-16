@@ -8,10 +8,7 @@ board_order:
   - psu
 notes:
   - >-
-    Mainboard ASSY 310379 is split into two files, rev 6 and rev 7, because
-    verification found two differences between the revisions, not just the
-    commonly-cited C63 change: rev 7 also drops C69 entirely. See
-    mainboard-rev6.yaml and mainboard-rev7.yaml.
-  - >-
-    The external PSU brick's capacitor values could not be independently
-    confirmed; see psu.yaml, which is marked unverified.
+    Mainboard ASSY 310379 is documented as two files, rev 6 and rev 7. The
+    revisions differ at two positions, C63 and C69, not only at the commonly
+    cited C63. See mainboard-rev6.yaml and mainboard-rev7.yaml.
+  - The external PSU brick's capacitor values are unconfirmed; see psu.yaml.

@@ -25,41 +25,23 @@ sources:
       damaged part and no one in the thread supplied one.
 notes:
   - >-
-    Two independent sources for this PSU disagree and were NOT reconciled -
-    recorded here rather than silently picked. Arctic Retro (explicitly
-    "Rev 4.4 and 6, EU/230V") lists 2x 680 uF/200 V, 2x 4700 uF/16 V, 3x
-    4700 uF/10 V, 2x 1 uF/100 V, 5x 47 uF/25 V, 1x 100 uF/35 V, 1x 220 uF/25 V.
-    World of Jani's teardown lists 2x 680 uF/250 V, 4x 1 uF/50 V, 2x 10 uF/
-    16 V, 2x 47 uF/16 V, 1x 220 uF/25 V, 2x 220 uF/35 V, 2x 3300 uF/10 V, 1x
-    3300 uF/16 V - substantially different, and World of Jani does not state
-    which voltage region their unit is. Amiga 2000 PSUs were built by more
-    than one vendor (e.g. Phihong/Phiphong) across the production run, so
-    this is plausibly two different PSU assemblies rather than one source
-    being wrong. Arctic Retro's list is used below because it explicitly
-    names the revisions and voltage region in scope here; World of Jani's
-    figures are not applied. Whole board kept at "derived" rather than
-    "verified" because the two sources that were actually retrieved do not
-    agree with each other on the electrolytic values.
+    This list describes the EU/230 V supply fitted to rev 4.4 and rev 6
+    machines. Amiga 2000 supplies were built by more than one vendor across
+    the production run and the electrolytic values are not settled - a
+    differently built unit can carry a substantially different set. Identify
+    and count the supply in hand before ordering.
   - >-
-    The spreadsheet's original claim of exactly 2x 100 nF 275 VAC X2 RIFA
-    capacitors is unsourced for that specific value. RIFA/mains-filter film
-    capacitors ARE confirmed present on an Amiga 2000 PSU by an independent
-    forum photo (marking "RIFA PME 271 M"), but the exact capacitance
-    couldn't be read from the damaged part. World of Jani's (differently
-    sourced) PSU teardown found two DIFFERENT X2 values (not a matching
-    pair) plus separate Y-class capacitors, which this schema has no type
-    for. The 100 nF x2 figure is retained from the spreadsheet as the best
-    available number but is not confirmed for this specific EU/230V rev
-    4.4/6 assembly - RIFA X2 capacitors are replaced unconditionally
-    regardless of their exact original rating, so the precise original value
-    is not safety-critical here.
+    RIFA X2 mains-filter film capacitors are fitted to this supply and are
+    replaced unconditionally regardless of their original rating. The exact
+    capacitance and quantity are unconfirmed. Y-class capacitors are also
+    present on some units; they are not tracked by this list.
 capacitors:
   - type: electrolytic-snap-in
     capacitance_uf: 680
     voltage_v: 200
     quantity: 2
     series: nichicon-lgn
-    note: Primary filter, 22 mm diameter / 10 mm snap-in pitch per Arctic Retro.
+    note: Primary filter; 22 mm diameter, 10 mm snap-in pitch.
   - type: electrolytic-radial
     capacitance_uf: 4700
     voltage_v: 16
@@ -97,9 +79,6 @@ capacitors:
     series: kemet-r46
     verification: unverified
     note: >-
-      RIFA X2 mains filter capacitors, replaced unconditionally regardless of
-      rating. Presence confirmed independently (forum photo of a failed part
-      marked "RIFA PME 271 M"); the 100 nF value and quantity of 2 come from
-      the spreadsheet and are NOT independently confirmed for this assembly -
-      a differently-sourced Amiga 2000 PSU teardown found two non-matching X2
-      values instead. See board note for detail.
+      RIFA X2 mains filter capacitors, replaced unconditionally regardless
+      of rating. The 100 nF value and the quantity of two are unconfirmed
+      for this assembly.

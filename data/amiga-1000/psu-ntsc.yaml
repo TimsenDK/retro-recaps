@@ -10,9 +10,13 @@ sources:
   - url: https://funwithretrocomputers.blogspot.com/2019/09/amiga-1000-psu-recap.html
     note: Sibling PAL/240V board with designators, used to cross-check the shared secondary-side values (all match except the primary bulk capacitor, which differs by mains voltage as expected).
 notes:
-  - The spreadsheet listed this PSU as 2x 1000 uF/25V, 2x 2200 uF/25V and 2x 220 uF/200V snap-in, marked "typical, not verified." None of that matches the independently sourced values below. The worldofjani teardown is treated as the better-evidenced source, per the migration brief's rule for disagreeing sources.
-  - No mains-side X2/RIFA film capacitor was found on any source checked for this PSU (worldofjani, funwithretrocomputers, jbretro.wordpress.com, an oldcrap.org schematic listing, and a LinuxJedi restoration post where a commenter's RIFA question about a different capacitor, C42, was dismissed by the author). The spreadsheet's assumption of an unconditional RIFA/X2 replacement could not be confirmed for this PSU and has been omitted rather than invented.
-  - No reference designators are published for the NTSC/110V unit. Values are cross-checked against the designated PAL/240V sibling board (see psu-pal.yaml); every secondary-side value matches exactly, only the primary bulk capacitor differs.
+  - >-
+    No mains-side X2/RIFA film capacitor position is known on this supply.
+    Inspect the unit before assuming one is present to replace.
+  - >-
+    No reference designators are known for the NTSC/110V unit. Every
+    secondary-side value matches the PAL/240V sibling board (psu-pal.yaml);
+    only the primary bulk capacitor differs.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 1
@@ -54,4 +58,7 @@ capacitors:
     voltage_v: 200
     quantity: 1
     series: nichicon-lgn
-    note: Primary-side bulk/filter capacitor, approx. 30x35mm (worldofjani measurement). NTSC/110V-specific value; do not substitute the PAL 180 uF/400V part from psu-pal.yaml.
+    note: >-
+      Primary-side bulk/filter capacitor, approx. 30 x 35 mm.
+      NTSC/110V-specific value; do not substitute the PAL 180 uF/400V part
+      from psu-pal.yaml.

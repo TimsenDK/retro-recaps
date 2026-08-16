@@ -11,17 +11,10 @@ sources:
       the same primary document the project handover cites. Lists values
       and package sizes; no 3300 uF filter capacitors appear on this board.
 notes:
+  - The A500+ drops the 3300 uF filter capacitors used on rev 3/5/6A.
   - >-
-    Only one primary source could be located: the OEM A500+ service manual,
-    quoted here via AmiBay. No independent second value list was found
-    despite searching AmiBay, console5, Sordan and AmigaStore; those vendor
-    kits bundle a 3300 uF pair as part of an all-revision superset kit for
-    A500/A500+, which is not evidence about the A500+ board specifically.
-    Marked derived rather than verified for that reason.
-  - >-
-    The A500+ drops the 3300 uF filter capacitors used on rev 3/5/6A. The
-    source gives values and package sizes but not reference designators;
-    confirm designators against the physical board before ordering.
+    Reference designators for this board are not known; confirm them against
+    the physical board before ordering.
 capacitors:
   - type: electrolytic-radial
     capacitance_uf: 1000
@@ -29,7 +22,7 @@ capacitors:
     original_voltage_v: 10
     quantity: 3
     series: panasonic-fr
-    note: Original package 10x16 mm (10 V, 1000 uF); designators not given in the source.
+    note: Original package 10x16 mm; designators are not known.
   - type: electrolytic-radial
     capacitance_uf: 47
     voltage_v: 50

@@ -20,18 +20,12 @@ sources:
       to cross-check values and voltages against the designator list above.
 notes:
   - >-
-    This is the assembly group most 1541 recap guides (including the
-    handover spreadsheet's console5.com/Lemon64 sources) describe when they
-    give a generic 1541 value list. The spreadsheet recorded only one large
-    filter position ("4700 uF 16 V, variants 10000/6800 uF"); this board
-    actually has two separate axial filter positions, C16 (4700 uF) and C17
-    (6800 uF), both present together. See commodore-1541-mainboard-1540001
-    for the same discrepancy on the earlier board.
+    This is the most common 1541 longboard assembly group. It carries two
+    separate axial filter positions at once, C16 (4700 uF)
+    and C17 (6800 uF), both present together.
   - >-
-    No reference designators were reachable in the handover's own cited
-    sources (console5.com/Lemon64 gave values only, one-per-position). The
-    designators used here come from retroleum.co.uk, an independent source
-    not cited by the handover.
+    No voltage ratings are documented per designator for this revision; the
+    voltages here follow the generic 1541 value list.
 capacitors:
   - designators:
       - C1
@@ -42,7 +36,7 @@ capacitors:
     original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    verification: verified
+    verification: derived
   - designators:
       - C2
       - C5
@@ -52,7 +46,7 @@ capacitors:
     original_voltage_v: 16
     quantity: 2
     series: panasonic-fr
-    verification: verified
+    verification: derived
   - designators:
       - C13
     type: electrolytic-radial
@@ -76,7 +70,7 @@ capacitors:
     voltage_v: 16
     quantity: 1
     series: vishay-021-asm
-    verification: verified
+    verification: derived
     note: Main PSU filter capacitor.
   - designators:
       - C17
@@ -85,5 +79,5 @@ capacitors:
     voltage_v: 25
     quantity: 1
     series: vishay-021-asm
-    verification: verified
-    note: Second PSU filter capacitor, omitted from the handover spreadsheet.
+    verification: derived
+    note: Second PSU filter capacitor.

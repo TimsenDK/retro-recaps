@@ -3,7 +3,7 @@ machine: commodore-1581
 board: psu
 revisions:
   - P/N 312551-01 (120 VAC/60 Hz variant)
-verification: verified
+verification: derived
 sources:
   - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1581/powersupply.gif
     note: >-
@@ -12,25 +12,19 @@ sources:
       (Zimmers/funet CBM archive). Retrieved and read directly for component
       values and designators.
 notes:
-  - The handover only knew that a schematic "existed" on funet/zimmers for
-    this brick and had not read it. This is that schematic. It supersedes the
-    spreadsheet's "IKKE VERIFICERET" placeholder values, which turned out to
-    disagree with it (see below).
-  - This copy of the schematic documents the 120 VAC/60 Hz (US/Japan) input
-    version. It shows no mains-side X2 film capacitor anywhere in the
-    circuit — the spreadsheet's assumed "100 nF 275VAC X2" position is not
-    present in this topology at all. Whether a 220-240 V export variant (the
-    kind actually used in Denmark) adds a line-side X2 filter cap ahead of
-    the transformer is not established by this document. Treat that as an
-    open question and inspect the actual unit before assuming an X2 cap is
-    even present to replace.
-  - This schematic is shared across the 1541-II, 1571-II and 1581 external
-    brick PSU. If the 1541-II entry (written separately) records different
-    values for the same P/N 312551-01, that is a discrepancy to resolve
-    between the two, not two genuinely different supplies.
-  - The 0.02 uF (20 nF) capacitors on the schematic (C7, C8, C10, C11) are
-    small ceramic/film bypass positions on the DC side of the rectifiers, not
-    electrolytics, and are out of scope for this list.
+  - >-
+    This list describes the 120 VAC/60 Hz (US/Japan) input version, which
+    carries no mains-side X2 film capacitor anywhere in the circuit. Whether
+    the 220-240 V export variant adds a line-side X2 filter ahead of the
+    transformer is not known. Inspect the unit before assuming an X2
+    capacitor is present to replace.
+  - >-
+    P/N 312551-01 is one design shared by the 1541-II, 1571-II and 1581
+    external bricks.
+  - >-
+    C7, C8, C10 and C11 (0.02 uF) are small ceramic/film bypass positions on
+    the DC side of the rectifiers, not electrolytics, and are out of scope
+    for this list.
 capacitors:
   - designators:
       - C1

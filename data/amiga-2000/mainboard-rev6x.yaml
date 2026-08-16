@@ -20,20 +20,12 @@ sources:
       Retro Rewind's list exactly.
 notes:
   - >-
-    The Retro Rewind blog table prints "7" as the quantity for the 22 uF
-    group but lists 7 designators (C233, C243, C317, C318, C701, C813, C814);
-    the Retrofix BOM independently confirms 7x 22 uF with the same
-    designators, so 7 is used here.
+    C416-C419 are recorded as radial. An axial footprint is reported for
+    these four positions but is not corroborated; check the footprint
+    against the physical board before ordering in bulk.
   - >-
-    A vendor (Alinea/amiga-shop.net) kit listing for this revision also
-    describes 4 of the 5x 220 uF positions as axial rather than radial.
-    Retrofix's BOM lists all 5 as a single "Electrolytic Capacitor" group with
-    no axial/radial split, and no other source corroborates an axial
-    footprint at C416-C419. Not applied here for lack of a second source;
-    flagged for anyone re-checking this board against physical photos.
-  - >-
-    Original voltage on all positions was 16 V per Retro Rewind; replacement
-    voltage upgraded to 25 V per project convention.
+    Every position was originally 16 V; replacements are upgraded to 25 V
+    per project convention.
 capacitors:
   - designators:
       - C224
@@ -92,10 +84,9 @@ capacitors:
     quantity: 5
     series: panasonic-fr
     note: >-
-      A vendor kit listing describes 4 of these 5 as axial; not corroborated
-      elsewhere, so recorded here as radial per Retrofix's BOM and Retro
-      Rewind. Verify footprint against the physical board before ordering
-      in bulk.
+      An axial footprint is reported for four of these five positions but is
+      not corroborated; they are recorded here as radial. Verify the
+      footprint against the physical board before ordering in bulk.
   - designators:
       - C214
       - C225

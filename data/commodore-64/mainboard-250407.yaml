@@ -19,25 +19,20 @@ sources:
       VIC-II shield, not present on every board.
 notes:
   - >-
-    250425 equivalence is not confirmed for every position: the service
-    manual lists C24 as 22 uF 25 V on PCB #250425-01, versus 10 uF 25 V on
-    #250407-04 and #326298-01. This file's designator list (C24 included at
-    10 uF) is only confirmed correct for 250407.
+    This list is confirmed for ASSY 250407 only. C24 differs on ASSY 250425,
+    which carries 22 uF 25 V in that position rather than 10 uF.
   - >-
-    C88: the Zimmers service manual shows no 16 V rating for C88 on any PCB
-    variant — 326298-01 has 470 uF 50 V, and 250407-04/250425-01 already
-    ship 1000 uF 25 V from the factory. No voltage upgrade is recorded for
-    this position; it already shipped at 25 V.
+    C88 shipped from the factory at 1000 uF 25 V on 250407 and on 250425,
+    and at 470 uF 50 V on 326298. No voltage upgrade applies to this
+    position.
   - >-
-    C90: the Retro Rewind recap kit ships a 470 uF 25 V part here, but the
-    Zimmers service manual lists the factory-original rating as 470 uF 50 V
-    on all three PCB variants (326298, 250407, 250425). Kept at 50 V in this
-    file to comply with the project's no-downgrade rule; the two sources
-    disagree and the higher, better-evidenced rating was kept.
+    C90 was originally 470 uF 50 V on all three PCB variants and is kept at
+    50 V here. Some recap kits ship a 25 V part for this position, which
+    would be a downgrade.
   - >-
-    C107/C108: population varies by NTSC/PAL region and production batch
-    (Lemon64 thread "Capacitor C107 Missing?"). Treat as present-if-found
-    rather than guaranteed on every board.
+    C107 and C108 are not populated on every board; population varies by
+    NTSC/PAL region and by production batch. Treat them as present-if-found
+    rather than guaranteed.
 capacitors:
   - designators:
       - C8
@@ -69,9 +64,8 @@ capacitors:
     verification: derived
     note: >-
       Low-profile position inside the VIC-II shielded area. Not populated on
-      every board (NTSC/PAL and batch dependent); value taken from Retro
-      Rewind's kit list, corroborated only for designator/purpose (not the
-      precise voltage) by an independent Lemon64 thread.
+      every board (NTSC/PAL and batch dependent), and the voltage rating is
+      unconfirmed.
   - designators:
       - C19
     type: electrolytic-axial
@@ -98,8 +92,8 @@ capacitors:
     quantity: 1
     series: vishay-021-asm
     note: >-
-      Kept at the confirmed original 50 V rating rather than the 25 V the
-      Retro Rewind kit ships, to avoid a voltage downgrade. See board notes.
+      Kept at the original 50 V rating. Some recap kits ship a 25 V part
+      here, which would be a downgrade.
   - designators:
       - C91
     type: electrolytic-radial

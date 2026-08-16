@@ -16,12 +16,12 @@ sources:
       gives C2 as 47uF 16V and C17 as 1uF 50V.
 notes:
   - >-
-    worldofjani.com omits the C1 (1uF 25V) position present in the
-    retrorewind.ca list and disagrees on voltage for two positions: C2 (16V
-    there vs. 25V here) and C17 (50V there vs. 16V here). retrorewind.ca is
-    used as the better-evidenced list here (gives a consistent 9-position
-    count with type/voltage per position); the disagreement is recorded
-    rather than silently resolved.
+    Two positions carry conflicting documented voltage ratings: C2 is given
+    as both 16 V and 25 V, and C17 as both 16 V and 50 V. This file uses 25
+    V for C2 and 16 V for C17.
+  - >-
+    C1 is absent from some capacitor lists for this board. It is included
+    here, giving a nine-position list.
 capacitors:
   - designators:
       - C1
@@ -30,7 +30,7 @@ capacitors:
     voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    note: Not listed by worldofjani.com; present only in the retrorewind.ca list.
+    note: Absent from some capacitor lists for this board.
   - designators:
       - C2
     type: electrolytic-radial
@@ -38,7 +38,7 @@ capacitors:
     voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    note: worldofjani.com gives this position as 47uF 16V, not 25V.
+    note: Also documented as 47 uF 16 V.
   - designators:
       - C3
       - C4
@@ -58,4 +58,4 @@ capacitors:
     voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: worldofjani.com gives this position as 1uF 50V, not 16V.
+    note: Also documented as 1 uF 50 V.

@@ -5,21 +5,14 @@ revisions:
   - Sony CR-44
 verification: derived
 notes:
-  - Not independently verified. Every value below is carried from the
-    spreadsheet (itself built from an earlier, unverified handover). Every
-    attempt to directly retrieve wiki.console5.com/wiki/Macintosh_SE - the
-    handover's cited source for this board - returned HTTP 403, as did the
-    console5.com store's Sony CR-44 cap kit page. Search-engine snippets
-    that summarise those blocked pages were the only corroboration obtained;
-    per this project's rule that an unopened URL is not a source, neither
-    page is listed in `sources` above, and this board is marked `derived`
-    rather than `verified`. Someone with normal (non-blocked) web access
-    should open those pages directly, or count the physical board.
-  - This PSU is shared between the Macintosh SE and SE/30 (both use the Sony
+  - The values here are unconfirmed. Count the board before ordering parts.
+  - >-
+    This PSU is shared between the Macintosh SE and SE/30 (both use the Sony
     CR-44). The SE could instead ship with an Astec AA13800 PSU, tracked
     separately in psu-astec.yaml, with a different capacitor set.
   - RIFA X2 mains film capacitors are replaced unconditionally.
-  - C7/C8/C11/C19 designators also exist on the logic and analog boards with
+  - >-
+    C7/C8/C11/C19 designators also exist on the logic and analog boards with
     different values - never carry a designator between boards on this
     machine.
 capacitors:
@@ -42,11 +35,10 @@ capacitors:
     voltage_v: 25
     original_voltage_v: 16
     series: panasonic-fr
-    note: Second 220 uF/25 V position on this board. The spreadsheet labels it
-      "C25/C28", which appears to be a designator that varies between Sony
-      CR-44 board revisions rather than two distinct parts; left without a
-      designator here rather than guessing which one applies to a given
-      board.
+    note: >-
+      Second 220 uF/25 V position on this board. It is designated C25 on
+      some Sony CR-44 revisions and C28 on others, so no designator is
+      recorded here.
   - designators: [C21]
     type: electrolytic-radial
     capacitance_uf: 47
@@ -73,10 +65,9 @@ capacitors:
     voltage_v: 25
     original_voltage_v: 16
     series: panasonic-fr
-    note: Third 470 uF/25 V position on this board. The spreadsheet labels it
-      "C25", which per the C25/C28 ambiguity above (see the 220 uF entry)
-      may not be a distinct designator from that position on some board
-      revisions; left without a designator here rather than guessing.
+    note: >-
+      Third 470 uF/25 V position on this board. Its designator varies
+      between Sony CR-44 revisions, so none is recorded here.
   - designators: [C24]
     type: electrolytic-radial
     capacitance_uf: 1200
@@ -102,5 +93,6 @@ capacitors:
     capacitance_uf: 0.1
     voltage_v: 275
     series: kemet-r46
-    note: Mains RIFA netfilter capacitors, replaced unconditionally. No
-      designators found in any source.
+    note: >-
+      Mains RIFA netfilter capacitors, replaced unconditionally. No
+      designators are known.

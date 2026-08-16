@@ -13,11 +13,9 @@ sources:
       that C69 is rev-6-only and C63 is 100 uF 6.3 V on rev 7.
 notes:
   - >-
-    Differs from rev 6 (mainboard-rev6.yaml) at two positions: C63 is
-    100 uF 6.3 V here instead of 10 uF 16 V, and C69 is not populated at
-    all on this revision. Both differences are confirmed by two independent
-    sources (Retro Rewind and a Lemon64 forum thread). All other positions
-    are identical to rev 6.
+    Differs from rev 6 (mainboard-rev6.yaml) at two positions: C63 is 100 uF
+    6.3 V here instead of 10 uF 16 V, and C69 is not populated at all on
+    this revision. All other positions are identical to rev 6.
 capacitors:
   - designators:
       - C61

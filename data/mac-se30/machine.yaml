@@ -6,16 +6,18 @@ board_order:
   - analog
   - psu
 notes:
-  - The SE/30 shipped with a Sony CR-44 PSU (tracked here) but Aztec and
-    Hitachi variants are also reported to exist with differing capacitor
-    sets. No reliable public designator/value list was found for those
-    variants during this migration; identify the PSU manufacturer fitted to
+  - >-
+    The SE/30 shipped with a Sony CR-44 PSU (tracked here); Aztec and
+    Hitachi variants are also reported to exist, with differing capacitor
+    sets that are not documented. Identify the PSU manufacturer fitted to
     the physical machine before ordering parts.
-  - The analog board list here is known incomplete - see the analog board's
+  - >-
+    The analog board list here is known incomplete - see the analog board's
     own notes.
-  - C7, C8 and C11 designators exist on the logic board, on the analog board,
-    and in the Sony PSU, with different values on each - never carry a
-    designator between boards on this machine.
+  - >-
+    C7, C8 and C11 designators exist on the logic board, on the analog
+    board, and in the Sony PSU, with different values on each - never carry
+    a designator between boards on this machine.
 batteries:
   - kind: pram
     action: replace

@@ -17,13 +17,14 @@ sources:
       (220V-240V version)" guide exists, i.e. this is the correct variant for
       Denmark, distinct from the 110 V board.
 notes:
-  - This is the 220-240 V international analog board (Apple 820-0525-A
+  - >-
+    This is the 220-240 V international analog board (Apple 820-0525-A
     family), the correct variant for Denmark. Do not merge with the separate
     110 V North American board.
-  - The independent GitHub schematic BOM also lists CF5 (220 nF/63 V), CF6
-    (100 nF/63 V) and CF7 (180 nF/63 V) small film/ceramic capacitors, which
-    are outside the electrolytic recap scope tracked here and are not listed
-    as positions below.
+  - >-
+    CF5 (220 nF/63 V), CF6 (100 nF/63 V) and CF7 (180 nF/63 V) are small
+    film/ceramic capacitors, outside the electrolytic recap scope tracked
+    here, and are not listed as positions below.
   - Recap logic board before analog board.
 capacitors:
   - designators: [CF4, CP10, CP9]
@@ -33,8 +34,7 @@ capacitors:
     quantity: 3
     series: panasonic-fr
     verification: verified
-    note: Original voltage already 25 V on these three per the independent
-      GitHub BOM; no upgrade.
+    note: Original voltage already 25 V on these three; no upgrade.
   - designators: [CV2]
     type: electrolytic-radial
     capacitance_uf: 470
@@ -102,9 +102,9 @@ capacitors:
     quantity: 1
     series: panasonic-fr
     verification: derived
-    note: Grouped with CP1 (220 uF/250 V) in the spreadsheet, but not present
-      in the independent GitHub schematic BOM for 820-0525-A. Carried from
-      the spreadsheet only; verify on the physical board.
+    note: >-
+      Not present in the 820-0525-A schematic; this position's existence is
+      unconfirmed. Verify on the physical board.
   - designators: [CP11]
     type: electrolytic-radial
     capacitance_uf: 220

@@ -15,22 +15,12 @@ sources:
       Independent physical reading of "A3000 DAUGHTER BD REV 7/01", quoting
       original manufacturer part markings per designator.
 notes:
+  - Through-hole (radial and axial), not SMD.
   - >-
-    Through-hole (radial and axial), not SMD, consistent with the mainboard
-    correction noted on machine.yaml.
-  - >-
-    The spreadsheet counted only 2 axial capacitors here (C600, C601, at
-    25 V). Both independent sources found agree on 4 axial positions
-    (C600-C603) on this board. The 4-position count is used here as the
-    better-evidenced reading; treat the spreadsheet's 2-count as superseded.
-  - >-
-    C600-C602 agree between both sources at 220 uF, originally 16 V.
-    C603 is disputed: retrorewind lists it as 220 uF/50 V (native), while
-    forum.amiga.org's board reading lists it identically to C600-C602 at
-    220 uF/16 V (native). The two sources disagree and neither is clearly
-    better evidenced, so C603 is recorded separately at a voltage high
-    enough to be a safe upward revision under either reading, without
-    asserting an original_voltage_v.
+    C600-C602 are 220 uF, originally 16 V. C603's original rating is
+    unsettled - it is documented both as 16 V and as 50 V - so it is listed
+    separately at a rating that is safe under either reading, with no
+    original_voltage_v asserted.
 capacitors:
   - designators:
       - C751
@@ -59,7 +49,6 @@ capacitors:
     series: vishay-021-asm
     verification: derived
     note: >-
-      Native voltage disputed between sources (16 V per forum.amiga.org,
-      50 V per retrorewind). 63 V is a safe upward revision under either
-      reading; original_voltage_v is omitted because the true original is
-      not settled.
+      Original voltage unsettled: documented both as 16 V and as 50 V. 63 V
+      is a safe upward revision under either reading, and original_voltage_v
+      is omitted.

@@ -8,18 +8,13 @@ board_order:
   - mainboard
 notes:
   - >-
-    Absent from the original BOM handover; researched from scratch with no
-    spreadsheet input. Only board revision ASSY 310163-01 is confirmed by an
-    opened source. console5.com's kit listing title (not opened; blocked by
-    a 403 on fetch) implies the same kit also covers ASSY 250455 and 310164,
-    but that has not been independently confirmed here — treat other
-    revisions as unverified.
+    Only board revision ASSY 310163-01 is documented here. ASSY 250455 and
+    310164 are reported to share the same capacitor set, but that is
+    unconfirmed; treat other revisions as unverified.
   - >-
-    Uses an external PSU brick; c64psu.com (opened) names the same
-    "brick of death" failure mode for the Plus/4 supply as the well-known
-    C64 brick, but does not itself state whether the Plus/4 brick is
-    potted. Treating it as non-recappable and replaced as a whole unit is
-    derived by analogy to the C64 brick (which independent C64 sources do
-    confirm is epoxy-potted around an internal 7805), not independently
-    verified for the Plus/4 unit specifically. No PSU board file is
+    Uses an external PSU brick, which has the same over-voltage "brick of
+    death" failure mode as the well-known C64 supply. It is treated as
+    replaced whole rather than recapped, by analogy with the C64 brick,
+    which is confirmed to be epoxy-potted around an internal 7805; whether
+    the Plus/4 unit is potted is not confirmed. No PSU board file is
     provided either way.
