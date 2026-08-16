@@ -123,6 +123,34 @@ def test_a_yml_board_file_is_reported_rather_than_ignored(tmp_path: Path) -> Non
     assert "mainboard-rev6a.yaml" in issues[0].message
 
 
+def test_an_uppercase_yml_board_file_is_reported_rather_than_loaded(
+    tmp_path: Path,
+) -> None:
+    machine_dir = tmp_path / "data" / "amiga-500"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "mainboard-rev6a.YML").write_text(
+        "id: amiga-500-mainboard-rev6a\n", encoding="utf-8"
+    )
+    dataset, issues = load_dataset(tmp_path)
+    assert dataset.boards == {}
+    assert [issue.code for issue in issues] == ["unexpected-extension"]
+    assert issues[0].location == "data/amiga-500/mainboard-rev6a.YML"
+
+
+def test_a_stray_non_yaml_file_is_reported_rather_than_ignored(
+    tmp_path: Path,
+) -> None:
+    machine_dir = tmp_path / "data" / "amiga-500"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "notes.txt").write_text("todo\n", encoding="utf-8")
+    dataset, issues = load_dataset(tmp_path)
+    assert dataset.boards == {}
+    assert [issue.code for issue in issues] == ["unexpected-extension"]
+    assert issues[0].location == "data/amiga-500/notes.txt"
+
+
 def test_a_machine_keeps_its_path() -> None:
     dataset, _ = load_dataset(FIXTURES / "good")
     machine = dataset.machines["amiga-500"]

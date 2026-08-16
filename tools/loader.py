@@ -84,9 +84,11 @@ def _load_machines_and_boards(
     for machine_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()):
         if machine_dir.name.startswith("_"):
             continue
-        candidates = list(machine_dir.glob("*.yaml")) + list(machine_dir.glob("*.yml"))
-        for path in sorted(candidates):
-            if path.suffix == ".yml":
+        entries = sorted(machine_dir.iterdir(), key=lambda p: p.name)
+        for path in entries:
+            if not path.is_file():
+                continue
+            if not path.name.endswith(".yaml"):
                 issues.append(
                     Issue(
                         ERROR,
