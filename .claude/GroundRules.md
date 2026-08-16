@@ -56,9 +56,15 @@ Always ask first for operations that are destructive or irreversible:
 ## Repository facts
 
 - Public repository.
-- Documentation lives in `docs/`. Raw source material lives in `docs/input/`
-  and is treated as read-only input, not as project output.
-- Stack and architecture are not yet decided; do not assume one.
+- **`docs/` is git-ignored and stays local.** Specs, plans, session logs and the
+  source material the project was seeded from all live there and are never
+  committed. Do not link to a `docs/` path from any tracked file — the link
+  would be broken for everyone but us.
+- Raw source material lives in `docs/input/` and is read-only input, not
+  project output.
+- Stack: YAML data validated by JSON Schema, Python tooling under `tools/`,
+  Jinja2 to static HTML, GitHub Pages. Data under `data/` and `reference/`.
+- Licensing is split: code MIT, data and documentation CC BY-SA 4.0.
 
 ## Amending these rules
 
