@@ -254,6 +254,12 @@ def test_a_wrong_part_is_not_also_reported_as_not_fitting() -> None:
     assert "part-does-not-fit" not in codes(dataset)
 
 
+def fit_note_warning_codes(note: str) -> set[str]:
+    document = board_document()
+    document["capacitors"][0]["note"] = note
+    return codes(make_dataset(document))
+
+
 def test_a_note_stating_a_limit_without_a_field_is_a_warning() -> None:
     document = board_document()
     document["capacitors"][0]["note"] = "Maximum height 24 mm."
@@ -283,6 +289,42 @@ def test_a_note_without_a_unit_raises_no_fit_warning() -> None:
     document = board_document()
     document["capacitors"][0]["note"] = "Maximum ripple current matters here."
     assert "unenforceable-fit-note" not in codes(make_dataset(document))
+
+
+def test_the_canonical_board_level_shield_note_now_warns() -> None:
+    """This is the exact prose from the A500 rev 6A fixture's board note.
+
+    It must warn, or a contributor who has seen the warning fire once will
+    read silence as 'no unenforced limit here', which would be wrong.
+    """
+    note = "C401 and C402 must not exceed 24 mm in height because of the shield."
+    assert "unenforceable-fit-note" in fit_note_warning_codes(note)
+
+
+def test_a_note_stating_a_limit_is_by_the_shield_warns() -> None:
+    note = "Height limited to 24 mm by the shield."
+    assert "unenforceable-fit-note" in fit_note_warning_codes(note)
+
+
+def test_a_note_saying_must_be_under_a_height_warns() -> None:
+    note = "Must be under 24 mm tall."
+    assert "unenforceable-fit-note" in fit_note_warning_codes(note)
+
+
+def test_a_note_saying_no_taller_than_warns() -> None:
+    note = "No taller than 24 mm."
+    assert "unenforceable-fit-note" in fit_note_warning_codes(note)
+
+
+def test_a_limit_phrase_without_a_measurement_raises_no_fit_warning() -> None:
+    """'maximum' alone, with no 'mm' measurement, is not an enforceable limit."""
+    note = "Commodore used the maximum voltage variant."
+    assert "unenforceable-fit-note" not in fit_note_warning_codes(note)
+
+
+def test_an_unrelated_note_about_part_provenance_raises_no_fit_warning() -> None:
+    note = "Originally a Frako; check polarity before fitting."
+    assert "unenforceable-fit-note" not in fit_note_warning_codes(note)
 
 
 def test_missing_sources_is_only_a_warning() -> None:

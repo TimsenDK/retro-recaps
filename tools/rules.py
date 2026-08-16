@@ -5,7 +5,7 @@ part and a position is defined once, in ``tools.resolve``, and imported here
 so validation and resolution can never disagree.
 """
 
-from __future__ import annotations
+import re
 
 from tools.issues import ERROR, WARNING, Issue
 from tools.model import Board, Dataset, Machine
@@ -14,21 +14,45 @@ from tools.resolve import fit_violations, same_capacitance
 X2_MINIMUM_VOLTAGE_V = 275
 """A film-X2 capacitor sits across live and neutral. 275 VAC is the floor."""
 
-FIT_NOTE_WORD = "max"
-"""Deliberately narrow: 'max' also covers 'maximum', and nothing else."""
+_FIT_NOTE_MEASUREMENT_RE = re.compile(r"\b\d+(?:\.\d+)?\s*mm\b", re.IGNORECASE)
+"""A number immediately followed by 'mm' as a whole word, e.g. '24 mm'."""
+
+FIT_NOTE_LIMIT_PHRASES = (
+    "max",
+    "maximum",
+    "no more than",
+    "not exceed",
+    "under",
+    "limited to",
+    "no taller",
+    "no higher",
+    "clearance",
+)
+"""Heuristic and deliberately incomplete: a note that states a limit in words
+none of these phrases anticipate is a false negative this list cannot close.
+Extend it as real prose turns up rather than assuming it is exhaustive."""
+
+_FIT_NOTE_LIMIT_RE = re.compile(
+    "|".join(r"\b" + re.escape(phrase) + r"\b" for phrase in FIT_NOTE_LIMIT_PHRASES),
+    re.IGNORECASE,
+)
 
 
 def _note_states_a_limit(note: str | None) -> bool:
     """Whether a note reads as a physical limit that no field enforces.
 
-    Narrow on purpose: a case-insensitive 'max' (which covers 'maximum') and
-    'mm' in the same note. The A500 rev 6A shield limit lived in prose for a
-    while; this is what stops it going back there.
+    Requires both a measurement (a number directly followed by 'mm', as a
+    whole word) and a limit phrase (see FIT_NOTE_LIMIT_PHRASES) somewhere in
+    the note, matched case-insensitively. The A500 rev 6A shield limit lived
+    in prose for a while; this is what stops it going back there without also
+    firing on 'Commodore' (which contains 'mm') or 'maxell' (which contains
+    'max').
     """
     if note is None:
         return False
-    lowered = note.lower()
-    return FIT_NOTE_WORD in lowered and "mm" in lowered
+    return bool(_FIT_NOTE_MEASUREMENT_RE.search(note)) and bool(
+        _FIT_NOTE_LIMIT_RE.search(note)
+    )
 
 
 def _board_location(board: Board) -> str:
