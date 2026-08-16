@@ -1,0 +1,89 @@
+id: commodore-1541-mainboard-1540048
+machine: commodore-1541
+board: mainboard
+revisions:
+  - "1540048-01"
+  - "1540050-01"
+  - "250442"
+  - "250446"
+verification: derived
+sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent designator/value list, labelled "Type 2 (PCB Assm:
+      1540048, 1540050, 250442/46)" on that page; no voltage ratings given
+      for this revision.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=76260
+    note: >-
+      Forum thread giving the generic 1541 capacitor value/voltage set
+      (1 uF, 47 uF, 100 uF, 220 uF radial; 4700 uF and 6800 uF axial), used
+      to cross-check values and voltages against the designator list above.
+notes:
+  - >-
+    This is the assembly group most 1541 recap guides (including the
+    handover spreadsheet's console5.com/Lemon64 sources) describe when they
+    give a generic 1541 value list. The spreadsheet recorded only one large
+    filter position ("4700 uF 16 V, variants 10000/6800 uF"); this board
+    actually has two separate axial filter positions, C16 (4700 uF) and C17
+    (6800 uF), both present together. See commodore-1541-mainboard-1540001
+    for the same discrepancy on the earlier board.
+  - >-
+    No reference designators were reachable in the handover's own cited
+    sources (console5.com/Lemon64 gave values only, one-per-position). The
+    designators used here come from retroleum.co.uk, an independent source
+    not cited by the handover.
+capacitors:
+  - designators:
+      - C1
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+    verification: verified
+  - designators:
+      - C2
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: verified
+  - designators:
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+  - designators:
+      - C46
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+  - designators:
+      - C16
+    type: electrolytic-axial
+    capacitance_uf: 4700
+    voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: verified
+    note: Main PSU filter capacitor.
+  - designators:
+      - C17
+    type: electrolytic-axial
+    capacitance_uf: 6800
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+    verification: verified
+    note: Second PSU filter capacitor, omitted from the handover spreadsheet.

@@ -1,0 +1,44 @@
+id: commodore-1541-analog-alps
+machine: commodore-1541
+board: analog
+revisions:
+  - alps
+verification: derived
+sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent list of the motor control PCB's capacitor set (3x 10 uF,
+      2x 4.7 uF, 1x 2.2 uF, 1x 1 uF, 2x 0.47 uF, all described as radial);
+      gives no voltage ratings and does not separate Alps from Newtronics
+      mechanism positions.
+notes:
+  - >-
+    Only the 3x 10 uF position could be populated with a sourced voltage
+    (25 V), taken from the handover spreadsheet, which specifically flags
+    it as "ALPS mechanism only, originally axial" and gives quantity 3. The
+    board schema requires a voltage on every capacitor entry, so the four
+    remaining values retroleum.co.uk lists for this PCB (4.7 uF, 2.2 uF,
+    1 uF, 0.47 uF) are deliberately left out rather than given an invented
+    voltage.
+  - >-
+    The spreadsheet also notes "Newtronics mechanism has 4 or 7 extra
+    capacitors, check mechanism type" — implying a second, electrically
+    different motor-control board exists for Newtronics/Mitsumi mechanisms.
+    No independently retrieved public source describing that board's
+    designators, values, or voltages was found in this pass (a
+    console5.com wiki page appears to cover it per search-engine result
+    snippets, but the page itself returned HTTP 403 to the fetch tool and
+    could not be opened directly, so it is not cited here as a source).
+    Open question: full Newtronics motor-control PCB capacitor list.
+capacitors:
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Alps-mechanism motor control PCB only. Original part was axial; a
+      radial replacement is used here per the handover source. No
+      reference designators were found in any source reachable during this
+      pass.

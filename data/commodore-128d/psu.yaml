@@ -1,0 +1,96 @@
+id: commodore-128d-psu
+machine: commodore-128d
+board: psu
+revisions:
+  - "310639-02"
+verification: derived
+sources:
+  - url: https://blog.worldofjani.com/?p=7915
+    note: >-
+      "C128D PAL PSU recap / capacitor list & fan" — measured capacitor
+      list, with designators, values, voltages and physical sizes, for the
+      plastic-case C128D's internal switching PSU, part 310639-02.
+notes:
+  - >-
+    No prior data existed for this machine at all; it was researched from
+    scratch. This board's capacitor list rests on a single independent
+    source (World of Jani); no
+    second corroborating source was found, so the board is marked derived
+    rather than verified despite the source giving precise measured values.
+    Confirm before ordering in quantity.
+  - >-
+    This is the plastic-case C128D's internal PSU, distinct from the
+    metal-case C128DCR's internal PSU (which uses different components
+    entirely and is not covered by this file).
+  - >-
+    Values above are as measured on the original board by the source; no
+    voltage upgrades are asserted here beyond what was documented.
+capacitors:
+  - designators:
+      - C23
+    type: electrolytic-snap-in
+    capacitance_uf: 100
+    voltage_v: 400
+    quantity: 1
+    series: nichicon-lgn
+  - designators:
+      - C5
+    type: electrolytic-snap-in
+    capacitance_uf: 47
+    voltage_v: 400
+    quantity: 1
+    series: nichicon-lgn
+  - designators:
+      - C16
+      - C17
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C104
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C101
+      - C102
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C103
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C201
+      - C202
+      - C203
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 10
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C204
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C18
+      - C106
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    quantity: 2
+    series: panasonic-fr

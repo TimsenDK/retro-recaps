@@ -1,0 +1,39 @@
+id: commodore-1541-ii
+name: Commodore 1541-II
+family: commodore-drive
+board_order:
+  - mainboard
+  - analog
+notes:
+  - >-
+    No spreadsheet entry existed for this machine (handover section 5:
+    "1541-II — glemt fra tidligere" — forgotten from the original BOM).
+    Researched from scratch for this migration.
+  - >-
+    Unlike the 1541 longboard and 1541C, the 1541-II moved the power supply
+    to an external, potted brick. Source: c64-wiki.com's Commodore 1541
+    article. The handover groups this brick's design with the Commodore
+    1581's for power-supply purposes; per Lemon64 forum thread
+    https://www.lemon64.com/forum/viewtopic.php?t=80428, the 1541-II and
+    1581 external bricks are the same design and share the same failure
+    mode (a marginally rated diode bridge that fails as electrolytics age).
+    Community consensus there is whole-unit replacement rather than
+    itemised recap of a sealed/potted brick, so no PSU board file is
+    provided here — matching the project convention already used for
+    similar sealed bricks (see data/commodore-vic-20/machine.yaml). If the
+    agent covering the 1581 finds a schematic or teardown of this shared
+    brick, it should be reconciled against this note.
+  - >-
+    The small internal logic board that remains inside the 1541-II drive
+    (everything that isn't in the external brick) is a much smaller
+    capacitor set than the 1541 longboard's mainboard, because the bulk PSU
+    filtering moved out to the brick. It is tracked here as "mainboard"
+    for board_order purposes even though it no longer carries PSU filter
+    capacitors.
+  - >-
+    The 1541-II is documented with more than one drive mechanism
+    (Newtronics/Mitsumi belt-drive and later Chinon direct-drive); only one
+    source for this board's own capacitor values was found, and it did not
+    distinguish mechanism variants for the digital logic board. See
+    mainboard-340503.yaml and analog-motor-control.yaml for details and open
+    questions.

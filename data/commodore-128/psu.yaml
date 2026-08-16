@@ -1,0 +1,29 @@
+id: commodore-128-psu
+machine: commodore-128
+board: psu
+revisions:
+  - external-brick
+verification: unverified
+sources:
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=58011
+    note: >-
+      Background reading only, not treated as confirmed. One user reports
+      2200 uF 40 V and 4700 uF 16 V inside their unit.
+  - url: https://hobbytronics.home.blog/2019/02/23/commodore-128-power-supply-recap/
+    note: >-
+      Background reading only. Confirms "only two capacitors in this model
+      of supply" (a Mitsumi 252449-01 board labelled 310416-05) but gives no
+      values or voltages.
+notes:
+  - >-
+    Reported values are inconsistent across sources and PSU variants. At
+    least two supply designs exist (an "Ismet"
+    2-capacitor board and a "Mitsumi" board reported elsewhere as having up
+    to 5 capacitors), and forum mentions of designators C4/C7 give
+    conflicting values (10 V/16 V/35 V/40 V depending on source) for what
+    may or may not be the same positions.
+  - >-
+    Open question: count and measure the capacitors on the specific PSU
+    variant in hand before recapping. Do not treat the 2200 uF 40 V /
+    4700 uF 16 V figures reported in one forum thread as confirmed.
+capacitors: []

@@ -1,0 +1,97 @@
+id: commodore-128-mainboard-rev6
+machine: commodore-128
+board: mainboard
+revisions:
+  - "6"
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/c128-assembly-310379
+    note: Kit list with designators for both rev 6 and rev 7, cross-checked below.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=59823
+    note: >-
+      Independent forum thread "Electrolytic caps in the 64/128" giving the
+      same per-designator values, including confirming C101 is 10 uF 35 V
+      (not part of the 16 V batch) and that C63/C69 are what differs on rev 7.
+  - url: https://hd.retrorewind.ca/commodore/c128/assy-310379
+    note: Confirms ASSY 310379 is used by C128 and C128D, not the C128DCR.
+notes:
+  - >-
+    Rev 7 of this board differs at two positions, not only C63 as commonly
+    stated: C63 becomes 100 uF 6.3 V (was 10 uF 16 V), and C69 is not
+    populated at all on rev 7. Confirmed independently via the Lemon64 forum
+    thread above in addition to Retro Rewind's own rev 6/rev 7 comparison.
+    Because of the second, undocumented difference, this is split into two
+    files (this one and mainboard-rev7.yaml) rather than one "superset" file
+    with a single note, since rev 6 is not simply a superset of rev 7's
+    positions plus one changed value.
+  - >-
+    C101 is a separate position from the 10 uF/16 V batch: it is 10 uF but
+    rated 35 V originally, confirmed independently. It is not being upgraded
+    to 25 V as the spreadsheet's blanket batch grouping might suggest, since
+    that would be a voltage downgrade from its true original rating.
+capacitors:
+  - designators:
+      - C61
+      - C62
+      - C63
+      - C69
+      - C85
+      - C88
+      - C92
+      - C111
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 8
+    series: panasonic-fr
+  - designators:
+      - C101
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C80
+    type: electrolytic-radial
+    capacitance_uf: 2.2
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C91
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C104
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C105
+    type: electrolytic-radial
+    capacitance_uf: 330
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C106
+    type: electrolytic-axial
+    capacitance_uf: 1000
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C107
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

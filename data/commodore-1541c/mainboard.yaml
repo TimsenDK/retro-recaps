@@ -1,0 +1,37 @@
+id: commodore-1541c-mainboard
+machine: commodore-1541c
+board: mainboard
+revisions:
+  - unspecified
+verification: derived
+sources:
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=67398
+    note: >-
+      Forum thread specifically about the 1541C's C22 capacitor, confirming
+      value, voltage, and approximate physical size; single-sourced, not
+      cross-checked against a second independent source.
+notes:
+  - >-
+    This is not a full capacitor list. It records the single 1541C-specific
+    position independently found during this migration pass; every other
+    position on the board is an open question. "unspecified" is used for
+    revisions because no 1541C mainboard assembly/revision number could be
+    matched to this position from a public source in this pass.
+  - >-
+    Open question: complete capacitor count, designators, and values for
+    the 1541C mainboard, and which of the multiple documented 1541C board
+    revisions (it is known to exist in more than one) this position and any
+    future positions belong to.
+capacitors:
+  - designators:
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Single-sourced from a Lemon64 forum thread specifically about this
+      position; not cross-checked against a second independent source or a
+      schematic.

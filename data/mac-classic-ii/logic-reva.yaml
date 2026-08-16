@@ -1,0 +1,38 @@
+id: mac-classic-ii-logic-reva
+machine: mac-classic-ii
+board: logic
+revisions:
+  - A
+verification: verified
+sources:
+  - url: https://wiki.retrotechcollection.com/Macintosh_Classic_II_Capacitor_Replacement_Guide
+    note: Confirms Rev A has 13 SMD positions (3x47uF, 8x10uF, 2x1uF); this is
+      the same source the handover cites.
+  - url: https://www.macdat.net/repair/cap_reference/apple/compact/classic2.php
+    note: Independent source (not cited by the handover). Confirms the same
+      13-position Rev A / 17-position Rev B split and per-value counts, and
+      states the 47 uF SMD positions must be 25 V rated if replaced with
+      tantalum.
+notes:
+  - No reference designators are published for this board by any source found;
+    both the spreadsheet and the independent sources give counts per value
+    only.
+  - Recap logic board before analog board.
+capacitors:
+  - type: tantalum
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 3
+    series: kemet-t491
+    note: 47 uF SMD positions must be 25 V rated when replaced with tantalum.
+  - type: tantalum
+    capacitance_uf: 10
+    voltage_v: 16
+    quantity: 8
+    series: kemet-t491
+  - type: tantalum
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 2
+    series: kemet-t491

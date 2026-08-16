@@ -1,0 +1,60 @@
+id: commodore-vic-20-mainboard-250403
+machine: commodore-vic-20
+board: mainboard
+revisions:
+  - ASSY 250403
+  - Rev D
+verification: verified
+sources:
+  - url: https://www.arcticretro.com/2021/05/05/vic-20-capacitors-list/
+    note: >-
+      Rev D capacitor list (same source cited by the handover): 1x 2200 uF
+      16V axial, 1x 100 uF 16V radial, 2x 10 uF 16V radial, 1x 47 uF 16V
+      radial, 1x 1 uF 16V radial.
+  - url: https://retroleum.co.uk/vic20-caps
+    note: >-
+      Independent kit-contents list for "250403/251040": 1x 1 uF radial, up
+      to 3x 10 uF radial (only 2 required for plain 250403), 1x 47 uF radial
+      (251040 variant only, not plain 250403), 1x 100 uF radial, 1x 2200 uF
+      axial.
+  - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
+    note: >-
+      Independent guide; states Commodore deleted the on-board 7805 on ASSY
+      250403 so the 4700 uF can is absent and the largest can is the 2200 uF
+      (agrees with the other two sources on that point).
+notes:
+  - >-
+    Two of three opened sources (retroleum.co.uk, retrotechcollection wiki)
+    agree the plain 250403 board does not carry a 47 uF position, and that it
+    is specific to the 251040 sub-variant. arcticretro.com's Rev D list
+    includes a 47 uF position; on majority evidence it is excluded here as
+    likely describing the 251040 sub-variant rather than plain 250403. If
+    your board is marked 251040, add 1x 47 uF 25V radial.
+  - >-
+    No designators were found for this board in any source opened here;
+    positions are value/quantity only.
+capacitors:
+  - type: electrolytic-axial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+  - type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

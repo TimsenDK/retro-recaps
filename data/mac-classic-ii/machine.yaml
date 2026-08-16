@@ -1,0 +1,16 @@
+id: mac-classic-ii
+name: Macintosh Classic II
+family: macintosh
+board_order:
+  - logic
+  - analog
+notes:
+  - The analog board data here describes the 220-240 V international variant
+    (Apple 820-0525-A family), the correct one for Denmark. A separate 110 V
+    North American analog board exists and must not be merged with this data.
+  - The logic board has two revisions with different SMD capacitor counts,
+    tracked as separate files - Rev A has 13 positions, Rev B has 17.
+batteries:
+  - kind: pram
+    action: replace
+    note: 1/2 AA PRAM battery.

@@ -1,0 +1,83 @@
+id: commodore-vic-20-mainboard-324003
+machine: commodore-vic-20
+board: mainboard
+revisions:
+  - ASSY 324003
+verification: derived
+sources:
+  - url: https://retroleum.co.uk/vic20-caps
+    note: >-
+      Independent kit-contents list for the "324003 Original Long Board";
+      gives a different designator set (C13,C16,C23,C24,C25,C31,C39,C44) for
+      the same ASSY number than the one used here — see note below.
+  - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
+    note: >-
+      Independent guide; corroborates "8 capacitors total" for this board
+      and the single large 4700 uF main +5V filter can, without giving a
+      full designator list.
+notes:
+  - >-
+    Spreadsheet-derived union entry. The handover's cited primary source for
+    this board, wiki.console5.com (and the matching console5.com store
+    listing), could not be opened here — both returned HTTP 403 to the
+    fetch tool — so the designator set below (C1,C3,C7,C9,C11,C22) is carried
+    from the spreadsheet and corroborated only by search-engine result
+    snippets of that same page, not by a directly retrieved copy. Treat the
+    designator-to-position mapping as derived, not verified.
+  - >-
+    retroleum.co.uk independently lists a "324003 Original Long Board" kit
+    with a wholly different designator set (C13, C16, C23, C24, C25, C31,
+    C39, C44) and includes a 22 uF radial position not present in the
+    spreadsheet at all. This may reflect an earlier/different PCB layout
+    sharing the same ASSY number, or an error in one of the two sources.
+    Unresolved; flagging rather than picking silently.
+  - >-
+    The two unlabeled 10 uF positions have no designator in the spreadsheet
+    or in any source opened here.
+capacitors:
+  - designators:
+      - C1
+    type: electrolytic-axial
+    capacitance_uf: 4700
+    voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: Main +5 V bulk filter capacitor, downstream of the on-board 7805.
+  - designators:
+      - C3
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+  - designators:
+      - C7
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+    note: No designators found in the spreadsheet or in any source opened here.
+  - designators:
+      - C11
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: derived

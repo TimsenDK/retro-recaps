@@ -1,0 +1,31 @@
+id: commodore-1541c
+name: Commodore 1541C
+family: commodore-drive
+board_order:
+  - mainboard
+notes:
+  - >-
+    No spreadsheet entry existed for this machine (handover section 5: "1541C —
+    glemt fra tidligere" — forgotten from the original BOM). Researched from
+    scratch for this migration; only one board position could be
+    independently confirmed.
+  - >-
+    The 1541C keeps the 1541 longboard's internal linear power supply
+    arrangement (unlike the later 1541-II, which moved to an external
+    brick); source: c64-wiki.com's Commodore 1541 article, which describes
+    both the 1541 and 1541C as having internal supplies that ran hot,
+    prompting the external-brick redesign in the 1541-II.
+  - >-
+    The 1541C's own mainboard is a distinct, cost-reduced "shortboard"
+    layout, not the 1541 longboard reused under a new case — its
+    reference-designator numbering does not match any of the 1541
+    longboard's assembly groups (its one confirmed position, C22, does not
+    appear at that designator in any of the three 1541 longboard board
+    files in this dataset). Do not carry the 1541 longboard's capacitor
+    list over to this machine; only the one position confirmed for the
+    1541C specifically is recorded here.
+  - >-
+    A full capacitor list for the 1541C mainboard could not be found in
+    this pass. This is an open question for future work: someone will need
+    to count capacitors on a physical board (or find a schematic/parts
+    list) to complete this file.

@@ -1,0 +1,69 @@
+id: commodore-1541-mainboard-250448
+machine: commodore-1541
+board: mainboard
+revisions:
+  - "250448"
+  - "251854"
+verification: derived
+sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent designator/value list, labelled "Type 3 (PCB Assm:
+      250448/251854)" on that page; no voltage ratings given for this
+      revision.
+notes:
+  - >-
+    Single-sourced: no second independent list of this specific assembly
+    group's capacitors was found. Capacitance values match the same
+    recurring family used on the earlier 1540001 and 1540048 assembly
+    groups of this machine (1 uF, 47 uF, 4700 uF, 6800 uF), so voltage
+    ratings are inferred from those better-evidenced revisions rather than
+    invented — same nominal component, different designator numbering.
+  - >-
+    This revision spreads the 47 uF value across four designators instead
+    of two, and both large filter capacitors keep separate positions (as on
+    the 1540048 group), consistent with the two-position PSU filter
+    structure documented across this machine's boards.
+capacitors:
+  - designators:
+      - C1
+      - C2
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+  - designators:
+      - C4
+      - C6
+      - C13
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 4
+    series: panasonic-fr
+    verification: derived
+    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+  - designators:
+      - C7
+    type: electrolytic-axial
+    capacitance_uf: 4700
+    voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.
+  - designators:
+      - C8
+    type: electrolytic-axial
+    capacitance_uf: 6800
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: Voltage inferred from the same value confirmed on this machine's earlier board revisions; not designator-level sourced for this revision.

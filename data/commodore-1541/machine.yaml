@@ -1,0 +1,29 @@
+id: commodore-1541
+name: Commodore 1541
+family: commodore-drive
+aliases:
+  - VIC-1541
+board_order:
+  - mainboard
+  - analog
+notes:
+  - >-
+    Longboard chassis with an internal linear power supply. The PSU filter
+    capacitors (the large axial cans) live on the same mainboard PCB as the
+    logic circuitry on this model — there is no separate PSU board file, and
+    none should be added unless a source shows otherwise.
+  - >-
+    At least three mainboard PCB assembly generations are documented with
+    different reference-designator numbering and slightly different
+    capacitor counts: 1540001-01/1540001-03 (early), 1540048-01/1540050-01/
+    250442/250446 (the common "longboard" revision most recap guides
+    describe), and 250448/251854 (late). See the three mainboard-*.yaml
+    files. The handover's spreadsheet did not distinguish between these; the
+    breakdown here comes from independent research done for this migration.
+  - >-
+    The drive mechanism (Alps vs Newtronics/Mitsumi) drives a separate motor
+    speed control PCB with its own small-value capacitors, tracked in
+    analog-alps.yaml. Only the Alps-mechanism variant's most solidly
+    evidenced position (3x 10 uF) could be populated with a sourced voltage;
+    the rest of that board's positions are an open question — see that
+    file's notes.

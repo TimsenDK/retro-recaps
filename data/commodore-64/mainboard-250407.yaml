@@ -1,0 +1,110 @@
+id: commodore-64-mainboard-250407
+machine: commodore-64
+board: mainboard
+revisions:
+  - "250407"
+verification: verified
+sources:
+  - url: https://support.retrorewind.ca/en/blog/c64-assembly-250407
+    note: Kit list with designators for ASSY 250407, cross-checked below.
+  - url: https://www.zimmers.net/cbmpics/cbm/c64/C64ServiceManual.txt
+    note: >-
+      Official Commodore service manual parts lists, broken out by PCB
+      assembly number (326298-01, 250407-04, 250425-01). Used to confirm
+      original voltage ratings and check the 250425 equivalence claim.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=73947
+    note: >-
+      Forum thread "Capacitor C107 Missing?" confirming C107/C108 are a
+      genuine but inconsistently-populated low-profile position under the
+      VIC-II shield, not present on every board.
+notes:
+  - >-
+    250425 equivalence is not confirmed for every position: the service
+    manual lists C24 as 22 uF 25 V on PCB #250425-01, versus 10 uF 25 V on
+    #250407-04 and #326298-01. This file's designator list (C24 included at
+    10 uF) is only confirmed correct for 250407.
+  - >-
+    C88: the Zimmers service manual shows no 16 V rating for C88 on any PCB
+    variant — 326298-01 has 470 uF 50 V, and 250407-04/250425-01 already
+    ship 1000 uF 25 V from the factory. No voltage upgrade is recorded for
+    this position; it already shipped at 25 V.
+  - >-
+    C90: the Retro Rewind recap kit ships a 470 uF 25 V part here, but the
+    Zimmers service manual lists the factory-original rating as 470 uF 50 V
+    on all three PCB variants (326298, 250407, 250425). Kept at 50 V in this
+    file to comply with the project's no-downgrade rule; the two sources
+    disagree and the higher, better-evidenced rating was kept.
+  - >-
+    C107/C108: population varies by NTSC/PAL region and production batch
+    (Lemon64 thread "Capacitor C107 Missing?"). Treat as present-if-found
+    rather than guaranteed on every board.
+capacitors:
+  - designators:
+      - C8
+      - C12
+      - C13
+      - C14
+      - C15
+      - C17
+      - C24
+      - C34
+      - C57
+      - C62
+      - C65
+      - C94
+      - C102
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 13
+    series: panasonic-fr
+  - designators:
+      - C107
+      - C108
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Low-profile position inside the VIC-II shielded area. Not populated on
+      every board (NTSC/PAL and batch dependent); value taken from Retro
+      Rewind's kit list, corroborated only for designator/purpose (not the
+      precise voltage) by an independent Lemon64 thread.
+  - designators:
+      - C19
+    type: electrolytic-axial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C88
+    type: electrolytic-axial
+    capacitance_uf: 1000
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Some 250407 boards use 470 uF here (326298 originally shipped 470 uF
+      50 V); 1000 uF is the later factory-standard value and is safe to use.
+  - designators:
+      - C90
+    type: electrolytic-axial
+    capacitance_uf: 470
+    voltage_v: 50
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Kept at the confirmed original 50 V rating rather than the 25 V the
+      Retro Rewind kit ships, to avoid a voltage downgrade. See board notes.
+  - designators:
+      - C91
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

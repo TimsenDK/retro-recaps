@@ -1,0 +1,56 @@
+id: commodore-1541-ii-analog-motor-control
+machine: commodore-1541-ii
+board: analog
+revisions:
+  - newtronics
+  - chinon
+verification: derived
+sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent list of the 1541-II's motor control PCB capacitor set,
+      given with full voltage ratings unlike the equivalent 1541-longboard
+      list on the same page; single source, no designators given.
+notes:
+  - >-
+    Single-sourced: no second independent source for this board's values
+    was found in this pass. The source does not state whether this
+    capacitor set is the same across the Newtronics/Mitsumi and Chinon
+    mechanism variants documented for the 1541-II, or specific to one of
+    them; both revisions are listed here provisionally. This is an open
+    question — confirm mechanism-specific values before relying on this for
+    a Chinon-mechanism drive.
+  - >-
+    No reference designators were found in any source reachable during this
+    pass.
+capacitors:
+  - type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 35
+    quantity: 3
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 2.2
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+  - type: electrolytic-radial
+    capacitance_uf: 0.47
+    voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+    verification: derived

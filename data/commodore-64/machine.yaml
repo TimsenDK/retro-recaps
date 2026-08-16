@@ -1,0 +1,22 @@
+id: commodore-64
+name: Commodore 64
+family: commodore-8bit
+aliases:
+  - C64
+board_order:
+  - mainboard
+notes:
+  - >-
+    Scope is the longboard breadbin, ASSY 250407. Independent verification
+    against the Commodore service manual (zimmers.net) found that ASSY 250425
+    is NOT confirmed identical: C24 is 22 uF 25 V on PCB #250425-01 versus
+    10 uF 25 V on #250407-04. Do not assume 250425 boards match this file
+    without checking C24 on the physical board.
+  - >-
+    The early ASSY 326298 board is out of scope for this file. It is
+    confirmed to differ at least at C88 (470 uF 50 V there versus 1000 uF
+    25 V on 250407), per the same service manual.
+  - >-
+    The external power supply brick is potted and fails by over-voltage,
+    which destroys the machine. It is replaced as a unit, not recapped, so
+    no PSU board file exists for this machine.

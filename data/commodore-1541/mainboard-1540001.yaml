@@ -1,0 +1,114 @@
+id: commodore-1541-mainboard-1540001
+machine: commodore-1541
+board: mainboard
+revisions:
+  - "1540001-01"
+  - "1540001-03"
+verification: derived
+sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent designator/value list broken out by PCB assembly number,
+      labelled "Type 1 (PCB Assm: 1540001)" on that page; no voltage ratings
+      given for this revision.
+  - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=29
+    note: >-
+      Scanned Commodore 1541 maintenance manual parts list (page F-5),
+      corroborates designators C51 and C52 and their capacitance values;
+      voltage figures were read from a noisy OCR scan (see notes below).
+  - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=28
+    note: >-
+      Scanned manual page cross-referencing VIC-1541 and 1541 reference
+      designators; corroborates C1/C4 = 1 uF and C2/C5 = 47 uF.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=76260
+    note: >-
+      Forum thread giving the generic (non-designator) 1541 capacitor value
+      set, used to cross-check values but not designators.
+notes:
+  - >-
+    The handover spreadsheet recorded the two large axial filter capacitors
+    as a single position ("4700 uF 16 V") with a note that "early boards"
+    use 10000 uF and "late boards" use 6800 uF, implying one variable
+    position. Independent sources (retroleum.co.uk, and the scanned service
+    manual's designator list) show this board actually carries two separate
+    axial positions at once — C51 (6800 uF) and C52 (10000 uF) — not one
+    position with two variants. The two-position structure is better
+    evidenced and is used here instead of the spreadsheet's model.
+  - >-
+    The manual scan is low quality: it rendered C52's value as "47,000 uF",
+    which is not a real production Commodore drive capacitor size and is
+    almost certainly a misread of "10,000 uF" (matching retroleum.co.uk's
+    independent figure for the same designator). Capacitance for C52 is
+    taken as 10000 uF; its voltage figure (16 V) is taken from the same
+    low-quality scan and could not be cross-checked elsewhere for this
+    specific board revision.
+  - >-
+    C56's original voltage rating could not be read reliably from the scan
+    (rendered as "15V", plausibly a misread of 16 V); the replacement
+    voltage below follows the community-consensus recap value from Lemon64
+    rather than the scan.
+capacitors:
+  - designators:
+      - C1
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+    verification: verified
+  - designators:
+      - C2
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+    verification: verified
+  - designators:
+      - C56
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Original voltage rating illegible on the manual scan; 25 V follows the
+      generic Lemon64 recap-value consensus rather than a designator-level
+      source for this revision.
+  - designators:
+      - C65
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Designator from retroleum.co.uk; voltage from the generic Lemon64
+      value list, not a designator-level source.
+  - designators:
+      - C51
+    type: electrolytic-axial
+    capacitance_uf: 6800
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+    verification: verified
+    note: Main PSU filter capacitor.
+  - designators:
+      - C52
+    type: electrolytic-axial
+    capacitance_uf: 10000
+    voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: >-
+      Capacitance corroborated between retroleum.co.uk and the service
+      manual scan; voltage read only from the low-quality manual scan (see
+      board notes).

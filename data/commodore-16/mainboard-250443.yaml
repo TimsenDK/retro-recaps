@@ -1,0 +1,61 @@
+id: commodore-16-mainboard-250443
+machine: commodore-16
+board: mainboard
+revisions:
+  - ASSY 250443-01
+verification: verified
+sources:
+  - url: https://hd.retrorewind.ca/commodore/c16/assy-250443-01
+    note: >-
+      Full designator/value/voltage list, 9 positions: C1 1uF 25V, C2 47uF
+      25V, C3/C4/C16/C18/C19/C31 10uF 25V (x6), C17 1uF 16V.
+  - url: http://blog.worldofjani.com/?p=6705
+    note: >-
+      Independent list; agrees on designators/values/quantities for
+      C3/C4/C16/C18/C19/C31 (10uF) but does not list a C1 position, and
+      gives C2 as 47uF 16V and C17 as 1uF 50V.
+notes:
+  - >-
+    worldofjani.com omits the C1 (1uF 25V) position present in the
+    retrorewind.ca list and disagrees on voltage for two positions: C2 (16V
+    there vs. 25V here) and C17 (50V there vs. 16V here). retrorewind.ca is
+    used as the better-evidenced list here (gives a consistent 9-position
+    count with type/voltage per position); the disagreement is recorded
+    rather than silently resolved.
+capacitors:
+  - designators:
+      - C1
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: Not listed by worldofjani.com; present only in the retrorewind.ca list.
+  - designators:
+      - C2
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: worldofjani.com gives this position as 47uF 16V, not 25V.
+  - designators:
+      - C3
+      - C4
+      - C16
+      - C18
+      - C19
+      - C31
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 6
+    series: panasonic-fr
+  - designators:
+      - C17
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: worldofjani.com gives this position as 1uF 50V, not 16V.

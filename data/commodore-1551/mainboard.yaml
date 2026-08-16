@@ -1,0 +1,75 @@
+id: commodore-1551-mainboard
+machine: commodore-1551
+board: mainboard
+revisions:
+  - Schematic 251860 rev. 4
+verification: verified
+sources:
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/251860.gif
+    note: >-
+      Official Commodore engineering schematic "SCHEMATIC DIAGRAM, 1551",
+      drawing 251860 rev. 4, drawn by R. Vida, checked by S. Katayama (Zimmers
+      / funet CBM archive). Retrieved and read directly for the internal PSU
+      section (bridge rectifiers DB1/DB2, REG1 = LM340-12, REG2 = LM340-05)
+      and its capacitor designators and values.
+notes:
+  - The handover found no public capacitor list for the 1551 and, for lack of
+    one, assumed the 1541's cap set applied. That assumption does not hold up
+    against this schematic. Only C25 (4700 uF/16 V, the +5V rail primary
+    filter) matches a value the spreadsheet guessed; the spreadsheet's other
+    guessed values (1 uF, 47 uF, 100 uF, 220 uF) do not appear anywhere on
+    this board. The values below replace the spreadsheet's assumption
+    entirely.
+  - The schematic also shows small ceramic bypass capacitors throughout the
+    logic section (C1-C14-ish range, values 0.01-0.1 uF) and three 0.1 uF
+    ceramics on the PSU rails (C24, C26, C28). These are bypass capacitors,
+    not electrolytics, and are out of scope for this recap list.
+  - Nobody has counted these positions against a physical board since this
+    schematic was transcribed for this dataset. Confirm designators and
+    values against the actual PCB before ordering, in case later board
+    revisions moved or changed values.
+capacitors:
+  - designators:
+      - C21
+    type: electrolytic-radial
+    capacitance_uf: 6800
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: +12V rail primary filter, after bridge rectifier DB2.
+  - designators:
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 8.2
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: +12V rail input filter, in parallel with C21.
+  - designators:
+      - C23
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: +12V rail output filter, after REG1 (LM340-12).
+  - designators:
+      - C25
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      +5V rail primary filter, after bridge rectifier DB1. The one position
+      that coincidentally matches the spreadsheet's assumed 1541-equivalent
+      value.
+  - designators:
+      - C27
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: +5V rail output filter, after REG2 (LM340-05).

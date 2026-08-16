@@ -1,0 +1,67 @@
+id: commodore-1581-psu
+machine: commodore-1581
+board: psu
+revisions:
+  - P/N 312551-01 (120 VAC/60 Hz variant)
+verification: verified
+sources:
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1581/powersupply.gif
+    note: >-
+      Reverse-engineered schematic "commodore 1541-II/1571-II/1581 POWER
+      SUPPLY", P/N 312551-01, drawn by William Levak from the physical unit
+      (Zimmers/funet CBM archive). Retrieved and read directly for component
+      values and designators.
+notes:
+  - The handover only knew that a schematic "existed" on funet/zimmers for
+    this brick and had not read it. This is that schematic. It supersedes the
+    spreadsheet's "IKKE VERIFICERET" placeholder values, which turned out to
+    disagree with it (see below).
+  - This copy of the schematic documents the 120 VAC/60 Hz (US/Japan) input
+    version. It shows no mains-side X2 film capacitor anywhere in the
+    circuit — the spreadsheet's assumed "100 nF 275VAC X2" position is not
+    present in this topology at all. Whether a 220-240 V export variant (the
+    kind actually used in Denmark) adds a line-side X2 filter cap ahead of
+    the transformer is not established by this document. Treat that as an
+    open question and inspect the actual unit before assuming an X2 cap is
+    even present to replace.
+  - This schematic is shared across the 1541-II, 1571-II and 1581 external
+    brick PSU. If the 1541-II entry (written separately) records different
+    values for the same P/N 312551-01, that is a discrepancy to resolve
+    between the two, not two genuinely different supplies.
+  - The 0.02 uF (20 nF) capacitors on the schematic (C7, C8, C10, C11) are
+    small ceramic/film bypass positions on the DC side of the rectifiers, not
+    electrolytics, and are out of scope for this list.
+capacitors:
+  - designators:
+      - C1
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: +12V rail primary filter, after the D3/D4 bridge, ahead of IC2 (7812).
+  - designators:
+      - C2
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: +5V rail primary filter, after the D1/D2 bridge, ahead of IC1 (3522).
+  - designators:
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    note: Input-side filter for IC2 (7812, +12V regulator).
+  - designators:
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+    note: Input-side filter for IC1 (3522 regulator, +5V branch).

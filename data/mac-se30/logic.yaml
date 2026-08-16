@@ -1,0 +1,86 @@
+id: mac-se30-logic
+machine: mac-se30
+board: logic
+revisions:
+  - all known
+verification: derived
+sources:
+  - url: https://www.oldsilicon.com/personal-computers/mac-se30/
+    note: Directly retrieved, independent of console5/recapamac (the
+      handover's cited sources). Confirms the same overall structure as the
+      spreadsheet - ten 47 uF/16 V SMD positions, one 1 uF/50 V SMD position
+      (C6), and axial 220 uF/16 V and 470 uF/16 V positions with Vishay part
+      numbers MAL213825221E3 / MAL211835471E3 - but see the caveat below,
+      since its own designator table for the 47 uF group does not agree with the
+      spreadsheet's, and one extraction even listed C2 and C11 (the axial
+      positions) a second time as 47 uF SMD entries. Treated as confirming
+      the value/count structure, not the exact designator-to-value mapping.
+notes:
+  - This board's exact per-designator mapping is not independently verified,
+    only the overall structure (count and values). The one independently
+    retrieved source (oldsilicon.com) gives a 47 uF SMD designator table that
+    disagrees with the spreadsheet's (C1, C2, C3, C4, C5, C6, C8, C9, C11,
+    C12, C13, C24 in one read of that page, versus the spreadsheet's C1, C3,
+    C4, C5, C7, C8, C9, C10, C12, C13) - and that same page elsewhere
+    describes C2 and C11 as the axial 470 uF/220 uF positions, not 47 uF SMD,
+    which is directly self-contradictory. This could be a genuine board
+    revision difference, or noise in how the source's content was extracted;
+    it could not be resolved with the tools available here. The designators
+    on the 47 uF group and the two axial positions are therefore carried
+    from the spreadsheet only and marked `derived`, not `verified`; only the
+    quantities and values (10x47uF, 1x1uF at C6, 1x220uF axial, 1x470uF
+    axial) are treated as corroborated. Console5's SMD tantalum/axial kit
+    page for this board could not be directly retrieved (HTTP 403 on every
+    attempt), so it is not listed as a source.
+  - Surface mount. This project prefers tantalum over wet electrolytic for
+    Macintosh SMD positions; the 47 uF positions must be 25 V rated when
+    tantalum.
+  - C2 and C11 on this board are axial, not SMD. Both also have same-numbered
+    positions on the analog board and in the Sony PSU with different values -
+    never carry a designator between boards.
+  - Recap logic board before analog board.
+capacitors:
+  - designators: [C1, C3, C4, C5, C7, C8, C9, C10, C12, C13]
+    type: tantalum
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 10
+    series: kemet-t491
+    verification: derived
+    note: 47 uF SMD positions must be 25 V rated when using tantalum. The
+      count (10) and value are corroborated by oldsilicon.com; the specific
+      designators are carried from the spreadsheet only - see board notes.
+  - designators: [C6]
+    type: tantalum
+    capacitance_uf: 1
+    voltage_v: 50
+    quantity: 1
+    series: kemet-t491
+    verification: verified
+    note: Designator, value and voltage all confirmed by oldsilicon.com
+      ("C6 - 1.0 uF at 50V").
+  - designators: [C11]
+    type: electrolytic-axial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: Logic board position - do not confuse with the C11 positions on the
+      analog board or in the Sony PSU, which are different components.
+      Vishay MAL213825221E3 per oldsilicon.com, but that source is
+      self-contradictory on whether C11 is this axial position or a 47 uF
+      SMD one - see board notes. Designator not independently confirmed.
+  - designators: [C2]
+    type: electrolytic-axial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    verification: derived
+    note: Vishay MAL211835471E3 per oldsilicon.com, but that source is
+      self-contradictory on whether C2 is this axial position or a 47 uF
+      SMD one - see board notes. Designator not independently confirmed.

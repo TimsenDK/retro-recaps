@@ -1,0 +1,28 @@
+id: mac-se
+name: Macintosh SE
+family: macintosh
+board_order:
+  - analog
+  - psu
+notes:
+  - The spreadsheet and the handover it was built from both claim the logic
+    board normally needs no recap at all, citing wiki.console5.com/wiki/Macintosh_SE
+    for its ten 33 uF/16 V positions (C4, C11, C13, C16, C32, C34, C37, C38,
+    C62, C86) and axial 1 uF C36. This project could not independently
+    confirm that claim - every attempt to fetch wiki.console5.com directly
+    returned HTTP 403, and no other independent source discussing SE logic
+    board reliability was found. Treat "no recap needed" as an unverified
+    claim carried from the handover, not an established fact - inspect the
+    board rather than skip it on this note's word alone. No logic board file
+    is tracked for this machine, both because there is no independently
+    confirmed capacitor list for it and because a genuinely capacitor-free
+    board would need no file.
+  - The SE shipped with either a Sony CR-44 or an Astec AA13800 power supply;
+    their capacitor sets differ and are tracked as separate PSU files. Verify
+    which manufacturer is fitted before ordering parts.
+  - The analog board list here is known incomplete - see the analog board's
+    own notes.
+batteries:
+  - kind: pram
+    action: replace
+    note: 1/2 AA PRAM battery.
