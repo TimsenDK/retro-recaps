@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retro-recaps.invalid/schema/series.schema.json",
+  "title": "Capacitor series",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "manufacturer", "name", "type"],
+    "properties": {
+      "id": { "$ref": "#/$defs/slug" },
+      "manufacturer": { "type": "string", "minLength": 1 },
+      "name": { "type": "string", "minLength": 1 },
+      "type": {
+        "enum": [
+          "electrolytic-radial",
+          "electrolytic-axial",
+          "electrolytic-smd",
+          "bipolar",
+          "tantalum",
+          "film-x2"
+        ]
+      },
+      "temperature_c": { "type": "integer", "minimum": 85 },
+      "low_esr": { "type": "boolean" },
+      "note": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+  }
+}

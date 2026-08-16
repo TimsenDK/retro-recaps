@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retro-recaps.invalid/schema/board.schema.json",
+  "title": "Board revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "machine", "board", "revisions", "verification", "capacitors"],
+  "properties": {
+    "id": { "$ref": "#/$defs/slug" },
+    "machine": { "$ref": "#/$defs/slug" },
+    "board": {
+      "enum": ["mainboard", "psu", "analog", "logic", "daughterboard"]
+    },
+    "revisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "verification": { "$ref": "#/$defs/verification" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": { "type": "string", "format": "uri", "pattern": "^https?://" },
+          "note": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "capacitors": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/capacitor" }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "verification": { "enum": ["verified", "derived", "unverified"] },
+    "capacitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "capacitance_uf", "voltage_v", "quantity"],
+      "properties": {
+        "designators": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "type": {
+          "enum": [
+            "electrolytic-radial",
+            "electrolytic-axial",
+            "electrolytic-smd",
+            "bipolar",
+            "tantalum",
+            "film-x2"
+          ]
+        },
+        "capacitance_uf": { "type": "number", "exclusiveMinimum": 0 },
+        "voltage_v": { "type": "number", "exclusiveMinimum": 0 },
+        "original_voltage_v": { "type": "number", "exclusiveMinimum": 0 },
+        "quantity": { "type": "integer", "minimum": 1 },
+        "series": { "$ref": "#/$defs/slug" },
+        "part": { "$ref": "#/$defs/slug" },
+        "verification": { "$ref": "#/$defs/verification" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
