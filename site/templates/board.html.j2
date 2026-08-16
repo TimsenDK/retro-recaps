@@ -1,0 +1,158 @@
+{% extends "base.html.j2" %}
+{% set v = board.verification %}
+{% block title %}{{ board.machine_name }} — {{ board.title }} · {{ site_name }}{% endblock %}
+{% block description %}Capacitor replacement list for the {{ board.machine_name }} {{ board.kind_label | lower }} ({{ v.label }}).{% endblock %}
+{% block content %}
+
+<p class="crumbs">
+    <a href="{{ base }}index.html">Machines</a> ›
+    <a href="{{ base }}{{ board.machine_url }}">{{ board.machine_name }}</a>
+</p>
+
+<h1>{{ board.machine_name }} — {{ board.title }}</h1>
+<p class="lede">
+    {{ board.kind_label }}{% if board.revision_label %}, {{ board.revision_label }}{% endif %}.
+    {% if board.capacitor_count %}
+    {{ board.capacitor_count }} capacitor{{ '' if board.capacitor_count == 1 else 's' }}
+    across {{ board.position_count }} position{{ '' if board.position_count == 1 else 's' }}.
+    {% endif %}
+</p>
+
+<section class="verdict tone-{{ v.tone }}" role="note">
+    <h2>{{ v.label }}</h2>
+    <p><strong>{{ v.headline }}</strong></p>
+    <p>{{ v.guidance }}</p>
+</section>
+
+{% with hazards = board.hazards %}{% include "_hazards.html.j2" %}{% endwith %}
+
+{% if board.is_empty %}
+<section class="open-question">
+    <h2>Open question — nothing to order yet</h2>
+    <p>{{ board.open_question }}</p>
+    {% if board.notes %}
+    <p><strong>What is known about this board:</strong></p>
+    <ul class="notes">
+        {% for note in board.notes %}<li>{{ note }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    <p class="no-print">
+        <a href="{{ contribute_url }}">How to contribute a count</a>
+    </p>
+</section>
+{% else %}
+
+<h2>Capacitors</h2>
+<div class="scroller">
+    <table>
+        <caption>
+            Voltage is the recommended replacement rating; where it was raised,
+            the original is shown beneath it. Tick the box as you go.
+        </caption>
+        <thead>
+            <tr>
+                <th class="tick" scope="col"><span class="printonly">Done</span></th>
+                <th scope="col">Designators</th>
+                <th scope="col">Value</th>
+                <th scope="col">Voltage</th>
+                <th scope="col">Type</th>
+                <th scope="col">Series</th>
+                <th scope="col">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in board.rows %}
+            <tr>
+                <td class="tick"><span></span></td>
+                <td class="designators">
+                    {{ row.designator_label }}
+                    {% if row.has_designators and row.quantity > 1 %}
+                    <span class="was">{{ row.quantity }} off</span>
+                    {% endif %}
+                </td>
+                <td class="value">{{ row.capacitance }}</td>
+                <td class="value">
+                    {{ row.voltage }}
+                    {% if row.original_voltage_note %}
+                    <span class="was">{{ row.original_voltage_note }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ row.type_label }}</td>
+                <td>
+                    {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
+                    {% if row.part %}
+                    <span class="was mono">{{ row.part.mpn }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if row.differs_from_board %}
+                    <span class="badge tone-{{ row.verification.tone }}">{{ row.verification.status }}</span>
+                    {% endif %}
+                    {% if row.fit_limits %}
+                    <span class="note"><strong>Fit:</strong> {{ row.fit_limits | join(', ') }}.</span>
+                    {% endif %}
+                    {% if row.note %}<span class="note">{{ row.note }}</span>{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if board.rows_without_designators %}
+<p class="lede">
+    {{ board.rows_without_designators }} of these
+    position{{ '' if board.rows_without_designators == 1 else 's' }} carries no
+    reference designator, so it cannot be located from this page alone. Find it
+    on the board by value.
+</p>
+{% endif %}
+{% endif %}
+
+{% if board.notes and not board.is_empty %}
+<h2>Notes on this board</h2>
+<ul class="notes">
+    {% for note in board.notes %}<li>{{ note }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<h2>Sources</h2>
+{% if board.sources %}
+<ul class="sources">
+    {% for source in board.sources %}
+    <li>
+        <a href="{{ source.url }}">{{ source.url }}</a>
+        {% if source.note %}<span class="note">{{ source.note }}</span>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>
+    This board cites no sources. Nothing on this page rests on something you
+    can go and read for yourself, which is why it is not marked verified.
+</p>
+{% endif %}
+
+<h2 class="no-print">The data behind this page</h2>
+<p class="datalinks no-print">
+    This board as
+    <a href="{{ base }}{{ board.yaml_url }}">YAML</a> or
+    <a href="{{ base }}{{ board.json_url }}">JSON</a>.
+    Corrections are welcome — see <a href="{{ contribute_url }}">contributing</a>.
+</p>
+{% endblock %}
+
+{% block print_footer %}
+<div class="printonly print-footer">
+    <p>
+        <strong>{{ board.machine_name }} — {{ board.title }}</strong> ·
+        Verification: {{ v.label }} · {{ v.headline }}
+    </p>
+    <p class="url">{{ site_url }}/{{ board.url }}</p>
+    <p>
+        Verify against the board in front of you before ordering or
+        installing. Printed from a dataset that changes; check the page for a
+        newer list.
+    </p>
+</div>
+{% endblock %}

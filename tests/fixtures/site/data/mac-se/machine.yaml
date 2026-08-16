@@ -1,0 +1,6 @@
+id: mac-se
+name: Macintosh SE
+family: macintosh
+board_order:
+  - logic
+  - analog

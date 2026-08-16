@@ -1,0 +1,105 @@
+{% extends "base.html.j2" %}
+{% block title %}Reference · {{ site_name }}{% endblock %}
+{% block description %}Capacitor series, recommended parts, and the conventions every list in this dataset follows.{% endblock %}
+{% block content %}
+
+<h1>Reference</h1>
+<p class="lede">
+    The conventions every list on this site follows, and the capacitor series
+    and parts they name.
+</p>
+
+<h2>Conventions</h2>
+{{ conventions_html }}
+<p>
+    Where a position's original voltage rating is recorded and the recommended
+    rating is higher, the board page shows the original beneath the recommended
+    one — <em>25 V, was 16 V</em> — so nothing is quietly rewritten.
+</p>
+
+<h2>Series</h2>
+{% if site.series %}
+<div class="scroller">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Series</th>
+                <th scope="col">Type</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for series in site.series %}
+            <tr>
+                <td><strong>{{ series.display }}</strong></td>
+                <td>{{ series.type_label }}</td>
+                <td class="value">
+                    {% if series.temperature_c %}{{ series.temperature_c }} °C{% endif %}
+                    {% if series.low_esr %}<span class="was">low ESR</span>{% endif %}
+                </td>
+                <td>{% if series.note %}<span class="note">{{ series.note }}</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No series are recorded.</p>
+{% endif %}
+
+<h2>Parts</h2>
+{% if site.parts %}
+<div class="scroller">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Part number</th>
+                <th scope="col">Series</th>
+                <th scope="col">Value</th>
+                <th scope="col">Voltage</th>
+                <th scope="col">Size</th>
+                <th scope="col">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for part in site.parts %}
+            <tr>
+                <td class="mono"><strong>{{ part.mpn }}</strong>
+                    <span class="was">{{ part.manufacturer }}</span></td>
+                <td>{{ part.series_display }}</td>
+                <td class="value">{{ part.capacitance }}</td>
+                <td class="value">{{ part.voltage }}</td>
+                <td class="value">{% if part.dimensions %}{{ part.dimensions }}{% else %}—{% endif %}</td>
+                <td>{% if part.note %}<span class="note">{{ part.note }}</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No parts are recorded.</p>
+{% endif %}
+
+<h2>Verification statuses</h2>
+<div class="scroller">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">What it means</th>
+                <th scope="col">What to do</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for view in verifications %}
+            <tr>
+                <td><span class="badge tone-{{ view.tone }}">{{ view.label }}</span></td>
+                <td>{{ view.headline }}</td>
+                <td>{{ view.guidance }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

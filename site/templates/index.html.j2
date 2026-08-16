@@ -1,0 +1,59 @@
+{% extends "base.html.j2" %}
+{% block title %}{{ site_name }} — capacitor lists for retro computers{% endblock %}
+{% block content %}
+
+<h1>Capacitor lists for retro computers</h1>
+<p class="lede">
+    {{ site.board_count }} boards across {{ site.machine_count }} machines,
+    {{ site.capacitor_count }} capacitors in total. Every list says where it
+    came from and whether anyone has actually checked it.
+</p>
+
+<p class="js-only" id="search-box">
+    <label for="search">Search machines, boards and designators</label><br>
+    <input type="search" id="search" autocomplete="off"
+           placeholder="A500, C401, 3300 µF, power supply…">
+</p>
+<ul class="cards" id="search-results" hidden></ul>
+
+<div id="everything">
+{% for family in site.families %}
+<h2 id="{{ family.id }}">{{ family.name }}</h2>
+<ul class="cards">
+    {% for machine in family.machines %}
+    <li class="card">
+        <a href="{{ base }}{{ machine.url }}">{{ machine.name }}</a>
+        <span class="meta">{{ machine.coverage.summary }}</span>
+        <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}
+</div>
+
+<h2>How to read these pages</h2>
+<p>
+    Every board page opens with a verification badge. <strong>Verified</strong>
+    means the list was read off a source cited at the foot of that page for
+    that board revision. <strong>Derived</strong> means it was worked out from
+    related boards or partial sources and nobody has confirmed it — treat it as
+    a starting point for your own count.
+    <strong>Unverified</strong> means nothing has been checked at all.
+</p>
+<p>
+    {{ site.status.total }} open questions are listed on the
+    <a href="{{ base }}status.html">open questions page</a>, generated from the
+    data rather than maintained by hand. Working on a board that appears there
+    and counting it is the single most useful thing you can contribute.
+</p>
+<p>
+    Power supply and analog boards carry mains voltage, and the compact
+    Macintoshes add a CRT. <a href="{{ base }}safety.html">Read the safety
+    page</a> before opening one.
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ base }}search-index.js"></script>
+<script src="{{ base }}search.js"></script>
+{% endblock %}

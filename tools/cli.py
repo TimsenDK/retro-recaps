@@ -34,6 +34,26 @@ def build_parser() -> argparse.ArgumentParser:
         help="Treat warnings as errors.",
     )
 
+    build = subparsers.add_parser(
+        "build-site",
+        help="Render the dataset as a static site.",
+    )
+    build.add_argument(
+        "--root",
+        type=Path,
+        default=Path.cwd(),
+        help=(
+            "Repository root holding data/, reference/ and site/ "
+            "(default: current directory)."
+        ),
+    )
+    build.add_argument(
+        "--out",
+        type=Path,
+        default=Path("build"),
+        help="Directory to write the site into (default: build).",
+    )
+
     return parser
 
 
@@ -45,6 +65,11 @@ def main(argv: list[str] | None = None) -> int:
         from tools.validate import run_validate
 
         return run_validate(root=args.root, strict=args.strict)
+
+    if args.command == "build-site":
+        from tools.site.build import run_build_site
+
+        return run_build_site(root=args.root, out=args.out)
 
     parser.error(f"unhandled command: {args.command}")
     return 2

@@ -1,0 +1,13 @@
+id: mac-se-logic
+machine: mac-se
+board: logic
+revisions:
+  - all known
+verification: derived
+capacitors:
+  - designators:
+      - C2
+    type: electrolytic-axial
+    capacitance_uf: 33
+    voltage_v: 25
+    quantity: 1

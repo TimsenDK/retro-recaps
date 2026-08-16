@@ -1,0 +1,9 @@
+id: amiga-500-psu
+machine: amiga-500
+board: psu
+revisions:
+  - all known
+verification: unverified
+notes:
+  - No capacitor list is known for this supply. Count it before ordering.
+capacitors: []

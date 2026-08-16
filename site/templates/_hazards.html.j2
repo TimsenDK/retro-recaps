@@ -1,0 +1,7 @@
+{% for hazard in hazards %}
+<aside class="hazard" role="note">
+    <h2>{{ hazard.title }}</h2>
+    <p>{{ hazard.body }}</p>
+    <p><a href="{{ base }}safety.html">Read the safety page before you start.</a></p>
+</aside>
+{% endfor %}

@@ -1,0 +1,68 @@
+{% extends "base.html.j2" %}
+{% block title %}{{ machine.name }} · {{ site_name }}{% endblock %}
+{% block description %}Capacitor replacement lists for the {{ machine.name }}, board by board.{% endblock %}
+{% block content %}
+
+<p class="crumbs"><a href="{{ base }}index.html">Machines</a></p>
+
+<h1>{{ machine.name }}</h1>
+<p class="lede">
+    {{ machine.family_name }}{% if machine.aliases %} · also known as
+    {{ machine.aliases | join(', ') }}{% endif %} ·
+    {{ machine.coverage.summary }}
+</p>
+
+<p>
+    <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>
+    {{ machine.coverage.group_headline }}
+</p>
+
+{% with hazards = machine.hazards %}{% include "_hazards.html.j2" %}{% endwith %}
+
+<h2>Boards, in the order to recap them</h2>
+{% if machine.boards %}
+<ol class="cards">
+    {% for board in machine.boards %}
+    <li class="card">
+        <a href="{{ base }}{{ board.url }}">{{ board.title }}</a>
+        <span class="meta">
+            {% if board.revision_label and board.title == board.kind_label %}
+            {{ board.revision_label }} ·
+            {% endif %}
+            {% if board.is_empty %}
+            no list established
+            {% else %}
+            {{ board.capacitor_count }} capacitor{{ '' if board.capacitor_count == 1 else 's' }}
+            {% endif %}
+        </span>
+        <span class="badge tone-{{ board.verification.tone }}">{{ board.verification.label }}</span>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No board files exist for this machine yet.</p>
+{% endif %}
+
+{% if machine.batteries %}
+<h2>Batteries</h2>
+<ul class="notes">
+    {% for battery in machine.batteries %}
+    <li>
+        <strong>{{ battery.kind | upper }} — {{ battery.action }}.</strong>
+        {% if battery.note %}{{ battery.note }}{% endif %}
+        {% if battery.action == 'remove' %}
+        A leaking barrel battery destroys traces; take it off the board before
+        anything else.
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if machine.notes %}
+<h2>Notes on this machine</h2>
+<ul class="notes">
+    {% for note in machine.notes %}<li>{{ note }}</li>{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

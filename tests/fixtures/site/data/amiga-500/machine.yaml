@@ -1,0 +1,13 @@
+id: amiga-500
+name: Commodore Amiga 500
+family: amiga
+aliases:
+  - A500
+board_order:
+  - mainboard
+  - psu
+notes:
+  - Rev 8A boards carry a NiCd battery on the trapdoor expansion.
+batteries:
+  - kind: nicd
+    action: remove

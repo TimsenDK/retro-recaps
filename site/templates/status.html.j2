@@ -1,0 +1,85 @@
+{% extends "base.html.j2" %}
+{% block title %}Open questions · {{ site_name }}{% endblock %}
+{% block description %}What is not yet established in the dataset, generated from the data itself.{% endblock %}
+{% macro group(heading, items, blurb, tone) %}
+{% if items %}
+<h2>{{ heading }} <span class="badge tone-{{ tone }}">{{ items | length }}</span></h2>
+<p>{{ blurb }}</p>
+<ul class="notes">
+    {% for item in items %}
+    <li>
+        {% if item.url %}<a href="{{ base }}{{ item.url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+        — {{ item.detail }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+{% block content %}
+
+<h1>Open questions</h1>
+<p class="lede">
+    This page is generated from the dataset every time the site is built, so it
+    cannot go stale the way a hand-written to-do list does.
+    {{ status.total }} things are open across
+    {{ status.coverage.total }} boards.
+</p>
+
+<p>
+    <strong>{{ status.coverage.summary }}.</strong>
+    If you have one of these machines on the bench, counting a board and
+    sending in what you find is worth more than any amount of further reading.
+</p>
+
+{{ group(
+    'Boards with no list at all',
+    status.empty_boards,
+    'These pages exist to record that nobody has established the capacitor
+     set. There is nothing to order from them. A count of a physical board
+     closes one of these outright.',
+    'warning'
+) }}
+
+{{ group(
+    'Unverified boards',
+    status.unverified_boards,
+    'Nothing on these boards has been checked against a source.',
+    'warning'
+) }}
+
+{{ group(
+    'Derived boards',
+    status.derived_boards,
+    'These lists were worked out from related boards, partial sources or
+     general practice. They are plausible and unconfirmed. Confirming one
+     against the board or a service manual promotes it to verified.',
+    'caution'
+) }}
+
+{{ group(
+    'Positions without reference designators',
+    status.positions_without_designators,
+    'The value is recorded but not where it sits, so the position cannot be
+     found from the page alone.',
+    'caution'
+) }}
+
+{{ group(
+    'Boards citing no sources',
+    status.boards_without_sources,
+    'Nothing on these pages rests on something a reader can go and check.',
+    'caution'
+) }}
+
+{{ group(
+    'Parts no supplier lists',
+    status.parts_without_offers,
+    'A recommended part with no supplier stock number behind it is harder to
+     actually buy.',
+    'caution'
+) }}
+
+{% if not status.total %}
+<p>Nothing is open. That is unlikely enough to be worth double-checking.</p>
+{% endif %}
+{% endblock %}

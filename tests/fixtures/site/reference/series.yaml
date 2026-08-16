@@ -1,0 +1,6 @@
+- id: panasonic-fr
+  manufacturer: Panasonic
+  name: FR
+  type: electrolytic-radial
+  temperature_c: 105
+  low_esr: true

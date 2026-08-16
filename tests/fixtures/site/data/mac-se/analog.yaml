@@ -1,0 +1,13 @@
+id: mac-se-analog
+machine: mac-se
+board: analog
+revisions:
+  - all known
+verification: derived
+capacitors:
+  - designators:
+      - C1
+    type: bipolar
+    capacitance_uf: 3.9
+    voltage_v: 50
+    quantity: 1

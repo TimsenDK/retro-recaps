@@ -1,0 +1,30 @@
+id: amiga-500-mainboard-rev6a
+machine: amiga-500
+board: mainboard
+revisions:
+  - 6A
+verification: verified
+sources:
+  - url: https://example.invalid/a500-rev6a
+    note: Full list with reference designators.
+capacitors:
+  - designators:
+      - C321
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C8
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    quantity: 2
+    verification: derived

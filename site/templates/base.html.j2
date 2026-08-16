@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ site_name }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site_tagline }}{% endblock %}">
+<style>
+{{ stylesheet }}
+</style>
+</head>
+<body>
+<header class="masthead no-print">
+    <div class="wrap">
+        <a class="brand" href="{{ base }}index.html">Retro <span>Recaps</span></a>
+        <nav>
+            <a href="{{ base }}index.html">Machines</a>
+            <a href="{{ base }}reference.html">Reference</a>
+            <a href="{{ base }}status.html">Open questions</a>
+            <a href="{{ base }}safety.html">Safety</a>
+        </nav>
+    </div>
+</header>
+<main class="wrap">
+{% block content %}{% endblock %}
+{% block print_footer %}{% endblock %}
+</main>
+<footer class="site wrap">
+    <p>
+        Capacitor lists compiled from public sources and from boards people
+        counted themselves. Verify against the board in front of you before
+        you order or install anything. Data and documentation CC BY-SA 4.0;
+        the generator is MIT.
+    </p>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

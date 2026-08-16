@@ -1,0 +1,937 @@
+"""View models for the site.
+
+Everything the site knows how to work out — grouping, ordering, counting, the
+verification roll-up, which page carries which warning — is decided here, in
+plain dataclasses. No Jinja, no HTML, no filesystem. The templates present
+what this module hands them and compute nothing of their own, which is what
+makes the site's behaviour testable without rendering a page.
+
+The dataset is the truth. Nothing in this module infers a value the data does
+not state. Where it names something the data only identifies by id — a family,
+a board kind, a capacitor type — that is a label for a known id, and an
+unknown id falls back to the id itself rather than to a guess.
+"""
+
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass, field
+from typing import Literal
+
+from tools.model import Board, Capacitor, Dataset, Machine, Part, Series, Source
+
+VERIFICATION_ORDER = ("verified", "derived", "unverified")
+"""Best to worst. Anything unrecognised sorts after all of these."""
+
+FAMILY_ORDER = (
+    "amiga",
+    "commodore-8bit",
+    "commodore-drive",
+    "macintosh",
+)
+
+FAMILY_NAMES = {
+    "amiga": "Amiga",
+    "commodore-8bit": "Commodore 8-bit",
+    "commodore-drive": "Commodore drives",
+    "macintosh": "Macintosh",
+}
+
+BOARD_KIND_NAMES = {
+    "mainboard": "Mainboard",
+    "logic": "Logic board",
+    "daughterboard": "Daughterboard",
+    "analog": "Analog board",
+    "psu": "Power supply",
+}
+
+CAPACITOR_TYPE_NAMES = {
+    "electrolytic-radial": "Electrolytic, radial",
+    "electrolytic-axial": "Electrolytic, axial",
+    "electrolytic-snap-in": "Electrolytic, snap-in",
+    "electrolytic-smd": "Electrolytic, surface mount",
+    "bipolar": "Bipolar electrolytic",
+    "tantalum": "Tantalum",
+    "film": "Film",
+    "film-x2": "Film, X2 (mains rated)",
+    "ceramic": "Ceramic",
+}
+
+CRT_FAMILIES = frozenset({"macintosh"})
+"""Families whose machines are all-in-ones with a CRT in the case.
+
+This is a safety judgement made by the site, not a field in the dataset: the
+machine files do not record whether a machine has a tube. It is kept here, as
+a named constant, so it is visible and can be corrected — rather than being
+buried in a template as an `if family == ...`.
+"""
+
+MAINS_BOARD_KINDS = frozenset({"psu", "analog"})
+
+
+# --------------------------------------------------------------------------
+# Formatting
+# --------------------------------------------------------------------------
+
+
+def format_number(value: float) -> str:
+    """A capacitance or voltage as it is written on a board, not as a float."""
+    if value == int(value):
+        return str(int(value))
+    return f"{value:g}"
+
+
+def format_capacitance(value: float) -> str:
+    return f"{format_number(value)} µF"
+
+
+def format_voltage(value: float) -> str:
+    return f"{format_number(value)} V"
+
+
+def label_for(mapping: dict[str, str], key: str) -> str:
+    return mapping.get(key, key)
+
+
+def natural_key(text: str) -> tuple:
+    """Sort 'Amiga 500' before 'Amiga 1000', which a plain sort does not."""
+    parts: list[object] = []
+    for chunk in re.split(r"(\d+)", text.lower()):
+        if not chunk:
+            continue
+        parts.append((0, int(chunk), "") if chunk.isdigit() else (1, 0, chunk))
+    return tuple(parts)
+
+
+# --------------------------------------------------------------------------
+# Verification
+# --------------------------------------------------------------------------
+
+Tone = Literal["verified", "caution", "warning", "unknown"]
+
+
+@dataclass(frozen=True)
+class VerificationView:
+    """A verification status, and what a reader should do about it.
+
+    The tone is deliberately not a shade of the same colour for every status.
+    `derived` means nobody has confirmed the list against a source for this
+    exact board revision; a reader who reads that as a slightly duller tick
+    can fit the wrong part.
+    """
+
+    status: str
+    label: str
+    tone: Tone
+    headline: str
+    guidance: str
+
+
+_VERIFICATION_VIEWS = {
+    "verified": VerificationView(
+        status="verified",
+        label="Verified",
+        tone="verified",
+        headline="Checked against a cited source for this board revision.",
+        guidance=(
+            "Every position below comes from a source listed at the foot of "
+            "this page. Still confirm polarity and physical fit against the "
+            "board in front of you before you order."
+        ),
+    ),
+    "derived": VerificationView(
+        status="derived",
+        label="Derived — not confirmed",
+        tone="caution",
+        headline="Nobody has confirmed this list against this board revision.",
+        guidance=(
+            "The values here were worked out from related boards, partial "
+            "sources or general practice. Count the positions on your own "
+            "board and read the values off the capacitors before ordering. "
+            "Treat this page as a starting point, not as an answer."
+        ),
+    ),
+    "unverified": VerificationView(
+        status="unverified",
+        label="Unverified — do not order from this",
+        tone="warning",
+        headline="No source establishes this list.",
+        guidance=(
+            "Nothing here has been checked. Count and measure the board "
+            "yourself before you buy anything, and please contribute what you "
+            "find so the next person does not have to."
+        ),
+    ),
+}
+
+
+def verification_view(status: str) -> VerificationView:
+    known = _VERIFICATION_VIEWS.get(status)
+    if known is not None:
+        return known
+    return VerificationView(
+        status=status,
+        label=status,
+        tone="unknown",
+        headline="This status is not one the site knows how to explain.",
+        guidance=(
+            "Check the board's own file for what this status means before "
+            "relying on the list."
+        ),
+    )
+
+
+@dataclass(frozen=True)
+class Coverage:
+    """How much of a machine, family or the site is actually established."""
+
+    verified: int = 0
+    derived: int = 0
+    unverified: int = 0
+    other: int = 0
+    empty: int = 0
+
+    @property
+    def total(self) -> int:
+        return self.verified + self.derived + self.unverified + self.other
+
+    @property
+    def worst(self) -> str:
+        """The status a reader should assume for the group as a whole.
+
+        One unverified board in a machine means the machine is not settled,
+        however many verified boards sit beside it.
+        """
+        if self.unverified or self.other:
+            return "unverified" if self.unverified else "unknown"
+        if self.derived:
+            return "derived"
+        if self.verified:
+            return "verified"
+        return "unknown"
+
+    @property
+    def view(self) -> VerificationView:
+        return verification_view(self.worst)
+
+    @property
+    def tone(self) -> Tone:
+        if self.empty:
+            return "warning"
+        return self.view.tone
+
+    @property
+    def group_label(self) -> str:
+        """A badge for a machine or family, not for a single board.
+
+        A machine with three verified boards and one unverified one is not
+        'unverified' — but it is not settled either, and the badge has to say
+        so without claiming the verified boards are in doubt.
+        """
+        if not self.total:
+            return "No boards yet"
+        if self.unverified or self.other:
+            return "Not established throughout"
+        if self.derived:
+            if self.derived == self.total:
+                return "All derived — none confirmed"
+            return "Partly derived"
+        return "All verified"
+
+    @property
+    def group_headline(self) -> str:
+        if not self.total:
+            return "No board files exist here yet."
+        if self.empty:
+            boards = "board" if self.empty == 1 else "boards"
+            return (
+                f"{self.empty} {boards} here have no capacitor list at all, "
+                f"and others may still be unconfirmed. Read each board's own "
+                f"badge before you order."
+            )
+        if self.unverified or self.other:
+            return (
+                "At least one board here has nothing established behind it. "
+                "Read each board's own badge before you order."
+            )
+        if self.derived:
+            if self.derived == self.total:
+                return (
+                    "Nothing here has been confirmed against the board "
+                    "revisions it describes. Count before you order."
+                )
+            return (
+                "Some boards here are confirmed and some are not. Read each "
+                "board's own badge before you order."
+            )
+        return (
+            "Every board here was read off a source cited on its own page. "
+            "Still check polarity and fit against your board."
+        )
+
+    @property
+    def summary(self) -> str:
+        """A plain count, e.g. '3 boards — 1 verified, 2 derived'."""
+        if not self.total:
+            return "No boards"
+        parts = []
+        for name, count in (
+            ("verified", self.verified),
+            ("derived", self.derived),
+            ("unverified", self.unverified),
+        ):
+            if count:
+                parts.append(f"{count} {name}")
+        if self.other:
+            parts.append(f"{self.other} other")
+        board_word = "board" if self.total == 1 else "boards"
+        return f"{self.total} {board_word} — " + ", ".join(parts)
+
+
+def coverage_for(boards: list[Board]) -> Coverage:
+    counts = {"verified": 0, "derived": 0, "unverified": 0}
+    other = 0
+    empty = 0
+    for board in boards:
+        if board.verification in counts:
+            counts[board.verification] += 1
+        else:
+            other += 1
+        if not board.capacitors:
+            empty += 1
+    return Coverage(other=other, empty=empty, **counts)
+
+
+# --------------------------------------------------------------------------
+# Hazards
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Hazard:
+    id: str
+    title: str
+    body: str
+
+
+MAINS_HAZARD = Hazard(
+    id="mains",
+    title="Mains voltage",
+    body=(
+        "This is a power supply. It carries mains voltage when plugged in, "
+        "and its filter capacitors hold a dangerous charge after the machine "
+        "is switched off and unplugged. Unplug at the wall, discharge "
+        "deliberately through a resistor, and measure before you touch "
+        "anything."
+    ),
+)
+
+CRT_ANALOG_HAZARD = Hazard(
+    id="crt-analog",
+    title="Mains and CRT voltage",
+    body=(
+        "This analog board drives a CRT and carries mains-derived voltages. "
+        "The tube's anode holds a very high voltage long after the machine is "
+        "unplugged, and the tube can implode if broken. Discharge the CRT "
+        "properly before working on this board, or have someone experienced "
+        "do it."
+    ),
+)
+
+ANALOG_HAZARD = Hazard(
+    id="analog",
+    title="Check what this board carries",
+    body=(
+        "Analog boards differ from machine to machine, and this one is not "
+        "documented as low voltage anywhere in the dataset. Unplug the "
+        "machine and measure before you assume any part of it is safe to "
+        "touch."
+    ),
+)
+
+CRT_MACHINE_HAZARD = Hazard(
+    id="crt",
+    title="This machine has a CRT",
+    body=(
+        "Even with this board out of the case, the tube holds a very high "
+        "voltage on its anode long after the machine is unplugged, and can "
+        "implode if broken. Discharge the CRT properly before reaching past "
+        "it."
+    ),
+)
+
+
+def hazards_for(board: Board, machine: Machine | None) -> tuple[Hazard, ...]:
+    """Every warning a board page must carry, strongest first."""
+    family = machine.family if machine is not None else ""
+    is_crt = family in CRT_FAMILIES
+    if board.board == "psu":
+        return (MAINS_HAZARD,) + ((CRT_MACHINE_HAZARD,) if is_crt else ())
+    if board.board == "analog":
+        return (CRT_ANALOG_HAZARD,) if is_crt else (ANALOG_HAZARD,)
+    if is_crt:
+        return (CRT_MACHINE_HAZARD,)
+    return ()
+
+
+def machine_hazards(boards: list[Board], machine: Machine) -> tuple[Hazard, ...]:
+    """The warning a machine page carries, given the boards it holds."""
+    hazards: list[Hazard] = []
+    if any(board.board in MAINS_BOARD_KINDS for board in boards):
+        hazards.append(MAINS_HAZARD)
+    if machine.family in CRT_FAMILIES:
+        hazards.append(CRT_MACHINE_HAZARD)
+    return tuple(hazards)
+
+
+# --------------------------------------------------------------------------
+# Board pages
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class SeriesView:
+    id: str
+    name: str
+    manufacturer: str
+    type_label: str
+    temperature_c: int | None
+    low_esr: bool | None
+    note: str | None
+
+    @property
+    def display(self) -> str:
+        return f"{self.manufacturer} {self.name}"
+
+
+def series_view(series: Series) -> SeriesView:
+    return SeriesView(
+        id=series.id,
+        name=series.name,
+        manufacturer=series.manufacturer,
+        type_label=label_for(CAPACITOR_TYPE_NAMES, series.type),
+        temperature_c=series.temperature_c,
+        low_esr=series.low_esr,
+        note=series.note,
+    )
+
+
+@dataclass(frozen=True)
+class PartView:
+    id: str
+    manufacturer: str
+    mpn: str
+    series_display: str
+    type_label: str
+    capacitance: str
+    voltage: str
+    dimensions: str | None
+    note: str | None
+
+
+@dataclass(frozen=True)
+class CapacitorRow:
+    """One line of a board's capacitor table."""
+
+    designators: tuple[str, ...]
+    designator_label: str
+    has_designators: bool
+    quantity: int
+    capacitance: str
+    voltage: str
+    original_voltage_note: str | None
+    type_label: str
+    series: SeriesView | None
+    series_label: str
+    part: PartView | None
+    fit_limits: tuple[str, ...]
+    note: str | None
+    verification: VerificationView
+    differs_from_board: bool
+
+
+def _fit_limits(capacitor: Capacitor) -> tuple[str, ...]:
+    limits = []
+    if capacitor.max_height_mm is not None:
+        limits.append(f"max height {format_number(capacitor.max_height_mm)} mm")
+    if capacitor.max_diameter_mm is not None:
+        limits.append(f"max diameter {format_number(capacitor.max_diameter_mm)} mm")
+    if capacitor.max_lead_spacing_mm is not None:
+        limits.append(
+            f"max lead spacing {format_number(capacitor.max_lead_spacing_mm)} mm"
+        )
+    return tuple(limits)
+
+
+def _part_view(part: Part, dataset: Dataset) -> PartView:
+    series = dataset.series.get(part.series)
+    dimensions = None
+    if part.diameter_mm is not None and part.height_mm is not None:
+        dimensions = (
+            f"{format_number(part.diameter_mm)} × "
+            f"{format_number(part.height_mm)} mm"
+        )
+    return PartView(
+        id=part.id,
+        manufacturer=part.manufacturer,
+        mpn=part.mpn,
+        series_display=(
+            f"{series.manufacturer} {series.name}" if series else part.series
+        ),
+        type_label=label_for(CAPACITOR_TYPE_NAMES, part.type),
+        capacitance=format_capacitance(part.capacitance_uf),
+        voltage=format_voltage(part.voltage_v),
+        dimensions=dimensions,
+        note=part.note,
+    )
+
+
+def capacitor_row(
+    capacitor: Capacitor, board: Board, dataset: Dataset
+) -> CapacitorRow:
+    effective = capacitor.effective_verification(board.verification)
+    series = dataset.series.get(capacitor.series) if capacitor.series else None
+    part = dataset.parts.get(capacitor.part) if capacitor.part else None
+    original = None
+    if (
+        capacitor.original_voltage_v is not None
+        and capacitor.original_voltage_v != capacitor.voltage_v
+    ):
+        original = f"was {format_voltage(capacitor.original_voltage_v)}"
+    return CapacitorRow(
+        designators=capacitor.designators,
+        designator_label=capacitor.label,
+        has_designators=bool(capacitor.designators),
+        quantity=capacitor.quantity,
+        capacitance=format_capacitance(capacitor.capacitance_uf),
+        voltage=format_voltage(capacitor.voltage_v),
+        original_voltage_note=original,
+        type_label=label_for(CAPACITOR_TYPE_NAMES, capacitor.type),
+        series=series_view(series) if series else None,
+        series_label=(
+            f"{series.manufacturer} {series.name}"
+            if series
+            else (capacitor.series or "")
+        ),
+        part=_part_view(part, dataset) if part else None,
+        fit_limits=_fit_limits(capacitor),
+        note=capacitor.note,
+        verification=verification_view(effective),
+        differs_from_board=effective != board.verification,
+    )
+
+
+def _designator_sort_key(designators: tuple[str, ...]) -> tuple:
+    """Sort C7 before C11, and a row without designators last."""
+    if not designators:
+        return (1, "", 0, "")
+    first = designators[0]
+    prefix = "".join(ch for ch in first if not ch.isdigit())
+    digits = "".join(ch for ch in first if ch.isdigit())
+    return (0, prefix, int(digits) if digits else 0, first)
+
+
+@dataclass(frozen=True)
+class BoardView:
+    id: str
+    slug: str
+    machine_id: str
+    machine_name: str
+    kind: str
+    kind_label: str
+    title: str
+    revision_label: str
+    revisions: tuple[str, ...]
+    url: str
+    machine_url: str
+    yaml_url: str
+    json_url: str
+    verification: VerificationView
+    rows: tuple[CapacitorRow, ...]
+    position_count: int
+    capacitor_count: int
+    is_empty: bool
+    open_question: str | None
+    hazards: tuple[Hazard, ...]
+    sources: tuple[Source, ...]
+    notes: tuple[str, ...]
+    rows_without_designators: int
+    mixed_verification: bool
+
+
+EMPTY_LIST_QUESTION = (
+    "No capacitor list is established for this board. That is the point of "
+    "this page: the positions have not been counted and no source settles "
+    "them, so there is nothing here to order from. Read the notes below for "
+    "what is known, count the board in front of you, and please contribute "
+    "the result."
+)
+
+
+def _board_slug(board: Board) -> str:
+    if board.path is not None:
+        return board.path.stem
+    prefix = f"{board.machine}-"
+    if board.id.startswith(prefix):
+        return board.id[len(prefix) :]
+    return board.id
+
+
+def board_view(board: Board, dataset: Dataset, *, disambiguate: bool) -> BoardView:
+    machine = dataset.machines.get(board.machine)
+    machine_name = machine.name if machine is not None else board.machine
+    kind_label = label_for(BOARD_KIND_NAMES, board.board)
+    revision_label = ", ".join(board.revisions)
+    title = kind_label
+    if disambiguate and revision_label:
+        title = f"{kind_label} — {revision_label}"
+    slug = _board_slug(board)
+    rows = tuple(
+        sorted(
+            (capacitor_row(c, board, dataset) for c in board.capacitors),
+            key=lambda row: _designator_sort_key(row.designators),
+        )
+    )
+    return BoardView(
+        id=board.id,
+        slug=slug,
+        machine_id=board.machine,
+        machine_name=machine_name,
+        kind=board.board,
+        kind_label=kind_label,
+        title=title,
+        revision_label=revision_label,
+        revisions=board.revisions,
+        url=f"{board.machine}/{slug}.html",
+        machine_url=f"{board.machine}/index.html",
+        yaml_url=f"{board.machine}/{slug}.yaml",
+        json_url=f"{board.machine}/{slug}.json",
+        verification=verification_view(board.verification),
+        rows=rows,
+        position_count=len(board.capacitors),
+        capacitor_count=board.total_capacitors,
+        is_empty=not board.capacitors,
+        open_question=EMPTY_LIST_QUESTION if not board.capacitors else None,
+        hazards=hazards_for(board, machine),
+        sources=board.sources,
+        notes=board.notes,
+        rows_without_designators=sum(1 for row in rows if not row.has_designators),
+        mixed_verification=any(row.differs_from_board for row in rows),
+    )
+
+
+# --------------------------------------------------------------------------
+# Machine and family pages
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class MachineView:
+    id: str
+    name: str
+    family: str
+    family_name: str
+    aliases: tuple[str, ...]
+    notes: tuple[str, ...]
+    batteries: tuple
+    url: str
+    boards: tuple[BoardView, ...]
+    coverage: Coverage
+    hazards: tuple[Hazard, ...]
+
+    @property
+    def capacitor_count(self) -> int:
+        return sum(board.capacitor_count for board in self.boards)
+
+
+@dataclass(frozen=True)
+class FamilyView:
+    id: str
+    name: str
+    machines: tuple[MachineView, ...]
+
+    @property
+    def coverage(self) -> Coverage:
+        return Coverage(
+            verified=sum(m.coverage.verified for m in self.machines),
+            derived=sum(m.coverage.derived for m in self.machines),
+            unverified=sum(m.coverage.unverified for m in self.machines),
+            other=sum(m.coverage.other for m in self.machines),
+            empty=sum(m.coverage.empty for m in self.machines),
+        )
+
+
+def machine_view(machine: Machine, dataset: Dataset) -> MachineView:
+    boards = dataset.boards_for(machine.id)
+    kind_counts: dict[str, int] = {}
+    for board in boards:
+        kind_counts[board.board] = kind_counts.get(board.board, 0) + 1
+    views = tuple(
+        board_view(board, dataset, disambiguate=kind_counts[board.board] > 1)
+        for board in boards
+    )
+    return MachineView(
+        id=machine.id,
+        name=machine.name,
+        family=machine.family,
+        family_name=label_for(FAMILY_NAMES, machine.family),
+        aliases=machine.aliases,
+        notes=machine.notes,
+        batteries=machine.batteries,
+        url=f"{machine.id}/index.html",
+        boards=views,
+        coverage=coverage_for(boards),
+        hazards=machine_hazards(boards, machine),
+    )
+
+
+def _family_sort_key(family_id: str) -> tuple[int, str]:
+    try:
+        return (FAMILY_ORDER.index(family_id), family_id)
+    except ValueError:
+        return (len(FAMILY_ORDER), family_id)
+
+
+def family_views(machines: list[MachineView]) -> tuple[FamilyView, ...]:
+    grouped: dict[str, list[MachineView]] = {}
+    for machine in machines:
+        grouped.setdefault(machine.family, []).append(machine)
+    families = []
+    for family_id in sorted(grouped, key=_family_sort_key):
+        members = tuple(sorted(grouped[family_id], key=lambda m: natural_key(m.name)))
+        families.append(
+            FamilyView(
+                id=family_id,
+                name=label_for(FAMILY_NAMES, family_id),
+                machines=members,
+            )
+        )
+    return tuple(families)
+
+
+# --------------------------------------------------------------------------
+# Status page
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class OpenQuestion:
+    kind: str
+    title: str
+    detail: str
+    url: str | None = None
+
+
+@dataclass(frozen=True)
+class StatusView:
+    coverage: Coverage
+    empty_boards: tuple[OpenQuestion, ...] = ()
+    unverified_boards: tuple[OpenQuestion, ...] = ()
+    derived_boards: tuple[OpenQuestion, ...] = ()
+    boards_without_sources: tuple[OpenQuestion, ...] = ()
+    positions_without_designators: tuple[OpenQuestion, ...] = ()
+    parts_without_offers: tuple[OpenQuestion, ...] = ()
+
+    @property
+    def total(self) -> int:
+        return sum(
+            len(group)
+            for group in (
+                self.empty_boards,
+                self.unverified_boards,
+                self.derived_boards,
+                self.boards_without_sources,
+                self.positions_without_designators,
+                self.parts_without_offers,
+            )
+        )
+
+
+def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusView:
+    empty: list[OpenQuestion] = []
+    unverified: list[OpenQuestion] = []
+    derived: list[OpenQuestion] = []
+    sourceless: list[OpenQuestion] = []
+    designatorless: list[OpenQuestion] = []
+
+    for machine in machines:
+        for board in machine.boards:
+            where = f"{machine.name} — {board.title}"
+            if board.is_empty:
+                empty.append(
+                    OpenQuestion(
+                        "empty",
+                        where,
+                        "No capacitor list is established for this board.",
+                        board.url,
+                    )
+                )
+            if board.verification.status == "unverified":
+                unverified.append(
+                    OpenQuestion(
+                        "unverified",
+                        where,
+                        "Nothing on this board has been checked against a "
+                        "source.",
+                        board.url,
+                    )
+                )
+            elif board.verification.status == "derived":
+                derived.append(
+                    OpenQuestion(
+                        "derived",
+                        where,
+                        "Not confirmed against this board revision.",
+                        board.url,
+                    )
+                )
+            if not board.sources:
+                sourceless.append(
+                    OpenQuestion(
+                        "no-sources",
+                        where,
+                        "The board cites no sources.",
+                        board.url,
+                    )
+                )
+            if board.rows_without_designators:
+                count = board.rows_without_designators
+                noun = "position" if count == 1 else "positions"
+                designatorless.append(
+                    OpenQuestion(
+                        "no-designators",
+                        where,
+                        f"{count} {noun} without reference designators.",
+                        board.url,
+                    )
+                )
+
+    offered = {part_id for entries in dataset.offers.values() for part_id in entries}
+    partless = tuple(
+        OpenQuestion(
+            "no-offer",
+            f"{part.manufacturer} {part.mpn}",
+            "No supplier lists a stock number for this part.",
+            None,
+        )
+        for part in sorted(dataset.parts.values(), key=lambda p: p.id)
+        if part.id not in offered
+    )
+
+    coverage = Coverage(
+        verified=sum(m.coverage.verified for m in machines),
+        derived=sum(m.coverage.derived for m in machines),
+        unverified=sum(m.coverage.unverified for m in machines),
+        other=sum(m.coverage.other for m in machines),
+        empty=sum(m.coverage.empty for m in machines),
+    )
+    return StatusView(
+        coverage=coverage,
+        empty_boards=tuple(empty),
+        unverified_boards=tuple(unverified),
+        derived_boards=tuple(derived),
+        boards_without_sources=tuple(sourceless),
+        positions_without_designators=tuple(designatorless),
+        parts_without_offers=partless,
+    )
+
+
+# --------------------------------------------------------------------------
+# Search
+# --------------------------------------------------------------------------
+
+
+def search_index(machines: tuple[MachineView, ...]) -> list[dict]:
+    """Entries for the client-side filter.
+
+    `text` is what the filter matches on; it holds designators and values so
+    someone who knows only 'C401' or '3300' can find the board.
+    """
+    entries: list[dict] = []
+    for machine in machines:
+        haystack = " ".join((machine.name, *machine.aliases, machine.family_name))
+        entries.append(
+            {
+                "type": "machine",
+                "title": machine.name,
+                "subtitle": machine.family_name,
+                "url": machine.url,
+                "status": machine.coverage.worst,
+                "text": haystack.lower(),
+            }
+        )
+        for board in machine.boards:
+            words = [machine.name, *machine.aliases, board.title, board.kind_label]
+            words.extend(board.revisions)
+            for row in board.rows:
+                words.extend(row.designators)
+                words.append(row.capacitance)
+                words.append(row.voltage)
+            entries.append(
+                {
+                    "type": "board",
+                    "title": f"{machine.name} — {board.title}",
+                    "subtitle": board.verification.label,
+                    "url": board.url,
+                    "status": board.verification.status,
+                    "text": " ".join(words).lower(),
+                }
+            )
+    return entries
+
+
+# --------------------------------------------------------------------------
+# The whole site
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class SiteContext:
+    machines: tuple[MachineView, ...]
+    families: tuple[FamilyView, ...]
+    boards: tuple[BoardView, ...]
+    status: StatusView
+    series: tuple[SeriesView, ...]
+    parts: tuple[PartView, ...]
+    coverage: Coverage
+    search: list[dict] = field(default_factory=list)
+
+    @property
+    def machine_count(self) -> int:
+        return len(self.machines)
+
+    @property
+    def board_count(self) -> int:
+        return len(self.boards)
+
+    @property
+    def capacitor_count(self) -> int:
+        return sum(board.capacitor_count for board in self.boards)
+
+
+def build_context(dataset: Dataset) -> SiteContext:
+    """Everything the templates need, worked out once."""
+    machines = tuple(
+        machine_view(machine, dataset)
+        for machine in sorted(
+            dataset.machines.values(), key=lambda m: natural_key(m.name)
+        )
+    )
+    boards = tuple(board for machine in machines for board in machine.boards)
+    status = status_view(machines, dataset)
+    return SiteContext(
+        machines=machines,
+        families=family_views(list(machines)),
+        boards=boards,
+        status=status,
+        series=tuple(
+            series_view(series)
+            for series in sorted(dataset.series.values(), key=lambda s: s.id)
+        ),
+        parts=tuple(
+            _part_view(part, dataset)
+            for part in sorted(dataset.parts.values(), key=lambda p: p.id)
+        ),
+        coverage=status.coverage,
+        search=search_index(machines),
+    )
