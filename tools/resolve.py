@@ -25,14 +25,20 @@ class SupplierLink:
     kind: str
 
 
-def _matches(part: Part, capacitor: Capacitor) -> bool:
+def same_capacitance(left: float, right: float) -> bool:
+    """Capacitance is written as a float in YAML, so compare with tolerance."""
+    return math.isclose(left, right, rel_tol=CAPACITANCE_TOLERANCE)
+
+
+def matches(part: Part, capacitor: Capacitor) -> bool:
+    """Whether this part will do for this position.
+
+    The single definition of fit. ``rules`` uses it too, so a pinned part can
+    never pass validation and then be rejected by :func:`candidate_parts`.
+    """
     if part.type != capacitor.type:
         return False
-    if not math.isclose(
-        part.capacitance_uf,
-        capacitor.capacitance_uf,
-        rel_tol=CAPACITANCE_TOLERANCE,
-    ):
+    if not same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
         return False
     return part.voltage_v >= capacitor.voltage_v
 
@@ -43,9 +49,9 @@ def candidate_parts(capacitor: Capacitor, dataset: Dataset) -> list[Part]:
         part = dataset.parts.get(capacitor.part)
         return [part] if part is not None else []
 
-    matches = [part for part in dataset.parts.values() if _matches(part, capacitor)]
+    fitting = [part for part in dataset.parts.values() if matches(part, capacitor)]
     return sorted(
-        matches,
+        fitting,
         key=lambda part: (
             0 if capacitor.series and part.series == capacitor.series else 1,
             part.voltage_v,

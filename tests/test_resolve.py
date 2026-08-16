@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 from tools.loader import load_dataset
 from tools.model import Capacitor
-from tools.resolve import candidate_parts, supplier_links
+from tools.resolve import candidate_parts, matches, supplier_links
+from tools.rules import check
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -75,6 +77,26 @@ def test_a_supplier_without_a_product_template_still_searches() -> None:
     digikey = next(link for link in links if link.supplier_id == "digikey")
     assert digikey.kind == "search"
     assert digikey.url.endswith("keywords=EEU-FR1E332")
+
+
+def test_the_rules_and_the_resolver_agree_on_fit() -> None:
+    """One definition of fit: check() and candidate_parts() cannot disagree."""
+    dataset = load()
+    board = dataset.boards["amiga-500-mainboard-rev6a"]
+    for part in dataset.parts.values():
+        for index, capacitor in enumerate(board.capacitors):
+            pinned = replace(capacitor, part=part.id)
+            candidate = replace(
+                dataset,
+                boards={board.id: replace(board, capacitors=(pinned,))},
+            )
+            rejected = any(
+                issue.code == "part-mismatch" for issue in check(candidate)
+            )
+            assert rejected != matches(part, pinned), (part.id, index)
+            unpinned = replace(pinned, part=None)
+            fits = part in candidate_parts(unpinned, dataset)
+            assert fits != rejected, (part.id, index)
 
 
 def test_mpn_is_url_quoted() -> None:

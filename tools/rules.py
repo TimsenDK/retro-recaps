@@ -1,21 +1,18 @@
 """Domain rules and referential integrity.
 
-These encode what the source material learned the hard way. The comparison
-tolerance exists because capacitance is written as a float in YAML.
+These encode what the source material learned the hard way. Fit between a
+part and a position is defined once, in ``tools.resolve``, and imported here
+so validation and resolution can never disagree.
 """
 
 from __future__ import annotations
 
-import math
-
 from tools.issues import ERROR, WARNING, Issue
-from tools.model import Board, Dataset
+from tools.model import Board, Dataset, Machine
+from tools.resolve import matches, same_capacitance
 
-CAPACITANCE_TOLERANCE = 1e-2
-
-
-def _same_capacitance(left: float, right: float) -> bool:
-    return math.isclose(left, right, rel_tol=CAPACITANCE_TOLERANCE)
+X2_MINIMUM_VOLTAGE_V = 275
+"""A film-X2 capacitor sits across live and neutral. 275 VAC is the floor."""
 
 
 def _board_location(board: Board) -> str:
@@ -24,19 +21,17 @@ def _board_location(board: Board) -> str:
     return board.id
 
 
+def _machine_location(machine: Machine) -> str:
+    if machine.path is not None:
+        return machine.path.as_posix()
+    return machine.id
+
+
 def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
     location = _board_location(board)
 
     if not board.sources:
-        verified_capacitor = next(
-            (
-                capacitor
-                for capacitor in board.capacitors
-                if capacitor.effective_verification(board.verification) == "verified"
-            ),
-            None,
-        )
         if board.verification == "verified":
             issues.append(
                 Issue(
@@ -46,16 +41,22 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     "verification is 'verified' but the board has no sources",
                 )
             )
-        elif verified_capacitor is not None:
-            index = board.capacitors.index(verified_capacitor)
-            issues.append(
-                Issue(
-                    ERROR,
-                    "verified-without-source",
-                    f"{location}:capacitors/{index}",
-                    "verification is 'verified' but the board has no sources",
+        else:
+            for index, capacitor in enumerate(board.capacitors):
+                if (
+                    capacitor.effective_verification(board.verification)
+                    != "verified"
+                ):
+                    continue
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "verified-without-source",
+                        f"{location}:capacitors/{index}",
+                        "verification is 'verified' but the board has no sources",
+                    )
                 )
-            )
+                break
 
     if not board.sources:
         issues.append(
@@ -106,6 +107,32 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
 
+    if not board.capacitors:
+        issues.append(
+            Issue(
+                WARNING,
+                "no-capacitors",
+                location,
+                "the board lists no capacitor positions",
+            )
+        )
+
+    seen: dict[str, int] = {}
+    for capacitor in board.capacitors:
+        for designator in capacitor.designators:
+            seen[designator] = seen.get(designator, 0) + 1
+    for designator, count in seen.items():
+        if count > 1:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "duplicate-designator",
+                    location,
+                    f"designator {designator!r} appears {count} times on this "
+                    f"board; each position belongs to exactly one entry",
+                )
+            )
+
     for index, capacitor in enumerate(board.capacitors):
         where = f"{location}:capacitors/{index}"
 
@@ -124,6 +151,32 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
 
+        if capacitor.original_voltage_v is None:
+            issues.append(
+                Issue(
+                    WARNING,
+                    "no-original-voltage",
+                    where,
+                    "the position records no original_voltage_v, so the "
+                    "voltage rule cannot be checked here",
+                )
+            )
+
+        if (
+            capacitor.type == "film-x2"
+            and capacitor.voltage_v < X2_MINIMUM_VOLTAGE_V
+        ):
+            issues.append(
+                Issue(
+                    ERROR,
+                    "x2-voltage-too-low",
+                    where,
+                    f"{capacitor.voltage_v} V is below the {X2_MINIMUM_VOLTAGE_V} V "
+                    f"minimum for a film-x2 part; this is a mains-rated position "
+                    f"across live and neutral",
+                )
+            )
+
         if not capacitor.designators:
             issues.append(
                 Issue(
@@ -133,16 +186,38 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     "the position has no reference designators",
                 )
             )
-
-        if capacitor.series is not None and capacitor.series not in dataset.series:
+        elif len(capacitor.designators) != capacitor.quantity:
             issues.append(
                 Issue(
                     ERROR,
-                    "unknown-series",
+                    "quantity-designator-mismatch",
                     where,
-                    f"series {capacitor.series!r} is not defined",
+                    f"quantity is {capacitor.quantity} but "
+                    f"{len(capacitor.designators)} designators are listed",
                 )
             )
+
+        if capacitor.series is not None:
+            series = dataset.series.get(capacitor.series)
+            if series is None:
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "unknown-series",
+                        where,
+                        f"series {capacitor.series!r} is not defined",
+                    )
+                )
+            elif series.type != capacitor.type:
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "series-type-mismatch",
+                        where,
+                        f"series {series.id!r} is {series.type}, the position is "
+                        f"{capacitor.type}",
+                    )
+                )
 
         if capacitor.part is None:
             continue
@@ -159,6 +234,9 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
             )
             continue
 
+        if matches(part, capacitor):
+            continue
+
         if part.type != capacitor.type:
             issues.append(
                 Issue(
@@ -169,7 +247,7 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     f"{capacitor.type}",
                 )
             )
-        if not _same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
+        if not same_capacitance(part.capacitance_uf, capacitor.capacitance_uf):
             issues.append(
                 Issue(
                     ERROR,
@@ -197,13 +275,24 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
 
     for part in dataset.parts.values():
-        if part.series not in dataset.series:
+        series = dataset.series.get(part.series)
+        if series is None:
             issues.append(
                 Issue(
                     ERROR,
                     "unknown-series",
                     f"reference/parts.yaml:{part.id}",
                     f"series {part.series!r} is not defined",
+                )
+            )
+        elif series.type != part.type:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "series-type-mismatch",
+                    f"reference/parts.yaml:{part.id}",
+                    f"series {series.id!r} is {series.type}, the part is "
+                    f"{part.type}",
                 )
             )
 
@@ -243,13 +332,25 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                 )
             )
 
-    for machine_id in dataset.machines:
+    for machine_id, machine in dataset.machines.items():
+        if machine.path is not None:
+            parent = machine.path.parent.name
+            if parent and parent != machine.id:
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "id-path-mismatch",
+                        _machine_location(machine),
+                        f"the machine sits in {parent!r} but declares id "
+                        f"{machine.id!r}",
+                    )
+                )
         if not any(board.machine == machine_id for board in dataset.boards.values()):
             issues.append(
                 Issue(
                     WARNING,
                     "machine-without-boards",
-                    f"data/{machine_id}/machine.yaml",
+                    _machine_location(machine),
                     "the machine has no board files",
                 )
             )
