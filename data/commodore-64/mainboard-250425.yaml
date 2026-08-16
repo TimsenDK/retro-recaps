@@ -1,0 +1,95 @@
+id: commodore-64-mainboard-250425
+machine: commodore-64
+board: mainboard
+revisions:
+  - "250425"
+  - "250441"
+verification: verified
+sources:
+  - url: https://www.zimmers.net/cbmpics/cbm/c64/C64ServiceManual.txt
+    note: >-
+      Official Commodore service manual parts list for PCB assembly
+      #250425-01. Also documents #250441-01 (64B-2) as circuit-identical to
+      250425 aside from a resistor-pack consolidation and a diode
+      relocation, with no capacitor changes.
+  - url: https://archive.org/stream/C64-C64C_Service_Manual_1992-03_Commodore/C64-C64C_Service_Manual_1992-03_Commodore_djvu.txt
+    note: >-
+      Second Commodore service manual printing, parts list for PCB assembly
+      #250425-01, cross-checked designator by designator against the
+      zimmers copy.
+  - url: https://support.retrorewind.ca/en/blog/c64-assembly-250425
+    note: >-
+      Kit list with designators for ASSY 250425, cross-checked against the
+      two service manual copies above.
+notes:
+  - >-
+    This assembly reduces the 250407 board's 13-position 10 uF radial group
+    to a single position, C13. Most of the equivalent positions on this
+    board are ceramic or unpopulated rather than electrolytic.
+  - >-
+    C15 is a 4.7 uF 16 V tantalum position on this assembly, not an
+    electrolytic. On 250407 the equivalent position is part of the 10 uF
+    radial group.
+  - C24 is 22 uF 25 V here, against 10 uF 25 V on 250407.
+  - >-
+    C88 and C91 carry the same values and factory ratings as on 250407 and
+    326298.
+capacitors:
+  - designators:
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C15
+    type: tantalum
+    capacitance_uf: 4.7
+    voltage_v: 16
+    quantity: 1
+    series: kemet-t491
+    verification: derived
+    note: >-
+      Value and rating come from the factory parts list; no independent
+      recap-kit listing for this position was found.
+  - designators:
+      - C24
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C19
+    type: electrolytic-axial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C88
+    type: electrolytic-axial
+    capacitance_uf: 1000
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C90
+    type: electrolytic-axial
+    capacitance_uf: 470
+    voltage_v: 50
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Kept at the original 50 V rating. Some recap kits ship a 25 V part
+      here, which would be a downgrade.
+  - designators:
+      - C91
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

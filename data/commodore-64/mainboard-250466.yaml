@@ -1,0 +1,98 @@
+id: commodore-64-mainboard-250466
+machine: commodore-64
+board: mainboard
+revisions:
+  - "250466"
+verification: verified
+sources:
+  - url: https://archive.org/stream/C64-C64C_Service_Manual_1992-03_Commodore/C64-C64C_Service_Manual_1992-03_Commodore_djvu.txt
+    note: >-
+      Commodore C64/C64C service manual, parts list for PCB assembly
+      #250466-01, identified there as version C64-B3.
+  - url: https://support.retrorewind.ca/en/blog/c64-assembly-250466
+    note: >-
+      Kit list with designators for ASSY 250466, cross-checked against the
+      service manual above.
+  - url: https://breadbox64.com/c64-hardware/commodore-64c/assy-250466/
+    note: >-
+      Independent confirmation that ASSY 250466 is the C64-B3 shortboard,
+      and of C13's alternate designator C210.
+notes:
+  - >-
+    This is the C64-B3 shortboard, built around two multiplexed DRAM chips
+    in place of the longboard's eight. It carries the reduced capacitor
+    complement introduced on 250425: a single 10 uF 25 V radial position
+    (C13, also silkscreened C210) rather than a large group.
+  - >-
+    C15 is a 4.7 uF 16 V tantalum position, as on 250425.
+  - >-
+    C90 is 470 uF 25 V on this assembly. The longboards (250407, 250425,
+    326298) all carry 470 uF 50 V in the equivalent position; this is a
+    genuine factory rating, not a downgrade.
+  - >-
+    C200 is a 2.2 uF 50 V radial position not present on the longboard
+    assemblies.
+capacitors:
+  - designators:
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    note: Also silkscreened C210.
+  - designators:
+      - C15
+    type: tantalum
+    capacitance_uf: 4.7
+    voltage_v: 16
+    quantity: 1
+    series: kemet-t491
+    verification: derived
+    note: >-
+      Value and rating come from the factory parts list; no independent
+      recap-kit listing for this position was found.
+  - designators:
+      - C24
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C19
+    type: electrolytic-axial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C88
+    type: electrolytic-axial
+    capacitance_uf: 1000
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C90
+    type: electrolytic-axial
+    capacitance_uf: 470
+    voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C91
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C200
+    type: electrolytic-radial
+    capacitance_uf: 2.2
+    voltage_v: 50
+    quantity: 1
+    series: panasonic-fr

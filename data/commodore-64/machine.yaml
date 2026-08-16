@@ -7,13 +7,19 @@ board_order:
   - mainboard
 notes:
   - >-
-    Scope is the longboard breadbin, ASSY 250407. ASSY 250425 is not
-    identical: C24 is 22 uF 25 V there, against 10 uF 25 V on 250407. Do not
-    assume a 250425 board matches this data without checking C24 on the
-    physical board.
+    The C64 shipped on several distinct mainboard assemblies across its
+    production run, and they are not interchangeable for recapping
+    purposes: 326298 and 250407 are longboards with 8 chips of RAM; 250425
+    (and the circuit-identical 250441) is a longboard with a reduced
+    decoupling scheme; 250466 and 250469 are shortboards with a different
+    power section and a smaller capacitor complement. Match the board's
+    printed assembly number to the correct file before ordering parts.
   - >-
-    The early ASSY 326298 board is out of scope. It differs at least at C88,
-    which is 470 uF 50 V there against 1000 uF 25 V on 250407.
+    250466 and 250469 are both shortboards but are not the same board:
+    250466 (C64-B3) keeps the longboard-style designators and a 470 uF 50 V
+    filter position reduced to 25 V, while 250469 (C64-E, used in the C64C)
+    uses an entirely different set of designators and a single-rail power
+    section.
   - >-
     The external power supply brick is potted and fails by over-voltage,
     which destroys the machine. It is replaced as a unit, not recapped, so
