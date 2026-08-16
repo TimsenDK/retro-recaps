@@ -6,7 +6,7 @@ import json
 from functools import cache
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 
 from tools.issues import ERROR, Issue
 
@@ -21,7 +21,9 @@ def load_schema(name: str) -> dict:
 
 @cache
 def _validator(name: str) -> Draft202012Validator:
-    return Draft202012Validator(load_schema(name))
+    # Without a format checker jsonschema treats "format" as an annotation and
+    # asserts nothing, so a citation of "http://x" would pass as a URI.
+    return Draft202012Validator(load_schema(name), format_checker=FormatChecker())
 
 
 def schema_issues(

@@ -53,6 +53,48 @@ def test_unknown_property_is_rejected() -> None:
     assert len(issues) == 1
 
 
+def test_a_placeholder_source_url_is_rejected() -> None:
+    document = {**VALID_BOARD, "sources": [{"url": "http://x"}]}
+    issues = schema_issues(document, "board", "a.yaml")
+    assert [issue.location for issue in issues] == ["a.yaml:sources/0/url"]
+
+
+def test_a_url_that_is_not_a_uri_at_all_is_rejected() -> None:
+    document = {**VALID_BOARD, "sources": [{"url": "https://a b.invalid/x"}]}
+    assert schema_issues(document, "board", "a.yaml")
+
+
+def test_a_real_source_url_is_accepted() -> None:
+    document = {
+        **VALID_BOARD,
+        "sources": [{"url": "https://support.retrorewind.ca/amiga/a500?rev=6a#c401"}],
+    }
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_an_unverified_board_may_list_no_capacitors() -> None:
+    document = {
+        **VALID_BOARD,
+        "verification": "unverified",
+        "capacitors": [],
+    }
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_a_verified_board_may_not_list_no_capacitors() -> None:
+    document = {**VALID_BOARD, "capacitors": []}
+    assert schema_issues(document, "board", "a.yaml")
+
+
+def test_a_derived_board_may_not_list_no_capacitors() -> None:
+    document = {**VALID_BOARD, "verification": "derived", "capacitors": []}
+    assert schema_issues(document, "board", "a.yaml")
+
+
+def test_an_empty_document_is_not_a_board() -> None:
+    assert schema_issues(None, "board", "a.yaml")
+
+
 def test_quantity_must_be_positive() -> None:
     document = {**VALID_BOARD}
     document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "quantity": 0}]
