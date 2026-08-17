@@ -17,22 +17,25 @@ notes:
     Reference designators for the PAL board are not known; only quantities
     and values. Check counts against the physical board.
 capacitors:
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 25
     original_voltage_v: 16
     quantity: 7
     series: panasonic-fr
     verification: derived
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 47
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
     verification: derived
-    note: Not present on all mainboard revisions.
-  - type: electrolytic-radial
+    note: Not fitted on every mainboard; check the position on the board.
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
     original_voltage_v: 16
@@ -40,7 +43,8 @@ capacitors:
     series: panasonic-fr
     verification: derived
     note: Includes the two positions that are on a separate WCS daughterboard on NTSC boards.
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 25
     original_voltage_v: 16
@@ -48,7 +52,8 @@ capacitors:
     series: panasonic-fr
     verification: derived
     note: One extra 220 uF position compared with the NTSC board.
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 470
     voltage_v: 25
     original_voltage_v: 16

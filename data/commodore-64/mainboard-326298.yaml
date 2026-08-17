@@ -18,6 +18,15 @@ sources:
     note: >-
       Kit list with designators for ASSY 326298, cross-checked against the
       two service manual copies above.
+  - url: https://wiki.console5.com/wiki/Commodore_64
+    note: >-
+      Independent designator-level list headed "ASSY 326298" giving the same
+      14-position 10 uF 25 V group including C64, plus C19 2200uF 16V, C88
+      470uF, C90 470uF and C91 100uF 16V.
+  - url: https://www.retroleum.co.uk/c64-capacitors
+    note: >-
+      Independent kit for "PCB Assy 326298 Rev A" with the same 14-position
+      10 uF group and the C88/C90 470 uF pair.
 notes:
   - >-
     This is the earliest longboard revision, identifiable by its 5-pin video
@@ -46,6 +55,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 14
     series: panasonic-fr
   - designators:
@@ -61,6 +71,7 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 470
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: vishay-021-asm
     note: >-
@@ -71,6 +82,7 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 470
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: vishay-021-asm
     note: >-

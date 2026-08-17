@@ -38,7 +38,9 @@ class Capacitor:
     voltage_v: float
     quantity: int
     designators: tuple[str, ...] = ()
+    designators_unknown: bool = False
     original_voltage_v: float | None = None
+    original_voltage_unknown: bool = False
     max_height_mm: float | None = None
     max_diameter_mm: float | None = None
     max_lead_spacing_mm: float | None = None
@@ -55,7 +57,11 @@ class Capacitor:
             voltage_v=document["voltage_v"],
             quantity=document["quantity"],
             designators=tuple(document.get("designators", ())),
+            designators_unknown=bool(document.get("designators_unknown", False)),
             original_voltage_v=document.get("original_voltage_v"),
+            original_voltage_unknown=bool(
+                document.get("original_voltage_unknown", False)
+            ),
             max_height_mm=document.get("max_height_mm"),
             max_diameter_mm=document.get("max_diameter_mm"),
             max_lead_spacing_mm=document.get("max_lead_spacing_mm"),
@@ -84,6 +90,8 @@ class Board:
     revisions: tuple[str, ...]
     verification: str
     capacitors: tuple[Capacitor, ...]
+    mains: bool | None = None
+    x2_filter: str | None = None
     sources: tuple[Source, ...] = ()
     notes: tuple[str, ...] = ()
     path: Path | None = field(default=None, compare=False)
@@ -96,6 +104,8 @@ class Board:
             board=document["board"],
             revisions=tuple(document["revisions"]),
             verification=document["verification"],
+            mains=document.get("mains"),
+            x2_filter=document.get("x2_filter"),
             capacitors=tuple(
                 Capacitor.from_dict(item) for item in document["capacitors"]
             ),
@@ -109,6 +119,20 @@ class Board:
     @property
     def total_capacitors(self) -> int:
         return sum(capacitor.quantity for capacitor in self.capacitors)
+
+    @property
+    def carries_mains(self) -> bool:
+        """Whether this PCB must warn about mains voltage.
+
+        An explicit declaration always wins. Board kind is only a fallback,
+        and a poor one: the 1541 longboard mainboard carries the machine's
+        linear supply, while the 1541-II analog board is low-voltage motor
+        control. Falling back on ``psu`` alone keeps an undeclared supply
+        warning rather than falling silent.
+        """
+        if self.mains is not None:
+            return self.mains
+        return self.board == "psu"
 
 
 @dataclass(frozen=True)
@@ -145,6 +169,8 @@ class Series:
     name: str
     type: str
     temperature_c: int | None = None
+    voltage_min_v: float | None = None
+    voltage_max_v: float | None = None
     low_esr: bool | None = None
     note: str | None = None
 
@@ -156,9 +182,37 @@ class Series:
             name=document["name"],
             type=document["type"],
             temperature_c=document.get("temperature_c"),
+            voltage_min_v=document.get("voltage_min_v"),
+            voltage_max_v=document.get("voltage_max_v"),
             low_esr=document.get("low_esr"),
             note=document.get("note"),
         )
+
+    def covers(self, voltage_v: float) -> bool:
+        """Whether the series is made in a part of this working voltage.
+
+        A series with no range recorded covers everything, because silence
+        here means nobody has read the datasheet — not that the range is
+        unbounded.
+        """
+        if self.voltage_min_v is not None and voltage_v < self.voltage_min_v:
+            return False
+        if self.voltage_max_v is not None and voltage_v > self.voltage_max_v:
+            return False
+        return True
+
+    @property
+    def voltage_range(self) -> str | None:
+        """'6.3-100 V', or None where no range is recorded.
+
+        A plain hyphen, not an en dash: this string goes into validator
+        messages, which land in terminals that are not all UTF-8.
+        """
+        if self.voltage_min_v is None and self.voltage_max_v is None:
+            return None
+        low = "?" if self.voltage_min_v is None else f"{self.voltage_min_v:g}"
+        high = "?" if self.voltage_max_v is None else f"{self.voltage_max_v:g}"
+        return f"{low}-{high} V"
 
 
 @dataclass(frozen=True)

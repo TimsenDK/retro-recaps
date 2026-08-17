@@ -1,25 +1,28 @@
 id: commodore-1541-ii
 name: Commodore 1541-II
 family: commodore-drive
+aliases:
+  - 1541 II
+  - 1541-2
 board_order:
   - mainboard
   - analog
+  - psu
 notes:
   - >-
-    The 1541-II moved the power supply to an external brick, unlike the 1541
-    longboard and the 1541C. The brick shares its design with the Commodore
-    1581's and has the same failure mode, a marginally rated diode bridge
-    that fails as the electrolytics age. It is replaced as a whole unit
-    rather than recapped, so no PSU board file is provided here; the shared
-    design is documented under commodore-1581.
+    The 1541-II takes its power from an external brick, P/N 312551-01, which
+    is one design shared with the 1571-II and the 1581. Nothing inside the
+    drive carries mains voltage. The brick is covered by psu.yaml here and by
+    the identical file under commodore-1581.
   - >-
-    The small internal logic board that remains inside the drive carries a
-    much smaller capacitor set than the 1541 longboard's mainboard, because
-    the bulk PSU filtering moved out to the brick. It is tracked here as
-    "mainboard" for board_order purposes even though it no longer carries
-    PSU filter capacitors.
+    The internal logic board carries only three electrolytics, because the
+    bulk supply filtering that a 1541 long board holds moved out to the brick.
+    It is tracked as "mainboard" for board_order purposes.
   - >-
-    The 1541-II shipped with more than one drive mechanism,
-    Newtronics/Mitsumi belt-drive and later Chinon direct-drive. Whether the
-    capacitor sets differ between them is not known; see
-    mainboard-340503.yaml and analog-motor-control.yaml.
+    More than one drive mechanism shipped: the belt-driven Newtronics/Mitsumi
+    D500, and the direct-drive Chinon FZ-501M and DS-50F. To tell them apart,
+    look at the spindle: a Newtronics D500 has a drive belt from the motor to
+    the spindle pulley and a speed-adjustment trimmer on its motor control
+    PCB, while a Chinon or DS-50F drives the spindle directly, has no belt and
+    has no speed adjustment. Only the Newtronics mechanism has published
+    motor-control capacitor lists.

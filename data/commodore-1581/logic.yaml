@@ -1,9 +1,10 @@
 id: commodore-1581-logic
 machine: commodore-1581
 board: logic
+mains: false
 revisions:
-  - PCB Assembly 250471-01
-verification: verified
+  - "250471-01"
+verification: derived
 sources:
   - url: https://www.manualslib.com/manual/1441735/Commodore-Computers-1581.html?page=15
     note: >-
@@ -11,13 +12,19 @@ sources:
       "Parts List - Major/Component" page. Lists reference designators,
       values and Commodore stock part numbers for every capacitor on the
       logic board.
+  - url: https://www.devili.iki.fi/Computers/Commodore/C1581/Service_Manual/Page_12.html
+    note: >-
+      A second rendering of the same service manual parts list, from a
+      different transcription of the document. It gives C18 and C22 as
+      10 uF 25 V electrolytic (900100-01), C20 as 47 uF 10 V -10/+50%
+      electrolytic (900100-12) and C15 as 0.01 uF 50 V ceramic (251069-20).
 notes:
   - >-
     The board carries three electrolytic positions: C18 and C22 (10 uF 25 V)
     and C20 (47 uF, originally 10 V). There is no 100 uF and no 470 uF
     electrolytic position anywhere on it.
   - >-
-    C1-C14 (0.1 uF/16 V) and C15 (0.1 uF/50 V) are ceramic bypass capacitors
+    C1-C14 (0.1 uF/16 V) and C15 (0.01 uF/50 V) are ceramic bypass capacitors
     and are out of scope for this electrolytic recap list.
   - >-
     This list has not been checked against a physical unit. Count on the
@@ -29,6 +36,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
     note: Original Commodore part 900100-01.
@@ -42,4 +50,4 @@ capacitors:
     series: panasonic-fr
     note: >-
       Original Commodore part 900100-12, rated 47 uF 10 V with -10/+50%
-      tolerance. Voltage upgraded per project convention.
+      tolerance.

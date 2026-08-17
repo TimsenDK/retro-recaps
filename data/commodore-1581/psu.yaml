@@ -1,8 +1,10 @@
 id: commodore-1581-psu
 machine: commodore-1581
 board: psu
+mains: true
+x2_filter: unknown
 revisions:
-  - P/N 312551-01 (120 VAC/60 Hz variant)
+  - "312551-01"
 verification: derived
 sources:
   - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1581/powersupply.gif
@@ -11,9 +13,13 @@ sources:
       SUPPLY", P/N 312551-01, drawn by William Levak from the physical unit
       (Zimmers/funet CBM archive). Retrieved and read directly for component
       values and designators.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=71491
+    note: >-
+      Repair thread reporting these bricks as resin-potted and giving no
+      non-destructive way to open one.
 notes:
   - >-
-    This list describes the 120 VAC/60 Hz (US/Japan) input version, which
+    The list describes the 120 VAC/60 Hz (US/Japan) input version, which
     carries no mains-side X2 film capacitor anywhere in the circuit. Whether
     the 220-240 V export variant adds a line-side X2 filter ahead of the
     transformer is not known. Inspect the unit before assuming an X2
@@ -22,15 +28,30 @@ notes:
     P/N 312551-01 is one design shared by the 1541-II, 1571-II and 1581
     external bricks.
   - >-
+    These bricks are reported to be filled with potting resin, with no
+    non-destructive way in. Recapping one means cutting the case open, and
+    replacing the whole unit is the usual course. The component-level list
+    below exists because the design has been reverse-engineered, not because
+    the case is meant to be opened.
+  - >-
+    The transformer secondary is behind the rectifiers, but the primary side
+    of the brick is at line potential and there is no isolation once the case
+    is open.
+  - >-
     C7, C8, C10 and C11 (0.02 uF) are small ceramic/film bypass positions on
     the DC side of the rectifiers, not electrolytics, and are out of scope
     for this list.
+  - >-
+    The schematic fixes values and designators but not packages. C1 and C2
+    are large reservoir cans and may be axial rather than radial; check the
+    footprint before ordering.
 capacitors:
   - designators:
       - C1
     type: electrolytic-radial
     capacitance_uf: 2200
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: +12V rail primary filter, after the D3/D4 bridge, ahead of IC2 (7812).
@@ -48,6 +69,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 50
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: Input-side filter for IC2 (7812, +12V regulator).
@@ -56,6 +78,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 50
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: Input-side filter for IC1 (3522 regulator, +5V branch).

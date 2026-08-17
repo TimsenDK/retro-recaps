@@ -135,7 +135,52 @@ def render_site(
     written.extend(_write_board_data(context, root, out))
     written.extend(_write_search(context, out))
     written.extend(_copy_static(static, out))
+    _prune_stale(out, written)
     return written
+
+
+MANIFEST_NAME = ".build-manifest.json"
+"""What the last build wrote, so this one can remove what it no longer writes.
+
+Deleting a board file used to leave its page behind, and a stale page is worse
+than a missing one: it is still reachable, still looks current, and still
+lists parts. Pruning is driven by the previous manifest rather than by
+whatever happens to sit in the output directory, so the generator only ever
+removes files it put there itself.
+"""
+
+
+def _prune_stale(out: Path, written: list[Path]) -> None:
+    manifest = out / MANIFEST_NAME
+    current = sorted(path.relative_to(out).as_posix() for path in written)
+
+    previous: list[str] = []
+    if manifest.is_file():
+        try:
+            loaded = json.loads(manifest.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            loaded = None
+        if isinstance(loaded, list):
+            previous = [entry for entry in loaded if isinstance(entry, str)]
+
+    root = out.resolve()
+    for relative in set(previous) - set(current):
+        stale = (out / relative).resolve()
+        # A path that climbed out of `out` is not ours to touch, whatever the
+        # manifest says.
+        if root not in stale.parents or not stale.is_file():
+            continue
+        stale.unlink()
+
+    for directory in sorted(
+        (path for path in out.rglob("*") if path.is_dir()),
+        key=lambda path: len(path.parts),
+        reverse=True,
+    ):
+        if not any(directory.iterdir()):
+            directory.rmdir()
+
+    _write(manifest, json.dumps(current, indent=2) + "\n")
 
 
 def _write_board_data(context: SiteContext, root: Path, out: Path) -> list[Path]:

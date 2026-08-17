@@ -1,27 +1,46 @@
 id: commodore-1551-mainboard
 machine: commodore-1551
 board: mainboard
+mains: true
+x2_filter: unknown
 revisions:
-  - Schematic 251860 rev. 4
-verification: verified
+  - "250449"
+verification: derived
 sources:
   - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/251860.gif
     note: >-
       Official Commodore engineering schematic "SCHEMATIC DIAGRAM, 1551",
       drawing 251860 rev. 4, drawn by R. Vida, checked by S. Katayama (Zimmers
-      / funet CBM archive). Retrieved and read directly for the internal PSU
-      section (bridge rectifiers DB1/DB2, REG1 = LM340-12, REG2 = LM340-05)
-      and its capacitor designators and values.
+      / funet CBM archive). Read directly for the internal PSU section (bridge
+      rectifiers DB1/DB2, REG1 = LM340-12, REG2 = LM340-05) and its capacitor
+      designators and values. It is a scanned image with no text layer.
+  - url: https://myoldcomputer.nl/technical-info/mainboards/drive-mainboards/board-250449250453-1551/
+    note: >-
+      Board register entry giving 250449 as the 1551 drive assembly and
+      250453 as the interface paddle, with schematics 251860 and 251925.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/parts.txt
+    note: >-
+      Commodore 1551 parts list composed by William Levak. Covers the
+      integrated circuits on both boards; it lists no capacitors.
 notes:
   - >-
-    This board is not capacitor-equivalent to the 1541. Only C25 (4700 uF/16
-    V) coincides with a 1541 value; the 1 uF, 47 uF, 100 uF and 220 uF
-    positions found on 1541 boards do not exist here.
+    This PCB carries the drive's mains-fed supply section on the same board as
+    the logic: the transformer, the two bridge rectifiers DB1 and DB2, and
+    both regulators. Treat the board as live whenever the drive is plugged in,
+    and remember that C21 and C25 stay charged after it is switched off.
+  - >-
+    This board is not capacitor-equivalent to the 1541. Only C25 (4700 uF)
+    coincides with a 1541 value; the 1 uF, 47 uF, 100 uF and 220 uF positions
+    found on 1541 boards do not exist here.
   - >-
     Small ceramic bypass capacitors run throughout the logic section
     (roughly the C1-C14 range, 0.01-0.1 uF) and on the PSU rails (C24, C26,
     C28, 0.1 uF). These are not electrolytics and are out of scope for this
     recap list.
+  - >-
+    The schematic fixes values and designators but not packages or factory
+    voltage ratings. C21 and C25 are large reservoir cans and may be axial
+    rather than radial; check the footprint before ordering.
   - >-
     These positions have not been counted against a physical board. Confirm
     designators and values against the PCB before ordering, in case later
@@ -32,14 +51,18 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 6800
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-    note: +12V rail primary filter, after bridge rectifier DB2.
+    note: >-
+      +12V rail primary filter, after bridge rectifier DB2. Holds a charge
+      after power-off.
   - designators:
       - C22
     type: electrolytic-radial
     capacitance_uf: 8.2
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: +12V rail input filter, in parallel with C21.
@@ -48,6 +71,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: +12V rail output filter, after REG1 (LM340-12).
@@ -59,12 +83,15 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: +5V rail primary filter, after bridge rectifier DB1.
+    note: >-
+      +5V rail primary filter, after bridge rectifier DB1. Holds a charge
+      after power-off.
   - designators:
       - C27
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
     note: +5V rail output filter, after REG2 (LM340-05).

@@ -1,0 +1,52 @@
+id: commodore-128-psu-ismet
+machine: commodore-128
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - Ismet
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Designator-level list under the heading "Power Supply: Ismet": C4
+      2200uF 35v, C9 4700uF 16v.
+  - url: https://www.lemon64.com/forum/viewtopic.php?t=58011
+    note: >-
+      Owner report of a two-electrolytic C128 brick containing 2200 uF 40 V
+      and 4700 uF 16 V. The complement matches the Ismet list; the 2200 uF
+      voltage rating does not.
+notes:
+  - >-
+    This is the Ismet-built C128 external brick, a two-electrolytic design.
+    Three externally similar C128 bricks exist - Mitsumi, Ismet and Dee Van -
+    and they do not share a capacitor complement or a designator scheme.
+    Open the case and read the board before ordering parts.
+  - >-
+    C4's factory rating is reported both as 35 V and as 40 V. A 50 V part is
+    specified here so that either is covered.
+  - >-
+    Which internal board goes with which external part number is not
+    established. The unit is mains-fed: treat any X- or Y-class film
+    capacitor found across the mains input as a replace-on-sight item
+    whether or not it appears in a list.
+capacitors:
+  - designators:
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 50
+    original_voltage_unknown: true
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      Reported at 35 V and at 40 V from the factory. A 50 V part covers both
+      and is a standard rating.
+  - designators:
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 16
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

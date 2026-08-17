@@ -3,47 +3,91 @@ machine: amiga-500
 board: mainboard
 revisions:
   - 8A
+  - 8A.1
+  - "312812"
 verification: derived
 sources:
   - url: https://www.amibay.com/threads/a500-rev-8a-1-which-capacitors-i-need.47238/
     note: >-
-      Forum transcription of the A500+ (rev 8A) service manual, page 24 —
-      the same primary document the project handover cites. Lists values
-      and package sizes; no 3300 uF filter capacitors appear on this board.
+      Forum transcription of the A500+ service manual, page 24. Gives
+      values, factory voltage ratings, quantities and package sizes; no
+      3300 uF filter capacitors appear on this board, and no designators
+      are given.
+  - url: https://wiki.console5.com/wiki/Amiga_500
+    note: >-
+      "Main Board: 312812 Rev 8" designator list. The value groups and
+      counts match the service manual transcription exactly and supply the
+      designators it omits.
+  - url: https://www.amibay.com/threads/difference-a500-rev-8a-and-8a-1.82345/
+    note: >-
+      Owner comparison of rev 8A and rev 8A.1 boards. The only difference
+      reported is a routing correction around D911/D912 in the battery
+      charging circuit.
 notes:
-  - The A500+ drops the 3300 uF filter capacitors used on rev 3/5/6A.
   - >-
-    Reference designators for this board are not known; confirm them against
-    the physical board before ordering.
+    This is the A500+ board. It drops the two 3300 uF filter capacitors used
+    on rev 3/5/6A and carries three 1000 uF/10 V positions instead, at C307,
+    C401 and C402. A kit for any earlier revision does not fit it.
+  - >-
+    Rev 8A.1 carries the same capacitor complement as rev 8A. The two boards
+    differ in the routing of the battery charging circuit around D911 and
+    D912.
+  - >-
+    The factory ratings on the 47 uF and 10 uF positions are documented
+    inconsistently; the higher figure is recorded, and the replacement
+    rating is safe under either reading.
 capacitors:
-  - type: electrolytic-radial
-    capacitance_uf: 1000
-    voltage_v: 25
-    original_voltage_v: 10
-    quantity: 3
-    series: panasonic-fr
-    note: Original package 10x16 mm; designators are not known.
-  - type: electrolytic-radial
-    capacitance_uf: 47
-    voltage_v: 50
-    original_voltage_v: 35
-    quantity: 2
-    series: panasonic-fr
-  - type: electrolytic-radial
-    capacitance_uf: 100
-    voltage_v: 25
-    original_voltage_v: 16
-    quantity: 6
-    series: panasonic-fr
-  - type: electrolytic-radial
+  - designators:
+      - C303
+      - C304
+      - C324
+      - C334
+    type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 50
     original_voltage_v: 35
     quantity: 4
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators:
+      - C306
+      - C712
+    type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 50
     original_voltage_v: 35
     quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C821
+      - C822
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C811
+      - C812
+      - C813
+      - C814
+      - C815
+      - C816
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 6
+    series: panasonic-fr
+  - designators:
+      - C307
+      - C401
+      - C402
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 3
+    max_diameter_mm: 10
+    max_height_mm: 16
     series: panasonic-fr

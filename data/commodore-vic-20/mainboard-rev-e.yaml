@@ -1,0 +1,81 @@
+id: commodore-vic-20-mainboard-rev-e
+machine: commodore-vic-20
+board: mainboard
+mains: false
+revisions:
+  - 342002 rev E
+  - 324002 rev E
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
+    note: >-
+      Designator-level list headed "342002 Rev E": C1 4700uF 16v, C3 100uF
+      16v, C7 47uF 16v, C9 100uF 16v, C11 1uF 16v, C22 1uF 16v, plus one
+      10uF 16v position whose designator the table leaves as "C??".
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/computers/vic20/index.html
+    note: >-
+      Commodore schematic index for the VIC-20, recording assemblies
+      324001-02 (VIC-20cr NTSC), 324001-03 (VC-20 rev. B, PAL old design)
+      and 251027-01 (VIC-20CR rev. D), plus a separate "Main logic board
+      Version E" drawing. No 342002 assembly appears.
+notes:
+  - >-
+    This is the earlier VIC-20 long board, the one whose electrolytics are
+    numbered in the C1 to C22 range. It has an on-board regulator and a
+    4700 uF main filter can at C1. A board numbered in the C13 to C44 range
+    is ASSY 324003 and takes a different list; see mainboard-324003.yaml.
+  - >-
+    The assembly number of this board is not settled. It is documented as
+    342002 rev E; the only VIC-20 assemblies Commodore's own schematic index
+    records in that range are 324001 and 324002, so the printed number may
+    be a transposition. Identify the board by its designator range rather
+    than by the number here.
+  - >-
+    One 10 uF position is documented without a designator, and a second
+    10 uF position is reported on some boards. Count what is fitted.
+capacitors:
+  - designators:
+      - C1
+    type: electrolytic-axial
+    capacitance_uf: 4700
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    note: Main +5 V bulk filter capacitor, downstream of the on-board 7805.
+  - designators:
+      - C3
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C7
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      Documented without a designator. A second 10 uF position is reported
+      on some boards of this generation.
+  - designators:
+      - C11
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr

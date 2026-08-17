@@ -1,15 +1,29 @@
 id: mac-classic-ii
 name: Macintosh Classic II
 family: macintosh
+aliases:
+  - Classic II
+  - Performa 200
 board_order:
   - logic
   - analog
 notes:
-  - The analog board data here describes the 220-240 V international variant
-    (Apple 820-0525-A family), the correct one for Denmark. A separate 110 V
-    North American analog board exists and must not be merged with this data.
-  - The logic board has two revisions with different SMD capacitor counts,
-    tracked as separate files - Rev A has 13 positions, Rev B has 17.
+  - >-
+    The analog board is also the machine's power supply. It exists in a
+    100-120 V and a 220-240 V build of the same 630-0525 PCB, tracked as
+    separate files. Tell them apart at CP1 and CP13: a 250 V capacitor at CP1
+    with a second one at CP13 is the 100-120 V build; a 400 V capacitor at
+    CP1 with a plain wire link at CP13 is the 220-240 V build. JP1 and JP2
+    carry the same information - the link sits at JP1 for 110 V and at JP2
+    for 220-240 V.
+  - >-
+    A board converted between the two regions carries the other build's
+    jumper setting, so the jumpers describe how the board is wired now, not
+    where it was sold.
+  - >-
+    The logic board exists in a 13-position and a 17-position revision,
+    tracked as separate files. Count the ROM chips in the bottom right
+    corner: four ROM chips go with 13 capacitors, two with 17.
 batteries:
   - kind: pram
     action: replace

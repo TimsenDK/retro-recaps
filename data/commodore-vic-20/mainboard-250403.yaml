@@ -1,58 +1,97 @@
 id: commodore-vic-20-mainboard-250403
 machine: commodore-vic-20
 board: mainboard
+mains: false
 revisions:
-  - ASSY 250403
-  - Rev D
+  - "250403"
+  - "251040"
 verification: derived
 sources:
-  - url: https://www.arcticretro.com/2021/05/05/vic-20-capacitors-list/
+  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
     note: >-
-      Rev D capacitor list (same source cited by the handover): 1x 2200 uF
-      16V axial, 1x 100 uF 16V radial, 2x 10 uF 16V radial, 1x 47 uF 16V
-      radial, 1x 1 uF 16V radial.
+      Designator-level list headed "ASSY 250403 (DIN power connector)": C11
+      1uF 50v, C15 10uF 16v, C17 10uF 16v, C33 100uF 16v, C39 2200uF 16v,
+      C42 10uF 16v. Three 10 uF positions, no 47 uF position.
   - url: https://retroleum.co.uk/vic20-caps
     note: >-
-      Independent kit-contents list for "250403/251040": 1x 1 uF radial, up
-      to 3x 10 uF radial (only 2 required for plain 250403), 1x 47 uF radial
-      (251040 variant only, not plain 250403), 1x 100 uF radial, 1x 2200 uF
-      axial.
+      Independent kit for "Assembly 250403 / Fab 251040 (Cost Reduced short
+      board)": 1x 1 uF radial, 3x 10 uF radial ("2 required for 250403"),
+      1x 47 uF radial ("251040 only"), 1x 100 uF radial, 1x 2200 uF axial.
+  - url: https://www.arcticretro.com/2021/05/05/vic-20-capacitors-list/
+    note: >-
+      Independent rev D list: 1x 2200 uF 16 V axial, 1x 100 uF 16 V radial,
+      2x 10 uF 16 V radial, 1x 47 uF 16 V radial, 1x 1 uF 16 V radial. No
+      designators.
   - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
     note: >-
       Independent guide; states Commodore deleted the on-board 7805 on ASSY
-      250403 so the 4700 uF can is absent and the largest can is the 2200 uF
-      (agrees with the other two sources on that point).
+      250403 so the 4700 uF can is absent and the largest can is the
+      2200 uF.
+  - url: https://www.c64-wiki.com/wiki/VIC-20
+    note: >-
+      Board photograph captioned "Assy No.250403 - Fab.No.251040-01 Rev.D",
+      establishing 251040-01 as the bare-PCB number of assembly 250403.
 notes:
   - >-
-    The plain 250403 board has no 47 uF position; that position belongs to
-    the 251040 sub-variant. If the board is marked 251040, add 1x 47 uF 25 V
-    radial. Some capacitor lists for this board include the 47 uF position
-    without drawing the distinction.
+    This is the cost-reduced short board with the circular DIN power
+    connector. Commodore deleted the on-board 7805 here, so there is no
+    4700 uF regulator filter; the largest can is the 2200 uF at C39. A board
+    with a 2-pin locking connector is a different assembly - see
+    mainboard-324003.yaml and mainboard-rev-e.yaml.
   - >-
-    No reference designators are known for this board; positions are value
-    and quantity only.
+    251040-01 is the bare-PCB number of this same assembly, not a separate
+    board. A board silkscreened 251040 is a 250403.
+  - >-
+    The three 10 uF positions are not all populated on every board; two is
+    the common count. Count what is fitted before ordering.
+  - >-
+    A 47 uF radial position is reported populated on some boards of this
+    assembly. It does not appear in the designator-level list, so its
+    designator is unknown; fit one only if the board has one.
 capacitors:
-  - type: electrolytic-axial
+  - designators:
+      - C39
+    type: electrolytic-axial
     capacitance_uf: 2200
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
     series: vishay-021-asm
-  - type: electrolytic-radial
+  - designators:
+      - C33
+    type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators:
+      - C15
+      - C17
+      - C42
+    type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
     original_voltage_v: 16
-    quantity: 2
+    quantity: 3
     series: panasonic-fr
-  - type: electrolytic-radial
-    capacitance_uf: 1
+    note: Not all three are populated on every board.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 47
     voltage_v: 25
     original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Reported populated on some boards of this assembly and absent from
+      others. Fit only if the board carries one.
+  - designators:
+      - C11
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr

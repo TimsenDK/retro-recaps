@@ -53,7 +53,8 @@ CAPACITOR_TYPE_NAMES = {
     "bipolar": "Bipolar electrolytic",
     "tantalum": "Tantalum",
     "film": "Film",
-    "film-x2": "Film, X2 (mains rated)",
+    "film-x2": "Film, X2 (mains rated, across the line)",
+    "film-y2": "Film, Y2 (mains rated, across the isolation barrier)",
     "ceramic": "Ceramic",
 }
 
@@ -66,7 +67,18 @@ a named constant, so it is visible and can be corrected — rather than being
 buried in a template as an `if family == ...`.
 """
 
-MAINS_BOARD_KINDS = frozenset({"psu", "analog"})
+BATTERY_BOARD_KINDS = frozenset({"mainboard", "logic"})
+"""Board kinds a machine's battery warning is repeated onto.
+
+``batteries`` is recorded on the machine, but the cell is soldered to a board
+— the A2000 rev 6.x mainboard, the A3000 mainboard — and the sheet someone
+prints and carries to the bench is the *board* page. A machine-level warning
+that never reaches that sheet is a warning the reader does not get.
+
+Not every board of these kinds carries the cell (the A500's is on rev 8A
+alone), so the panel says which machine the battery belongs to and leaves the
+reader to look; it never claims the cell is on this particular PCB.
+"""
 
 
 # --------------------------------------------------------------------------
@@ -101,6 +113,112 @@ def natural_key(text: str) -> tuple:
             continue
         parts.append((0, int(chunk), "") if chunk.isdigit() else (1, 0, chunk))
     return tuple(parts)
+
+
+# --------------------------------------------------------------------------
+# Cross-file references in notes
+# --------------------------------------------------------------------------
+
+DATA_REFERENCE_RE = re.compile(
+    r"(?<![\w/.-])"
+    r"(?P<machine>[a-z0-9]+(?:-[a-z0-9]+)*)"
+    r"/"
+    r"(?P<file>[a-z0-9]+(?:[-.][a-z0-9]+)*)"
+    r"\.yaml"
+    r"(?![\w/-])"
+)
+"""The one shape a note may use to name another file: ``<machine>/<file>.yaml``,
+the path relative to ``data/``.
+
+A bare ``psu.yaml`` cannot be resolved without knowing which machine the reader
+is on, and ``../commodore-128/mainboard-rev6.yaml`` encodes the writer's
+position in the tree rather than the thing referred to. One form that is
+absolute within ``data/`` is resolvable from anywhere, which is what lets the
+generator turn it into a link. See CONTRIBUTING.md.
+"""
+
+
+@dataclass(frozen=True)
+class NoteSegment:
+    """A run of note text, optionally standing for another page.
+
+    The context does not build HTML; it says which runs are links and what
+    they point at, and the template makes the anchor.
+    """
+
+    text: str
+    url: str | None = None
+    """Relative to the site root, like every other url in this module. The
+    template prepends the page's own ``base``."""
+
+    @property
+    def is_link(self) -> bool:
+        return self.url is not None
+
+
+@dataclass(frozen=True)
+class NoteView:
+    text: str
+    segments: tuple[NoteSegment, ...]
+
+    @property
+    def has_links(self) -> bool:
+        return any(segment.is_link for segment in self.segments)
+
+
+def reference_targets(dataset: Dataset) -> dict[str, tuple[str, str]]:
+    """Map every ``<machine>/<file>.yaml`` a note may name to (url, label)."""
+    targets: dict[str, tuple[str, str]] = {}
+    for machine in dataset.machines.values():
+        targets[f"{machine.id}/machine.yaml"] = (
+            f"{machine.id}/index.html",
+            machine.name,
+        )
+    kind_counts: dict[tuple[str, str], int] = {}
+    for board in dataset.boards.values():
+        key = (board.machine, board.board)
+        kind_counts[key] = kind_counts.get(key, 0) + 1
+    for board in dataset.boards.values():
+        slug = _board_slug(board)
+        machine = dataset.machines.get(board.machine)
+        machine_name = machine.name if machine is not None else board.machine
+        label = f"{machine_name} — {label_for(BOARD_KIND_NAMES, board.board)}"
+        if kind_counts[(board.machine, board.board)] > 1 and board.revisions:
+            label = f"{label} {', '.join(board.revisions)}"
+        targets[f"{board.machine}/{slug}.yaml"] = (
+            f"{board.machine}/{slug}.html",
+            label,
+        )
+    return targets
+
+
+def note_view(note: str, targets: dict[str, tuple[str, str]]) -> NoteView:
+    """Split a note into plain runs and links to the files it names.
+
+    A reference that names no file in the dataset is left exactly as written:
+    a broken link on a printed sheet is worse than a filename the reader can
+    still search for.
+    """
+    segments: list[NoteSegment] = []
+    cursor = 0
+    for match in DATA_REFERENCE_RE.finditer(note):
+        target = targets.get(match.group(0))
+        if target is None:
+            continue
+        url, label = target
+        if match.start() > cursor:
+            segments.append(NoteSegment(note[cursor : match.start()]))
+        segments.append(NoteSegment(label, url))
+        cursor = match.end()
+    if cursor < len(note):
+        segments.append(NoteSegment(note[cursor:]))
+    return NoteView(text=note, segments=tuple(segments))
+
+
+def note_views(
+    notes: tuple[str, ...], targets: dict[str, tuple[str, str]]
+) -> tuple[NoteView, ...]:
+    return tuple(note_view(note, targets) for note in notes)
 
 
 # --------------------------------------------------------------------------
@@ -318,9 +436,9 @@ MAINS_HAZARD = Hazard(
     id="mains",
     title="Mains voltage",
     body=(
-        "This is a power supply. It carries mains voltage when plugged in, "
-        "and its filter capacitors hold a dangerous charge after the machine "
-        "is switched off and unplugged. Unplug at the wall, discharge "
+        "This board carries mains voltage when the machine is plugged in, "
+        "and its filter capacitors hold a dangerous charge after it is "
+        "switched off and unplugged. Unplug at the wall, discharge "
         "deliberately through a resistor, and measure before you touch "
         "anything."
     ),
@@ -349,6 +467,51 @@ ANALOG_HAZARD = Hazard(
     ),
 )
 
+MACHINE_MAINS_HAZARD_ID = "machine-mains"
+"""The machine-page counterpart of ``MAINS_HAZARD``.
+
+The board-page panel opens "This board carries mains voltage", which has no
+referent on a machine page — that page names no board. Worse, a machine can
+hold a mains board a reader never touches: the 1541-II's supply is a sealed,
+resin-potted external brick, replaced as a unit. So the machine panel says
+*which* boards carry mains and sends the reader to those pages, rather than
+asserting anything about the machine as a whole.
+"""
+
+
+def machine_mains_hazard(boards: list[Board]) -> Hazard:
+    """The mains panel for a machine page, naming the boards it applies to."""
+    names: list[str] = []
+    for board in boards:
+        if not board.carries_mains:
+            continue
+        name = label_for(BOARD_KIND_NAMES, board.board).lower()
+        if name not in names:
+            names.append(name)
+    if len(names) > 1:
+        which = ", ".join(names[:-1]) + f" and {names[-1]}"
+        subject = f"Some of this machine's boards carry mains voltage: the {which}."
+        where = "on those boards"
+        follow = "Read those board pages before you open the case"
+    elif names:
+        subject = f"This machine's {names[0]} carries mains voltage."
+        where = "on it"
+        follow = f"Read the {names[0]} page before you open the case"
+    else:
+        subject = "One of this machine's boards carries mains voltage."
+        where = "on it"
+        follow = "Read each board page before you open the case"
+    return Hazard(
+        id=MACHINE_MAINS_HAZARD_ID,
+        title="Mains voltage inside this machine",
+        body=(
+            f"{subject} The filter capacitors {where} hold a dangerous charge "
+            f"after the machine is switched off and unplugged. "
+            f"{follow}, and treat anything you have not identified as live."
+        ),
+    )
+
+
 CRT_MACHINE_HAZARD = Hazard(
     id="crt",
     title="This machine has a CRT",
@@ -362,23 +525,39 @@ CRT_MACHINE_HAZARD = Hazard(
 
 
 def hazards_for(board: Board, machine: Machine | None) -> tuple[Hazard, ...]:
-    """Every warning a board page must carry, strongest first."""
+    """Every warning a board page must carry, strongest first.
+
+    Driven by the board's own ``mains`` declaration rather than by its kind.
+    A CRT analog board gets both warnings, not one instead of the other: on
+    an all-in-one Mac the analog board *is* the supply, so discharging the
+    tube and then grabbing the board still leaves a charged bulk capacitor
+    between the reader and the bench.
+    """
     family = machine.family if machine is not None else ""
     is_crt = family in CRT_FAMILIES
-    if board.board == "psu":
-        return (MAINS_HAZARD,) + ((CRT_MACHINE_HAZARD,) if is_crt else ())
-    if board.board == "analog":
-        return (CRT_ANALOG_HAZARD,) if is_crt else (ANALOG_HAZARD,)
+    hazards: list[Hazard] = []
+
+    if board.board == "analog" and is_crt:
+        hazards.append(CRT_ANALOG_HAZARD)
+        if board.carries_mains:
+            hazards.append(MAINS_HAZARD)
+        return tuple(hazards)
+
+    if board.carries_mains:
+        hazards.append(MAINS_HAZARD)
+    elif board.board == "analog" and board.mains is None:
+        hazards.append(ANALOG_HAZARD)
+
     if is_crt:
-        return (CRT_MACHINE_HAZARD,)
-    return ()
+        hazards.append(CRT_MACHINE_HAZARD)
+    return tuple(hazards)
 
 
 def machine_hazards(boards: list[Board], machine: Machine) -> tuple[Hazard, ...]:
     """The warning a machine page carries, given the boards it holds."""
     hazards: list[Hazard] = []
-    if any(board.board in MAINS_BOARD_KINDS for board in boards):
-        hazards.append(MAINS_HAZARD)
+    if any(board.carries_mains for board in boards):
+        hazards.append(machine_mains_hazard(boards))
     if machine.family in CRT_FAMILIES:
         hazards.append(CRT_MACHINE_HAZARD)
     return tuple(hazards)
@@ -396,6 +575,7 @@ class SeriesView:
     manufacturer: str
     type_label: str
     temperature_c: int | None
+    voltage_range: str | None
     low_esr: bool | None
     note: str | None
 
@@ -411,6 +591,7 @@ def series_view(series: Series) -> SeriesView:
         manufacturer=series.manufacturer,
         type_label=label_for(CAPACITOR_TYPE_NAMES, series.type),
         temperature_c=series.temperature_c,
+        voltage_range=series.voltage_range,
         low_esr=series.low_esr,
         note=series.note,
     )
@@ -555,6 +736,8 @@ class BoardView:
     hazards: tuple[Hazard, ...]
     sources: tuple[Source, ...]
     notes: tuple[str, ...]
+    linked_notes: tuple[NoteView, ...]
+    batteries: tuple
     rows_without_designators: int
     mixed_verification: bool
 
@@ -577,7 +760,15 @@ def _board_slug(board: Board) -> str:
     return board.id
 
 
-def board_view(board: Board, dataset: Dataset, *, disambiguate: bool) -> BoardView:
+def board_view(
+    board: Board,
+    dataset: Dataset,
+    *,
+    disambiguate: bool,
+    targets: dict[str, tuple[str, str]] | None = None,
+) -> BoardView:
+    if targets is None:
+        targets = reference_targets(dataset)
     machine = dataset.machines.get(board.machine)
     machine_name = machine.name if machine is not None else board.machine
     kind_label = label_for(BOARD_KIND_NAMES, board.board)
@@ -615,6 +806,12 @@ def board_view(board: Board, dataset: Dataset, *, disambiguate: bool) -> BoardVi
         hazards=hazards_for(board, machine),
         sources=board.sources,
         notes=board.notes,
+        linked_notes=note_views(board.notes, targets),
+        batteries=(
+            machine.batteries
+            if machine is not None and board.board in BATTERY_BOARD_KINDS
+            else ()
+        ),
         rows_without_designators=sum(1 for row in rows if not row.has_designators),
         mixed_verification=any(row.differs_from_board for row in rows),
     )
@@ -633,6 +830,7 @@ class MachineView:
     family_name: str
     aliases: tuple[str, ...]
     notes: tuple[str, ...]
+    linked_notes: tuple[NoteView, ...]
     batteries: tuple
     url: str
     boards: tuple[BoardView, ...]
@@ -661,13 +859,25 @@ class FamilyView:
         )
 
 
-def machine_view(machine: Machine, dataset: Dataset) -> MachineView:
+def machine_view(
+    machine: Machine,
+    dataset: Dataset,
+    *,
+    targets: dict[str, tuple[str, str]] | None = None,
+) -> MachineView:
+    if targets is None:
+        targets = reference_targets(dataset)
     boards = dataset.boards_for(machine.id)
     kind_counts: dict[str, int] = {}
     for board in boards:
         kind_counts[board.board] = kind_counts.get(board.board, 0) + 1
     views = tuple(
-        board_view(board, dataset, disambiguate=kind_counts[board.board] > 1)
+        board_view(
+            board,
+            dataset,
+            disambiguate=kind_counts[board.board] > 1,
+            targets=targets,
+        )
         for board in boards
     )
     return MachineView(
@@ -677,6 +887,7 @@ def machine_view(machine: Machine, dataset: Dataset) -> MachineView:
         family_name=label_for(FAMILY_NAMES, machine.family),
         aliases=machine.aliases,
         notes=machine.notes,
+        linked_notes=note_views(machine.notes, targets),
         batteries=machine.batteries,
         url=f"{machine.id}/index.html",
         boards=views,
@@ -911,8 +1122,9 @@ class SiteContext:
 
 def build_context(dataset: Dataset) -> SiteContext:
     """Everything the templates need, worked out once."""
+    targets = reference_targets(dataset)
     machines = tuple(
-        machine_view(machine, dataset)
+        machine_view(machine, dataset, targets=targets)
         for machine in sorted(
             dataset.machines.values(), key=lambda m: natural_key(m.name)
         )

@@ -327,11 +327,57 @@ def test_an_unrelated_note_about_part_provenance_raises_no_fit_warning() -> None
     assert "unenforceable-fit-note" not in fit_note_warning_codes(note)
 
 
-def test_missing_sources_is_only_a_warning() -> None:
+def test_a_board_that_publishes_positions_without_a_source_is_an_error() -> None:
+    """A published list nobody can check is exactly what this project avoids."""
     issues = check(make_dataset(board_document()))
     no_sources = [issue for issue in issues if issue.code == "no-sources"]
     assert len(no_sources) == 1
+    assert no_sources[0].level == "error"
+
+
+def test_a_positionless_stub_without_a_source_is_only_a_warning() -> None:
+    """A stub asserts nothing, so it owes nothing."""
+    document = board_document(capacitors=[], verification="unverified")
+    issues = check(make_dataset(document))
+    no_sources = [issue for issue in issues if issue.code == "no-sources"]
+    assert len(no_sources) == 1
     assert no_sources[0].level == "warning"
+
+
+def test_a_board_with_a_source_raises_no_no_sources_issue() -> None:
+    document = board_document(sources=[{"url": "https://example.invalid/a500"}])
+    assert "no-sources" not in codes(make_dataset(document))
+
+
+def test_verified_on_a_single_source_is_a_warning() -> None:
+    document = board_document(
+        verification="verified",
+        sources=[{"url": "https://example.invalid/a500"}],
+    )
+    issues = check(make_dataset(document))
+    single = [issue for issue in issues if issue.code == "single-source-verified"]
+    assert len(single) == 1
+    assert single[0].level == "warning"
+
+
+def test_verified_on_two_sources_is_not_flagged() -> None:
+    document = board_document(
+        verification="verified",
+        sources=[
+            {"url": "https://example.invalid/a500"},
+            {"url": "https://other.invalid/a500"},
+        ],
+    )
+    assert "single-source-verified" not in codes(make_dataset(document))
+
+
+def test_a_derived_board_on_a_single_source_is_not_flagged() -> None:
+    """The warning is about the badge, not about citing one page."""
+    document = board_document(
+        verification="derived",
+        sources=[{"url": "https://example.invalid/a500"}],
+    )
+    assert "single-source-verified" not in codes(make_dataset(document))
 
 
 def test_missing_designators_is_a_warning() -> None:
@@ -538,11 +584,17 @@ def test_distinct_designators_are_fine() -> None:
 
 
 def test_an_empty_capacitor_list_is_a_warning() -> None:
-    document = board_document(capacitors=[])
+    document = board_document(capacitors=[], verification="derived")
     issues = check(make_dataset(document))
     empty = [issue for issue in issues if issue.code == "no-capacitors"]
     assert len(empty) == 1
     assert empty[0].level == "warning"
+
+
+def test_an_unverified_stub_is_not_told_it_has_no_capacitors() -> None:
+    """The schema licenses this shape; warning about it is arguing with it."""
+    document = board_document(capacitors=[], verification="unverified")
+    assert "no-capacitors" not in codes(make_dataset(document))
 
 
 def test_only_the_first_verified_position_is_reported_once() -> None:
@@ -629,3 +681,459 @@ def test_machine_without_boards_is_a_warning() -> None:
         offers={},
     )
     assert "machine-without-boards" in codes(dataset)
+
+
+# --------------------------------------------------------------------------
+# Sourcing a replacement
+# --------------------------------------------------------------------------
+
+
+def test_a_position_naming_neither_a_series_nor_a_part_is_an_error() -> None:
+    issues = check(make_dataset(board_document()))
+    orphaned = [issue for issue in issues if issue.code == "no-series-or-part"]
+    assert len(orphaned) == 1
+    assert orphaned[0].level == "error"
+    assert orphaned[0].location.endswith(":capacitors/0")
+
+
+def test_a_position_naming_a_series_is_enough() -> None:
+    series = Series.from_dict(series_document())
+    document = board_document()
+    document["capacitors"][0]["series"] = "panasonic-fr"
+    dataset = make_dataset(document, series={"panasonic-fr": series})
+    assert "no-series-or-part" not in codes(dataset)
+
+
+def test_a_position_naming_only_a_part_is_enough() -> None:
+    part = fitting_part()
+    series = Series.from_dict(series_document())
+    document = board_document()
+    document["capacitors"][0]["part"] = part.id
+    dataset = make_dataset(
+        document, parts={part.id: part}, series={"panasonic-fr": series}
+    )
+    assert "no-series-or-part" not in codes(dataset)
+
+
+# --------------------------------------------------------------------------
+# A position may be less certain than its board, never more
+# --------------------------------------------------------------------------
+
+
+def test_a_position_claiming_more_than_its_board_is_an_error() -> None:
+    document = board_document(
+        verification="derived",
+        sources=[{"url": "https://example.invalid/a500"}],
+    )
+    document["capacitors"][0]["verification"] = "verified"
+    issues = check(make_dataset(document))
+    over = [issue for issue in issues if issue.code == "position-over-verified"]
+    assert len(over) == 1
+    assert over[0].level == "error"
+    assert over[0].location.endswith(":capacitors/0")
+
+
+def test_a_position_less_certain_than_its_board_is_fine() -> None:
+    document = board_document(
+        verification="verified",
+        sources=[
+            {"url": "https://example.invalid/a500"},
+            {"url": "https://other.invalid/a500"},
+        ],
+    )
+    document["capacitors"][0]["verification"] = "derived"
+    assert "position-over-verified" not in codes(make_dataset(document))
+
+
+def test_a_position_matching_its_board_is_fine() -> None:
+    document = board_document(
+        verification="derived",
+        sources=[{"url": "https://example.invalid/a500"}],
+    )
+    document["capacitors"][0]["verification"] = "derived"
+    assert "position-over-verified" not in codes(make_dataset(document))
+
+
+# --------------------------------------------------------------------------
+# Two files claiming one revision
+# --------------------------------------------------------------------------
+
+
+def two_board_dataset(first: dict, second: dict) -> Dataset:
+    machine = Machine.from_dict(
+        {
+            "id": "commodore-1541",
+            "name": "Commodore 1541",
+            "family": "commodore-drive",
+            "board_order": ["mainboard", "psu"],
+        }
+    )
+    boards = {}
+    for document, name in ((first, "long"), (second, "short")):
+        board = Board.from_dict(
+            document, path=Path(f"data/commodore-1541/mainboard-{name}.yaml")
+        )
+        boards[board.id] = board
+    return Dataset(
+        machines={machine.id: machine},
+        boards=boards,
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+    )
+
+
+def drive_board(slug: str, revisions: list[str]) -> dict:
+    return {
+        "id": f"commodore-1541-mainboard-{slug}",
+        "machine": "commodore-1541",
+        "board": "mainboard",
+        "revisions": revisions,
+        "verification": "unverified",
+        "capacitors": [],
+    }
+
+
+def test_two_files_claiming_one_revision_is_an_error() -> None:
+    dataset = two_board_dataset(
+        drive_board("long", ["1540050"]), drive_board("short", ["1540050"])
+    )
+    duplicates = [
+        issue for issue in check(dataset) if issue.code == "duplicate-revision"
+    ]
+    assert len(duplicates) == 2
+    assert {issue.level for issue in duplicates} == {"error"}
+    assert {issue.location for issue in duplicates} == {
+        "data/commodore-1541/mainboard-long.yaml",
+        "data/commodore-1541/mainboard-short.yaml",
+    }
+    assert "1540050" in duplicates[0].message
+
+
+def test_two_files_claiming_distinct_revisions_are_fine() -> None:
+    dataset = two_board_dataset(
+        drive_board("long", ["1540050"]), drive_board("short", ["250442"])
+    )
+    assert "duplicate-revision" not in codes(dataset)
+
+
+def test_the_same_revision_on_two_board_kinds_is_not_a_duplicate() -> None:
+    """Only one machine, one kind and one revision string collide."""
+    second = drive_board("short", ["all known"])
+    second["board"] = "psu"
+    first = drive_board("long", ["all known"])
+    assert "duplicate-revision" not in codes(two_board_dataset(first, second))
+
+
+# --------------------------------------------------------------------------
+# Mains and the X2 filter
+# --------------------------------------------------------------------------
+
+
+def mains_board(kind: str, **overrides) -> dict:
+    return board_document(
+        board=kind,
+        sources=[{"url": "https://example.invalid/board"}],
+        **overrides,
+    )
+
+
+def mains_dataset(document: dict) -> Dataset:
+    machine = Machine.from_dict(
+        {
+            "id": "amiga-500",
+            "name": "Commodore Amiga 500",
+            "family": "amiga",
+            "board_order": ["mainboard", "psu", "analog"],
+        }
+    )
+    board = Board.from_dict(document, path=Path("data/amiga-500/mainboard-rev6a.yaml"))
+    return Dataset(
+        machines={machine.id: machine},
+        boards={board.id: board},
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+    )
+
+
+def test_a_psu_must_declare_mains_either_way() -> None:
+    issues = check(mains_dataset(mains_board("psu")))
+    undeclared = [issue for issue in issues if issue.code == "mains-not-declared"]
+    assert len(undeclared) == 1
+    assert undeclared[0].level == "error"
+
+
+def test_an_analog_board_must_declare_mains_either_way() -> None:
+    issues = check(mains_dataset(mains_board("analog")))
+    assert any(
+        issue.code == "mains-not-declared" and issue.level == "error"
+        for issue in issues
+    )
+
+
+def test_declaring_mains_false_satisfies_the_rule() -> None:
+    """The 1541-II analog board is low-voltage motor control, and says so."""
+    assert "mains-not-declared" not in codes(
+        mains_dataset(mains_board("analog", mains=False))
+    )
+
+
+def test_a_mainboard_need_not_declare_mains() -> None:
+    assert "mains-not-declared" not in codes(mains_dataset(mains_board("mainboard")))
+
+
+def test_a_mains_carrying_board_should_declare_its_x2_filter() -> None:
+    issues = check(mains_dataset(mains_board("psu", mains=True)))
+    undeclared = [issue for issue in issues if issue.code == "x2-filter-not-declared"]
+    assert len(undeclared) == 1
+    assert undeclared[0].level == "warning"
+
+
+def test_a_mainboard_declared_mains_also_wants_an_x2_declaration() -> None:
+    """The 1541 longboard carries the machine's linear supply."""
+    assert "x2-filter-not-declared" in codes(
+        mains_dataset(mains_board("mainboard", mains=True))
+    )
+
+
+def test_a_declared_x2_filter_raises_no_warning() -> None:
+    document = mains_board("psu", mains=True, x2_filter="unknown")
+    assert "x2-filter-not-declared" not in codes(mains_dataset(document))
+
+
+def test_a_low_voltage_board_is_not_asked_about_an_x2_filter() -> None:
+    document = mains_board("analog", mains=False)
+    assert "x2-filter-not-declared" not in codes(mains_dataset(document))
+
+
+def test_x2_filter_listed_without_a_film_x2_position_is_an_error() -> None:
+    document = mains_board("psu", mains=True, x2_filter="listed")
+    issues = check(mains_dataset(document))
+    absent = [issue for issue in issues if issue.code == "x2-filter-listed-but-absent"]
+    assert len(absent) == 1
+    assert absent[0].level == "error"
+
+
+def test_x2_filter_listed_alongside_a_film_x2_position_is_fine() -> None:
+    document = mains_board("psu", mains=True, x2_filter="listed")
+    document["capacitors"] = [
+        {
+            "designators": ["C1"],
+            "type": "film-x2",
+            "capacitance_uf": 0.1,
+            "voltage_v": 275,
+            "quantity": 1,
+        }
+    ]
+    assert "x2-filter-listed-but-absent" not in codes(mains_dataset(document))
+
+
+def test_x2_filter_absent_needs_no_film_x2_position() -> None:
+    document = mains_board("psu", mains=True, x2_filter="absent")
+    assert "x2-filter-listed-but-absent" not in codes(mains_dataset(document))
+
+
+def test_an_x2_filter_on_a_board_that_is_not_mains_is_an_error() -> None:
+    document = mains_board("analog", mains=False, x2_filter="absent")
+    issues = check(mains_dataset(document))
+    off = [issue for issue in issues if issue.code == "x2-filter-off-mains"]
+    assert len(off) == 1
+    assert off[0].level == "error"
+
+
+def test_an_x2_filter_on_an_undeclared_mainboard_is_an_error() -> None:
+    """An undeclared mainboard is not-mains, so it has no input filter."""
+    document = mains_board("mainboard", x2_filter="unknown")
+    assert "x2-filter-off-mains" in codes(mains_dataset(document))
+
+
+# --------------------------------------------------------------------------
+# The two 'the record is silent' markers
+# --------------------------------------------------------------------------
+
+
+def test_declaring_designators_unknown_suppresses_the_warning() -> None:
+    document = board_document()
+    del document["capacitors"][0]["designators"]
+    document["capacitors"][0]["designators_unknown"] = True
+    assert "no-designators" not in codes(make_dataset(document))
+
+
+def test_declaring_original_voltage_unknown_suppresses_the_warning() -> None:
+    document = board_document()
+    document["capacitors"][0]["original_voltage_unknown"] = True
+    assert "no-original-voltage" not in codes(make_dataset(document))
+
+
+def test_the_markers_do_not_suppress_each_other() -> None:
+    document = board_document()
+    del document["capacitors"][0]["designators"]
+    document["capacitors"][0]["designators_unknown"] = True
+    assert "no-original-voltage" in codes(make_dataset(document))
+
+
+# --------------------------------------------------------------------------
+# A series only covers the voltages it is made in
+# --------------------------------------------------------------------------
+
+
+def ranged_series(**overrides) -> Series:
+    return Series.from_dict(
+        series_document(voltage_min_v=6.3, voltage_max_v=100, **overrides)
+    )
+
+
+def position_at(voltage_v: float, series_id: str = "panasonic-fr") -> dict:
+    document = board_document()
+    document["capacitors"][0]["series"] = series_id
+    document["capacitors"][0]["voltage_v"] = voltage_v
+    return document
+
+
+def test_a_position_above_its_series_range_is_an_error() -> None:
+    """The Macintosh 160-250 V positions pointed at a 6.3-100 V series."""
+    dataset = make_dataset(
+        position_at(250), series={"panasonic-fr": ranged_series()}
+    )
+    issues = [
+        issue
+        for issue in check(dataset)
+        if issue.code == "series-voltage-out-of-range"
+    ]
+    assert len(issues) == 1
+    assert issues[0].level == "error"
+    assert "250" in issues[0].message
+    assert "100" in issues[0].message
+
+
+def test_a_position_below_its_series_range_is_an_error() -> None:
+    dataset = make_dataset(
+        position_at(4), series={"panasonic-fr": ranged_series()}
+    )
+    assert "series-voltage-out-of-range" in codes(dataset)
+
+
+def test_a_position_inside_its_series_range_is_fine() -> None:
+    dataset = make_dataset(
+        position_at(25), series={"panasonic-fr": ranged_series()}
+    )
+    assert "series-voltage-out-of-range" not in codes(dataset)
+
+
+def test_the_ends_of_the_range_are_inclusive() -> None:
+    series = {"panasonic-fr": ranged_series()}
+    for voltage in (6.3, 100):
+        assert "series-voltage-out-of-range" not in codes(
+            make_dataset(position_at(voltage), series=series)
+        )
+
+
+def test_a_series_with_no_range_recorded_constrains_nothing() -> None:
+    """Silence means nobody has read the datasheet, not that it is unbounded."""
+    series = Series.from_dict(series_document())
+    dataset = make_dataset(position_at(450), series={"panasonic-fr": series})
+    assert "series-voltage-out-of-range" not in codes(dataset)
+
+
+def test_a_half_open_range_still_constrains_the_end_it_states() -> None:
+    series = Series.from_dict(series_document(voltage_max_v=100))
+    assert "series-voltage-out-of-range" in codes(
+        make_dataset(position_at(160), series={"panasonic-fr": series})
+    )
+    assert "series-voltage-out-of-range" not in codes(
+        make_dataset(position_at(4), series={"panasonic-fr": series})
+    )
+
+
+def test_the_wrong_series_type_is_reported_instead_of_the_range() -> None:
+    """One fault per position; 'wrong family' makes the range beside the point."""
+    series = Series.from_dict(
+        series_document(id="nichicon-ues", name="UES", type="bipolar",
+                        voltage_min_v=6.3, voltage_max_v=100)
+    )
+    dataset = make_dataset(
+        position_at(250, "nichicon-ues"), series={"nichicon-ues": series}
+    )
+    assert "series-type-mismatch" in codes(dataset)
+    assert "series-voltage-out-of-range" not in codes(dataset)
+
+
+def test_a_catalogue_part_outside_its_series_range_is_an_error() -> None:
+    part = Part.from_dict(
+        {
+            "id": "toohigh",
+            "manufacturer": "Panasonic",
+            "mpn": "X",
+            "series": "panasonic-fr",
+            "type": "electrolytic-radial",
+            "capacitance_uf": 47,
+            "voltage_v": 250,
+        }
+    )
+    dataset = make_dataset(
+        board_document(),
+        parts={"toohigh": part},
+        series={"panasonic-fr": ranged_series()},
+    )
+    issues = [
+        issue
+        for issue in check(dataset)
+        if issue.code == "series-voltage-out-of-range"
+    ]
+    assert len(issues) == 1
+    assert issues[0].location == "reference/parts.yaml:toohigh"
+
+
+def test_x2_filter_listed_is_satisfied_by_a_y_class_position() -> None:
+    """The Macintosh supplies filter with Y-class parts, not X2."""
+    document = mains_board("psu", mains=True, x2_filter="listed")
+    document["capacitors"] = [
+        {
+            "designators": ["C1"],
+            "type": "film-y2",
+            "capacitance_uf": 0.0047,
+            "voltage_v": 250,
+            "quantity": 1,
+        }
+    ]
+    assert "x2-filter-listed-but-absent" not in codes(mains_dataset(document))
+
+
+def y2_position(voltage_v: float) -> dict:
+    document = board_document()
+    document["capacitors"][0].update(
+        {"type": "film-y2", "capacitance_uf": 0.0047, "voltage_v": voltage_v}
+    )
+    return document
+
+
+def test_a_film_y2_below_250v_is_an_error() -> None:
+    issues = check(make_dataset(y2_position(110)))
+    too_low = [issue for issue in issues if issue.code == "y2-voltage-too-low"]
+    assert len(too_low) == 1
+    assert too_low[0].level == "error"
+    assert "250" in too_low[0].message
+
+
+def test_a_film_y2_at_250v_is_fine() -> None:
+    assert "y2-voltage-too-low" not in codes(make_dataset(y2_position(250)))
+
+
+def test_a_film_y2_at_300v_is_fine() -> None:
+    assert "y2-voltage-too-low" not in codes(make_dataset(y2_position(300)))
+
+
+def test_the_x2_floor_does_not_fire_on_a_y2_position() -> None:
+    """250 VAC is a legal Y2 rating and below the 275 VAC X2 floor."""
+    assert "x2-voltage-too-low" not in codes(make_dataset(y2_position(250)))
+
+
+def test_the_y2_floor_does_not_fire_on_an_x2_position() -> None:
+    document = board_document()
+    document["capacitors"][0].update(
+        {"type": "film-x2", "capacitance_uf": 0.1, "voltage_v": 275}
+    )
+    assert "y2-voltage-too-low" not in codes(make_dataset(document))

@@ -1,0 +1,148 @@
+id: amiga-500-psu-312503-03
+machine: amiga-500
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - "312503-03"
+  - "312503-02"
+verification: derived
+sources:
+  - url: http://blog.worldofjani.com/?p=5695
+    note: >-
+      Teardown of a run of Amiga bricks. Publishes four different capacitor
+      complements under the number 312503-03, one of them with reference
+      designators; a commenter reports a 312503-02 identical to one of them
+      except at C1 and C2.
+  - url: https://www.ianstedman.co.uk/amiga-power-supply-guide/
+    note: >-
+      Compares A500 supply part numbers against their measured output
+      ratings and concludes the part number does not predict what the unit
+      is.
+notes:
+  - >-
+    Identify the brick by the PCB inside it, not by the number on the case.
+    At least four different internal layouts have been published under the
+    number 312503-03, with different capacitor complements, and the part
+    number does not predict the output rating either. Open the unit and
+    match what is on the board before ordering anything.
+  - >-
+    This list describes the layout whose electrolytics are silkscreened C4,
+    C5, C8, C9, C11 to C15, C18 and C19. If your board has no such
+    silkscreen, or has a different number of large capacitors, it is one of
+    the other layouts and this list does not apply to it.
+  - >-
+    The other published 312503-03 layouts, none of which carries designators
+    in any retrievable record, are: two 22 uF/25 V, one 47 uF/385 V, two
+    470 uF/16 V and four 4700 uF/16 V; three 22 uF/25 V, two 330 uF/25 V,
+    one 4700 uF/6 V and one 4700 uF/25 V; and one 10 uF/50 V, one
+    330 uF/25 V, one 330 uF/40 V, one 470 uF/16 V, two 2200 uF/35 V and two
+    2.2 uF/16 V tantalum.
+  - >-
+    A 312503-02 board is reported carrying this same complement with C1 and
+    C2 at 2200 uF/40 V, positions the layout described here does not have.
+  - >-
+    This is a mains-carrying supply in a sealed case. C4 and C5 sit on the
+    mains side of the transformer and hold a lethal charge after the unit is
+    unplugged; discharge them before touching anything on that side.
+  - >-
+    The mains input filter is not inventoried. Line-filter film capacitors
+    are fitted to these boards but are not covered by the list below, and no
+    retrievable record gives their values. Replace any RIFA-marked film
+    found at the mains input unconditionally, regardless of its rating.
+capacitors:
+  - designators:
+      - C4
+    type: electrolytic-snap-in
+    capacitance_uf: 47
+    voltage_v: 400
+    original_voltage_v: 400
+    quantity: 1
+    max_diameter_mm: 22
+    max_height_mm: 25
+    max_lead_spacing_mm: 10
+    series: nichicon-lgn
+    note: >-
+      Primary bulk capacitor, on the mains side of the transformer.
+  - designators:
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 450
+    original_voltage_v: 450
+    quantity: 1
+    max_diameter_mm: 10
+    max_height_mm: 13
+    max_lead_spacing_mm: 5
+    series: nichicon-ucy
+    note: >-
+      Mains side of the transformer. The rating must not be reduced.
+  - designators:
+      - C8
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C11
+      - C12
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    max_diameter_mm: 16
+    max_height_mm: 37
+    series: panasonic-fr
+  - designators:
+      - C14
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    max_diameter_mm: 13
+    max_height_mm: 27
+    series: panasonic-fr
+  - designators:
+      - C15
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C18
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C19
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr

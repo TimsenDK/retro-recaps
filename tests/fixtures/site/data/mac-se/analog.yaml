@@ -4,6 +4,8 @@ board: analog
 revisions:
   - all known
 verification: derived
+mains: true
+x2_filter: unknown
 capacitors:
   - designators:
       - C1

@@ -3,6 +3,9 @@ name: Commodore 64
 family: commodore-8bit
 aliases:
   - C64
+  - C-64
+  - C64C
+  - Commodore 64
 board_order:
   - mainboard
 notes:
@@ -20,6 +23,20 @@ notes:
     filter position reduced to 25 V, while 250469 (C64-E, used in the C64C)
     uses an entirely different set of designators and a single-rail power
     section.
+  - >-
+    A sixth board exists that this dataset does not cover: KU-14194HB, a
+    1982/83 European PAL-only interim board with no assembly number, bare
+    PCB number 251022, revisions A and B, identified by its 8-pin A/V
+    connector. It is absent from the American service manuals and no
+    capacitor list for it has been found. A board carrying that marking is
+    not one of the five listed here and none of these lists applies to it.
+  - >-
+    Several C64 model names are case and packaging variants on boards
+    already covered here rather than boards of their own: the Golden Edition
+    is an ASSY 250407, the Aldi C64 an ASSY 250469 rev 3, and the C64GS a
+    repackaged ASSY 250469 rev B. The C64G and the Educator 64 are also
+    reported as standard-board rebadges, but which assembly each carries is
+    not established here - read the number off the board.
   - >-
     The external power supply brick is potted and fails by over-voltage,
     which destroys the machine. It is replaced as a unit, not recapped, so

@@ -84,3 +84,53 @@ def test_boards_are_returned_in_recap_order() -> None:
         "analog",
         "psu",
     ]
+
+
+# --------------------------------------------------------------------------
+# What the PCB carries
+# --------------------------------------------------------------------------
+
+
+def declared(board_kind: str, **overrides) -> Board:
+    document = {
+        "id": "b",
+        "machine": "commodore-1541",
+        "board": board_kind,
+        "revisions": ["1"],
+        "verification": "unverified",
+        "capacitors": [],
+    }
+    return Board.from_dict({**document, **overrides})
+
+
+def test_an_explicit_mains_true_wins() -> None:
+    """The 1541 longboard mainboard carries the machine's linear supply."""
+    assert declared("mainboard", mains=True).carries_mains is True
+
+
+def test_an_explicit_mains_false_wins() -> None:
+    """The 1541-II analog board is low-voltage motor control."""
+    assert declared("analog", mains=False).carries_mains is False
+
+
+def test_an_explicit_mains_false_wins_even_on_a_psu() -> None:
+    assert declared("psu", mains=False).carries_mains is False
+
+
+def test_an_undeclared_psu_falls_back_to_mains() -> None:
+    """The fallback keeps an undeclared supply warning rather than silent."""
+    assert declared("psu").carries_mains is True
+
+
+def test_an_undeclared_mainboard_is_not_mains() -> None:
+    assert declared("mainboard").carries_mains is False
+
+
+def test_an_undeclared_analog_board_is_not_mains() -> None:
+    """The kind alone never promotes a board to mains; only 'psu' does."""
+    assert declared("analog").carries_mains is False
+
+
+def test_an_undeclared_logic_or_daughterboard_is_not_mains() -> None:
+    assert declared("logic").carries_mains is False
+    assert declared("daughterboard").carries_mains is False

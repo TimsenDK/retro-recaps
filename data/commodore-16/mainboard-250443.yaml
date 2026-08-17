@@ -2,7 +2,7 @@ id: commodore-16-mainboard-250443
 machine: commodore-16
 board: mainboard
 revisions:
-  - ASSY 250443-01
+  - "250443-01"
 verification: verified
 sources:
   - url: https://hd.retrorewind.ca/commodore/c16/assy-250443-01
@@ -22,10 +22,20 @@ sources:
       16V, C18 Elect 10uF 25V, C19 Elect 10uF 25V, C31 Elect 10uF 25V.
       Confirms retrorewind's designators and voltages exactly; worldofjani's
       C2 (16V) and C17 (50V) do not match this factory list.
+  - url: https://wiki.console5.com/wiki/Commodore_16
+    note: >-
+      Fourth designator-level list, headed "C16: 250443-01", matching the
+      factory list position for position including C2 at 25 V and C17 at
+      16 V. The same page carries a second table headed "C16: 251788" with
+      the same eight remaining positions and no C1.
 notes:
   - >-
-    C1 is absent from some capacitor lists for this board. It is included
-    here, giving a nine-position list.
+    C1 is not populated on every board. Where it is fitted the board carries
+    nine electrolytics, otherwise eight; the remaining eight positions and
+    their values are the same either way. Look at the board before ordering.
+  - >-
+    Boards of this assembly are also documented under the schematic number
+    251788. That is the drawing, not a second assembly.
 capacitors:
   - designators:
       - C1
@@ -35,7 +45,7 @@ capacitors:
     original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    note: Absent from some capacitor lists for this board.
+    note: Not populated on every board.
   - designators:
       - C2
     type: electrolytic-radial

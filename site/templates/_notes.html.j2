@@ -1,0 +1,11 @@
+{# `notes` is a sequence of NoteView. A note that names another data file
+   carries that reference as a link segment; everything else is plain text. #}
+<ul class="notes">
+    {% for note in notes %}
+    <li>
+        {%- for segment in note.segments -%}
+        {%- if segment.url %}<a href="{{ base }}{{ segment.url }}">{{ segment.text }}</a>{% else %}{{ segment.text }}{% endif -%}
+        {%- endfor -%}
+    </li>
+    {% endfor %}
+</ul>

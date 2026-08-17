@@ -1,23 +1,30 @@
 id: mac-se
 name: Macintosh SE
 family: macintosh
+aliases:
+  - Mac SE
+  - SE
 board_order:
+  - logic
   - analog
   - psu
 notes:
   - >-
-    The logic board is reported to need no recap: its ten 33 uF/16 V
-    positions (C4, C11, C13, C16, C32, C34, C37, C38, C62, C86) and its
-    axial 1 uF C36 are said to survive where other compact-Mac boards do
-    not. That claim is unconfirmed - inspect the board rather than skip it
-    on the strength of it. No logic board file is tracked for this machine.
+    Three power supply builds are documented for this machine - Sony CR-44M,
+    Astec AA13800 and Apple 820-0385-A (Hitachi). Their capacitor sets are
+    entirely different and are tracked as separate files. Apple part number
+    699-5047 appears on more than one of them, so read the label on the
+    module rather than the Apple number.
   - >-
-    The SE shipped with either a Sony CR-44 or an Astec AA13800 power
-    supply; their capacitor sets differ and are tracked as separate PSU
-    files. Verify which manufacturer is fitted before ordering parts.
+    The logic board carries through-hole axial electrolytics rather than the
+    surface-mount parts that fail on the SE/30 and Classic II, which is why
+    it is widely said to need no recap. Inspect and measure it rather than
+    skip it on the strength of that claim.
   - >-
-    The analog board list here is known incomplete - see the analog board's
-    own notes.
+    Designators repeat across the boards with different values. C11 and C13
+    are on both the logic and the analog board; C32 and C36 are on both the
+    logic board and the Astec supply; C7, C19 and C24 are on both the analog
+    board and the Astec supply. Never carry a designator between boards.
 batteries:
   - kind: pram
     action: replace

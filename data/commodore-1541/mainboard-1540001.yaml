@@ -1,11 +1,19 @@
 id: commodore-1541-mainboard-1540001
 machine: commodore-1541
 board: mainboard
+mains: true
+x2_filter: unknown
 revisions:
   - "1540001-01"
   - "1540001-03"
-verification: derived
+  - "1540008-01"
+  - "1540008-03"
+verification: verified
 sources:
+  - url: https://wiki.console5.com/wiki/Commodore_1541
+    note: >-
+      Per-assembly capacitor table for the early revisions, giving designator,
+      value and factory voltage for all eight positions.
   - url: https://www.retroleum.co.uk/1541capacitors
     note: >-
       Independent designator/value list broken out by PCB assembly number,
@@ -14,8 +22,7 @@ sources:
   - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=29
     note: >-
       Scanned Commodore 1541 maintenance manual parts list (page F-5),
-      corroborates designators C51 and C52 and their capacitance values;
-      voltage figures were read from a noisy OCR scan (see notes below).
+      corroborates designators C51 and C52 and their capacitance values.
   - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=28
     note: >-
       Scanned manual page cross-referencing VIC-1541 and 1541 reference
@@ -26,14 +33,20 @@ sources:
       set, used to cross-check values but not designators.
 notes:
   - >-
+    This PCB carries the drive's mains-fed supply section on the same board as
+    the logic: the line switch and transformer primary, the rectifiers, and
+    the large axial reservoir cans. Treat the board as live whenever the drive
+    is plugged in, and remember that C51 and C52 stay charged after it is
+    switched off - short them through a resistor before working on the board.
+  - >-
     This board carries two separate axial filter positions at once, C51
     (6800 uF) and C52 (10000 uF) - not one position whose value varies by
     production run.
-  - C52's voltage rating is unconfirmed for this board revision.
   - >-
-    C56's original voltage rating is not known. The replacement value
-    follows the generic 1541 recap value rather than a rating documented for
-    this revision.
+    The board is the original long board, with four discrete 2114 RAMs. It is
+    identified as PCB assembly 1540008 on the board itself and as assembly
+    1540001 in the service manual's own contents page; 1540001 is also the
+    schematic number for this board.
 capacitors:
   - designators:
       - C1
@@ -44,7 +57,6 @@ capacitors:
     original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    verification: derived
   - designators:
       - C2
       - C5
@@ -54,44 +66,39 @@ capacitors:
     original_voltage_v: 16
     quantity: 2
     series: panasonic-fr
-    verification: derived
   - designators:
       - C56
     type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
+    original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    verification: derived
-    note: >-
-      Original voltage rating not known; 25 V follows the generic 1541 recap
-      value rather than a rating documented for this revision.
   - designators:
       - C65
     type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    verification: derived
-    note: >-
-      Voltage follows the generic 1541 value list; it is not confirmed for
-      this position.
   - designators:
       - C51
     type: electrolytic-axial
     capacitance_uf: 6800
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
-    verification: derived
-    note: Main PSU filter capacitor.
+    note: >-
+      Main supply reservoir capacitor. Holds a charge after power-off.
   - designators:
       - C52
     type: electrolytic-axial
     capacitance_uf: 10000
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: vishay-021-asm
-    verification: derived
-    note: Voltage rating unconfirmed for this board revision.
+    note: >-
+      Second supply reservoir capacitor. Holds a charge after power-off.

@@ -5,34 +5,64 @@ revisions:
   - A
 verification: derived
 sources:
+  - url: https://wiki.console5.com/wiki/Macintosh_Classic_II
+    note: >-
+      Designator-level table for the Classic II logic board, covering
+      630-0055-B / 820-0326-B and 630-0401-B / 820-0401-B, and marking C21,
+      C74, C79 and C106 as appearing only on the 630-0055 revision.
+  - url: https://recapamac.com.au/macintosh-classic-ii-a/
+    note: >-
+      Names this board the earlier revision and gives the visual
+      discriminator - 13 surface-mount electrolytics and four ROM chips in
+      the bottom right corner.
   - url: https://wiki.retrotechcollection.com/Macintosh_Classic_II_Capacitor_Replacement_Guide
-    note: Confirms Rev A has 13 SMD positions (3x47uF, 8x10uF, 2x1uF); this is
-      the same source the handover cites.
+    note: Confirms the 13-position complement, 3 x 47 uF, 8 x 10 uF, 2 x 1 uF.
   - url: https://www.macdat.net/repair/cap_reference/apple/compact/classic2.php
-    note: Independent source (not cited by the handover). Confirms the same
-      13-position Rev A / 17-position Rev B split and per-value counts, and
-      states the 47 uF SMD positions must be 25 V rated if replaced with
-      tantalum.
+    note: >-
+      Confirms the same 13-position versus 17-position split and per-value
+      counts, and states the 47 uF positions must be 25 V rated if replaced
+      with tantalum.
 notes:
   - >-
-    No reference designators are known for this board; positions are counts
-    per value only.
+    This is the 13-position board. Count the ROM chips in the bottom right
+    corner to tell the two boards apart: four ROM chips go with 13
+    capacitors, two ROM chips with 17.
+  - >-
+    Which Apple part number this board carries is an open question. The extra
+    four positions on the 17-position board are documented as belonging to
+    the 630-0055 assembly, which is the lower and therefore earlier part
+    number, while the 13-position board is the one described elsewhere as the
+    earlier of the two. The two accounts cannot both be right. The capacitor
+    complement and the ROM count are settled; the part number is not.
+  - >-
+    Surface mount throughout. This project prefers tantalum over wet
+    electrolytic for these positions.
   - Recap logic board before analog board.
 capacitors:
-  - type: tantalum
+  - designators: [C3, C4, C13]
+    type: tantalum
     capacitance_uf: 47
     voltage_v: 25
     original_voltage_v: 16
     quantity: 3
     series: kemet-t491
-    note: 47 uF SMD positions must be 25 V rated when replaced with tantalum.
-  - type: tantalum
+    note: These positions must be 25 V rated when replaced with tantalum.
+  - designators: [C5, C6, C7, C8, C10, C11, C12, C14]
+    type: tantalum
     capacitance_uf: 10
-    voltage_v: 16
+    voltage_v: 25
+    original_voltage_v: 16
     quantity: 8
     series: kemet-t491
-  - type: tantalum
+    note: >-
+      Rated 25 V here rather than the factory 16 V. Compact Macintosh logic
+      boards carry +/-12 V as well as +5 V, and which rail each of these
+      positions decouples is not established; 16 V is only 1.33 times a 12 V
+      rail, which is thin derating for a tantalum.
+  - designators: [C9, C15]
+    type: tantalum
     capacitance_uf: 1
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 2
     series: kemet-t491

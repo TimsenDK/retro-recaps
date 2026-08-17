@@ -4,3 +4,7 @@ family: macintosh
 board_order:
   - logic
   - analog
+batteries:
+  - kind: pram
+    action: replace
+    note: On the logic board, beside the SIMM slots.

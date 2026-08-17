@@ -1,0 +1,26 @@
+{# `batteries` is the machine's battery list. Rendered on the machine page and
+   repeated onto the board pages a cell is soldered to, because the board page
+   is the sheet that gets printed and carried to the bench. #}
+{% if batteries %}
+<section class="battery" role="note">
+    <h2>Battery — deal with this first</h2>
+    <ul class="notes">
+        {% for battery in batteries %}
+        <li>
+            <strong>{{ battery.kind | upper }} — {{ battery.action }}.</strong>
+            {% if battery.note %}{{ battery.note }}{% endif %}
+            {% if battery.action == 'remove' %}
+            A leaking barrel battery destroys traces; take it off the board before
+            anything else.
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% if scope == 'board' %}
+    <p class="note">
+        Recorded for this machine rather than for this board revision. Check
+        the board in front of you: not every revision is fitted with the cell.
+    </p>
+    {% endif %}
+</section>
+{% endif %}

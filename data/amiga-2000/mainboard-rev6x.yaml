@@ -3,26 +3,38 @@ machine: amiga-2000
 board: mainboard
 revisions:
   - 6.x
-verification: verified
+verification: derived
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-2000-cap-list
     note: >-
-      Full designator list, 31-32 electrolytics depending on how the two
-      duplicate 22 uF rows in the published table are read (see note below).
+      The only retrievable designator-level list for an Amiga 2000
+      mainboard: 32 electrolytics in five value groups. The page names no
+      motherboard revision.
   - url: https://hd.retrorewind.ca/commodore/amiga/a2000caplist
-    note: Same list on Retro Rewind's wiki, cross-checked against the blog post.
-  - url: https://retrofix.co.uk/pdf/A2000.pdf
     note: >-
-      Independent BOM/kit vendor (Retrofix, UK), designator-for-designator
-      match on all five electrolytic value groups: 3x 4.7 uF, 7x 22 uF, 13x
-      47 uF, 5x 220 uF, 4x 470 uF (32 total). Used as the primary designator
-      source since it lists all designators explicitly and matches
-      Retro Rewind's list exactly.
+      The same list on the same vendor's wiki. Not an independent
+      confirmation of it.
+  - url: https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Amiga-2000-repair-kit::989.html
+    note: >-
+      Kit vendor selling separate Rev 4 and Rev 6 kits. The declared Rev 6
+      contents match this complement exactly - 3x 4.7 uF, 7x 22 uF, 13x
+      47 uF, 5x 220 uF (one radial, four axial), 4x 470 uF - which is what
+      ties the complement to rev 6.x. No designators or voltages are given.
 notes:
   - >-
-    C416-C419 are recorded as radial. An axial footprint is reported for
-    these four positions but is not corroborated; check the footprint
-    against the physical board before ordering in bulk.
+    A NiCd barrel battery for the real-time clock is soldered to this board.
+    It leaks and corrodes the traces around it; remove it before doing
+    anything else, and inspect that area for damage.
+  - >-
+    The 32-position complement below is what a rev 6 board carries. The
+    assignment of those positions to these particular reference designators
+    rests on a single published list, which names no revision at all, so the
+    designators are not independently confirmed for rev 6.x. Check them
+    against the board.
+  - >-
+    C416-C419 are recorded as radial here, but an axial footprint is also
+    reported for those four positions. Check the footprint on the board
+    before ordering in bulk.
   - >-
     Every position was originally 16 V; replacements are upgraded to 25 V
     per project convention.
@@ -84,9 +96,9 @@ capacitors:
     quantity: 5
     series: panasonic-fr
     note: >-
-      An axial footprint is reported for four of these five positions but is
-      not corroborated; they are recorded here as radial. Verify the
-      footprint against the physical board before ordering in bulk.
+      C416-C419 are reported both as radial and as axial; they are recorded
+      here as radial. C400 is radial. Verify the footprint against the
+      physical board before ordering in bulk.
   - designators:
       - C214
       - C225

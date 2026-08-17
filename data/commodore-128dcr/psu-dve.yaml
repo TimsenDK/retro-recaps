@@ -1,0 +1,87 @@
+id: commodore-128dcr-psu-dve
+machine: commodore-128dcr
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - DSP-128DCR
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Designator-level list headed "Power Supply: DVE DSP-128DCR": C5 220uF
+      250v, C11 1000uF 35v, C13/C14/C15 3300uF 10v, C16/C17 1uF 50v,
+      C19/C20 220uF 25v, C23 0.47uF 50v. Records no mains-side film
+      capacitor either way.
+notes:
+  - >-
+    This is the internal supply of the metal-case C128DCR, a DVE
+    DSP-128DCR. It is a different unit from the plastic-case C128D's
+    310639-02 and shares no designators with it.
+  - >-
+    C5 is a 250 V part on the rectified mains. It holds a lethal charge
+    after the machine is unplugged; discharge it before touching the
+    primary side, and never fit a lower-voltage part there.
+  - >-
+    No mains-input film capacitor is recorded for this board, and nothing
+    establishes that there is none. Any X- or Y-class film capacitor found
+    across or from the mains input is replaced unconditionally: the
+    metallised-paper parts of this era fail by cracking, smoking and
+    sometimes catching fire, whether or not the machine has been used.
+  - >-
+    The list is single-sourced and has not been counted against a physical
+    unit. Count what is fitted before ordering.
+capacitors:
+  - designators:
+      - C5
+    type: electrolytic-snap-in
+    capacitance_uf: 220
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-lgn
+    note: On the rectified mains. Discharge before working on the board.
+  - designators:
+      - C11
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C13
+      - C14
+      - C15
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 16
+    original_voltage_v: 10
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C16
+      - C17
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C19
+      - C20
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C23
+    type: electrolytic-radial
+    capacitance_uf: 0.47
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr

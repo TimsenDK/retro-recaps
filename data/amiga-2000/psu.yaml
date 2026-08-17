@@ -1,6 +1,8 @@
 id: amiga-2000-psu
 machine: amiga-2000
 board: psu
+mains: true
+x2_filter: listed
 revisions:
   - "4.4"
   - 6.x
@@ -8,77 +10,134 @@ verification: derived
 sources:
   - url: https://www.arcticretro.com/amiga/amiga-2000-power-supply-capacitors/
     note: >-
-      States it covers "Rev 4.4 and 6, EU/230V version" of the Amiga 2000
-      PSU. Gives a full electrolytic list (retrieved in full below - the
-      spreadsheet had only captured the first two rows). No X2/RIFA
-      capacitors are listed on this page.
+      Covers the EU/230 V Amiga 2000 supply and states that rev 4.4 and rev 6
+      machines carried the same supply with the same capacitors. Full
+      electrolytic list with package dimensions; no film capacitors listed.
   - url: http://blog.worldofjani.com/?p=6375
     note: >-
-      Independent teardown of an Amiga 2000 PSU. Disagrees with Arctic Retro
-      on several electrolytic values and does confirm RIFA X2/Y film
-      capacitors are present. See notes below.
+      Independent teardown listing fourteen capacitor types, including X2 and
+      Y class film. Its electrolytic figures differ from Arctic Retro's on
+      most rows. Names no manufacturer, model or mains rating.
   - url: https://www.eevblog.com/forum/beginners/commodore-amiga-2000-power-supply-rifa-capacitor-value/
     note: >-
-      Forum post with a photo of a failed Amiga 2000 PSU capacitor
-      identifying it as "RIFA PME 271 M" - confirms RIFA X2 film capacitors
-      are used in this PSU, but the poster could not read the value off the
-      damaged part and no one in the thread supplied one.
+      Photograph of a failed Amiga 2000 PSU film capacitor identified as a
+      "RIFA PME 271 M". The poster could not read the value off the damaged
+      part and no one in the thread supplied one.
 notes:
   - >-
-    This list describes the EU/230 V supply fitted to rev 4.4 and rev 6
-    machines. Amiga 2000 supplies were built by more than one vendor across
-    the production run and the electrolytic values are not settled - a
-    differently built unit can carry a substantially different set. Identify
-    and count the supply in hand before ordering.
+    This is a mains-carrying supply. The primary side holds a lethal charge
+    after the machine is unplugged; discharge it before touching anything on
+    that side of the transformer.
   - >-
-    RIFA X2 mains-filter film capacitors are fitted to this supply and are
-    replaced unconditionally regardless of their original rating. The exact
-    capacitance and quantity are unconfirmed. Y-class capacitors are also
-    present on some units; they are not tracked by this list.
+    The electrolytic complement of this supply is not settled. Two documented
+    teardowns of Amiga 2000 supplies give different figures for most
+    positions - five 4700 uF outputs in one, three 3300 uF plus a 220 uF pair
+    in the other. The list below is the one scoped to rev 4.4 and rev 6
+    machines. Whether the difference is a production variation or a
+    misreading is not established, and no Amiga 2000 supply has a
+    manufacturer or model recorded anywhere retrievable, so the units cannot
+    be told apart by vendor. Count and read the parts in the unit in hand
+    before ordering.
+  - >-
+    RIFA mains-filter film capacitors are fitted to this supply, X-class
+    across the line and Y-class across the isolation barrier. Both are
+    replaced unconditionally regardless of their measured value or rating,
+    and an X-class part is not a substitute for a Y-class one.
 capacitors:
-  - type: electrolytic-snap-in
+  - designators_unknown: true
+    type: electrolytic-snap-in
     capacitance_uf: 680
     voltage_v: 200
+    original_voltage_unknown: true
     quantity: 2
+    max_diameter_mm: 22
+    max_lead_spacing_mm: 10
     series: nichicon-lgn
-    note: Primary filter; 22 mm diameter, 10 mm snap-in pitch.
-  - type: electrolytic-radial
+    note: >-
+      Series pair across the rectified mains bus, each holding roughly half
+      of it, which is why 200 V parts are adequate where the bus peaks near
+      325 V. Replace both together with identical parts. A single capacitor
+      fitted in place of the pair must be rated 400 V or more. Ratings of
+      200 V and 250 V are both reported for this position; the higher one is
+      safe wherever it fits.
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 4700
     voltage_v: 16
+    original_voltage_unknown: true
     quantity: 2
+    max_diameter_mm: 16
+    max_lead_spacing_mm: 7.5
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 4700
     voltage_v: 10
+    original_voltage_unknown: true
     quantity: 3
+    max_diameter_mm: 16
+    max_lead_spacing_mm: 7.5
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 100
+    original_voltage_unknown: true
     quantity: 2
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 47
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 5
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 35
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: film-x2
-    capacitance_uf: 0.1
+  - designators_unknown: true
+    type: film-x2
+    capacitance_uf: 0.22
     voltage_v: 275
-    quantity: 2
+    original_voltage_unknown: true
+    quantity: 1
     series: kemet-r46
     verification: unverified
     note: >-
-      RIFA X2 mains filter capacitors, replaced unconditionally regardless
-      of rating. The 100 nF value and the quantity of two are unconfirmed
-      for this assembly.
+      Mains-filter film capacitor. Its value is unconfirmed. X2 film is
+      replaced unconditionally regardless of what is fitted.
+  - designators_unknown: true
+    type: film-x2
+    capacitance_uf: 0.47
+    voltage_v: 275
+    original_voltage_unknown: true
+    quantity: 1
+    series: kemet-r46
+    verification: unverified
+    note: >-
+      Second mains-filter film position, of a different value from the
+      first. Its value is unconfirmed. X2 film is replaced unconditionally
+      regardless of what is fitted.
+  - designators_unknown: true
+    type: film-y2
+    capacitance_uf: 0.0022
+    voltage_v: 300
+    original_voltage_unknown: true
+    quantity: 2
+    series: tdk-b32021
+    verification: unverified
+    note: >-
+      Mains film across the isolation barrier, line to earth. An X-class part
+      is not a substitute here. Y film is replaced unconditionally regardless
+      of what is fitted.

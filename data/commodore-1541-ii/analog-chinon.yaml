@@ -1,0 +1,32 @@
+id: commodore-1541-ii-analog-chinon
+machine: commodore-1541-ii
+board: analog
+mains: false
+revisions:
+  - chinon
+  - ds-50f
+verification: unverified
+sources:
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/parts.txt
+    note: >-
+      Commodore drive parts list composed by William Levak. Names the Chinon
+      FZ-501M REV A, the Digital System DS-50F and the Safronic DS-50F
+      alongside the Newtronics D500 as 1541-II mechanisms.
+  - url: https://portcommodore.com/rcarlsen/cbm/1541/1541-II/1541-II.txt
+    note: >-
+      Repair notes describing the Chinon mechanism as direct drive with no
+      belt and no speed adjustment, against the Mitsumi/Newtronics one with a
+      spindle drive belt and motor speed control on its own PCB.
+notes:
+  - >-
+    Open: no capacitor list is published for the Chinon FZ-501M or the DS-50F
+    mechanisms, and it is not established whether either carries a
+    motor-control PCB with electrolytics at all. The Chinon spindle motor is
+    direct drive with no belt and no speed adjustment, so it cannot share the
+    belt-drive speed-control circuit of the Newtronics board, and the
+    Newtronics capacitor lists must not be applied to it.
+  - >-
+    A Chinon or DS-50F mechanism has no drive belt and no speed-adjustment
+    trimmer. If the mechanism has a belt, it is a Newtronics D500 and the
+    Newtronics motor control lists apply instead.
+capacitors: []

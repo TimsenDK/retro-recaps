@@ -1,6 +1,8 @@
 id: amiga-1000-psu-ntsc
 machine: amiga-1000
 board: psu
+mains: true
+x2_filter: unknown
 revisions:
   - NTSC / 110V
 verification: derived
@@ -11,54 +13,78 @@ sources:
     note: Sibling PAL/240V board with designators, used to cross-check the shared secondary-side values (all match except the primary bulk capacitor, which differs by mains voltage as expected).
 notes:
   - >-
-    No mains-side X2/RIFA film capacitor position is known on this supply.
-    Inspect the unit before assuming one is present to replace.
+    This is a mains-carrying supply. The primary side holds a lethal charge
+    after the machine is unplugged; discharge it before touching anything on
+    that side of the transformer.
+  - >-
+    Whether this supply has a mains-side X2 or Y film capacitor is not
+    established; the list below does not inventory the input filter. Inspect
+    the mains input, and replace any RIFA-marked film found there
+    unconditionally, regardless of its rating.
   - >-
     No reference designators are known for the NTSC/110V unit. Every
     secondary-side value matches the PAL/240V sibling board (psu-pal.yaml);
     only the primary bulk capacitor differs.
 capacitors:
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 50
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 4.7
     voltage_v: 50
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 35
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 3
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 330
     voltage_v: 25
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 470
     voltage_v: 35
+    original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
-  - type: electrolytic-radial
+  - designators_unknown: true
+    type: electrolytic-radial
     capacitance_uf: 2200
     voltage_v: 10
+    original_voltage_unknown: true
     quantity: 3
     series: panasonic-fr
-  - type: electrolytic-snap-in
+  - designators_unknown: true
+    type: electrolytic-snap-in
     capacitance_uf: 470
     voltage_v: 200
+    original_voltage_unknown: true
     quantity: 1
+    max_diameter_mm: 30
+    max_height_mm: 35
     series: nichicon-lgn
     note: >-
-      Primary-side bulk/filter capacitor, approx. 30 x 35 mm.
-      NTSC/110V-specific value; do not substitute the PAL 180 uF/400V part
-      from psu-pal.yaml.
+      Primary-side bulk capacitor, on the mains side of the transformer.
+      This value belongs to the 110 V unit; do not fit it to a 240 V supply,
+      and do not substitute the 180 uF/400 V part from psu-pal.yaml here.

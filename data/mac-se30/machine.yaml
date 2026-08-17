@@ -1,23 +1,30 @@
 id: mac-se30
 name: Macintosh SE/30
 family: macintosh
+aliases:
+  - Mac SE/30
+  - SE/30
+  - SE30
 board_order:
   - logic
   - analog
   - psu
 notes:
   - >-
-    The SE/30 shipped with a Sony CR-44 PSU (tracked here); Aztec and
-    Hitachi variants are also reported to exist, with differing capacitor
-    sets that are not documented. Identify the PSU manufacturer fitted to
-    the physical machine before ordering parts.
+    Three power supply builds are documented for the SE and SE/30 together -
+    Sony CR-44M, Astec AA13800 and Apple 820-0385-A (Hitachi). Their
+    capacitor sets are entirely different and are tracked as separate files.
+    Which of them shipped in an SE/30 specifically is not established, and
+    Apple part number 699-5047 appears on more than one of them, so read the
+    label on the module.
   - >-
-    The analog board list here is known incomplete - see the analog board's
-    own notes.
+    The analog board is the 630-0147 design shared with the Macintosh SE.
   - >-
-    C7, C8 and C11 designators exist on the logic board, on the analog
-    board, and in the Sony PSU, with different values on each - never carry
-    a designator between boards on this machine.
+    Designators repeat across the boards with different values. C2, C7, C9,
+    C11 and C13 are on both the logic and the analog board; C7 and C8 are on
+    both the logic board and the Astec supply; C19 and C24 are on both the
+    analog board and the Astec supply. Never carry a designator between
+    boards.
 batteries:
   - kind: pram
     action: replace

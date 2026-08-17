@@ -20,10 +20,21 @@
           "electrolytic-smd",
           "bipolar",
           "tantalum",
-          "film-x2"
+          "film-x2",
+          "film-y2"
         ]
       },
       "temperature_c": { "type": "integer", "minimum": 85 },
+      "voltage_min_v": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "$comment": "Lowest working voltage the series is made in. Recorded only where a datasheet states it; a series with no range recorded constrains nothing."
+      },
+      "voltage_max_v": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "$comment": "Highest working voltage the series is made in. A position rated above this points the reader at a series that cannot supply the part."
+      },
       "low_esr": { "type": "boolean" },
       "note": { "type": "string", "minLength": 1 }
     }

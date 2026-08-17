@@ -4,18 +4,41 @@ family: amiga
 aliases:
   - A500
   - A500+
+  - Amiga 500 Plus
 board_order:
   - mainboard
+  - psu
 notes:
   - >-
-    Rev 8A is the A500+: a materially different board from rev 3/5/6A. Its
-    power section drops the 3300 uF filter capacitors used on the earlier
-    revisions, and it carries a barrel-style NiCd battery for the real-time
-    clock that the earlier revisions do not have.
+    Four mainboard revisions are covered and no two share a capacitor set.
+    Rev 3 and rev 5 carry the same 16 positions. Rev 6A has 17: C307 is a
+    470 uF position rather than 100 uF, and the 100 uF and 47 uF counts are
+    swapped, six and two against two and six. Rev 7 shares the rev 6A list.
+    Rev 8A, the A500+, replaces the two 3300 uF filter capacitors with three
+    1000 uF/10 V, and rev 8A.1 shares its list. A kit sold for one revision
+    is not a drop-in for another.
+  - >-
+    A rev 4 mainboard exists - Commodore's own 1 MB Agnus upgrade
+    instructions address revisions 4 and 5 together, and owners report
+    boards silkscreened rev 4 - but no capacitor list for it has been
+    published, so it has no entry here.
+  - >-
+    Assembly number 312510 appears on rev 3, rev 5, rev 6A and rev 7 boards
+    alike; the A500+ board is assembly 312812. The assembly number therefore
+    does not identify the revision, which is silkscreened separately.
+  - >-
+    The machine takes an external mains brick. The number on the case does
+    not identify what is inside: several different internal PCB layouts,
+    with different capacitor complements, were shipped under the same part
+    number. Identify the supply by its board, not its label; the supply
+    files are keyed accordingly.
 batteries:
   - kind: nicd
     action: remove
     note: >-
-      Barrel-style NiCd RTC backup battery, present on the A500+ (rev 8A)
-      only. Leaks and corrodes the board; remove, and replace with an
-      isolated cell off-board if RTC retention is wanted.
+      Barrel-style NiCd battery backing up the real-time clock, fitted to the
+      A500+ (rev 8A and 8A.1) only. Rev 3, rev 5, rev 6A and rev 7 boards
+      have no battery. It leaks and corrodes the board and its traces.
+      Remove it. If clock retention is wanted, fit a non-rechargeable cell in
+      a holder off the board; do not fit another rechargeable cell in its
+      place.

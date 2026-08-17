@@ -1,31 +1,89 @@
 id: commodore-1541c-mainboard
 machine: commodore-1541c
 board: mainboard
+mains: true
+x2_filter: unknown
 revisions:
-  - unspecified
+  - "250448"
+  - "250448-01"
+  - "251854"
 verification: derived
 sources:
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Independent designator/value list, labelled "Type 3 (PCB Assm:
+      250448/251854)" on that page; no voltage ratings given for this
+      assembly.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/boards.txt
+    note: >-
+      Commodore drive board register composed by William Levak. Assigns
+      assembly 250448-01 to the 1541B and 1541C and describes the gate-array
+      and read/write hybrid changes on it.
+  - url: https://cbmmanuals1.classic-computing.de/pcbd.htm
+    note: >-
+      PCB register listing "251854 REV. A" against the VC 1541 C.
   - url: https://www.lemon64.com/forum/viewtopic.php?t=67398
     note: >-
-      Forum thread specifically about the 1541C's C22 capacitor, confirming
-      value, voltage, and approximate physical size; single-sourced, not
-      cross-checked against a second independent source.
+      Forum thread specifically about the 1541C's C22 position, giving
+      47 uF at 16 V.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/parts.txt
+    note: >-
+      Commodore drive parts list composed by William Levak. Gives the
+      Newtronics D500 as the 1541B/1541C mechanism and the 251853 read/write
+      hybrid as specific to those two drives.
 notes:
   - >-
-    This is not a full capacitor list. It records the one 1541C-specific
-    position that is known; every other position on the board is an open
-    question. The assembly or revision number this position belongs to is
-    not known either, hence "unspecified".
+    This PCB carries the drive's mains-fed supply section on the same board as
+    the logic: the line switch and transformer primary, the rectifiers, and
+    the large axial reservoir cans. Treat the board as live whenever the drive
+    is plugged in, and remember that C7 and C8 stay charged after it is
+    switched off - short them through a resistor before working on the board.
   - >-
-    The complete capacitor count, designators and values for this mainboard
-    are unknown, as is which of the several 1541C board revisions each
-    position belongs to.
+    This assembly spreads the 47 uF value across four designators, where the
+    1541 long boards use two. Both large reservoir capacitors keep separate
+    positions.
+  - >-
+    Voltages on the 1 uF and the two axial positions follow the equivalent
+    positions on the 1541 long boards, which carry the same nominal values on
+    the same rails. The factory ratings for this assembly are not published.
 capacitors:
   - designators:
+      - C1
+      - C2
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_unknown: true
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C4
+      - C6
+      - C13
       - C22
     type: electrolytic-radial
     capacitance_uf: 47
-    voltage_v: 16
-    quantity: 1
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 4
     series: panasonic-fr
-    verification: derived
+  - designators:
+      - C7
+    type: electrolytic-axial
+    capacitance_uf: 4700
+    voltage_v: 16
+    original_voltage_unknown: true
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Main supply reservoir capacitor. Holds a charge after power-off.
+  - designators:
+      - C8
+    type: electrolytic-axial
+    capacitance_uf: 6800
+    voltage_v: 25
+    original_voltage_unknown: true
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Second supply reservoir capacitor. Holds a charge after power-off.

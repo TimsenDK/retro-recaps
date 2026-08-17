@@ -36,6 +36,7 @@
                 <td>{{ series.type_label }}</td>
                 <td class="value">
                     {% if series.temperature_c %}{{ series.temperature_c }} °C{% endif %}
+                    {% if series.voltage_range %}<span class="was">{{ series.voltage_range }}</span>{% endif %}
                     {% if series.low_esr %}<span class="was">low ESR</span>{% endif %}
                 </td>
                 <td>{% if series.note %}<span class="note">{{ series.note }}</span>{% endif %}</td>

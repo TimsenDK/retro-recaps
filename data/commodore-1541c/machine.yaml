@@ -1,19 +1,31 @@
 id: commodore-1541c
 name: Commodore 1541C
 family: commodore-drive
+aliases:
+  - VC 1541 C
+  - 1541-C
+  - 1541B
 board_order:
   - mainboard
+  - analog
 notes:
   - >-
     The 1541C keeps an internal linear power supply, unlike the later
     1541-II, which moved to an external brick. The internal supplies in the
     1541 and 1541C ran hot, which is what prompted that redesign.
   - >-
-    The 1541C mainboard is a distinct, cost-reduced shortboard layout, not
-    the 1541 longboard in a new case. Its reference-designator numbering
-    does not match any of the 1541 longboard assembly groups. Do not carry
-    the 1541 longboard's capacitor list over to this machine.
+    The 1541C mainboard is a cost-reduced shortboard, assembly 250448-01 with
+    PCB 251854 rev A, in which a 40/42-pin gate array, a 20-pin gate array and
+    a read/write hybrid replace much of the earlier discrete logic. The same
+    board is fitted to the 1541B, which is the same drive in a 1541-style
+    case. Its designator numbering does not match the 1541 long boards, and
+    the longboard capacitor lists do not apply to it.
   - >-
-    No full capacitor list for the 1541C mainboard is known. The board has
-    to be counted, or a schematic or parts list found, before this entry can
-    be completed.
+    The 1541C is the only 1541 with a photo-sensor for track zero, and it
+    shipped in an off-white case with a Newtronics D500 mechanism, so it also
+    carries a Newtronics motor speed control PCB.
+  - >-
+    Two Newtronics motor control PCB builds exist, one with seven capacitors
+    and one with four. Which of them a given 1541C carries is not established
+    from any published record - count the positions on the board and use the
+    matching list.

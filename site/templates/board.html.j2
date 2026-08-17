@@ -26,15 +26,15 @@
 
 {% with hazards = board.hazards %}{% include "_hazards.html.j2" %}{% endwith %}
 
+{% with batteries = board.batteries, scope = 'board' %}{% include "_batteries.html.j2" %}{% endwith %}
+
 {% if board.is_empty %}
 <section class="open-question">
     <h2>Open question — nothing to order yet</h2>
     <p>{{ board.open_question }}</p>
     {% if board.notes %}
     <p><strong>What is known about this board:</strong></p>
-    <ul class="notes">
-        {% for note in board.notes %}<li>{{ note }}</li>{% endfor %}
-    </ul>
+    {% with notes = board.linked_notes %}{% include "_notes.html.j2" %}{% endwith %}
     {% endif %}
     <p class="no-print">
         <a href="{{ contribute_url }}">How to contribute a count</a>
@@ -111,9 +111,7 @@
 
 {% if board.notes and not board.is_empty %}
 <h2>Notes on this board</h2>
-<ul class="notes">
-    {% for note in board.notes %}<li>{{ note }}</li>{% endfor %}
-</ul>
+{% with notes = board.linked_notes %}{% include "_notes.html.j2" %}{% endwith %}
 {% endif %}
 
 <h2>Sources</h2>

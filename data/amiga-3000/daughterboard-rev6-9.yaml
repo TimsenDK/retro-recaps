@@ -9,13 +9,16 @@ revisions:
 verification: verified
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
-    note: Daughterboard section of the mainboard cap list blog, cited by the handover.
+    note: Daughterboard section of the mainboard capacitor list.
   - url: https://forum.amiga.org/index.php?topic=64983.0
     note: >-
       Independent physical reading of "A3000 DAUGHTER BD REV 7/01", quoting
       original manufacturer part markings per designator.
 notes:
   - Through-hole (radial and axial), not SMD.
+  - >-
+    Daughterboard revisions 3.0 and 5.0 also exist and are not covered by
+    this list.
   - >-
     C600-C602 are 220 uF, originally 16 V. C603's original rating is
     unsettled - it is documented both as 16 V and as 50 V - so it is listed

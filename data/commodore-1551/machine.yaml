@@ -1,10 +1,21 @@
 id: commodore-1551
 name: Commodore 1551
 family: commodore-drive
+aliases:
+  - SFS 481
 board_order:
   - mainboard
+  - daughterboard
 notes:
   - >-
-    The 1551 has an internal power supply: the regulators are mounted on the
-    single main PCB.
+    The 1551 has an internal power supply: the transformer, the two bridge
+    rectifiers and both regulators sit on the single main PCB, which therefore
+    carries mains voltage alongside the logic.
+  - >-
+    The drive is in two parts. The main PCB is inside the drive case; a second
+    small PCB, the interface paddle, sits on the end of the drive cable and
+    plugs into the computer's cartridge port. Both are covered here.
   - The 1551 is not capacitor-equivalent to the 1541; see mainboard.yaml.
+  - >-
+    100-120 V and 220-240 V versions were sold. What differs between them
+    beyond the transformer is not established.

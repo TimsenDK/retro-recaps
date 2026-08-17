@@ -3,12 +3,16 @@ machine: amiga-500
 board: mainboard
 revisions:
   - 6A
+  - "7"
 verification: verified
 sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
+  - url: https://archive.org/stream/system-schematics-a-500-revisions-5-6a-7/System%20Schematics%20A500%20Revisions%205%2C%206A%2C%207_djvu.txt
     note: >-
-      Rev 6/6A capacitor list with reference designators (the source the
-      project handover cites for these revisions).
+      Commodore system schematics and parts list, "PCB ASSEMBLY #312510,
+      AMIGA A500, REV6A/7" - one list covering both revisions, with the
+      factory voltage ratings.
+  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
+    note: Rev 6/6A capacitor list with reference designators.
   - url: https://shred.zone/en/retro/amiga-500-restauration-part-2/
     note: >-
       Independent rev 6A restoration write-up. Matches designators and
@@ -20,6 +24,18 @@ sources:
       giving original (pre-recap) voltages and package sizes for rev 6A
       positions, e.g. C401/C402 at 3300 uF 10 V, 24x13 mm.
 notes:
+  - >-
+    Rev 7 carries the same capacitor complement as rev 6A. Commodore gives
+    the two revisions one shared parts list and no separate rev 7 table.
+  - >-
+    This board differs from rev 3 and rev 5 in the power section: C307 is a
+    470 uF position here where it is 100 uF on the earlier boards, there are
+    six 100 uF positions instead of two, and two 47 uF instead of six. A
+    rev 3 or rev 5 kit is not a substitute for a rev 6A one.
+  - >-
+    Assembly number 312510 is printed on rev 3, rev 5, rev 6A and rev 7
+    boards alike, so it does not identify the revision. The revision is
+    silkscreened separately.
   - C401 and C402 must not exceed 24 mm in height because of the shield.
 capacitors:
   - designators:
@@ -30,6 +46,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 50
+    original_voltage_v: 35
     quantity: 4
     series: panasonic-fr
   - designators:
@@ -40,11 +57,16 @@ capacitors:
     voltage_v: 50
     quantity: 2
     series: panasonic-fr
+    note: >-
+      The factory rating on this pair is documented inconsistently as 16 V,
+      35 V and 50 V, so none is asserted here. 50 V is safe under every
+      reading.
   - designators:
       - C307
     type: electrolytic-radial
     capacitance_uf: 470
     voltage_v: 25
+    original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
   - designators:

@@ -1,0 +1,103 @@
+id: commodore-128dcr-mainboard-250477
+machine: commodore-128dcr
+board: mainboard
+mains: false
+revisions:
+  - "250477"
+verification: verified
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Designator-level list headed "250477 (Commodore 128DCR)", 13
+      positions, with C140 and C141 annotated NP.
+  - url: https://hd.retrorewind.ca/commodore/c128/assy-250477
+    note: >-
+      Independent designator-level list for ASSY 250477, matching all 13
+      positions and voltages, and additionally giving the package of each
+      position and describing C140/C141 as "Radial (Non-Polar)".
+notes:
+  - >-
+    This is the metal-case C128DCR mainboard. Its designator scheme overlaps
+    the flat C128's ASSY 310379 numbering but the values behind those
+    numbers differ - C69, C85 and C92 are 25 V here against 16 V on 310379,
+    C88 is a 1000 uF axial that 310379 does not have, and C35, C100, C109,
+    C115, C140 and C141 do not exist on 310379 at all. Do not carry a C128
+    list over to this board.
+  - >-
+    C140 and C141 are non-polarised (bipolar) parts, marked NP on the board.
+    A polarised electrolytic must not be fitted in either position.
+  - >-
+    C88 and C100 are axial cans; the remaining positions are radial.
+capacitors:
+  - designators:
+      - C35
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C61
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C63
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 16
+    original_voltage_v: 6.3
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C69
+      - C85
+      - C92
+      - C109
+      - C115
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 5
+    series: panasonic-fr
+  - designators:
+      - C88
+    type: electrolytic-axial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C91
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C100
+    type: electrolytic-axial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+  - designators:
+      - C140
+      - C141
+    type: bipolar
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 2
+    series: nichicon-ues
+    note: >-
+      Non-polarised, marked NP on the board. Fit a bipolar part, not a
+      polarised electrolytic.

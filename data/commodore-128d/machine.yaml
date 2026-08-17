@@ -1,17 +1,28 @@
 id: commodore-128d
 name: Commodore 128D
 family: commodore-8bit
+aliases:
+  - C128D
+  - C-128D
+  - Commodore 128D
 board_order:
   - mainboard
   - psu
 notes:
   - >-
-    This is the plastic-case C128D with a detachable keyboard and internal
-    power supply, not the later metal-case C128DCR ("cost-reduced"), which
-    uses a different mainboard and a different internal PSU. Do not merge
-    data between the two; if C128DCR data is added, it belongs to a separate
-    machine id.
+    This is the plastic-case C128D with a detachable keyboard and an
+    internal power supply. The later metal-case C128DCR ("cost-reduced")
+    carries a different mainboard and a different internal supply and is a
+    separate machine here; see commodore-128dcr. Tell them apart by the
+    case: plastic with a carrying handle is this machine, sheet metal is the
+    DCR.
   - >-
-    The 128D has a built-in 1571 disk drive on its own board. Recapping that
-    drive is treated as out of scope for this machine entry; see the drive
-    family's own data if present, rather than duplicating it here.
+    The internal supply is not one design. This entry covers the 220 V PAL
+    unit, part 310639-02; separate German-market and Japanese-market supply
+    schematics exist for this machine. A unit that does not match psu.yaml
+    position for position is not necessarily mis-identified - read the part
+    number on the supply.
+  - >-
+    The 128D has a built-in 1571 disk drive on its own board, which is not
+    covered by this entry and has no data of its own here yet. Its
+    capacitors are not included in this machine's parts count.

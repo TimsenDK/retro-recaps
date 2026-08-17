@@ -9,14 +9,31 @@ board_order:
   - psu
 notes:
   - >-
-    Two regional variants exist and are documented as separate boards -
-    NTSC/110V (Rev A mainboard, with a separate WCS daughterboard) and
-    PAL/240V (WCS integrated onto the mainboard, no separate daughterboard).
-    Use the matching *-ntsc.yaml or *-pal.yaml files only; do not mix
-    designators or capacitor values across variants.
+    Two mainboard builds exist and are recorded as separate files. On the
+    NTSC board the Writable Control Store sits on a piggyback daughterboard.
+    On the PAL board the WCS is on the mainboard itself and there is no
+    daughterboard.
+  - >-
+    Which build a machine has is not the same question as which mains
+    voltage or which Agnus it has. Early European machines are NTSC boards
+    fitted with a 220 V supply and a PAL Agnus, and Commodore left the NTSC
+    oscillator in place. Such a machine needs the NTSC mainboard list, the
+    daughterboard list and the 240 V supply list together.
+  - >-
+    Identify the board before choosing a list. A machine with a piggyback
+    daughterboard over the WCS socket has an NTSC mainboard, whatever region
+    it was sold in. A true PAL mainboard has no daughterboard and carries a
+    4.433619 MHz colour crystal that the NTSC board does not.
   - >-
     The PAL mainboard's capacitor values are known but its reference
     designators are not; see mainboard-pal.yaml.
   - >-
-    The PSU differs between the NTSC/110V and PAL/240V units, most notably
-    in the primary-side bulk capacitor; see psu-ntsc.yaml and psu-pal.yaml.
+    The supply differs between the 110 V and 240 V units, most notably in
+    the primary-side bulk capacitor; see psu-ntsc.yaml and psu-pal.yaml.
+    Both are mains-carrying.
+  - >-
+    A third supply model was also fitted: a Viking 130569SXD, built by
+    Shindengen on a PCB marked P-850481, which is a different unit from the
+    Shindengen CA1000PS/EC covered here. No capacitor list for it has been
+    published, so it has no file. If the label in your machine reads
+    130569SXD, neither supply file describes it.

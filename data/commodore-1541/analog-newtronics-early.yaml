@@ -1,0 +1,73 @@
+id: commodore-1541-analog-newtronics-early
+machine: commodore-1541
+board: analog
+mains: false
+revisions:
+  - newtronics-early
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_1541
+    note: >-
+      Per-mechanism capacitor tables for the motor control PCB. The early
+      Newtronics table lists seven positions, C1 to C8, all at 35 V.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
+    note: >-
+      Commodore 1540/1541 Disk Drive Service Manual, November 1985
+      (PN 314002-01). States that the Newtronics motor speed PCB is
+      electronically the same as the Alps one with some discrete components
+      integrated, and gives the spindle-motor circuit theory for both.
+  - url: https://www.retroleum.co.uk/1541capacitors
+    note: >-
+      Replacement pack covering the motor control PCB; its contents span the
+      Alps and both Newtronics variants together rather than one board.
+notes:
+  - >-
+    Low-voltage motor speed control PCB mounted on a Newtronics/Mitsumi D500
+    mechanism. It runs from the drive's 12 V rail and carries no mains
+    voltage.
+  - >-
+    This is the seven-capacitor build. A Newtronics motor control PCB with
+    four capacitors is the later build and carries a different set; count the
+    positions on the board to tell them apart.
+  - >-
+    A Newtronics mechanism is identified by its flipper-type door; an Alps
+    mechanism has a push-down door and a different motor control PCB.
+  - >-
+    Construction is not established for the small values here. The equivalent
+    0.47 uF and 2.2 uF positions on the Alps board are tantalum.
+capacitors:
+  - designators:
+      - C1
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C2
+      - C3
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 3
+    series: panasonic-fr
+  - designators:
+      - C4
+      - C8
+    type: electrolytic-radial
+    capacitance_uf: 0.47
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C7
+    type: electrolytic-radial
+    capacitance_uf: 2.2
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 1
+    series: panasonic-fr

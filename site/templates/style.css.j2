@@ -249,6 +249,34 @@ h3 {
     font-weight: 700;
 }
 
+/* ---------- battery ---------- */
+
+.battery {
+    margin: 1.25rem 0;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--caution-rule);
+    border-left-width: 8px;
+    border-radius: 0.3rem;
+    background: var(--caution-bg);
+    color: var(--caution-ink);
+}
+
+.battery h2 {
+    margin: 0 0 0.35rem;
+    border: 0;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+.battery ul.notes {
+    margin: 0;
+}
+
+.battery .note {
+    display: block;
+    margin-top: 0.5rem;
+}
+
 /* ---------- open question ---------- */
 
 .open-question {
@@ -514,13 +542,44 @@ footer.site {
     tr,
     .verdict,
     .hazard,
+    .battery,
     .open-question {
         page-break-inside: avoid;
     }
 
     .verdict,
-    .hazard {
+    .hazard,
+    .battery {
         border: 2px solid #000;
+    }
+
+    /* A CRT analog board that carries mains prints two hazard panels, above
+       a verdict panel and sometimes a battery panel. Uncompressed, that is
+       most of a sheet before the capacitor table starts. These panels stay
+       bordered and unbroken; they just stop eating the first page. */
+    .verdict,
+    .hazard,
+    .battery {
+        margin: 0.5rem 0;
+        padding: 0.45rem 0.6rem;
+        font-size: 9.5pt;
+    }
+
+    .verdict h2,
+    .hazard h2,
+    .battery h2 {
+        font-size: 10pt;
+    }
+
+    .hazard p,
+    .battery p {
+        margin: 0 0 0.25rem;
+    }
+
+    .hazard p:last-child,
+    .battery p:last-child,
+    .battery ul.notes {
+        margin-bottom: 0;
     }
 
     .verdict h2::before,

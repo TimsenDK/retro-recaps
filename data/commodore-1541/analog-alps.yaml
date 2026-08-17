@@ -1,33 +1,66 @@
 id: commodore-1541-analog-alps
 machine: commodore-1541
 board: analog
+mains: false
 revisions:
   - alps
-verification: derived
+verification: verified
 sources:
+  - url: https://wiki.console5.com/wiki/Commodore_1541
+    note: >-
+      Per-mechanism capacitor tables for the motor control PCB. The Alps table
+      gives C1, C5 and C6 at 10 uF 35 V.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
+    note: >-
+      Commodore 1540/1541 Disk Drive Service Manual, November 1985
+      (PN 314002-01). The Alps drive assembly parts list gives every capacitor
+      on the motor control PCB with its construction and rating, and the
+      spindle-motor circuit theory describes the board.
   - url: https://www.retroleum.co.uk/1541capacitors
     note: >-
-      Independent list of the motor control PCB's capacitor set (3x 10 uF,
-      2x 4.7 uF, 1x 2.2 uF, 1x 1 uF, 2x 0.47 uF, all described as radial);
-      gives no voltage ratings and does not separate Alps from Newtronics
-      mechanism positions.
+      Replacement pack covering the motor control PCB; its contents span the
+      Alps and both Newtronics variants together rather than one board.
 notes:
   - >-
-    This board also carries 4.7 uF, 2.2 uF, 1 uF and 0.47 uF positions. They
-    are not listed here because no voltage rating is known for any of them;
-    only the three 10 uF positions are recorded.
+    Low-voltage motor speed control PCB mounted on the drive mechanism. It
+    runs from the drive's 12 V rail and carries no mains voltage.
   - >-
-    A second, electrically different motor-control board exists for
-    Newtronics/Mitsumi mechanisms, reported to carry four to seven extra
-    capacitors. Its capacitor list is not known. Check which mechanism the
-    drive has.
+    The board also carries C2 (0.0047 uF), C3 (0.033 uF) and C8 (0.068 uF).
+    Those are film/ceramic positions and are out of scope for this list.
+  - >-
+    An Alps mechanism is identified by its push-down door; a Newtronics
+    mechanism has a flipper-type door and a different motor control PCB.
 capacitors:
-  - type: electrolytic-radial
+  - designators:
+      - C1
+      - C5
+      - C6
+    type: electrolytic-radial
     capacitance_uf: 10
-    voltage_v: 25
+    voltage_v: 35
+    original_voltage_v: 35
     quantity: 3
     series: panasonic-fr
+  - designators:
+      - C4
+      - C9
+    type: tantalum
+    capacitance_uf: 0.47
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 2
+    series: kemet-t491
+    verification: derived
+    note: The factory part is a tantalum.
+  - designators:
+      - C7
+    type: tantalum
+    capacitance_uf: 2.2
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: kemet-t491
     verification: derived
     note: >-
-      Alps-mechanism motor control PCB only. The original part is axial; a
-      radial replacement is used here. Reference designators are not known.
+      The factory part is a tantalum rated 16 V, which is a thin margin on a
+      12 V rail; 25 V is fitted here.

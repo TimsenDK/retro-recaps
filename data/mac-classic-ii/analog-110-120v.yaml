@@ -1,0 +1,173 @@
+id: mac-classic-ii-analog-110-120v
+machine: mac-classic-ii
+board: analog
+mains: true
+x2_filter: unknown
+revisions:
+  - 630-0525
+verification: verified
+sources:
+  - url: https://wiki.console5.com/wiki/Mac_Analog_Board:_630-0525
+    note: >-
+      Full designator-level table for the 630-0525 analog board, all 25
+      electrolytic positions with factory ratings.
+  - url: https://github.com/daanvdl/Classic-Analogboard-Late
+    note: >-
+      Schematic and PCB recreation of the same 820-0525-A / 630-0525 board,
+      with a full bill of materials and a configuration table giving the
+      component differences between the 110 V and 240 V builds.
+notes:
+  - >-
+    This is the 100-120 V build of the late Classic II analog board. CP1 is
+    rated 250 V and CP13 is populated with a capacitor. On the 220-240 V
+    build of the same PCB, CP1 is rated 400 V and CP13 is a plain wire link;
+    that build is tracked separately.
+  - >-
+    JP1 and JP2 select the mains topology. A wire link at JP1 and none at JP2
+    is the voltage-doubler wiring used at 110 V, which is what this
+    population expects. If the board in front of you has the link at JP2
+    instead, it has been converted to 220-240 V full-bridge operation and the
+    250 V parts recorded here are not correct for it.
+  - >-
+    This board is the machine's power supply as well as its video drive. The
+    primary side holds a lethal charge after the machine is unplugged, and
+    the CRT anode holds one independently of that.
+  - >-
+    CP16 is a 0.22 uF 250 V film capacitor on the mains input. Its safety
+    class is not established, so it is not recorded as an X-class position
+    below. Treat it as a safety capacitor until proven otherwise.
+  - >-
+    CF5 (220 nF/63 V), CF6 (100 nF/63 V) and CF7 (180 nF/63 V) are small
+    film capacitors, outside the electrolytic recap scope tracked here, and
+    are not listed as positions below.
+  - Recap logic board before analog board.
+capacitors:
+  - designators: [CF1, CP4]
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+  - designators: [CF2]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CF3, CP12]
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators: [CF4, CP9, CP10]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
+  - designators: [CL1]
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CL2]
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-ucy
+    note: High-voltage position on the primary side, not on a logic rail.
+  - designators: [CL3, CP5, CP34, CP37]
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 4
+    series: panasonic-fr
+  - designators: [CL11]
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP1]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Primary bulk reservoir. It holds a lethal charge after the machine is
+      unplugged and must be discharged before any other work on the board.
+      250 V is correct only for the 110-120 V population; see the board
+      notes on JP1 and JP2.
+  - designators: [CP2]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP3]
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP6, CP36]
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    series: panasonic-fr
+  - designators: [CP7]
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP8]
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP11]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP13]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Second half of the voltage-doubler pair with CP1, populated only on the
+      110-120 V build. It holds a lethal charge after the machine is
+      unplugged. Replace it together with CP1, with an identical part.
+  - designators: [CV2]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr

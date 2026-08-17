@@ -2,15 +2,33 @@ id: amiga-1000-mainboard-ntsc
 machine: amiga-1000
 board: mainboard
 revisions:
-  - Rev A
+  - NTSC
 verification: verified
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
-    note: Full mainboard and WCS daughterboard list with reference designators, NTSC.
+    note: >-
+      Mainboard and WCS daughterboard designator list. Carries neither C92
+      nor C94, and states no revision or region.
   - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
-    note: Independent confirmation of the same designators and values.
+    note: >-
+      Independent confirmation of the same designators and values, and the
+      only retrieved list carrying C92 and recording C94 as empty. States no
+      revision or region.
 notes:
+  - >-
+    This is the list for the board that carries the WCS on a piggyback
+    daughterboard - the NTSC build, including the early European machines
+    fitted with a PAL Agnus and a 240 V supply. Those machines need this
+    list and the daughterboard list, not the PAL mainboard list.
   - C94 is an unpopulated position on this board; no capacitor is fitted there.
+  - >-
+    C92 is not fitted on every mainboard. Which boards carry it is not
+    established, so count the position on the board rather than assuming the
+    total.
+  - >-
+    No published list states which mainboard revision it describes, so the
+    designators here are scoped to the NTSC build and not to a revision
+    within it.
 capacitors:
   - designators:
       - C48
@@ -34,7 +52,8 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    note: Not present on all mainboard revisions.
+    verification: derived
+    note: Not fitted on every mainboard; check the position on the board.
   - designators:
       - C78
       - C79

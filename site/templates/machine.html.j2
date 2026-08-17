@@ -43,26 +43,10 @@
 <p>No board files exist for this machine yet.</p>
 {% endif %}
 
-{% if machine.batteries %}
-<h2>Batteries</h2>
-<ul class="notes">
-    {% for battery in machine.batteries %}
-    <li>
-        <strong>{{ battery.kind | upper }} — {{ battery.action }}.</strong>
-        {% if battery.note %}{{ battery.note }}{% endif %}
-        {% if battery.action == 'remove' %}
-        A leaking barrel battery destroys traces; take it off the board before
-        anything else.
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% with batteries = machine.batteries, scope = 'machine' %}{% include "_batteries.html.j2" %}{% endwith %}
 
 {% if machine.notes %}
 <h2>Notes on this machine</h2>
-<ul class="notes">
-    {% for note in machine.notes %}<li>{{ note }}</li>{% endfor %}
-</ul>
+{% with notes = machine.linked_notes %}{% include "_notes.html.j2" %}{% endwith %}
 {% endif %}
 {% endblock %}

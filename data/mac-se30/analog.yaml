@@ -1,26 +1,74 @@
 id: mac-se30-analog
 machine: mac-se30
 board: analog
+mains: false
 revisions:
-  - all known
+  - 630-0147
 verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Mac_Analog_Board:_630-0147
+    note: Full designator-level table for the 630-0147 analog board, twelve positions.
+  - url: https://console5.com/store/macintosh-se-se-30-analog-pcb-cap-kit-630-0147-c.html
+    note: >-
+      Kit listing for the same assembly, covering both the SE and the SE/30,
+      and describing C11 and C18 as axial and C15 as a 3.9 uF non-polar
+      low-ESR position.
 notes:
   - >-
-    This list is incomplete. Only four positions are recorded; the board
-    carries several additional small capacitors that are not documented
-    here.
-  - >-
-    C15's original rating is documented inconsistently: as a 3.9 uF 35 V
-    bipolar electrolytic, and as a 3.9 uF 250-450 VDC part, which would make
-    it a film capacitor rather than a bipolar electrolytic. The replacement
-    recorded here is a 3.9 uF 50 V bipolar.
+    Mains does not reach this board. It runs from the low-voltage rails of
+    the separate power supply module and generates the CRT drive, so the
+    CRT anode and the flyback remain lethal after the machine is unplugged.
   - >-
     This analog board design is shared with the Macintosh SE, whose copy of
     it is tracked under that machine.
   - >-
-    C11 also exists on the logic board and in the Sony PSU with different
-    values - this designator is per-board, not global to the machine.
+    Designators repeat across the boards of this machine with different
+    values. C2, C7, C9, C11 and C13 also exist on the logic board; C19 and
+    C24 also exist in the Astec power supply. Never carry a designator
+    between boards.
 capacitors:
+  - designators: [C2, C7, C22, C25]
+    type: electrolytic-radial
+    capacitance_uf: 100
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 4
+    series: panasonic-fr
+  - designators: [C9]
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [C11]
+    type: electrolytic-axial
+    capacitance_uf: 33
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    note: >-
+      Axial position. A radial part fits only if its leads are formed to the
+      original hole spacing.
+  - designators: [C13, C24]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators: [C14]
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 16
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      Largest can on the board. The factory rating is kept because a
+      higher-voltage part in this capacitance does not fit the original
+      footprint.
   - designators: [C15]
     type: bipolar
     capacitance_uf: 3.9
@@ -28,33 +76,27 @@ capacitors:
     original_voltage_v: 35
     quantity: 1
     series: nichicon-ues
-    verification: derived
     note: >-
-      Non-polarised. Known failure point causing horizontal collapse. The
-      original rating is documented inconsistently - see board notes.
-  - designators: [C11]
-    type: electrolytic-axial
-    capacitance_uf: 33
-    voltage_v: 25
-    quantity: 1
-    series: vishay-021-asm
-    verification: derived
-    note: >-
-      Analog board position - do not confuse with the C11 positions on the
-      logic board or in the PSU, which are different components.
+      Non-polarised, low ESR. Known failure point causing horizontal
+      collapse. Some revision-D boards carry a film capacitor in this
+      position from the factory, which does not need replacing.
   - designators: [C18]
     type: electrolytic-axial
     capacitance_uf: 22
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: vishay-021-asm
+    note: >-
+      Axial position. A radial part fits only if its leads are formed to the
+      original hole spacing.
   - designators: [C19]
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 160
+    original_voltage_v: 160
     quantity: 1
-    series: panasonic-fr
-    verification: derived
+    series: nichicon-ucy
     note: >-
-      Analog board position - do not confuse with the C19 position in the
-      Sony PSU, which is a different component (220 uF/25 V).
+      Highest-voltage position on this board; it sits on the horizontal
+      sweep supply, not on a logic rail.

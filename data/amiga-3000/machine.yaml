@@ -4,6 +4,7 @@ family: amiga
 aliases:
   - A3000
   - A3000D
+  - Amiga 3000D
 board_order:
   - mainboard
   - daughterboard
@@ -16,9 +17,22 @@ notes:
     The A3000T (tower) uses a different board and is explicitly out of scope
     for this dataset.
   - >-
+    The Zorro III, ISA and video slots sit on a vertical daughterboard whose
+    revision is numbered separately from the mainboard's. Revisions 3.0 and
+    5.0 of that daughterboard exist and are not covered here; the
+    daughterboard file describes the later revisions.
+  - >-
     The A3000 mainboard and daughterboard use through-hole electrolytics,
     not SMD.
+  - >-
+    The machine takes an internal LiteOn switching supply, PE-5161-1 in
+    240 V regions and PB-5161-1 in 120 V ones. It carries mains and is
+    recorded as a separate board; see the psu file.
 batteries:
   - kind: nicd
     action: remove
-    note: NiCd barrel battery on the mainboard. Remove and do not replace.
+    note: >-
+      Barrel-style NiCd battery on the mainboard, backing up the real-time
+      clock. It leaks and corrodes the board and its traces. Remove it. If
+      clock retention is wanted, fit a non-rechargeable cell in a holder off
+      the board; do not fit another rechargeable cell in its place.

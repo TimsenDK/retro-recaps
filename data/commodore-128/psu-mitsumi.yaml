@@ -1,0 +1,71 @@
+id: commodore-128-psu-mitsumi
+machine: commodore-128
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - Mitsumi
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Designator-level list under the heading "Power Supply: Mitsumi": C3
+      3300uF 25v, C4 3300uF 25v, C7 4700uF 10v ("2200uF 10v on some - larger
+      value works without issue"), C9 220uF 10v, C10 10uF 50v.
+  - url: https://hobbytronics.home.blog/2019/02/23/commodore-128-power-supply-recap/
+    note: >-
+      Recap of a Mitsumi-built C128 brick, internal board marked 252449-01,
+      external label 310416-05. Reports two electrolytics in that unit and
+      gives no values.
+notes:
+  - >-
+    This is the Mitsumi-built C128 external brick. Three externally similar
+    C128 bricks exist - Mitsumi, Ismet and Dee Van - and they do not share a
+    capacitor complement or a designator scheme. Open the case and read the
+    board before ordering parts.
+  - >-
+    Not every Mitsumi-built unit carries all five positions; examples with
+    only two electrolytics are reported. Count what is on the board.
+  - >-
+    Which internal board goes with which external part number is not
+    established. The unit is mains-fed: treat any X- or Y-class film
+    capacitor found across the mains input as a replace-on-sight item
+    whether or not it appears in a list.
+  - >-
+    C7 is 4700 uF on some units and 2200 uF on others; the larger value is
+    used here and fits the same position.
+capacitors:
+  - designators:
+      - C3
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C7
+    type: electrolytic-radial
+    capacitance_uf: 4700
+    voltage_v: 16
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+    note: 2200 uF is fitted at this position on some units.
+  - designators:
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 16
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C10
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr

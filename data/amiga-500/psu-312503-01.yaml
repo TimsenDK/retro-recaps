@@ -1,0 +1,111 @@
+id: amiga-500-psu-312503-01
+machine: amiga-500
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - "312503-01"
+verification: derived
+sources:
+  - url: https://jeremykline.us/2026/02/14/amiga-capacitor-lists/
+    note: >-
+      Designator-level list read off a DVE-built brick whose PCB is marked
+      "DSP-A500 Rev2", carrying the part number 312503-01.
+notes:
+  - >-
+    Identify the brick by the PCB inside it, not by the number on the case.
+    This list describes the DVE-built board silkscreened DSP-A500 Rev2,
+    whose electrolytics are numbered C6, C13, C15, C16, C18 and C20 to C25.
+    If the board in your unit does not carry that marking and that
+    designator range, this list does not describe it - see the other A500
+    supply file.
+  - >-
+    This is a mains-carrying supply in a sealed case. The primary side holds
+    a lethal charge after the unit is unplugged; discharge it before
+    touching anything on that side of the transformer.
+  - >-
+    The mains input filter is not inventoried. Film capacitors on the mains
+    side are not covered by the list below and no source establishes what is
+    fitted. Replace any RIFA-marked film found at the mains input
+    unconditionally, regardless of its rating.
+capacitors:
+  - designators:
+      - C6
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Primary-side bulk capacitor, on the mains side of the transformer. A
+      250 V part suits a 110-120 V input; a brick built for 220-240 V mains
+      needs 400 V or more at this position. Check the case label and the
+      part in hand before ordering, and check the footprint - the package is
+      not recorded.
+  - designators:
+      - C13
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C15
+      - C16
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C18
+    type: electrolytic-radial
+    capacitance_uf: 0.47
+    voltage_v: 50
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C20
+      - C21
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C22
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C23
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 50
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C24
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C25
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr

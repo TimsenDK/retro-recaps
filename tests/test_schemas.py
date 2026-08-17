@@ -138,3 +138,118 @@ def test_quantity_must_be_positive() -> None:
     document = {**VALID_BOARD}
     document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "quantity": 0}]
     assert schema_issues(document, "board", "a.yaml")
+
+
+# --------------------------------------------------------------------------
+# What the board declares it carries
+# --------------------------------------------------------------------------
+
+
+def test_mains_is_accepted_either_way() -> None:
+    for value in (True, False):
+        assert schema_issues({**VALID_BOARD, "mains": value}, "board", "a.yaml") == []
+
+
+def test_mains_must_be_a_boolean() -> None:
+    issues = schema_issues({**VALID_BOARD, "mains": "yes"}, "board", "a.yaml")
+    assert [issue.location for issue in issues] == ["a.yaml:mains"]
+
+
+def test_every_x2_filter_state_is_accepted() -> None:
+    for value in ("listed", "absent", "unknown"):
+        document = {**VALID_BOARD, "mains": True, "x2_filter": value}
+        assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_an_invented_x2_filter_state_is_rejected() -> None:
+    """'probably' is exactly the hedge this field exists to stop."""
+    document = {**VALID_BOARD, "mains": True, "x2_filter": "probably"}
+    issues = schema_issues(document, "board", "a.yaml")
+    assert [issue.location for issue in issues] == ["a.yaml:x2_filter"]
+
+
+# --------------------------------------------------------------------------
+# The two 'the record is silent' markers
+# --------------------------------------------------------------------------
+
+
+def position(**overrides) -> dict:
+    return {**VALID_BOARD["capacitors"][0], **overrides}
+
+
+def board_with(capacitor: dict) -> dict:
+    return {**VALID_BOARD, "capacitors": [capacitor]}
+
+
+def test_designators_unknown_is_accepted_on_its_own() -> None:
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key != "designators"
+    }
+    capacitor["designators_unknown"] = True
+    assert schema_issues(board_with(capacitor), "board", "a.yaml") == []
+
+
+def test_designators_unknown_beside_designators_is_rejected() -> None:
+    """Naming the designators and declaring them unknown cannot both be true."""
+    capacitor = position(designators_unknown=True)
+    assert schema_issues(board_with(capacitor), "board", "a.yaml")
+
+
+def test_designators_unknown_must_be_true() -> None:
+    """`false` would mean 'known, but not written down', which is the warning."""
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key != "designators"
+    }
+    capacitor["designators_unknown"] = False
+    assert schema_issues(board_with(capacitor), "board", "a.yaml")
+
+
+def test_original_voltage_unknown_is_accepted_on_its_own() -> None:
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key != "original_voltage_v"
+    }
+    capacitor["original_voltage_unknown"] = True
+    assert schema_issues(board_with(capacitor), "board", "a.yaml") == []
+
+
+def test_original_voltage_unknown_beside_the_rating_is_rejected() -> None:
+    capacitor = position(original_voltage_unknown=True)
+    assert schema_issues(board_with(capacitor), "board", "a.yaml")
+
+
+def test_original_voltage_unknown_must_be_true() -> None:
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key != "original_voltage_v"
+    }
+    capacitor["original_voltage_unknown"] = False
+    assert schema_issues(board_with(capacitor), "board", "a.yaml")
+
+
+def test_the_two_markers_may_be_declared_together() -> None:
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key not in {"designators", "original_voltage_v"}
+    }
+    capacitor["designators_unknown"] = True
+    capacitor["original_voltage_unknown"] = True
+    assert schema_issues(board_with(capacitor), "board", "a.yaml") == []
+
+
+def test_a_film_y2_position_is_a_legal_type() -> None:
+    """The RIFA parts in the Macintosh supplies are Y-class, not X2."""
+    capacitor = {
+        key: value
+        for key, value in VALID_BOARD["capacitors"][0].items()
+        if key != "series"
+    }
+    capacitor |= {"type": "film-y2", "capacitance_uf": 0.0047, "voltage_v": 250}
+    assert schema_issues(board_with(capacitor), "board", "a.yaml") == []

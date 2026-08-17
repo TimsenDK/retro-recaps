@@ -14,6 +14,30 @@ from tools.resolve import fit_violations, same_capacitance
 X2_MINIMUM_VOLTAGE_V = 275
 """A film-X2 capacitor sits across live and neutral. 275 VAC is the floor."""
 
+Y2_MINIMUM_VOLTAGE_V = 250
+"""A film-Y2 capacitor bridges the isolation barrier, line to earth.
+
+Set from observed practice rather than read off the standard: IEC 60384-14's
+own lower bound for the Y2 subclass is 150 V, which is far too permissive for
+a 230 V line-to-earth position, and the normative table is behind a paywall.
+Every currently stocked Y2 part surveyed carries 250 or 300 VAC. Y1 parts are
+rated above Y2, so one floor covers both classes."""
+
+MAINS_FILM_TYPES = ("film-x2", "film-y2")
+"""The mains-rated film classes. Either satisfies ``x2_filter: listed``: the
+field asks whether the input filter is inventoried, and an all-in-one Mac's
+filter is Y-class across the isolation barrier rather than X-class across the
+line."""
+
+MAINS_DECISION_KINDS = ("psu", "analog")
+"""Board kinds where whether the PCB carries mains must be stated outright.
+Everything else defaults to not-mains, which is why the 1541 longboard
+mainboard - a logic board with the machine's linear supply on it - carries an
+explicit ``mains: true``."""
+
+VERIFICATION_RANK = {"unverified": 0, "derived": 1, "verified": 2}
+"""A position may be less certain than its board, never more."""
+
 _FIT_NOTE_MEASUREMENT_RE = re.compile(r"\b\d+(?:\.\d+)?\s*mm\b", re.IGNORECASE)
 """A number immediately followed by 'mm' as a whole word, e.g. '24 mm'."""
 
@@ -99,8 +123,32 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 break
 
     if not board.sources:
+        # A stub asserts nothing, so it owes nothing. A board that publishes
+        # positions and cites nothing is asking the reader to buy parts on
+        # our word alone, which is exactly what this project exists not to do.
+        if board.capacitors:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "no-sources",
+                    location,
+                    "the board lists capacitor positions but cites no sources; "
+                    "a published position needs a source a reader can retrieve",
+                )
+            )
+        else:
+            issues.append(
+                Issue(WARNING, "no-sources", location, "the board cites no sources")
+            )
+    elif board.verification == "verified" and len(board.sources) < 2:
         issues.append(
-            Issue(WARNING, "no-sources", location, "the board cites no sources")
+            Issue(
+                WARNING,
+                "single-source-verified",
+                location,
+                "verification is 'verified' on a single source; nothing "
+                "corroborates it if that source is wrong or unreadable",
+            )
         )
 
     machine = dataset.machines.get(board.machine)
@@ -147,13 +195,63 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
 
-    if not board.capacitors:
+    # An 'unverified' board with no positions is the stub shape the schema
+    # explicitly licenses: it exists to carry its open questions. Warning
+    # about it is the validator arguing with the schema.
+    if not board.capacitors and board.verification != "unverified":
         issues.append(
             Issue(
                 WARNING,
                 "no-capacitors",
                 location,
                 "the board lists no capacitor positions",
+            )
+        )
+
+    if board.board in MAINS_DECISION_KINDS and board.mains is None:
+        issues.append(
+            Issue(
+                ERROR,
+                "mains-not-declared",
+                location,
+                f"a {board.board!r} board must declare 'mains' either way; the "
+                f"board kind is not a reliable proxy for what the PCB carries",
+            )
+        )
+
+    if board.carries_mains and board.x2_filter is None:
+        issues.append(
+            Issue(
+                WARNING,
+                "x2-filter-not-declared",
+                location,
+                "a mains-carrying board should declare 'x2_filter'; source "
+                "silence about a mains film capacitor is not the same as its "
+                "absence, and RIFA-style parts fail explosively",
+            )
+        )
+
+    if board.x2_filter == "listed" and not any(
+        capacitor.type in MAINS_FILM_TYPES for capacitor in board.capacitors
+    ):
+        issues.append(
+            Issue(
+                ERROR,
+                "x2-filter-listed-but-absent",
+                location,
+                "x2_filter is 'listed' but the board has no mains film position; "
+                "expected a film-x2 or film-y2 entry",
+            )
+        )
+
+    if board.x2_filter is not None and not board.carries_mains:
+        issues.append(
+            Issue(
+                ERROR,
+                "x2-filter-off-mains",
+                location,
+                "x2_filter describes a mains input filter, but this board is "
+                "not declared as mains-carrying",
             )
         )
 
@@ -191,14 +289,18 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
 
-        if capacitor.original_voltage_v is None:
+        if (
+            capacitor.original_voltage_v is None
+            and not capacitor.original_voltage_unknown
+        ):
             issues.append(
                 Issue(
                     WARNING,
                     "no-original-voltage",
                     where,
                     "the position records no original_voltage_v, so the "
-                    "voltage rule cannot be checked here",
+                    "voltage rule cannot be checked here; record the factory "
+                    "rating or declare original_voltage_unknown",
                 )
             )
 
@@ -217,15 +319,32 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                 )
             )
 
-        if not capacitor.designators:
+        if (
+            capacitor.type == "film-y2"
+            and capacitor.voltage_v < Y2_MINIMUM_VOLTAGE_V
+        ):
             issues.append(
                 Issue(
-                    WARNING,
-                    "no-designators",
+                    ERROR,
+                    "y2-voltage-too-low",
                     where,
-                    "the position has no reference designators",
+                    f"{capacitor.voltage_v} V is below the {Y2_MINIMUM_VOLTAGE_V} V "
+                    f"minimum for a film-y2 part; this is a mains-rated position "
+                    f"bridging the isolation barrier",
                 )
             )
+
+        if not capacitor.designators:
+            if not capacitor.designators_unknown:
+                issues.append(
+                    Issue(
+                        WARNING,
+                        "no-designators",
+                        where,
+                        "the position has no reference designators; list them "
+                        "or declare designators_unknown",
+                    )
+                )
         elif len(capacitor.designators) != capacitor.quantity:
             issues.append(
                 Issue(
@@ -234,6 +353,34 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                     where,
                     f"quantity is {capacitor.quantity} but "
                     f"{len(capacitor.designators)} designators are listed",
+                )
+            )
+
+        if capacitor.verification is not None and VERIFICATION_RANK.get(
+            capacitor.verification, 0
+        ) > VERIFICATION_RANK.get(board.verification, 0):
+            issues.append(
+                Issue(
+                    ERROR,
+                    "position-over-verified",
+                    where,
+                    f"the position claims {capacitor.verification!r} on a board "
+                    f"that is only {board.verification!r}; a position may be "
+                    f"less certain than its board, never more",
+                )
+            )
+
+        # Without one of these the site has nothing to recommend, and a
+        # position nobody can buy a part for is usually a position that does
+        # not exist.
+        if capacitor.series is None and capacitor.part is None:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "no-series-or-part",
+                    where,
+                    "the position names neither a series nor a part, so no "
+                    "replacement can be recommended for it",
                 )
             )
 
@@ -256,6 +403,20 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
                         where,
                         f"series {series.id!r} is {series.type}, the position is "
                         f"{capacitor.type}",
+                    )
+                )
+            elif not series.covers(capacitor.voltage_v):
+                # Nothing else catches this: the series exists, it is the right
+                # type, and the position validates - it just sends the reader
+                # to a catalogue page that does not stock the rating.
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "series-voltage-out-of-range",
+                        where,
+                        f"series {series.id!r} is made in {series.voltage_range} "
+                        f"and the position is {capacitor.voltage_v} V; no part "
+                        f"of this series fits it",
                     )
                 )
 
@@ -371,6 +532,16 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                     f"{part.type}",
                 )
             )
+        elif not series.covers(part.voltage_v):
+            issues.append(
+                Issue(
+                    ERROR,
+                    "series-voltage-out-of-range",
+                    f"reference/parts.yaml:{part.id}",
+                    f"series {series.id!r} is made in {series.voltage_range} "
+                    f"and the part is rated {part.voltage_v} V",
+                )
+            )
 
     offered = {
         part_id for entries in dataset.offers.values() for part_id in entries
@@ -405,6 +576,29 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                     "part-without-offer",
                     f"reference/parts.yaml:{part_id}",
                     "no supplier lists a stock number for this part",
+                )
+            )
+
+    # Two board files of one machine and one board kind claiming the same
+    # revision leaves the reader unable to tell which list applies to the
+    # board in front of them.
+    claimed: dict[tuple[str, str, str], list[str]] = {}
+    for board in dataset.boards.values():
+        for revision in board.revisions:
+            key = (board.machine, board.board, revision)
+            claimed.setdefault(key, []).append(_board_location(board))
+    for (machine_id, kind, revision), locations in claimed.items():
+        if len(locations) < 2:
+            continue
+        for location in sorted(locations):
+            issues.append(
+                Issue(
+                    ERROR,
+                    "duplicate-revision",
+                    location,
+                    f"revision {revision!r} of the {machine_id} {kind} is also "
+                    f"claimed by "
+                    + ", ".join(other for other in sorted(locations) if other != location),
                 )
             )
 

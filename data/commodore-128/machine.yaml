@@ -3,6 +3,8 @@ name: Commodore 128
 family: commodore-8bit
 aliases:
   - C128
+  - C-128
+  - Commodore 128
 board_order:
   - mainboard
   - psu
@@ -11,4 +13,13 @@ notes:
     Mainboard ASSY 310379 is documented as two files, rev 6 and rev 7. The
     revisions differ at two positions, C63 and C69, not only at the commonly
     cited C63. See mainboard-rev6.yaml and mainboard-rev7.yaml.
-  - The external PSU brick's capacitor values are unconfirmed; see psu.yaml.
+  - >-
+    Three different external supplies shipped with this machine, built by
+    Mitsumi, Ismet and Dee Van. They look alike from the outside but carry
+    different capacitor complements and different designator schemes - from
+    two electrolytics to five or six. Open the case and read the board
+    before ordering parts, and do not apply one unit's list to another.
+  - >-
+    The external part numbers 310416-01 through -05 and the internal board
+    numbers 252449-01 and 252449-03 both appear on these supplies, but which
+    external number goes with which builder's board is not established.

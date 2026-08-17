@@ -2,35 +2,34 @@ id: mac-se30-logic
 machine: mac-se30
 board: logic
 revisions:
-  - all known
-verification: derived
+  - 820-0260
+verification: verified
 sources:
+  - url: https://wiki.console5.com/wiki/Macintosh_SE
+    note: >-
+      Designator-level table headed "SE/30 Logic Board: 820-0260", giving the
+      full designator-to-value mapping for all thirteen positions.
   - url: https://www.oldsilicon.com/personal-computers/mac-se30/
-    note: Directly retrieved, independent of console5/recapamac (the
-      handover's cited sources). Confirms the same overall structure as the
-      spreadsheet - ten 47 uF/16 V SMD positions, one 1 uF/50 V SMD position
-      (C6), and axial 220 uF/16 V and 470 uF/16 V positions with Vishay part
-      numbers MAL213825221E3 / MAL211835471E3 - but see the caveat below,
-      since its own designator table for the 47 uF group does not agree with the
-      spreadsheet's, and one extraction even listed C2 and C11 (the axial
-      positions) a second time as 47 uF SMD entries. Treated as confirming
-      the value/count structure, not the exact designator-to-value mapping.
+    note: >-
+      Independent teardown of the same board. Confirms the complement -
+      ten 47 uF/16 V, one 1 uF/50 V, one 220 uF/16 V, one 470 uF/16 V - and
+      the +5 V, +/-12 V and sound rails the positions sit on.
 notes:
   - >-
-    The designators on the 47 uF SMD group are unconfirmed. Two different
-    sets are documented for this board - C1, C3, C4, C5, C7, C8, C9, C10,
-    C12 and C13, used here, and a longer set that includes C2 and C11, which
-    are the axial positions elsewhere on the same board. Only the counts and
-    values are settled: ten 47 uF SMD, one 1 uF SMD at C6, one 220 uF axial
-    and one 470 uF axial.
+    The 47 uF and 1 uF positions are surface mount. This project prefers
+    tantalum over wet electrolytic there; the 47 uF positions must be 25 V
+    rated when tantalum.
   - >-
-    Surface mount. This project prefers tantalum over wet electrolytic for
-    Macintosh SMD positions; the 47 uF positions must be 25 V rated when
-    tantalum.
+    C2 and C11 are axial through-hole cans, not surface mount.
   - >-
-    C2 and C11 on this board are axial, not SMD. Both also have
-    same-numbered positions on the analog board and in the Sony PSU with
-    different values - never carry a designator between boards.
+    The electrolyte from these positions creeps under the adjacent ICs and
+    eats traces, so the board is recapped and washed rather than only
+    recapped.
+  - >-
+    Designators repeat across the boards of this machine with different
+    values. C2, C7, C9, C11 and C13 also exist on the analog board; C7 and
+    C8 also exist in the Astec power supply. Never carry a designator
+    between boards.
   - Recap logic board before analog board.
 capacitors:
   - designators: [C1, C3, C4, C5, C7, C8, C9, C10, C12, C13]
@@ -40,30 +39,8 @@ capacitors:
     original_voltage_v: 16
     quantity: 10
     series: kemet-t491
-    verification: derived
     note: >-
-      47 uF SMD positions must be 25 V rated when using tantalum. The
-      designators on this group are unconfirmed - see board notes.
-  - designators: [C6]
-    type: tantalum
-    capacitance_uf: 1
-    voltage_v: 50
-    quantity: 1
-    series: kemet-t491
-    verification: verified
-  - designators: [C11]
-    type: electrolytic-axial
-    capacitance_uf: 220
-    voltage_v: 25
-    original_voltage_v: 16
-    quantity: 1
-    series: vishay-021-asm
-    verification: derived
-    note: >-
-      Logic board position - do not confuse with the C11 positions on the
-      analog board or in the Sony PSU, which are different components.
-      Original part Vishay MAL213825221E3. The designator is unconfirmed -
-      see board notes.
+      Surface mount. These positions must be 25 V rated when using tantalum.
   - designators: [C2]
     type: electrolytic-axial
     capacitance_uf: 470
@@ -71,7 +48,20 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: vishay-021-asm
-    verification: derived
-    note: >-
-      Original part Vishay MAL211835471E3. The designator is unconfirmed -
-      see board notes.
+    note: Axial through-hole position on the +12 V filter.
+  - designators: [C6]
+    type: tantalum
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: kemet-t491
+    note: Surface mount.
+  - designators: [C11]
+    type: electrolytic-axial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: vishay-021-asm
+    note: Axial through-hole position on the +5 V filter.

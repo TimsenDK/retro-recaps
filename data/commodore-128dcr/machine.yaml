@@ -1,0 +1,27 @@
+id: commodore-128dcr
+name: Commodore 128DCR
+family: commodore-8bit
+aliases:
+  - C128DCR
+  - C128D-CR
+  - Commodore 128DCR
+  - 128D metal case
+board_order:
+  - mainboard
+  - psu
+notes:
+  - >-
+    The metal-case, cost-reduced 128D. It is a different machine from the
+    plastic-case C128D, not a revision of it: different mainboard (ASSY
+    250477 against ASSY 310379), different internal power supply, and a
+    metal enclosure with a fan instead of the plastic case with a carrying
+    handle. Neither machine's capacitor list applies to the other.
+  - >-
+    Nothing on the mainboard carries mains voltage, but the internal supply
+    does, and it sits inside the same enclosure. Unplug the machine and
+    discharge the supply's primary-side capacitors before reaching into the
+    case.
+  - >-
+    The machine has a built-in 1571 drive on its own board and an RF
+    modulator module, ASSY 252405-02, carrying two electrolytics. Neither
+    board is covered by this entry.

@@ -21,7 +21,8 @@
           "electrolytic-smd",
           "bipolar",
           "tantalum",
-          "film-x2"
+          "film-x2",
+          "film-y2"
         ]
       },
       "capacitance_uf": { "type": "number", "exclusiveMinimum": 0 },

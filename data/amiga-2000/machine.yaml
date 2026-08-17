@@ -10,16 +10,29 @@ board_order:
   - psu
 notes:
   - >-
-    Two mainboard families are in scope: rev 4.x (German A2000-A) and rev
-    6.x (B2000). They are genuinely different boards and are recorded as
-    separate files, not variants of one file.
+    Two mainboard families are in scope and are recorded as separate files:
+    rev 4.x and rev 6.x. They are genuinely different boards and their
+    capacitor complements differ.
   - >-
-    The EU/230 V power supply is shared between rev 4.4 and rev 6 boards.
-    Its exact electrolytic values are unconfirmed; see the psu board file.
+    "Rev 4" covers two unlike PCBs - the German A2000-A, whose revision is
+    unnumbered, and the numbered revisions 4.0 to 4.5 of the B2000 design -
+    and the revisions within the numbered family differ from one another at
+    capacitor positions. Which of them the rev 4.x file describes is not
+    established.
+  - >-
+    Rev 5.0 exists, differing from rev 4.x in using 256k x 4 RAM chips
+    instead of 256k x 1. Its capacitor complement is not published anywhere
+    retrievable and it is not covered here.
+  - >-
+    The EU/230 V power supply is shared between rev 4.4 and rev 6.x
+    machines. It carries mains, and its exact electrolytic values are not
+    settled; see the psu file.
 batteries:
   - kind: nicd
     action: remove
     note: >-
-      NiCd barrel/bulge battery on the mainboard for the real-time clock. Known
-      to leak and destroy PCB traces; remove and replace with an external
-      battery holder rather than reinstalling NiCd on the board.
+      Barrel-style NiCd battery soldered to the mainboard, backing up the
+      real-time clock. It leaks and corrodes the board and its traces.
+      Remove it. If clock retention is wanted, fit a non-rechargeable cell
+      in a holder off the board; do not fit another rechargeable cell in its
+      place.

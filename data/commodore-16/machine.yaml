@@ -3,12 +3,18 @@ name: Commodore 16
 family: commodore-8bit
 aliases:
   - C16
+  - C-16
+  - Commodore 16
 board_order:
   - mainboard
 notes:
   - >-
-    Only board revision ASSY 250443-01 is documented here; other C16 board
-    revisions are unconfirmed.
+    One mainboard is documented here, ASSY 250443-01. It ships in two
+    stuffings: with C1 fitted, nine electrolytics, and without it, eight.
+    The other eight positions are identical either way.
+  - >-
+    The C116 is a different assembly with its own board and is not covered
+    here.
   - >-
     Uses an external PSU brick, presumed to be the same TED-family design as
     the Plus/4's (see commodore-plus4/machine.yaml). It is treated as

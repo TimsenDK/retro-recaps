@@ -11,6 +11,14 @@
     "board": {
       "enum": ["mainboard", "psu", "analog", "logic", "daughterboard"]
     },
+    "mains": {
+      "type": "boolean",
+      "$comment": "Whether this PCB carries mains or mains-derived high voltage. Board kind is not a reliable proxy: the 1541 longboard mainboard carries the machine's linear supply, and the 1541-II analog board is low-voltage motor control."
+    },
+    "x2_filter": {
+      "enum": ["listed", "absent", "unknown"],
+      "$comment": "State of the mains input filter on a mains-carrying board. 'listed' - an X- or Y-class film position appears below. 'absent' - a source positively establishes there is none. 'unknown' - not inventoried. Silence is not the same as absence; RIFA-style parts fail explosively."
+    },
     "revisions": {
       "type": "array",
       "minItems": 1,
@@ -59,10 +67,28 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["type", "capacitance_uf", "voltage_v", "quantity"],
+      "allOf": [
+        {
+          "$comment": "A position either names its designators or declares them unknown, never both.",
+          "not": { "required": ["designators", "designators_unknown"] }
+        },
+        {
+          "$comment": "Likewise for the factory voltage rating.",
+          "not": { "required": ["original_voltage_v", "original_voltage_unknown"] }
+        }
+      ],
       "properties": {
         "designators": {
           "type": "array",
           "items": { "type": "string", "minLength": 1 }
+        },
+        "designators_unknown": {
+          "const": true,
+          "$comment": "The public record does not name this position's designators. Distinguishes that from nobody having filled the field in."
+        },
+        "original_voltage_unknown": {
+          "const": true,
+          "$comment": "The factory rating for this position is not recorded anywhere retrievable. Distinguishes that from nobody having filled the field in."
         },
         "type": {
           "enum": [
@@ -72,7 +98,8 @@
             "electrolytic-smd",
             "bipolar",
             "tantalum",
-            "film-x2"
+            "film-x2",
+            "film-y2"
           ]
         },
         "capacitance_uf": { "type": "number", "exclusiveMinimum": 0 },

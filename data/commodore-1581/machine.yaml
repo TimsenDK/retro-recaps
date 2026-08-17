@@ -1,17 +1,21 @@
 id: commodore-1581
 name: Commodore 1581
 family: commodore-drive
+aliases:
+  - CBM 1581
+  - 1581 3.5"
 board_order:
   - logic
   - psu
 notes:
   - >-
     The external PSU brick, P/N 312551-01, is one shared design across the
-    1541-II, 1571-II and 1581; see psu.yaml.
+    1541-II, 1571-II and 1581; see psu.yaml. Nothing inside the drive itself
+    carries mains voltage.
   - >-
-    Unlike the C64's PSU brick, this unit appears to be a conventional PCB
-    in a sealed case rather than an epoxy-potted block - it has been
-    reverse-engineered into a full component-level schematic. Whether a
-    given unit can be opened non-destructively for recapping, rather than
-    being replaced whole, is a judgement call for whoever has it on the
-    bench.
+    The brick's design has been reverse-engineered into a full
+    component-level schematic, which is why a capacitor list for it exists at
+    all. That is not the same as the unit being serviceable: these bricks are
+    reported to be filled with potting resin, with no non-destructive way to
+    open one. Whether a particular unit can be opened and recapped, or has to
+    be replaced whole, is a judgement call for whoever has it on the bench.

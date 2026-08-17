@@ -1,0 +1,72 @@
+id: commodore-128-psu-dee-van
+machine: commodore-128
+board: psu
+mains: true
+x2_filter: unknown
+revisions:
+  - "252449-03"
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Designator-level list under the heading "Power Supply: Dee Van
+      252449-03", carrying the qualifier "Unconfirmed list from schematic":
+      C1 3300uF 25v, C2 3300uF 25v, C4 1000uF 10v, C5 220uF 25v, C6 1uF 16v,
+      C9 10uF 25v.
+notes:
+  - >-
+    This is the Dee Van-built C128 external brick, board number 252449-03.
+    Three externally similar C128 bricks exist - Mitsumi, Ismet and Dee Van -
+    and they do not share a capacitor complement or a designator scheme.
+    Open the case and read the board number before ordering parts.
+  - >-
+    The list is read off a schematic rather than a counted board, so a
+    position may be present on the drawing and unpopulated in the case.
+    Count what is fitted.
+  - >-
+    Which internal board goes with which external part number is not
+    established. The unit is mains-fed: treat any X- or Y-class film
+    capacitor found across the mains input as a replace-on-sight item
+    whether or not it appears in a list.
+capacitors:
+  - designators:
+      - C1
+      - C2
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C4
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 16
+    original_voltage_v: 10
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C5
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C6
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C9
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr

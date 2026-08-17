@@ -9,6 +9,7 @@ that: a test that breaks when a class name changes costs more than it catches.
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -139,3 +140,149 @@ def test_the_real_dataset_builds(tmp_path: Path) -> None:
     assert "C401" in text
     assert "Verified" in text
     assert (out / "amiga-500" / "mainboard-rev6a.yaml").is_file()
+
+
+# --------------------------------------------------------------------------
+# The battery reaches the sheet that gets printed
+# --------------------------------------------------------------------------
+
+
+def test_a_mainboard_page_prints_the_machines_battery(tmp_path: Path) -> None:
+    """`batteries` is machine-level, but the cell is soldered to this board."""
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    assert "Battery" in page
+    assert "NICD" in page
+    assert "no-print" not in page.split('class="battery"')[1].split("</section>")[0]
+
+
+def test_a_psu_page_does_not_print_a_battery_panel(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "psu.html").read_text(encoding="utf-8")
+    assert 'class="battery"' not in page
+
+
+def test_the_machine_page_still_prints_its_battery(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "index.html").read_text(encoding="utf-8")
+    assert 'class="battery"' in page
+
+
+# --------------------------------------------------------------------------
+# Cross-file references in notes become links
+# --------------------------------------------------------------------------
+
+
+def test_a_note_reference_renders_as_a_working_link(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    assert '<a href="../amiga-500/psu.html">' in page
+    assert "psu.yaml" not in page.split("<h2>Notes on this board</h2>")[1]
+
+
+def test_a_note_reference_link_target_exists(tmp_path: Path) -> None:
+    """A relative href from a board page must resolve to a written file."""
+    out = build_fixture(tmp_path)
+    assert (out / "amiga-500" / "psu.html").is_file()
+
+
+# --------------------------------------------------------------------------
+# The print stylesheet
+# --------------------------------------------------------------------------
+
+
+def print_block(tmp_path: Path) -> str:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "psu.html").read_text(encoding="utf-8")
+    return page.split("@media print", 1)[1]
+
+
+def test_hazard_panels_survive_the_print_stylesheet(tmp_path: Path) -> None:
+    """Two panels can land on one board page; both must print bordered."""
+    block = print_block(tmp_path)
+    rules = block.split("page-break-inside: avoid", 1)[0]
+    assert ".hazard" in rules
+    assert ".battery" in rules
+    assert "2px solid #000" in block
+
+
+def test_the_print_stylesheet_never_hides_a_hazard(tmp_path: Path) -> None:
+    block = print_block(tmp_path)
+    hidden = block.split("display: none", 1)[0]
+    assert ".hazard" not in hidden
+    assert ".battery" not in hidden
+
+
+# --------------------------------------------------------------------------
+# The output directory does not accumulate pages that no longer exist
+# --------------------------------------------------------------------------
+
+
+def build_into(out: Path, data: Path) -> None:
+    from tools.loader import load_dataset
+    from tools.site.build import render_site
+    from tools.site.context import build_context
+
+    dataset, _ = load_dataset(data)
+    render_site(
+        build_context(dataset),
+        root=data,
+        out=out,
+        templates=ROOT / "site" / "templates",
+        static=ROOT / "site" / "static",
+    )
+
+
+def copied_fixture(tmp_path: Path) -> Path:
+    data = tmp_path / "src"
+    shutil.copytree(FIXTURES / "site", data)
+    return data
+
+
+def test_a_deleted_board_takes_its_page_with_it(tmp_path: Path) -> None:
+    """A stale page is worse than a missing one: it still lists parts."""
+    data = copied_fixture(tmp_path)
+    out = tmp_path / "build"
+    build_into(out, data)
+    assert (out / "amiga-500" / "psu.html").is_file()
+
+    (data / "data" / "amiga-500" / "psu.yaml").unlink()
+    build_into(out, data)
+    assert not (out / "amiga-500" / "psu.html").exists()
+    assert not (out / "amiga-500" / "psu.yaml").exists()
+    assert not (out / "amiga-500" / "psu.json").exists()
+    assert (out / "amiga-500" / "mainboard-rev6a.html").is_file()
+
+
+def test_a_deleted_machine_takes_its_directory_with_it(tmp_path: Path) -> None:
+    data = copied_fixture(tmp_path)
+    out = tmp_path / "build"
+    build_into(out, data)
+    assert (out / "mac-se").is_dir()
+
+    shutil.rmtree(data / "data" / "mac-se")
+    build_into(out, data)
+    assert not (out / "mac-se").exists()
+
+
+def test_pruning_leaves_files_the_generator_did_not_write(tmp_path: Path) -> None:
+    """It removes what the last build wrote, not whatever it finds."""
+    data = copied_fixture(tmp_path)
+    out = tmp_path / "build"
+    build_into(out, data)
+    stranger = out / "CNAME"
+    stranger.write_text("example.invalid\n", encoding="utf-8")
+    build_into(out, data)
+    assert stranger.is_file()
+
+
+def test_a_second_build_of_an_unchanged_dataset_removes_nothing(
+    tmp_path: Path,
+) -> None:
+    data = copied_fixture(tmp_path)
+    out = tmp_path / "build"
+    build_into(out, data)
+    before = sorted(path.relative_to(out).as_posix() for path in out.rglob("*"))
+    build_into(out, data)
+    after = sorted(path.relative_to(out).as_posix() for path in out.rglob("*"))
+    assert before == after

@@ -1,0 +1,122 @@
+id: mac-se30-psu-astec
+machine: mac-se30
+board: psu
+mains: true
+x2_filter: listed
+revisions:
+  - Astec AA13800
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Macintosh_SE
+    note: >-
+      Designator-level table headed "Power Supply: Apple 699-5047 / ASTEC
+      AA13800", plus the safety-capacitor note quoted below.
+notes:
+  - >-
+    Off-line switching supply. The primary side stays charged after the
+    machine is unplugged; discharge C7 and C8 before working on the board.
+  - >-
+    Apple part number 699-5047 is carried by more than one build of this
+    supply, so it does not identify the manufacturer. Read the label on the
+    module before choosing a list.
+  - >-
+    Two positions are silkscreened differently between Astec revisions and
+    are recorded here without a designator, because on a given board one of
+    the two candidate numbers belongs to the other position.
+  - >-
+    Designators repeat across the boards of this machine with different
+    values. C7 and C8 also exist on the logic board; C19 and C24 also exist
+    on the analog board. Never carry a designator between boards.
+  - >-
+    Three power supply builds are documented for the SE and SE/30 together -
+    Sony CR-44M, Astec AA13800 and Apple 820-0385-A (Hitachi). Which of them
+    shipped in an SE/30 specifically is not established, so read the label on
+    the module before choosing a list.
+capacitors:
+  - designators: [C7, C8]
+    type: electrolytic-snap-in
+    capacitance_uf: 330
+    voltage_v: 200
+    original_voltage_v: 200
+    quantity: 2
+    series: nichicon-lgn
+    note: >-
+      Series pair across the primary bus. 200 V is below the peak the pair
+      sees, because the two share it; replace both together with identical
+      parts. A single capacitor substituted for the pair must be rated 400 V
+      or more.
+  - designators: [C19]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators: [C21]
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 63
+    original_voltage_v: 63
+    quantity: 1
+    series: panasonic-fr
+  - designators: [C24, C36]
+    type: electrolytic-radial
+    capacitance_uf: 1200
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    series: panasonic-fr
+  - designators: [C31]
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [C32]
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators: [C35]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      Second 470 uF position, silkscreened C23 on some Astec boards and C25
+      on others.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+    note: >-
+      Second 220 uF position, silkscreened C25 on some Astec boards and C28
+      on others.
+  - designators_unknown: true
+    type: film-y2
+    capacitance_uf: 0.0047
+    voltage_v: 300
+    original_voltage_unknown: true
+    quantity: 3
+    series: tdk-b32021
+    note: >-
+      Metallized-paper RIFA safety capacitors of 4700 pF on the mains input.
+      Not fitted to every supply; where they are, there are three. They
+      crack, absorb moisture and fail explosively, so they are replaced
+      unconditionally when found. The factory AC rating is not recorded
+      anywhere retrievable; 300 VAC is the rating of the replacement class.

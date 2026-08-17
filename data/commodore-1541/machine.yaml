@@ -3,22 +3,28 @@ name: Commodore 1541
 family: commodore-drive
 aliases:
   - VIC-1541
+  - CBM 1541
+  - 1541A
+  - 1541 A-2
 board_order:
   - mainboard
   - analog
 notes:
   - >-
-    Longboard chassis with an internal linear power supply. The PSU filter
-    capacitors (the large axial cans) live on the same mainboard PCB as the
-    logic circuitry on this model, so there is no separate PSU board file.
+    Longboard chassis with an internal linear power supply. The rectifiers and
+    the large axial reservoir capacitors sit on the same PCB as the logic, so
+    there is no separate PSU board file - and the mainboard must be treated as
+    a mains-carrying board.
   - >-
-    At least three mainboard PCB assembly generations exist with different
-    reference-designator numbering and slightly different capacitor counts:
-    1540001-01/1540001-03 (early), 1540048-01/1540050-01/250442/250446 (the
-    common longboard revision), and 250448/251854
-    (late). See the three mainboard-*.yaml files.
+    Two mainboard assembly generations are covered here: the original long
+    board (1540001/1540008, four discrete 2114 RAMs) and the shorter "CR"
+    board and its successors (1540048, 1540050, 250442, 250446). The 250448
+    and 251854 boards, previously grouped with these, belong to the 1541B and
+    1541C and are covered under commodore-1541c.
   - >-
-    The drive mechanism (Alps vs Newtronics/Mitsumi) drives a separate motor
-    speed control PCB with its own small-value capacitors, tracked in
-    analog-alps.yaml. Only the Alps variant's three 10 uF positions are
-    recorded there; the rest of that board is not known.
+    The spindle motor runs from a separate motor speed control PCB on the
+    mechanism, and three different versions of it exist: the Alps board, the
+    early seven-capacitor Newtronics board, and the later four-capacitor
+    Newtronics board. An Alps mechanism has a push-down door, a Newtronics
+    mechanism a flipper-type door; count the capacitors on the motor PCB to
+    tell the two Newtronics builds apart.

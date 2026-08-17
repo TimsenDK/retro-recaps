@@ -3,26 +3,34 @@ machine: amiga-500
 board: mainboard
 revisions:
   - "5"
-verification: derived
+verification: verified
 sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
+  - url: https://archive.org/stream/system-schematics-a-500-revisions-5-6a-7/System%20Schematics%20A500%20Revisions%205%2C%206A%2C%207_djvu.txt
     note: >-
-      Rev 5 capacitor list with reference designators.
+      Commodore system schematics and parts list, "PCB ASSEMBLY #312510,
+      A500, REV. 5". Gives the designator groups and values directly from
+      the factory document.
   - url: https://jeremykline.us/2026/02/14/amiga-capacitor-lists/
     note: >-
-      Independent transcription of the Rev 5 board (Artwork No 312513)
-      original capacitor values. Designators and quantities match
-      retrorewind's list; also gives the original (pre-recap) voltages.
-  - url: https://archive.org/stream/system-schematics-a-500-revisions-5-6a-7/System%20Schematics%20A500%20Revisions%205,%206A,%207_djvu.txt
+      Independent transcription of the Rev 5 board (Artwork No 312513, Assy
+      312510) with the factory voltage rating against every designator.
+  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
     note: >-
-      Official Commodore system schematics and parts list for PCB assembly
-      312510, Rev 5 (also covering Rev 6A/7). Gives the same designators and
-      values independently.
+      Third list of the same designators and values, published as a
+      combined Rev 3/5 kit list.
 notes:
   - >-
     Rev 3 and rev 5 use the same capacitor values and quantities. The two
     boards differ in physical layout, so a position is not guaranteed to sit
     in the same place on both revisions.
+  - >-
+    The factory ratings on this board are 100 uF 16 V and 47 uF 16 V. The
+    25 V and 50 V figures that circulate for those positions are
+    replacement values, not what the board shipped with.
+  - >-
+    Assembly number 312510 is printed on rev 3, rev 5, rev 6A and rev 7
+    boards alike, so it does not identify the revision. The revision is
+    silkscreened separately.
   - Positions are radial, 5 mm lead pitch.
 capacitors:
   - designators:

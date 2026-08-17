@@ -1,0 +1,44 @@
+id: mac-se-logic
+machine: mac-se
+board: logic
+revisions:
+  - 820-0176
+  - 820-0250
+verification: derived
+sources:
+  - url: https://wiki.console5.com/wiki/Macintosh_SE
+    note: >-
+      Designator-level table headed "SE Logic Board: 820-0176 / 820-0250",
+      eleven positions in two values.
+notes:
+  - >-
+    Through-hole axial electrolytics, not surface mount. They do not carry
+    the electrolyte-leakage failure that destroys the SE/30 and Classic II
+    surface-mount boards, which is why this board is widely said to need no
+    recap. That is a claim about how often it fails, not a property of the
+    parts: they are still 1980s electrolytics. Inspect and measure rather
+    than skip the board on the strength of it.
+  - >-
+    Designators repeat across the boards of this machine with different
+    values. C11 and C13 also exist on the analog board; C32 and C36 also
+    exist in the Astec power supply. Never carry a designator between
+    boards.
+  - Recap logic board before analog board.
+capacitors:
+  - designators: [C4, C11, C13, C16, C32, C34, C37, C38, C62, C86]
+    type: electrolytic-axial
+    capacitance_uf: 33
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 10
+    series: vishay-021-asm
+    note: >-
+      Axial positions. Check lead spacing, diameter and height before
+      ordering.
+  - designators: [C36]
+    type: electrolytic-axial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: vishay-021-asm

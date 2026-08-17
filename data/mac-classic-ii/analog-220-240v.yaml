@@ -1,63 +1,60 @@
 id: mac-classic-ii-analog-220-240v
 machine: mac-classic-ii
 board: analog
+mains: true
+x2_filter: unknown
 revisions:
-  - 820-0525-A (220-240V international)
-verification: verified
+  - 630-0525 220-240 V build
+verification: derived
 sources:
-  - url: https://wiki.retrotechcollection.com/Macintosh_Classic_II_Capacitor_Replacement_Guide
-    note: Same source the handover cites. Confirms 26 designated positions
-      (CF/CL/CP/CV series) with values in the same ranges used here.
+  - url: https://wiki.console5.com/wiki/Mac_Analog_Board:_630-0525
+    note: >-
+      Full designator-level table for the 630-0525 analog board, all 25
+      electrolytic positions with factory ratings.
   - url: https://github.com/daanvdl/Classic-Analogboard-Late
-    note: Independent schematic recreation of the 820-0525-A board, not cited
-      by the handover. Used to cross-check original (pre-recap) voltage for
-      every designator below.
-  - url: https://recapamac.com.au/macintosh-classic-analog/
-    note: Confirms a dedicated "Macintosh Classic I + II Analog Board
-      (220V-240V version)" guide exists, i.e. this is the correct variant for
-      Denmark, distinct from the 110 V board.
+    note: >-
+      Schematic and PCB recreation of the same 820-0525-A / 630-0525 board,
+      with a full bill of materials and a configuration table giving the
+      component differences between the 110 V and 240 V builds.
 notes:
   - >-
-    This is the 220-240 V international analog board (Apple 820-0525-A
-    family), the correct variant for Denmark. Do not merge with the separate
-    110 V North American board.
+    This is the 220-240 V build of the late Classic II analog board - the
+    same 630-0525 PCB as the 100-120 V build, stuffed differently. CP1 is
+    rated 400 V and CP13 is a plain 0 ohm wire link rather than a capacitor.
+    The 100-120 V build is tracked separately.
+  - >-
+    JP1 and JP2 select the mains topology. At 220-240 V the wire link sits at
+    JP2 and the input runs as a full bridge; at 110 V it sits at JP1 and the
+    input runs as a voltage doubler. If you find a 250 V capacitor in the CP1
+    socket, or a capacitor rather than a wire link at CP13, the board is
+    wired for 110 V and this list does not describe it.
+  - >-
+    CP19 and CP38 also differ between the two builds. Both are film
+    capacitors, outside the electrolytic recap scope tracked here.
+  - >-
+    This board is the machine's power supply as well as its video drive. The
+    primary side holds a lethal charge after the machine is unplugged, and
+    the CRT anode holds one independently of that.
+  - >-
+    CP16 is a 0.22 uF 250 V film capacitor on the mains input. Its safety
+    class is not established, so it is not recorded as an X-class position
+    below. Treat it as a safety capacitor until proven otherwise.
   - >-
     CF5 (220 nF/63 V), CF6 (100 nF/63 V) and CF7 (180 nF/63 V) are small
-    film/ceramic capacitors, outside the electrolytic recap scope tracked
-    here, and are not listed as positions below.
+    film capacitors, outside the electrolytic recap scope tracked here, and
+    are not listed as positions below.
   - Recap logic board before analog board.
 capacitors:
-  - designators: [CF4, CP10, CP9]
-    type: electrolytic-radial
-    capacitance_uf: 470
-    voltage_v: 25
-    quantity: 3
-    series: panasonic-fr
-    verification: verified
-    note: Original voltage already 25 V on these three; no upgrade.
-  - designators: [CV2]
-    type: electrolytic-radial
-    capacitance_uf: 470
-    voltage_v: 25
-    original_voltage_v: 10
-    quantity: 1
-    series: panasonic-fr
-  - designators: [CP2]
-    type: electrolytic-radial
-    capacitance_uf: 470
-    voltage_v: 50
-    quantity: 1
-    series: panasonic-fr
   - designators: [CF1, CP4]
     type: electrolytic-radial
     capacitance_uf: 47
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    note: Original voltage already 25 V on both; no upgrade.
-  - designators: [CL11]
+  - designators: [CF2]
     type: electrolytic-radial
-    capacitance_uf: 47
+    capacitance_uf: 220
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
@@ -69,61 +66,81 @@ capacitors:
     original_voltage_v: 16
     quantity: 2
     series: panasonic-fr
+  - designators: [CF4, CP9, CP10]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
   - designators: [CL1]
     type: electrolytic-radial
     capacitance_uf: 1000
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
-    note: Original voltage already 25 V; no upgrade.
+  - designators: [CL2]
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 250
+    original_voltage_v: 250
+    quantity: 1
+    series: nichicon-ucy
+    note: High-voltage position on the primary side, not on a logic rail.
+  - designators: [CL3, CP5, CP34, CP37]
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 4
+    series: panasonic-fr
+  - designators: [CL11]
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP1]
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 400
+    original_voltage_v: 400
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Primary bulk reservoir. It holds a lethal charge after the machine is
+      unplugged and must be discharged before any other work on the board.
+      400 V is correct only for the 220-240 V population; see the board
+      notes on JP1 and JP2.
+  - designators: [CP2]
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP3]
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+  - designators: [CP6, CP36]
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 2
+    series: panasonic-fr
   - designators: [CP7]
     type: electrolytic-radial
     capacitance_uf: 1000
     voltage_v: 25
     original_voltage_v: 10
     quantity: 1
-    series: panasonic-fr
-  - designators: [CL3, CP34, CP5, CP37]
-    type: electrolytic-radial
-    capacitance_uf: 1
-    voltage_v: 50
-    quantity: 4
-    series: panasonic-fr
-  - designators: [CP1]
-    type: electrolytic-radial
-    capacitance_uf: 220
-    voltage_v: 250
-    quantity: 1
-    series: panasonic-fr
-  - designators: [CP13]
-    type: electrolytic-radial
-    capacitance_uf: 220
-    voltage_v: 250
-    quantity: 1
-    series: panasonic-fr
-    verification: derived
-    note: >-
-      Not present in the 820-0525-A schematic; this position's existence is
-      unconfirmed. Verify on the physical board.
-  - designators: [CP11]
-    type: electrolytic-radial
-    capacitance_uf: 220
-    voltage_v: 50
-    quantity: 1
-    series: panasonic-fr
-  - designators: [CF2]
-    type: electrolytic-radial
-    capacitance_uf: 220
-    voltage_v: 25
-    original_voltage_v: 16
-    quantity: 1
-    series: panasonic-fr
-  - designators: [CP36, CP6]
-    type: electrolytic-radial
-    capacitance_uf: 2200
-    voltage_v: 25
-    original_voltage_v: 10
-    quantity: 2
     series: panasonic-fr
   - designators: [CP8]
     type: electrolytic-radial
@@ -132,15 +149,17 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-  - designators: [CL2]
+  - designators: [CP11]
     type: electrolytic-radial
-    capacitance_uf: 4.7
-    voltage_v: 250
+    capacitance_uf: 220
+    voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr
-  - designators: [CP3]
+  - designators: [CV2]
     type: electrolytic-radial
-    capacitance_uf: 10
+    capacitance_uf: 470
     voltage_v: 25
+    original_voltage_v: 10
     quantity: 1
     series: panasonic-fr

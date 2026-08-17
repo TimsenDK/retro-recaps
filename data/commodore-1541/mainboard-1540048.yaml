@@ -1,18 +1,31 @@
 id: commodore-1541-mainboard-1540048
 machine: commodore-1541
 board: mainboard
+mains: true
+x2_filter: unknown
 revisions:
   - "1540048-01"
+  - "1540048-03"
   - "1540050-01"
   - "250442"
   - "250446"
-verification: derived
+verification: verified
 sources:
+  - url: https://wiki.console5.com/wiki/Commodore_1541
+    note: >-
+      Per-assembly capacitor table for the later revisions, giving designator,
+      value and factory voltage for all eight positions.
   - url: https://www.retroleum.co.uk/1541capacitors
     note: >-
       Independent designator/value list, labelled "Type 2 (PCB Assm:
       1540048, 1540050, 250442/46)" on that page; no voltage ratings given
       for this revision.
+  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
+    note: >-
+      Commodore 1540/1541 Disk Drive Service Manual, November 1985
+      (PN 314002-01). Model-identification section ties assemblies 1540048-01,
+      1540048-03, 250442-01 and 250446-01 together as one board family and
+      describes the supply circuit (SW1, F1, T1, CR1, CR3, VR1, VR2).
   - url: https://www.lemon64.com/forum/viewtopic.php?t=76260
     note: >-
       Forum thread giving the generic 1541 capacitor value/voltage set
@@ -20,12 +33,19 @@ sources:
       to cross-check values and voltages against the designator list above.
 notes:
   - >-
+    This PCB carries the drive's mains-fed supply section on the same board as
+    the logic: the line switch and transformer primary, the rectifiers, and
+    the large axial reservoir cans. Treat the board as live whenever the drive
+    is plugged in, and remember that C16 and C17 stay charged after it is
+    switched off - short them through a resistor before working on the board.
+  - >-
     This is the most common 1541 longboard assembly group. It carries two
     separate axial filter positions at once, C16 (4700 uF)
     and C17 (6800 uF), both present together.
   - >-
-    No voltage ratings are documented per designator for this revision; the
-    voltages here follow the generic 1541 value list.
+    The -01 assembly takes the Alps mechanism and the -03 the Newtronics one;
+    the 250442 and 250446 boards take either, selected by a single jumper. The
+    capacitor complement is the same across all of them.
 capacitors:
   - designators:
       - C1
@@ -36,7 +56,6 @@ capacitors:
     original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    verification: derived
   - designators:
       - C2
       - C5
@@ -46,38 +65,39 @@ capacitors:
     original_voltage_v: 16
     quantity: 2
     series: panasonic-fr
-    verification: derived
   - designators:
       - C13
     type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 25
+    original_voltage_v: 10
     quantity: 1
     series: panasonic-fr
-    verification: derived
   - designators:
       - C46
     type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
+    original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
-    verification: derived
   - designators:
       - C16
     type: electrolytic-axial
     capacitance_uf: 4700
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: vishay-021-asm
-    verification: derived
-    note: Main PSU filter capacitor.
+    note: >-
+      Main supply reservoir capacitor. Holds a charge after power-off.
   - designators:
       - C17
     type: electrolytic-axial
     capacitance_uf: 6800
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
-    verification: derived
-    note: Second PSU filter capacitor.
+    note: >-
+      Second supply reservoir capacitor. Holds a charge after power-off.

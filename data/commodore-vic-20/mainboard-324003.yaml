@@ -1,73 +1,83 @@
 id: commodore-vic-20-mainboard-324003
 machine: commodore-vic-20
 board: mainboard
+mains: false
 revisions:
-  - ASSY 324003
-verification: derived
+  - "324003"
+verification: verified
 sources:
+  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
+    note: >-
+      Designator-level list headed "ASSY 324003": C13 1uF 50v, C16 1uF 50v,
+      C23 10uF 16v, C24 10uF 16v, C25 22uF 16v, C31 100uF 16v, C39 4700uF
+      16v, C44 100uF 16v.
   - url: https://retroleum.co.uk/vic20-caps
     note: >-
-      Independent kit-contents list for the "324003 Original Long Board";
-      gives a different designator set (C13,C16,C23,C24,C25,C31,C39,C44) for
-      the same ASSY number than the one used here — see note below.
+      Independent kit for "Assembly 324003 (Original long board)", matching
+      the same eight designators: 2x 1 uF radial (C13, C16), 2x 10 uF radial
+      (C23, C24), 1x 22 uF radial (C25), 2x 100 uF radial (C31, C44), 1x
+      4700 uF axial (C39).
   - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
     note: >-
-      Independent guide; corroborates "8 capacitors total" for this board
-      and the single large 4700 uF main +5V filter can, without giving a
-      full designator list.
+      Independent guide corroborating eight electrolytics on this board and
+      the single large 4700 uF main +5 V filter can, without a full
+      designator list.
 notes:
   - >-
-    The designators recorded here - C1, C3, C7, C9, C11 and C22 - are
-    unconfirmed for this board.
+    This is the long board with the 2-pin locking power connector and an
+    on-board 7805, so C39 is the large 4700 uF can downstream of that
+    regulator. The DIN-connector board, ASSY 250403, has no on-board
+    regulator and a different designator scheme entirely; see
+    mainboard-250403.yaml.
   - >-
-    A wholly different designator set is also documented for ASSY 324003:
-    C13, C16, C23, C24, C25, C31, C39 and C44, together with a 22 uF radial
-    position not listed here. This may be a different PCB layout sharing the
-    same assembly number. Unresolved - check the board.
-  - The two 10 uF positions have no known designators.
+    A second, disjoint designator set exists on an earlier VIC-20 long board
+    - C1, C3, C7, C9, C11 and C22 - which is a different PCB, not another
+    reading of this one. If the board's designators run in that range rather
+    than C13 to C44, use mainboard-rev-e.yaml.
+  - >-
+    C39 is an axial can; the other seven positions are radial.
 capacitors:
   - designators:
-      - C1
-    type: electrolytic-axial
-    capacitance_uf: 4700
-    voltage_v: 16
-    quantity: 1
-    series: vishay-021-asm
-    verification: derived
-    note: Main +5 V bulk filter capacitor, downstream of the on-board 7805.
+      - C13
+      - C16
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
   - designators:
-      - C3
-      - C9
+      - C23
+      - C24
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    series: panasonic-fr
+  - designators:
+      - C25
+    type: electrolytic-radial
+    capacitance_uf: 22
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators:
+      - C31
+      - C44
     type: electrolytic-radial
     capacitance_uf: 100
     voltage_v: 25
     original_voltage_v: 16
     quantity: 2
     series: panasonic-fr
-    verification: derived
   - designators:
-      - C7
-    type: electrolytic-radial
-    capacitance_uf: 47
+      - C39
+    type: electrolytic-axial
+    capacitance_uf: 4700
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
-    series: panasonic-fr
-    verification: derived
-  - type: electrolytic-radial
-    capacitance_uf: 10
-    voltage_v: 25
-    original_voltage_v: 16
-    quantity: 2
-    series: panasonic-fr
-    verification: derived
-  - designators:
-      - C11
-      - C22
-    type: electrolytic-radial
-    capacitance_uf: 1
-    voltage_v: 50
-    original_voltage_v: 16
-    quantity: 2
-    series: panasonic-fr
-    verification: derived
+    series: vishay-021-asm
+    note: Main +5 V bulk filter capacitor, downstream of the on-board 7805.

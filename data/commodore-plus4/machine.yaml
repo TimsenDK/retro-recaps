@@ -4,13 +4,19 @@ family: commodore-8bit
 aliases:
   - Plus/4
   - Plus 4
+  - Plus4
+  - C264
 board_order:
   - mainboard
 notes:
   - >-
-    Only board revision ASSY 310163-01 is documented here. ASSY 250455 and
-    310164 are reported to share the same capacitor set, but that is
-    unconfirmed; treat other revisions as unverified.
+    Only board revision ASSY 310163-01 is documented here. 310164 is that
+    board's schematic drawing number, not a second revision.
+  - >-
+    ASSY 250455 is a genuinely different earlier board - it carries four
+    diodes, CR21 to CR24, that 310163-01 does not, and the factory service
+    manual covers only 310163. Whether its capacitor complement matches
+    310163-01 is not established, so no list is published for it here.
   - >-
     Uses an external PSU brick, which has the same over-voltage "brick of
     death" failure mode as the well-known C64 supply. It is treated as

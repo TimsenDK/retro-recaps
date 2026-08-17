@@ -2,7 +2,7 @@ id: amiga-1000-daughterboard-ntsc
 machine: amiga-1000
 board: daughterboard
 revisions:
-  - Rev A
+  - NTSC
 verification: verified
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
@@ -10,7 +10,12 @@ sources:
   - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
     note: Independent confirmation of the same designators and values.
 notes:
-  - WCS (Writable Control Store) piggyback daughterboard. Present on NTSC Rev A boards only; on PAL boards the WCS is integrated onto the mainboard - see mainboard-pal.yaml.
+  - >-
+    WCS (Writable Control Store) piggyback daughterboard, fitted to the NTSC
+    mainboard. Its presence is the visible sign that a machine has an NTSC
+    board, whatever region it was sold in; on a true PAL mainboard the WCS
+    is on the mainboard and there is no daughterboard - see
+    mainboard-pal.yaml.
 capacitors:
   - designators:
       - C10

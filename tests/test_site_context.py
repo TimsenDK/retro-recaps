@@ -7,18 +7,24 @@ from pathlib import Path
 import pytest
 
 from tools.loader import load_dataset
-from tools.model import Dataset
+from tools.model import Board, Dataset, Machine
 from tools.site.context import (
     ANALOG_HAZARD,
     CRT_ANALOG_HAZARD,
     CRT_MACHINE_HAZARD,
+    MACHINE_MAINS_HAZARD_ID,
     MAINS_HAZARD,
     Coverage,
     SiteContext,
     build_context,
     format_capacitance,
     format_voltage,
+    hazards_for,
+    machine_hazards,
+    machine_mains_hazard,
     natural_key,
+    note_view,
+    reference_targets,
     verification_view,
 )
 
@@ -285,8 +291,22 @@ def test_a_mainboard_on_a_machine_without_a_crt_carries_no_warning(
 def test_a_machine_page_warns_when_it_holds_a_mains_board(
     site: SiteContext,
 ) -> None:
-    assert MAINS_HAZARD in machine(site, "amiga-500").hazards
-    assert machine(site, "mac-se").hazards == (MAINS_HAZARD, CRT_MACHINE_HAZARD)
+    ids = [hazard.id for hazard in machine(site, "amiga-500").hazards]
+    assert ids == [MACHINE_MAINS_HAZARD_ID]
+    assert [h.id for h in machine(site, "mac-se").hazards] == [
+        MACHINE_MAINS_HAZARD_ID,
+        CRT_MACHINE_HAZARD.id,
+    ]
+
+
+def test_a_machine_page_never_carries_the_board_page_wording(
+    site: SiteContext,
+) -> None:
+    """'This board carries mains voltage' has no referent on a machine page."""
+    for view in site.machines:
+        assert MAINS_HAZARD not in view.hazards
+        for hazard in view.hazards:
+            assert "This board" not in hazard.body
 
 
 # --------------------------------------------------------------------------
@@ -365,3 +385,268 @@ def test_the_good_fixture_builds_a_coherent_context() -> None:
     assert shielded.part is not None
     assert shielded.part.mpn == "EEU-FR1E332"
     assert shielded.fit_limits == ("max height 24 mm",)
+
+
+# --------------------------------------------------------------------------
+# Hazards, decided by what the board declares it carries
+# --------------------------------------------------------------------------
+
+
+def hazard_board(kind: str, **overrides):
+    document = {
+        "id": "b",
+        "machine": "m",
+        "board": kind,
+        "revisions": ["1"],
+        "verification": "unverified",
+        "capacitors": [],
+    }
+    return Board.from_dict({**document, **overrides})
+
+
+def hazard_machine(family: str, **overrides) -> Machine:
+    document = {
+        "id": "m",
+        "name": "A machine",
+        "family": family,
+        "board_order": ["mainboard", "logic", "analog", "psu"],
+    }
+    return Machine.from_dict({**document, **overrides})
+
+
+def test_a_crt_analog_board_that_carries_mains_gets_both_warnings() -> None:
+    """Not one instead of the other.
+
+    On an all-in-one Mac the analog board *is* the supply, so discharging the
+    tube and then grabbing the board still leaves a charged bulk capacitor
+    between the reader and the bench.
+    """
+    hazards = hazards_for(
+        hazard_board("analog", mains=True), hazard_machine("macintosh")
+    )
+    assert hazards == (CRT_ANALOG_HAZARD, MAINS_HAZARD)
+
+
+def test_a_crt_analog_board_declared_low_voltage_names_only_the_tube() -> None:
+    hazards = hazards_for(
+        hazard_board("analog", mains=False), hazard_machine("macintosh")
+    )
+    assert hazards == (CRT_ANALOG_HAZARD,)
+
+
+def test_a_non_crt_analog_board_declared_low_voltage_gets_no_hazard() -> None:
+    """The 1541-II analog board is low-voltage motor control, and says so."""
+    hazards = hazards_for(
+        hazard_board("analog", mains=False), hazard_machine("commodore-drive")
+    )
+    assert hazards == ()
+
+
+def test_an_undeclared_analog_board_still_gets_the_hedging_warning() -> None:
+    hazards = hazards_for(hazard_board("analog"), hazard_machine("commodore-drive"))
+    assert hazards == (ANALOG_HAZARD,)
+
+
+def test_a_mainboard_declared_mains_gets_the_mains_warning() -> None:
+    """The 1541 longboard carries the machine's linear supply."""
+    hazards = hazards_for(
+        hazard_board("mainboard", mains=True), hazard_machine("commodore-drive")
+    )
+    assert hazards == (MAINS_HAZARD,)
+
+
+def test_an_undeclared_mainboard_gets_no_warning() -> None:
+    hazards = hazards_for(hazard_board("mainboard"), hazard_machine("amiga"))
+    assert hazards == ()
+
+
+def test_a_psu_declared_low_voltage_is_taken_at_its_word() -> None:
+    hazards = hazards_for(hazard_board("psu", mains=False), hazard_machine("amiga"))
+    assert hazards == ()
+
+
+def test_an_undeclared_psu_still_warns() -> None:
+    hazards = hazards_for(hazard_board("psu"), hazard_machine("amiga"))
+    assert hazards == (MAINS_HAZARD,)
+
+
+def test_a_mains_board_on_a_crt_machine_warns_about_both() -> None:
+    hazards = hazards_for(
+        hazard_board("psu", mains=True), hazard_machine("macintosh")
+    )
+    assert hazards == (MAINS_HAZARD, CRT_MACHINE_HAZARD)
+
+
+def test_a_board_with_no_machine_still_reads_its_own_declaration() -> None:
+    assert hazards_for(hazard_board("mainboard", mains=True), None) == (MAINS_HAZARD,)
+
+
+def test_a_machine_whose_only_analog_board_is_low_voltage_has_no_mains() -> None:
+    """The 1541-II machine page must not claim 'This is a power supply'."""
+    machine = hazard_machine("commodore-drive")
+    boards = [hazard_board("mainboard"), hazard_board("analog", mains=False)]
+    assert machine_hazards(boards, machine) == ()
+
+
+def test_a_machine_holding_mains_boards_raises_one_panel_naming_them() -> None:
+    machine = hazard_machine("commodore-drive")
+    boards = [
+        hazard_board("mainboard", mains=True),
+        hazard_board("analog", mains=False),
+        hazard_board("psu", mains=True),
+    ]
+    hazards = machine_hazards(boards, machine)
+    assert [hazard.id for hazard in hazards] == [MACHINE_MAINS_HAZARD_ID]
+    body = hazards[0].body
+    assert "mainboard" in body and "power supply" in body
+    assert "analog" not in body
+
+
+def test_the_machine_panel_names_a_lone_mains_board_in_the_singular() -> None:
+    """The 1541-II's supply is a sealed external brick, not the drive."""
+    hazard = machine_mains_hazard([hazard_board("psu", mains=True)])
+    assert "This machine's power supply carries mains voltage." in hazard.body
+    assert "Read the power supply page" in hazard.body
+
+
+def test_the_machine_panel_sends_the_reader_to_the_board_pages() -> None:
+    hazard = machine_mains_hazard(
+        [hazard_board("psu", mains=True), hazard_board("analog", mains=True)]
+    )
+    assert "board pages" in hazard.body
+
+
+def test_the_machine_panel_lists_each_board_kind_once() -> None:
+    hazard = machine_mains_hazard(
+        [hazard_board("psu", mains=True), hazard_board("psu", mains=True)]
+    )
+    assert hazard.body.count("power supply") == 2  # named once, followed once
+    assert "This machine's power supply carries" in hazard.body
+
+
+def test_a_crt_machine_warns_about_the_tube_with_no_mains_board() -> None:
+    machine = hazard_machine("macintosh")
+    assert machine_hazards([hazard_board("logic")], machine) == (CRT_MACHINE_HAZARD,)
+
+
+# --------------------------------------------------------------------------
+# The machine's battery, on the board page that gets printed
+# --------------------------------------------------------------------------
+
+
+def test_a_mainboard_page_carries_the_machines_battery(site: SiteContext) -> None:
+    batteries = board(site, "amiga-500-mainboard-rev6a").batteries
+    assert [b.kind for b in batteries] == ["nicd"]
+
+
+def test_a_psu_page_does_not_claim_the_battery(site: SiteContext) -> None:
+    assert board(site, "amiga-500-psu").batteries == ()
+
+
+def test_a_logic_board_page_carries_the_battery_too(site: SiteContext) -> None:
+    """Macintosh boards hold the cell; the site calls that kind 'logic'."""
+    batteries = board(site, "mac-se-logic").batteries
+    assert [b.kind for b in batteries] == ["pram"]
+
+
+def test_an_analog_board_page_does_not_claim_the_battery(site: SiteContext) -> None:
+    assert board(site, "mac-se-analog").batteries == ()
+
+
+def test_the_machine_page_still_carries_the_battery(site: SiteContext) -> None:
+    assert [b.kind for b in machine(site, "amiga-500").batteries] == ["nicd"]
+
+
+# --------------------------------------------------------------------------
+# Cross-file references in notes
+# --------------------------------------------------------------------------
+
+
+def test_a_reference_to_a_sibling_board_becomes_a_link(dataset: Dataset) -> None:
+    targets = reference_targets(dataset)
+    view = note_view("Shares a supply with amiga-500/psu.yaml on this machine.", targets)
+    assert [segment.url for segment in view.segments] == [
+        None,
+        "amiga-500/psu.html",
+        None,
+    ]
+    assert view.has_links is True
+
+
+def test_a_reference_is_replaced_by_the_page_it_names(dataset: Dataset) -> None:
+    targets = reference_targets(dataset)
+    view = note_view("See amiga-500/psu.yaml.", targets)
+    link = next(segment for segment in view.segments if segment.is_link)
+    assert link.text == "Commodore Amiga 500 — Power supply"
+
+
+def test_a_reference_to_a_machine_file_links_to_the_machine_page(
+    dataset: Dataset,
+) -> None:
+    targets = reference_targets(dataset)
+    view = note_view("Also fitted to mac-se/machine.yaml.", targets)
+    link = next(segment for segment in view.segments if segment.is_link)
+    assert link.url == "mac-se/index.html"
+    assert link.text == "Macintosh SE"
+
+
+def test_a_reference_to_a_file_that_does_not_exist_stays_plain_text(
+    dataset: Dataset,
+) -> None:
+    """A broken link on a printed sheet is worse than a searchable filename."""
+    targets = reference_targets(dataset)
+    view = note_view("See amiga-4000/mainboard.yaml.", targets)
+    assert view.has_links is False
+    assert view.text == "See amiga-4000/mainboard.yaml."
+
+
+def test_a_bare_filename_is_not_a_reference(dataset: Dataset) -> None:
+    """`psu.yaml` names nothing resolvable, which is why it is not the form."""
+    view = note_view("See psu.yaml for the supply.", reference_targets(dataset))
+    assert view.has_links is False
+
+
+def test_a_relative_path_reference_is_not_resolved(dataset: Dataset) -> None:
+    """`../amiga-500/psu.yaml` encodes the writer's position, not the target."""
+    view = note_view("See ../amiga-500/psu.yaml.", reference_targets(dataset))
+    assert view.has_links is False
+
+
+def test_a_note_with_no_reference_is_one_plain_segment(dataset: Dataset) -> None:
+    view = note_view("Two positions are unpopulated.", reference_targets(dataset))
+    assert len(view.segments) == 1
+    assert view.segments[0].is_link is False
+
+
+def test_two_references_in_one_note_both_link(dataset: Dataset) -> None:
+    targets = reference_targets(dataset)
+    view = note_view(
+        "Between amiga-500/psu.yaml and mac-se/logic.yaml.", targets
+    )
+    assert [segment.url for segment in view.segments if segment.is_link] == [
+        "amiga-500/psu.html",
+        "mac-se/logic.html",
+    ]
+
+
+def test_a_lone_board_of_its_kind_is_labelled_without_its_revision(
+    dataset: Dataset,
+) -> None:
+    """The revision is only added where a machine has two boards of a kind."""
+    targets = reference_targets(dataset)
+    assert targets["amiga-500/mainboard-rev6a.yaml"][1] == (
+        "Commodore Amiga 500 — Mainboard"
+    )
+
+
+def test_board_notes_arrive_at_the_template_already_split(site: SiteContext) -> None:
+    view = board(site, "amiga-500-psu")
+    assert len(view.linked_notes) == len(view.notes)
+    assert view.linked_notes[0].text == view.notes[0]
+
+
+def test_machine_notes_arrive_at_the_template_already_split(
+    site: SiteContext,
+) -> None:
+    view = machine(site, "amiga-500")
+    assert len(view.linked_notes) == len(view.notes)

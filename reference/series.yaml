@@ -1,42 +1,87 @@
-# Capacitor series this project recommends. 105 °C throughout; low ESR in
-# power supplies. Adding a series here is what makes it usable in board data.
+# Capacitor series this project recommends. Adding a series here is what makes
+# it usable in board data.
+#
+# `voltage_min_v` and `voltage_max_v` are the working voltages the series is
+# manufactured in, off the manufacturer's own lineup page or datasheet. A
+# position rated outside a recorded range is a validator ERROR: the series is
+# the right type and the file validates, but the reader is sent to a catalogue
+# that does not stock the rating. A series with no range recorded constrains
+# nothing, because silence here means nobody has read the datasheet — not that
+# the range is unbounded.
+#
+# The mains film series carry no range on purpose. A safety-film datasheet
+# states one fixed AC rating per part family rather than a manufacturing span,
+# so the field does not describe them; the X2 and Y2 voltage floors in the
+# validator are what guard those positions.
 
 - id: panasonic-fr
   manufacturer: Panasonic
   name: FR
   type: electrolytic-radial
   temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
   low_esr: true
-  note: The default radial choice. Low impedance, long life.
+  note: >-
+    The default radial choice. Low impedance, long life. Does not reach the
+    high-voltage positions; those take the Nichicon UCY.
+
+- id: nichicon-ucy
+  manufacturer: Nichicon
+  name: UCY
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 160
+  voltage_max_v: 500
+  note: >-
+    The high-voltage radial choice, for the primary-side and CRT-side positions
+    the Panasonic FR does not reach. General purpose rather than low ESR; there
+    is no true low-ESR leaded radial class at these voltages, where ESR is set
+    by the electrolyte.
 
 - id: panasonic-fk
   manufacturer: Panasonic
   name: FK
   type: electrolytic-smd
   temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
   low_esr: true
-  note: Surface mount. Consider tantalum or polymer instead on Macintosh logic boards.
+  note: >-
+    Surface mount. Consider tantalum or polymer instead on Macintosh logic
+    boards. The leaded FK-A is a different part and stops at 35 V.
 
 - id: nichicon-upw
   manufacturer: Nichicon
   name: UPW
   type: electrolytic-radial
   temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
   low_esr: true
-  note: Radial alternative to Panasonic FR where a value or size is unavailable.
+  note: >-
+    Radial alternative to the Panasonic FR where a value or a can size is
+    unavailable. Same voltage span, so it substitutes one for one.
 
 - id: nichicon-ues
   manufacturer: Nichicon
   name: UES
   type: bipolar
-  temperature_c: 105
-  note: Bipolar, for the non-polarised positions on Macintosh analog boards.
+  temperature_c: 85
+  voltage_min_v: 16
+  voltage_max_v: 50
+  note: >-
+    Bipolar, for the non-polarised positions on Macintosh analog boards. An
+    85 °C part, unlike the rest of this list — no 105 °C bipolar equivalent has
+    been established, so these positions sit at the original temperature class.
 
 - id: nichicon-lgn
   manufacturer: Nichicon
   name: LGN
   type: electrolytic-snap-in
   temperature_c: 105
+  voltage_min_v: 160
+  voltage_max_v: 600
   note: >-
     For the large primary filter capacitors in power supplies. Snap-in
     terminals do not fit a radial-leaded footprint.
@@ -46,27 +91,47 @@
   name: R46
   type: film-x2
   temperature_c: 110
-  note: X2 mains film. Replaces the RIFA capacitors, which are replaced unconditionally.
+  note: >-
+    X2 mains film, 275 VAC. Replaces the RIFA capacitors, which are replaced
+    unconditionally.
 
 - id: tdk-b32922
   manufacturer: TDK
   name: B32922
   type: film-x2
   temperature_c: 110
-  note: X2 mains film, alternative to the Kemet R46.
+  note: X2 mains film, 305 VAC. Alternative to the Kemet R46.
+
+- id: tdk-b32021
+  manufacturer: TDK
+  name: B32021
+  type: film-y2
+  temperature_c: 110
+  note: >-
+    Y2 mains film, 300 VAC, metallized polypropylene. For the positions that
+    bridge the isolation barrier rather than sitting across the line — an X2
+    part is not a substitute. TDK's own replacement for the discontinued
+    B81122.
 
 - id: vishay-021-asm
   manufacturer: Vishay
   name: 021 ASM
   type: electrolytic-axial
-  temperature_c: 105
-  note: Axial positions. Check lead spacing, diameter and height before ordering.
+  temperature_c: 85
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  note: >-
+    Axial positions. Check lead spacing, diameter and height before ordering.
+    An 85 °C part, unlike the rest of this list — no 105 °C leaded axial
+    equivalent has been established.
 
 - id: kemet-t491
   manufacturer: Kemet
   name: T491
   type: tantalum
   temperature_c: 125
+  voltage_max_v: 50
   note: >-
     Tantalum for Macintosh surface-mount positions. The 47 uF positions must be
-    rated 25 V.
+    rated 25 V. Rated to 85 °C with derating above that, so the 125 °C figure
+    is the category limit and not a working rating.

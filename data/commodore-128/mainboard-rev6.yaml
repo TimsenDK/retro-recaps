@@ -2,7 +2,7 @@ id: commodore-128-mainboard-rev6
 machine: commodore-128
 board: mainboard
 revisions:
-  - "6"
+  - 310379 rev 6
 verification: verified
 sources:
   - url: https://support.retrorewind.ca/en/blog/c128-assembly-310379
@@ -14,6 +14,12 @@ sources:
       (not part of the 16 V batch) and that C63/C69 are what differs on rev 7.
   - url: https://hd.retrorewind.ca/commodore/c128/assy-310379
     note: Confirms ASSY 310379 is used by C128 and C128D, not the C128DCR.
+  - url: https://wiki.console5.com/wiki/Commodore_128
+    note: >-
+      Third independent designator-level list, headed "310379 Rev. 6",
+      matching all 15 positions and their factory voltages. Annotates C104
+      and C105 as "50v highly overrated: in-circuit measures ~11v" and
+      "~21v".
 notes:
   - >-
     Rev 7 of this board differs at two positions, not only at C63: C63
@@ -21,9 +27,12 @@ notes:
     on rev 7. Rev 6 is therefore not simply a superset of rev 7, which is
     why the two revisions are separate files.
   - >-
-    C101 is 10 uF but was originally rated 35 V, unlike the other 10 uF
-    positions, which were 16 V. It is not grouped with them and is not
-    reduced to 25 V.
+    C101 is 10 uF but was rated 35 V from the factory, unlike the other
+    10 uF positions, which were 16 V.
+  - >-
+    C104 and C105 are rated 50 V from the factory but sit on rails that
+    measure roughly 11 V and 21 V in circuit, so the original parts are
+    physically larger than the job requires.
 capacitors:
   - designators:
       - C61
@@ -45,6 +54,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 35
+    original_voltage_v: 35
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -52,6 +62,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 2.2
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -59,6 +70,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 1
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -66,6 +78,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 220
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -73,6 +86,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 330
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -80,6 +94,7 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 1000
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
   - designators:

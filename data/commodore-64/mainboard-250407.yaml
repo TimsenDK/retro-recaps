@@ -9,9 +9,22 @@ sources:
     note: Kit list with designators for ASSY 250407, cross-checked below.
   - url: https://www.zimmers.net/cbmpics/cbm/c64/C64ServiceManual.txt
     note: >-
-      Official Commodore service manual parts lists, broken out by PCB
-      assembly number (326298-01, 250407-04, 250425-01). Used to confirm
-      original voltage ratings and check the 250425 equivalence claim.
+      Official Commodore service manual parts list for PCB assembly
+      250407-04: C8/C13/C14/C15/C17/C24/C34/C57/C62/C65/C94/C102/C108 10 uF
+      25 V, C19 2200 uF 16 V, C88 1000 uF 25 V, C90 470 uF 50 V, C91 100 uF
+      16 V. No C12 and no C107 appear on that revision's list.
+  - url: https://wiki.console5.com/wiki/Commodore_64
+    note: >-
+      Independent designator-level list headed "ASSY 250407", adding C107
+      and C108 to the 10 uF 25 V group, annotating "C12 may be ceramic in
+      other revisions", and giving C88 as "470uF (Rev B and earlier);
+      1000uF (Rev C and later)".
+  - url: https://www.retroleum.co.uk/c64-capacitors
+    note: >-
+      Three separate kits for this assembly - Rev A, artwork 251137 Rev B,
+      and artwork 251137 Rev C - differing only at C88 (470 uF on Rev A and
+      Rev B, 1000 uF on Rev C) and in the voltage offered for C88/C90. All
+      three include C107 and C108 as low-profile parts.
   - url: https://www.lemon64.com/forum/viewtopic.php?t=73947
     note: >-
       Forum thread "Capacitor C107 Missing?" confirming C107/C108 are a
@@ -19,24 +32,32 @@ sources:
       VIC-II shield, not present on every board.
 notes:
   - >-
-    This list is confirmed for ASSY 250407 only. C24 differs on ASSY 250425,
-    which carries 22 uF 25 V in that position rather than 10 uF.
+    This assembly spans revisions A to C and they differ at one capacitor
+    position: C88 is 470 uF on rev B and earlier and 1000 uF on rev C and
+    later. Every other position is common to all three, so this is one list
+    with one revision-dependent value rather than three lists. Read the
+    revision letter next to the assembly number before ordering C88.
   - >-
-    C88 shipped from the factory at 1000 uF 25 V on 250407 and on 250425,
-    and at 470 uF 50 V on 326298. No voltage upgrade applies to this
-    position.
+    C88 shipped at 1000 uF 25 V on rev C and on 250425; 326298 carries
+    470 uF 50 V in the equivalent position.
   - >-
     C90 was originally 470 uF 50 V on all three PCB variants and is kept at
     50 V here. Some recap kits ship a 25 V part for this position, which
     would be a downgrade.
   - >-
-    C107 and C108 are not populated on every board; population varies by
-    NTSC/PAL region and by production batch. Treat them as present-if-found
-    rather than guaranteed.
+    C107 and C108 are low-profile parts inside the VIC-II shielded area and
+    are not populated on every board; population varies by NTSC/PAL region
+    and by production batch. Treat them as present-if-found. Height is
+    constrained by the shield.
+  - >-
+    C12 is an electrolytic on some boards of this assembly and a ceramic on
+    others. Fit an electrolytic only where one came out.
+  - >-
+    C24 differs on ASSY 250425, which carries 22 uF 25 V in that position
+    rather than 10 uF.
 capacitors:
   - designators:
       - C8
-      - C12
       - C13
       - C14
       - C15
@@ -51,21 +72,33 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
-    quantity: 13
+    original_voltage_v: 25
+    quantity: 12
     series: panasonic-fr
+  - designators:
+      - C12
+    type: electrolytic-radial
+    capacitance_uf: 10
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 1
+    series: panasonic-fr
+    verification: derived
+    note: >-
+      Fitted as a ceramic rather than an electrolytic on some boards of this
+      assembly.
   - designators:
       - C107
       - C108
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 2
     series: panasonic-fr
-    verification: derived
     note: >-
       Low-profile position inside the VIC-II shielded area. Not populated on
-      every board (NTSC/PAL and batch dependent), and the voltage rating is
-      unconfirmed.
+      every board, and height is limited by the shield.
   - designators:
       - C19
     type: electrolytic-axial
@@ -79,16 +112,19 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 1000
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
     note: >-
-      Some 250407 boards use 470 uF here (326298 originally shipped 470 uF
-      50 V); 1000 uF is the later factory-standard value and is safe to use.
+      1000 uF on rev C and later. Rev B and earlier carry 470 uF in this
+      position; 1000 uF fits the same footprint and is safe to use on
+      either.
   - designators:
       - C90
     type: electrolytic-axial
     capacitance_uf: 470
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: vishay-021-asm
     note: >-

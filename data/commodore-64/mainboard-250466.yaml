@@ -17,6 +17,16 @@ sources:
     note: >-
       Independent confirmation that ASSY 250466 is the C64-B3 shortboard,
       and of C13's alternate designator C210.
+  - url: https://wiki.console5.com/wiki/Commodore_64
+    note: >-
+      Independent designator-level list headed "ASSY 250466": C13 10uF 25V,
+      C19 2200uF 16V, C24 22uF 25V, C88 1000uF 25V, C90 470uF 25V, C91
+      100uF 16V, C200 2.2uF 50V. Lists no C15.
+  - url: https://www.retroleum.co.uk/c64-capacitors
+    note: >-
+      Independent kit for "PCB Assy 250466" with the same seven electrolytic
+      positions, giving C90 as "470uF 16V/25V axial" and C13 with its
+      alternate designator C210.
 notes:
   - >-
     This is the C64-B3 shortboard, built around two multiplexed DRAM chips
@@ -38,6 +48,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 10
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
     note: Also silkscreened C210.
@@ -46,6 +57,7 @@ capacitors:
     type: tantalum
     capacitance_uf: 4.7
     voltage_v: 16
+    original_voltage_v: 16
     quantity: 1
     series: kemet-t491
     verification: derived
@@ -57,6 +69,7 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 22
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: panasonic-fr
   - designators:
@@ -72,6 +85,7 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 1000
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
   - designators:
@@ -79,6 +93,7 @@ capacitors:
     type: electrolytic-axial
     capacitance_uf: 470
     voltage_v: 25
+    original_voltage_v: 25
     quantity: 1
     series: vishay-021-asm
   - designators:
@@ -94,5 +109,6 @@ capacitors:
     type: electrolytic-radial
     capacitance_uf: 2.2
     voltage_v: 50
+    original_voltage_v: 50
     quantity: 1
     series: panasonic-fr

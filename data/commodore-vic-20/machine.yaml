@@ -3,22 +3,33 @@ name: Commodore VIC-20
 family: commodore-8bit
 aliases:
   - VIC-20
-  - VC-20
   - VIC20
+  - VC-20
+  - VC20
+  - VIC-1001
 board_order:
   - mainboard
 notes:
   - >-
-    Two incompatible mainboard variants exist, distinguished by the power
-    connector: ASSY 324003 (2-pin locking PSU connector, on-board 7805
-    regulator) and ASSY 250403 (DIN/circular connector, no on-board
-    regulator). A given machine has one or the other, never both. See
-    mainboard-324003.yaml and mainboard-250403.yaml.
+    Three mainboard designs are documented here, and they share no capacitor
+    list. Identify the board first, by its power connector and then by the
+    range its electrolytic designators run in: a 2-pin locking connector with
+    designators C13 to C44 is ASSY 324003; a 2-pin connector with designators
+    C1 to C22 is the earlier long board, mainboard-rev-e.yaml; a circular DIN
+    connector is ASSY 250403.
   - >-
-    The 250403/DIN board depends on an external PSU brick that supplies
-    regulated +5 V directly (the on-board 7805 was deleted on this
-    revision); like the C64 brick, this is a sealed/potted unit and is
-    replaced as a whole rather than recapped, so no PSU board file is
-    provided for it. The 324003/2-pin board regulates on-board, so its
-    external brick is a simpler AC transformer with lower risk, but is
-    likewise not covered by a PSU board file here.
+    The 250403/DIN board has no on-board 7805 - the +5 V rail is regulated
+    inside the external brick - so its largest can is 2200 uF. The two 2-pin
+    boards regulate on-board and each carry a 4700 uF filter downstream of
+    the regulator.
+  - >-
+    The external supply is not covered by a board file for either connector
+    type. The DIN board's brick supplies regulated +5 V directly and is a
+    sealed, potted unit replaced whole rather than recapped; the 2-pin
+    board's brick is a plain AC transformer.
+  - >-
+    Commodore published a separate "Version E" main logic board schematic
+    for this machine, with no parts list. Whether that drawing describes the
+    C1-to-C22 board covered by mainboard-rev-e.yaml or a fourth board is not
+    established, so a board matching none of the three lists here is
+    possible.

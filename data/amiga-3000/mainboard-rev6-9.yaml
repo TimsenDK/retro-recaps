@@ -10,8 +10,8 @@ verification: verified
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
     note: >-
-      Full mainboard list with reference designators, cited by the handover.
-      Kit description confirms Rubycon/Nichicon/Panasonic through-hole parts.
+      Full mainboard list with reference designators. Kit description
+      confirms Rubycon/Nichicon/Panasonic through-hole parts.
   - url: https://forum.amiga.org/index.php?topic=64983.0
     note: >-
       Independent physical board reading of "A3000 COMMODORE B2 FAB 313312
@@ -23,11 +23,7 @@ notes:
   - >-
     The 4.7 uF and 22 uF groups were originally rated 35 V; 50 V is the
     replacement value.
-  - >-
-    The 470 uF 50 V pair is unconfirmed for this revision range. It appears
-    in an all-revision kit but at no known designator on these boards, so it
-    may belong to a revision not covered here. Count the board before
-    ordering.
+  - Every 470 uF position on these boards is a 16 V part.
 capacitors:
   - designators:
       - C190
@@ -96,12 +92,3 @@ capacitors:
     original_voltage_v: 16
     quantity: 7
     series: panasonic-fr
-  - type: electrolytic-radial
-    capacitance_uf: 470
-    voltage_v: 50
-    quantity: 2
-    verification: derived
-    note: >-
-      Unconfirmed for this revision range; no designators are known and the
-      pair may belong to another revision. Count on the physical board
-      before ordering.
