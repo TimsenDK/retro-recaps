@@ -9,6 +9,7 @@ that: a test that breaks when a class name changes costs more than it catches.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -36,6 +37,7 @@ def build_fixture(tmp_path: Path) -> Path:
         out=out,
         templates=ROOT / "site" / "templates",
         static=ROOT / "site" / "static",
+        assets=ROOT / "site" / "assets",
     )
     return out
 
@@ -218,7 +220,7 @@ def test_the_print_stylesheet_never_hides_a_hazard(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------
 
 
-def build_into(out: Path, data: Path) -> None:
+def build_into(out: Path, data: Path, assets: Path | None = None) -> None:
     from tools.loader import load_dataset
     from tools.site.build import render_site
     from tools.site.context import build_context
@@ -230,6 +232,7 @@ def build_into(out: Path, data: Path) -> None:
         out=out,
         templates=ROOT / "site" / "templates",
         static=ROOT / "site" / "static",
+        assets=assets if assets is not None else ROOT / "site" / "assets",
     )
 
 
@@ -286,3 +289,102 @@ def test_a_second_build_of_an_unchanged_dataset_removes_nothing(
     build_into(out, data)
     after = sorted(path.relative_to(out).as_posix() for path in out.rglob("*"))
     assert before == after
+
+
+# --------------------------------------------------------------------------
+# Static assets and the fonts they carry
+# --------------------------------------------------------------------------
+
+ASSETS = ROOT / "site" / "assets"
+
+FONT_URL = re.compile(r'url\("([^"]+\.woff2)"\)')
+
+
+def test_the_assets_directory_is_copied_verbatim(tmp_path: Path) -> None:
+    """Subdirectories and bytes both survive the copy."""
+    out = build_fixture(tmp_path)
+    for source in ASSETS.rglob("*"):
+        if not source.is_file():
+            continue
+        target = out / "assets" / source.relative_to(ASSETS)
+        assert target.is_file(), target
+        assert target.read_bytes() == source.read_bytes(), target
+
+
+def test_a_removed_asset_does_not_survive_in_the_output(tmp_path: Path) -> None:
+    data = copied_fixture(tmp_path)
+    assets = tmp_path / "assets"
+    (assets / "img").mkdir(parents=True)
+    (assets / "img" / "diagram.svg").write_text("<svg/>", encoding="utf-8")
+    out = tmp_path / "build"
+    build_into(out, data, assets=assets)
+    assert (out / "assets" / "img" / "diagram.svg").is_file()
+
+    (assets / "img" / "diagram.svg").unlink()
+    build_into(out, data, assets=assets)
+    assert not (out / "assets" / "img" / "diagram.svg").exists()
+    assert not (out / "assets" / "img").exists()
+
+
+def test_every_font_url_resolves_from_the_page_that_asks_for_it(
+    tmp_path: Path,
+) -> None:
+    """The sheet is inlined, so its URLs are relative to the page, not to a
+    stylesheet. A page one directory down needs a different prefix from the
+    front page, and both must land on a real file."""
+    out = build_fixture(tmp_path)
+    checked = 0
+    for page in out.rglob("*.html"):
+        urls = set(FONT_URL.findall(page.read_text(encoding="utf-8")))
+        assert urls, page
+        for url in urls:
+            assert (page.parent / url).is_file(), f"{page}: {url}"
+            checked += 1
+    assert checked > 0
+
+
+def test_the_fonts_are_files_and_not_embedded_in_the_stylesheet(
+    tmp_path: Path,
+) -> None:
+    """Inlined into ninety pages, a base64 font would be paid for ninety
+    times."""
+    out = build_fixture(tmp_path)
+    for page in out.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        assert ";base64," not in text, page
+        assert "url(data:" not in text, page
+        assert 'url("data:' not in text, page
+        assert "font-display: swap" in text, page
+
+
+def test_each_font_family_ships_its_licence(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    for licence in ("Silkscreen-OFL.txt", "IBMPlex-OFL.txt"):
+        text = (out / "assets" / "fonts" / licence).read_text(encoding="utf-8")
+        assert "SIL Open Font License" in text
+
+
+def test_the_print_stylesheet_drops_the_pixel_display_face(tmp_path: Path) -> None:
+    """A bitmap face at 10 pt is a smudge; paper gets the text face."""
+    block = print_block(tmp_path)
+    assert "--display" in block
+    display = block.split("--display", 1)[1].split(";", 1)[0]
+    assert "Silkscreen" not in display
+    assert "IBM Plex Sans" in display
+
+    heading_rule = re.search(r"h1,\s*h2,\s*h3,[^{]*\{([^}]*)\}", block)
+    assert heading_rule is not None
+    assert "Silkscreen" not in heading_rule.group(1)
+    assert "IBM Plex Sans" in heading_rule.group(1)
+
+
+def test_the_display_face_never_reaches_the_body_or_a_hazard(
+    tmp_path: Path,
+) -> None:
+    out = build_fixture(tmp_path)
+    sheet = (out / "index.html").read_text(encoding="utf-8").split("<style>", 1)[1]
+    body = sheet.split("body {", 1)[1].split("}", 1)[0]
+    assert "--display" not in body
+    hazard = re.search(r"\.hazard h2,[^{]*\{([^}]*font-family[^}]*)\}", sheet)
+    assert hazard is not None
+    assert "var(--sans)" in hazard.group(1)

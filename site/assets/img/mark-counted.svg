@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+<title>Counted on a real board</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<circle cx="16" cy="16" r="12.5" stroke-width="1.6" stroke-dasharray="3.2 3"/>
+<path stroke-width="3" d="m9.5 16.5 4.5 5 9-10.5"/>
+<circle cx="9.5" cy="16.5" r="2.2" fill="currentColor" stroke="none"/>
+</svg>

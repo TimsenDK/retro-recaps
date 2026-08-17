@@ -1,3 +1,56 @@
+/* ---------- fonts ----------
+   Self-hosted, OFL, and never base64: this sheet is inlined into every one
+   of the site's pages, so an embedded font would be paid for ninety times
+   over. The files sit in `assets/fonts/` and are fetched once and cached.
+
+   `{{ '{{ base }}' }}` is the page's path back to the site root, so these URLs
+   resolve from `index.html` and from `<machine>/<board>.html` alike.
+
+   Every face is `font-display: swap`: the page is readable in the fallback
+   before the font lands, and stays readable if it never does. */
+
+@font-face {
+    font-family: "Silkscreen";
+    src: url("{{ base }}assets/fonts/silkscreen-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Silkscreen";
+    src: url("{{ base }}assets/fonts/silkscreen-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* One variable file covers 400 to 700. The `wdth` axis is pinned upstream,
+   so this is weight only. */
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("{{ base }}assets/fonts/ibm-plex-sans-var.woff2") format("woff2");
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("{{ base }}assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("{{ base }}assets/fonts/ibm-plex-mono-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     color-scheme: light dark;
     --page: #f4f0e8;
@@ -18,10 +71,17 @@
     --warn-bg: #f7dcd6;
     --warn-ink: #7a2113;
     --warn-rule: #b13c22;
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-        "Liberation Mono", monospace;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-        Arial, sans-serif;
+    /* The tables are read with a board in one hand, so the mono face leads
+       with the one that has a slashed zero and unmistakable 1/l/I. */
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+        Consolas, "Liberation Mono", monospace;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    /* Headings only. A pixel face is a costume; it must never carry a
+       sentence, a table cell, or a hazard warning. The fallback is the
+       body sans, so a heading that loses the font is still a heading. */
+    --display: "Silkscreen", "IBM Plex Sans", system-ui, -apple-system,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -120,6 +180,26 @@ code,
 }
 
 /* ---------- headings ---------- */
+
+h1,
+h2,
+h3,
+.masthead a.brand {
+    font-family: var(--display);
+    /* A pixel face is wide. "Macintosh Classic II" is 13 em of it, which
+       is wider than a phone at the smallest heading size, and a heading
+       must not be what makes the page scroll sideways. */
+    overflow-wrap: break-word;
+}
+
+/* The panels carry safety copy. They keep the body face: a warning is not
+   the place to spend legibility on decoration. */
+.verdict h2,
+.hazard h2,
+.battery h2,
+.open-question h2 {
+    font-family: var(--sans);
+}
 
 h1 {
     font-size: clamp(1.7rem, 1.2rem + 2vw, 2.4rem);
@@ -494,6 +574,25 @@ footer.site {
         --warn-bg: #fff;
         --warn-ink: #000;
         --warn-rule: #000;
+        /* These sheets are carried to a workbench and read beside the
+           board. A bitmap face set at 10 pt on a 600 dpi printer is a row
+           of grey smudges, so the pixel display face is dropped for print
+           and the headings are set in the body sans. The mono face stays:
+           it is a text face with tabular figures, and the tables are the
+           point of the page. */
+        --display: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
+            Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Belt and braces: the custom property above covers anything that uses
+       `var(--display)`, and this covers a heading that hard-codes the face
+       later. Neither the pixel font nor a faux-bold of it reaches paper. */
+    h1,
+    h2,
+    h3,
+    .masthead a.brand {
+        font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
+            Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     body {

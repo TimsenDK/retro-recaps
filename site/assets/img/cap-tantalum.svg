@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<title>Tantalum capacitor: dipped bead body, and the marked lead is the plus lead, not the minus</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<path d="M5 21C3 12 8 6 16 6s13 6 11 15Z"/>
+<path d="M20 11v5M17.5 13.5h5" stroke-width="1.8"/>
+<path d="M12.5 21v6M19.5 21v6"/>
+<path d="M2 27h28"/>
+</svg>

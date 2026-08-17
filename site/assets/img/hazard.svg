@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img">
+<title>Danger: high voltage</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" d="M16 3 30 28H2Z"/>
+<path fill="currentColor" d="m18.4 11-6.6 9.8h3.7l-1.1 5.4 6.4-9.6h-3.7z"/>
+</svg>

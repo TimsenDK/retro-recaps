@@ -64,12 +64,27 @@ def render_site(
     *,
     templates: Path | None = None,
     static: Path | None = None,
+    assets: Path | None = None,
 ) -> list[Path]:
     """Write the whole site to `out`, returning every path written."""
     templates = templates or root / "site" / "templates"
     static = static or root / "site" / "static"
+    assets = assets or root / "site" / "assets"
     env = _environment(templates)
-    stylesheet = env.get_template("style.css.j2").render()
+
+    # The stylesheet is inlined into every page, so the URLs inside it are
+    # resolved against the page, not against a stylesheet file. A page one
+    # directory down needs `../assets/...` where the front page needs
+    # `assets/...`, so the sheet is rendered once per depth the site has.
+    stylesheets: dict[str, str] = {}
+
+    def stylesheet_for(base: str) -> Markup:
+        if base not in stylesheets:
+            # `<style>` is raw text: a `"` escaped to `&#34;` is not decoded
+            # back by the browser, it just makes `font-family: "IBM Plex
+            # Mono"` unparseable. The sheet is ours, so it goes in as-is.
+            stylesheets[base] = env.get_template("style.css.j2").render(base=base)
+        return Markup(stylesheets[base])
 
     written: list[Path] = []
 
@@ -81,7 +96,7 @@ def render_site(
             site_tagline=SITE_TAGLINE,
             site_url=SITE_URL,
             contribute_url=CONTRIBUTE_URL,
-            stylesheet=stylesheet,
+            stylesheet=stylesheet_for(base),
             **values,
         )
         _write(target, html)
@@ -134,7 +149,8 @@ def render_site(
 
     written.extend(_write_board_data(context, root, out))
     written.extend(_write_search(context, out))
-    written.extend(_copy_static(static, out))
+    written.extend(_copy_tree(static, out))
+    written.extend(_copy_tree(assets, out / "assets"))
     _prune_stale(out, written)
     return written
 
@@ -172,8 +188,11 @@ def _prune_stale(out: Path, written: list[Path]) -> None:
             continue
         stale.unlink()
 
+    # Empty directories left behind by the removals above. A symlinked
+    # directory is left alone: following one would walk out of the output
+    # tree, and removing it would take something that is not ours.
     for directory in sorted(
-        (path for path in out.rglob("*") if path.is_dir()),
+        (path for path in out.rglob("*") if path.is_dir() and not path.is_symlink()),
         key=lambda path: len(path.parts),
         reverse=True,
     ):
@@ -218,14 +237,21 @@ def _write_search(context: SiteContext, out: Path) -> list[Path]:
     return [json_path, js_path]
 
 
-def _copy_static(static: Path, out: Path) -> list[Path]:
+def _copy_tree(source_dir: Path, target_dir: Path) -> list[Path]:
+    """Copy a directory verbatim, subdirectories and all.
+
+    `site/static/` lands at the root of the site because its files are
+    referenced by name (`search.js`); `site/assets/` lands under
+    `assets/`, which is where the stylesheet and the templates look for
+    fonts and images.
+    """
     written: list[Path] = []
-    if not static.is_dir():
+    if not source_dir.is_dir():
         return written
-    for source in sorted(static.rglob("*")):
+    for source in sorted(source_dir.rglob("*")):
         if not source.is_file():
             continue
-        target = out / source.relative_to(static)
+        target = target_dir / source.relative_to(source_dir)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
         written.append(target)

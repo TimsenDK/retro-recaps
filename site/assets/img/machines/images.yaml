@@ -1,0 +1,161 @@
+# Machine photographs: caption / attribution data for the site generator.
+#
+# One entry per machine id (directory name under data/). Keys:
+#   file         image at ~1200 px on the long edge, relative to this directory
+#   card         smaller variant for index cards, relative to this directory
+#   author       photographer, spelled as the source file credits them
+#   licence      licence name including version
+#   licence_url  deed URL, empty for public-domain files
+#   source_url   Wikimedia Commons file page the image was retrieved from
+#
+# CC BY and CC BY-SA files must be captioned with author + licence. Full
+# compliance record, including retrieval date, is in CREDITS.md.
+# Machines absent from this file have no acceptably licensed photograph.
+
+retrieved: 2026-08-17
+source: Wikimedia Commons
+
+machines:
+  amiga-500:
+    file: amiga-500.jpg
+    card: amiga-500-card.jpg
+    author: Thomas Vogt
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_Amiga_500_%2854862761626%29.jpg
+
+  amiga-1000:
+    file: amiga-1000.jpg
+    card: amiga-1000-card.jpg
+    author: Kaiiv
+    licence: CC BY-SA 3.0 DE
+    licence_url: https://creativecommons.org/licenses/by-sa/3.0/de/deed.en
+    source_url: https://commons.wikimedia.org/wiki/File:Amiga_1000_PAL.jpg
+
+  amiga-2000:
+    file: amiga-2000.jpg
+    card: amiga-2000-card.jpg
+    author: Trafalgarcircle (edit by Ubcule)
+    licence: Public domain
+    licence_url: ''
+    source_url: https://commons.wikimedia.org/wiki/File:Amiga_2000_computer_%28filtered_sharpened%29.jpg
+
+  amiga-3000:
+    file: amiga-3000.jpg
+    card: amiga-3000-card.jpg
+    author: '"Joe Smith" / Joeinwap (edit by Ubcule)'
+    licence: Public domain
+    licence_url: ''
+    source_url: https://commons.wikimedia.org/wiki/File:Amiga_3000_Front_with_White_BG.jpg
+
+  commodore-64:
+    file: commodore-64.jpg
+    card: commodore-64-card.jpg
+    author: Evan-Amos
+    licence: Public domain
+    licence_url: ''
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore-64-Computer-FL.jpg
+
+  commodore-128:
+    file: commodore-128.jpg
+    card: commodore-128-card.jpg
+    author: Evan-Amos
+    licence: CC BY-SA 3.0
+    licence_url: https://creativecommons.org/licenses/by-sa/3.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore-128.jpg
+
+  commodore-128d:
+    file: commodore-128d.jpg
+    card: commodore-128d-card.jpg
+    author: Rama & Musée Bolo
+    licence: CC BY-SA 2.0 FR
+    licence_url: https://creativecommons.org/licenses/by-sa/2.0/fr/deed.en
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_128D-IMG_1726.jpg
+
+  commodore-16:
+    file: commodore-16.jpg
+    card: commodore-16-card.jpg
+    author: Thomas Conté
+    licence: CC BY-SA 2.0
+    licence_url: https://creativecommons.org/licenses/by-sa/2.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_16_%28Thomas_Cont%C3%A9%29_%281%29.jpg
+
+  commodore-plus4:
+    file: commodore-plus4.jpg
+    card: commodore-plus4-card.jpg
+    author: Thomas Conté
+    licence: CC BY-SA 2.0
+    licence_url: https://creativecommons.org/licenses/by-sa/2.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_Plus-4_%28T_Cont%C3%A9%29_%281%29.jpg
+
+  commodore-vic-20:
+    file: commodore-vic-20.jpg
+    card: commodore-vic-20-card.jpg
+    author: Evan-Amos
+    licence: Public domain
+    licence_url: ''
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore-VIC-20-FL.jpg
+
+  commodore-1541:
+    file: commodore-1541.jpg
+    card: commodore-1541-card.jpg
+    author: Evan-Amos
+    licence: Public domain
+    licence_url: ''
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore-64-1541-Floppy-Drive-01.jpg
+
+  commodore-1541c:
+    file: commodore-1541c.jpg
+    card: commodore-1541c-card.jpg
+    author: afrank99
+    licence: CC BY-SA 2.5
+    licence_url: https://creativecommons.org/licenses/by-sa/2.5/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_1541_white.jpg
+
+  commodore-1541-ii:
+    file: commodore-1541-ii.jpg
+    card: commodore-1541-ii-card.jpg
+    author: Ahoerstemeier
+    licence: CC BY-SA 3.0
+    licence_url: https://creativecommons.org/licenses/by-sa/3.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_1541-II.jpg
+
+  commodore-1551:
+    file: commodore-1551.jpg
+    card: commodore-1551-card.jpg
+    author: Jumbo1435
+    licence: CC BY-SA 3.0
+    licence_url: https://creativecommons.org/licenses/by-sa/3.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_1551_topfront.jpg
+
+  commodore-1581:
+    file: commodore-1581.jpg
+    card: commodore-1581-card.jpg
+    author: Ajne01
+    licence: CC BY-SA 4.0
+    licence_url: https://creativecommons.org/licenses/by-sa/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Commodore_1581_Floppy_Disk_Drive.jpg
+
+  mac-classic-ii:
+    file: mac-classic-ii.jpg
+    card: mac-classic-ii-card.jpg
+    author: Chi Ho Chan
+    licence: CC BY 2.0
+    licence_url: https://creativecommons.org/licenses/by/2.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Apple_Macintosh_Classic_ii_%2851925669608%29.jpg
+
+  mac-se:
+    file: mac-se.jpg
+    card: mac-se-card.jpg
+    author: Shelby Jueden
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Macintosh_SE_cropped.jpg
+
+  mac-se30:
+    file: mac-se30.jpg
+    card: mac-se30-card.jpg
+    author: Shelby Jueden
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Macintosh_SE30_cropped.jpg

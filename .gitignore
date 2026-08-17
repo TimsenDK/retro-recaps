@@ -5,6 +5,10 @@
 /site/_output/
 /.cache/
 
+# Upstream font originals, kept between runs of tools/subset_fonts.py.
+# The subset .woff2 files it produces are committed; these are not.
+/.font-cache/
+
 # Python
 __pycache__/
 *.py[cod]

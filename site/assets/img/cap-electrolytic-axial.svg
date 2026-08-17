@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<title>Axial electrolytic capacitor: can lying flat, one lead out of each end</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<rect x="7" y="9" width="18" height="11" rx="3"/>
+<rect x="8.6" y="10.6" width="3.4" height="7.8" fill="currentColor" stroke="none"/>
+<path d="M7 14.5H3v12.5M25 14.5h4v12.5"/>
+<path d="M2 27h28"/>
+</svg>

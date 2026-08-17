@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<title>Snap-in electrolytic capacitor: large can on a moulded base with two flat blade terminals</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<rect x="5" y="2" width="22" height="18" rx="2"/>
+<rect x="6.7" y="3.7" width="3.8" height="14.6" fill="currentColor" stroke="none"/>
+<path d="M5 20h22v3H5z"/>
+<rect x="10" y="23" width="3.2" height="4" fill="currentColor" stroke="none"/>
+<rect x="18.8" y="23" width="3.2" height="4" fill="currentColor" stroke="none"/>
+<path d="M2 27h28"/>
+</svg>

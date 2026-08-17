@@ -18,6 +18,12 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.6",
 ]
+# Only for regenerating the checked-in web fonts; see tools/subset_fonts.py.
+# Neither the validator, the tests nor the site build need these.
+fonts = [
+    "fonttools[woff]>=4.50",
+    "brotli>=1.1",
+]
 
 [tool.setuptools]
 packages = ["tools", "tools.site"]

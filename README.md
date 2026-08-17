@@ -98,3 +98,33 @@ on every pull request.
 
 Code is MIT. Data and documentation are CC BY-SA 4.0. See [LICENSE](LICENSE) and
 [LICENSE-DATA](LICENSE-DATA).
+
+### Fonts
+
+The site is self-hosted end to end — it loads nothing from a CDN, and a page
+saved to a laptop in a workshop with no network still renders as intended. The
+three typefaces it ships are all under the SIL Open Font License 1.1, and each
+licence travels with the fonts in `site/assets/fonts/`:
+
+| Typeface | Used for | Copyright | Licence |
+|---|---|---|---|
+| [Silkscreen](https://github.com/googlefonts/silkscreen) | Headings | 2001 The Silkscreen Project Authors | [OFL 1.1](site/assets/fonts/Silkscreen-OFL.txt) |
+| [IBM Plex Sans](https://github.com/IBM/plex) | Body text | 2017 IBM Corp. | [OFL 1.1](site/assets/fonts/IBMPlex-OFL.txt) |
+| [IBM Plex Mono](https://github.com/IBM/plex) | Capacitor tables and values | 2017 IBM Corp. | [OFL 1.1](site/assets/fonts/IBMPlex-OFL.txt) |
+
+The shipped files are subsets — Latin plus the characters the data actually
+uses, `µ`, `°` and `Ω` among them — which is why they are a fraction of the
+size of the originals. `tools/subset_fonts.py` is how they were made, and
+rebuilds them from upstream:
+
+```bash
+python -m pip install -e ".[fonts]"
+python -m tools.subset_fonts
+```
+
+Machine photographs are not covered by either. Each one comes from Wikimedia
+Commons under its own licence — CC0, CC BY, CC BY-SA or public domain — and the
+CC BY and CC BY-SA ones require the photographer to be credited by name. Every
+image records its photographer, licence version and Commons file page in
+[site/assets/img/machines/CREDITS.md](site/assets/img/machines/CREDITS.md); reuse
+an image under the terms listed there, and keep the credit with it.

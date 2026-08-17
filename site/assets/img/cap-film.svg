@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<title>Film capacitor: moulded box body, wide lead spacing, no polarity</title>
+<style>svg:root{color:#22201c}@media(prefers-color-scheme:dark){svg:root{color:#ece7dc}}@media print{svg:root{color:#000}}</style>
+<rect x="6" y="5" width="20" height="15" rx="1.5"/>
+<path d="M6 9.5h20" stroke-width="1.5"/>
+<path d="M11 20v7M21 20v7"/>
+<path d="M2 27h28"/>
+</svg>
