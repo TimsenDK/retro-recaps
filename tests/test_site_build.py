@@ -359,23 +359,30 @@ def test_the_fonts_are_files_and_not_embedded_in_the_stylesheet(
 
 def test_each_font_family_ships_its_licence(tmp_path: Path) -> None:
     out = build_fixture(tmp_path)
-    for licence in ("Silkscreen-OFL.txt", "IBMPlex-OFL.txt"):
+    for licence in ("ChakraPetch-OFL.txt", "IBMPlex-OFL.txt"):
         text = (out / "assets" / "fonts" / licence).read_text(encoding="utf-8")
         assert "SIL Open Font License" in text
 
 
-def test_the_print_stylesheet_drops_the_pixel_display_face(tmp_path: Path) -> None:
-    """A bitmap face at 10 pt is a smudge; paper gets the text face."""
-    block = print_block(tmp_path)
-    assert "--display" in block
-    display = block.split("--display", 1)[1].split(";", 1)[0]
-    assert "Silkscreen" not in display
-    assert "IBM Plex Sans" in display
+def test_no_bitmap_face_is_wired_as_the_display_face(tmp_path: Path) -> None:
+    """The heading face has to survive a 600 dpi printer.
 
-    heading_rule = re.search(r"h1,\s*h2,\s*h3,[^{]*\{([^}]*)\}", block)
-    assert heading_rule is not None
-    assert "Silkscreen" not in heading_rule.group(1)
-    assert "IBM Plex Sans" in heading_rule.group(1)
+    It was Silkscreen, which does not: a bitmap face set at 10 pt prints as
+    a row of grey smudges, so print had to override it back to the text
+    face. Chakra Petch is an ordinary outline face, so the printed sheet
+    now keeps the site's own headings — but that only holds while the
+    display face is not a bitmap one again.
+    """
+    out = build_fixture(tmp_path)
+    sheet = (out / "index.html").read_text(encoding="utf-8").split("<style>", 1)[1]
+    display = sheet.split("--display:", 1)[1].split(";", 1)[0]
+    for bitmap in ("Silkscreen", "Press Start 2P", "Departure Mono", "VT323"):
+        assert bitmap not in display, (
+            f"{bitmap} is a bitmap face; if it is wired as --display, print "
+            f"must override it back to the text face"
+        )
+    assert "Chakra Petch" in display
+    assert "IBM Plex Sans" in display, "the fallback must still be the body sans"
 
 
 def test_the_display_face_never_reaches_the_body_or_a_hazard(

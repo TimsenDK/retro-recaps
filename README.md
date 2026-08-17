@@ -108,7 +108,7 @@ licence travels with the fonts in `site/assets/fonts/`:
 
 | Typeface | Used for | Copyright | Licence |
 |---|---|---|---|
-| [Silkscreen](https://github.com/googlefonts/silkscreen) | Headings | 2001 The Silkscreen Project Authors | [OFL 1.1](site/assets/fonts/Silkscreen-OFL.txt) |
+| [Chakra Petch](https://github.com/cadsondemak/chakra-petch) | Headings | 2019 Cadson Demak | [OFL 1.1](site/assets/fonts/ChakraPetch-OFL.txt) |
 | [IBM Plex Sans](https://github.com/IBM/plex) | Body text | 2017 IBM Corp. | [OFL 1.1](site/assets/fonts/IBMPlex-OFL.txt) |
 | [IBM Plex Mono](https://github.com/IBM/plex) | Capacitor tables and values | 2017 IBM Corp. | [OFL 1.1](site/assets/fonts/IBMPlex-OFL.txt) |
 

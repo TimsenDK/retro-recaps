@@ -9,17 +9,24 @@
    Every face is `font-display: swap`: the page is readable in the fallback
    before the font lands, and stays readable if it never does. */
 
+/* Chakra Petch: a squared techno grotesque, the lettering of 1980s equipment
+   panels rather than of their screens. Chosen over the bitmap faces on
+   measurement — Silkscreen set "Macintosh Classic II" at 15.25 em in the bold
+   the masthead uses, against a 360 px phone budget of 11.76 em, and had no
+   ohm sign. This sets the same string in 9.42 em against IBM Plex Sans's
+   9.06, so the print substitution barely moves the line. */
+
 @font-face {
-    font-family: "Silkscreen";
-    src: url("{{ base }}assets/fonts/silkscreen-400.woff2") format("woff2");
+    font-family: "Chakra Petch";
+    src: url("{{ base }}assets/fonts/chakra-petch-400.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Silkscreen";
-    src: url("{{ base }}assets/fonts/silkscreen-700.woff2") format("woff2");
+    font-family: "Chakra Petch";
+    src: url("{{ base }}assets/fonts/chakra-petch-700.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -77,10 +84,10 @@
         Consolas, "Liberation Mono", monospace;
     --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto,
         "Helvetica Neue", Arial, sans-serif;
-    /* Headings only. A pixel face is a costume; it must never carry a
+    /* Headings only. A display face is a costume; it must never carry a
        sentence, a table cell, or a hazard warning. The fallback is the
        body sans, so a heading that loses the font is still a heading. */
-    --display: "Silkscreen", "IBM Plex Sans", system-ui, -apple-system,
+    --display: "Chakra Petch", "IBM Plex Sans", system-ui, -apple-system,
         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     /* The bezel a photograph sits in. Dark in both themes — a CRT surround
        was, and a light frame around a light photograph frames nothing. */
@@ -899,14 +906,13 @@ td.type {
         --warn-bg: #fff;
         --warn-ink: #000;
         --warn-rule: #000;
-        /* These sheets are carried to a workbench and read beside the
-           board. A bitmap face set at 10 pt on a 600 dpi printer is a row
-           of grey smudges, so the pixel display face is dropped for print
-           and the headings are set in the body sans. The mono face stays:
-           it is a text face with tabular figures, and the tables are the
-           point of the page. */
-        --display: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
-            Roboto, "Helvetica Neue", Arial, sans-serif;
+        /* The display face stays on paper. It was dropped here while the
+           heading font was a bitmap, which at 10 pt on a 600 dpi printer
+           is a row of grey smudges; Chakra Petch is an ordinary outline
+           face and prints cleanly, so the printed sheet now carries the
+           same headings as the screen and is recognisably the same
+           document. The mono face stays too: it is a text face with
+           tabular figures, and the tables are the point of the page. */
         /* The family accents are decoration, and a colour laser turns them
            into three greys that mean nothing. On paper everything is black
            ink on white and the family is a word, not a hue. */
@@ -917,17 +923,6 @@ td.type {
         --bezel-ink: #000;
     }
 
-
-    /* Belt and braces: the custom property above covers anything that uses
-       `var(--display)`, and this covers a heading that hard-codes the face
-       later. Neither the pixel font nor a faux-bold of it reaches paper. */
-    h1,
-    h2,
-    h3,
-    .masthead a.brand {
-        font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
-            Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
 
     body {
         font-size: 10.5pt;

@@ -137,8 +137,8 @@ def _instance(source: Path, target: Path, axes: list[str]) -> None:
 
 # (upstream family directory, upstream file, output name)
 STATIC_FONTS = (
-    ("silkscreen", "Silkscreen-Regular.ttf", "silkscreen-400.woff2"),
-    ("silkscreen", "Silkscreen-Bold.ttf", "silkscreen-700.woff2"),
+    ("chakrapetch", "ChakraPetch-Regular.ttf", "chakra-petch-400.woff2"),
+    ("chakrapetch", "ChakraPetch-Bold.ttf", "chakra-petch-700.woff2"),
     ("ibmplexmono", "IBMPlexMono-Regular.ttf", "ibm-plex-mono-400.woff2"),
     ("ibmplexmono", "IBMPlexMono-Bold.ttf", "ibm-plex-mono-700.woff2"),
 )
@@ -153,7 +153,7 @@ VARIABLE_FONT = (
 )
 
 LICENCES = (
-    ("silkscreen", "OFL.txt", "Silkscreen-OFL.txt"),
+    ("chakrapetch", "OFL.txt", "ChakraPetch-OFL.txt"),
     ("ibmplexsans", "OFL.txt", "IBMPlex-OFL.txt"),
 )
 
