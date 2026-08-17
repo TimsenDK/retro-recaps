@@ -58,6 +58,26 @@ CAPACITOR_TYPE_NAMES = {
     "ceramic": "Ceramic",
 }
 
+POLARISED_TYPES = frozenset(
+    {
+        "electrolytic-radial",
+        "electrolytic-axial",
+        "electrolytic-snap-in",
+        "electrolytic-smd",
+        "tantalum",
+    }
+)
+"""Capacitor types that go in one way round and are destroyed the other.
+
+Read off the type enum rather than off a field, because the dataset does not
+record polarity per position — the type already decides it. `bipolar` is an
+electrolytic with no polarity, and film, ceramic and the mains classes have
+none either, so a board holding only those needs no polarity diagram.
+
+Tantalums are in the list and are the reason the diagram cannot stand alone:
+they mark the plus lead where an aluminium electrolytic marks the minus.
+"""
+
 CRT_FAMILIES = frozenset({"macintosh"})
 """Families whose machines are all-in-ones with a CRT in the case.
 
@@ -101,6 +121,18 @@ def format_voltage(value: float) -> str:
 
 def label_for(mapping: dict[str, str], key: str) -> str:
     return mapping.get(key, key)
+
+
+def family_mark(family_id: str) -> str | None:
+    """The silhouette drawn for a family, relative to the site root.
+
+    Decorative: the family name is in the markup beside it in every case, so
+    a family with no drawing loses nothing. One exists per id in
+    ``FAMILY_NAMES`` and a new family gets none until someone draws it.
+    """
+    if family_id not in FAMILY_NAMES:
+        return None
+    return f"assets/img/family-{family_id}.svg"
 
 
 def natural_key(text: str) -> tuple:
@@ -625,7 +657,9 @@ class CapacitorRow:
     capacitance: str
     voltage: str
     original_voltage_note: str | None
+    type_id: str
     type_label: str
+    is_polarised: bool
     series: SeriesView | None
     series_label: str
     part: PartView | None
@@ -633,6 +667,19 @@ class CapacitorRow:
     note: str | None
     verification: VerificationView
     differs_from_board: bool
+
+    @property
+    def icon_url(self) -> str | None:
+        """The type symbol drawn for this type, relative to the site root.
+
+        One drawing exists per value of the type enum, named after it. A type
+        the site has no name for has no drawing either, and gets none rather
+        than a broken image — the written label carries the meaning in every
+        case, and the symbol only ever supplements it.
+        """
+        if self.type_id not in CAPACITOR_TYPE_NAMES:
+            return None
+        return f"assets/img/cap-{self.type_id}.svg"
 
 
 def _fit_limits(capacitor: Capacitor) -> tuple[str, ...]:
@@ -691,7 +738,9 @@ def capacitor_row(
         capacitance=format_capacitance(capacitor.capacitance_uf),
         voltage=format_voltage(capacitor.voltage_v),
         original_voltage_note=original,
+        type_id=capacitor.type,
         type_label=label_for(CAPACITOR_TYPE_NAMES, capacitor.type),
+        is_polarised=capacitor.type in POLARISED_TYPES,
         series=series_view(series) if series else None,
         series_label=(
             f"{series.manufacturer} {series.name}"
@@ -722,6 +771,8 @@ class BoardView:
     slug: str
     machine_id: str
     machine_name: str
+    family: str
+    family_name: str
     kind: str
     kind_label: str
     title: str
@@ -744,6 +795,16 @@ class BoardView:
     batteries: tuple
     rows_without_designators: int
     mixed_verification: bool
+
+    @property
+    def has_polarised(self) -> bool:
+        """Whether any position on this board can be fitted the wrong way.
+
+        A board of film and ceramic parts gets no polarity diagram: an
+        instruction that does not apply is one more thing to read past on a
+        page that is trying to be a checklist.
+        """
+        return any(row.is_polarised for row in self.rows)
 
 
 EMPTY_LIST_QUESTION = (
@@ -792,6 +853,10 @@ def board_view(
         slug=slug,
         machine_id=board.machine,
         machine_name=machine_name,
+        family=machine.family if machine is not None else "",
+        family_name=(
+            label_for(FAMILY_NAMES, machine.family) if machine is not None else ""
+        ),
         kind=board.board,
         kind_label=kind_label,
         title=title,
@@ -843,12 +908,20 @@ class MachineView:
     def capacitor_count(self) -> int:
         return sum(board.capacitor_count for board in self.boards)
 
+    @property
+    def family_mark_url(self) -> str | None:
+        return family_mark(self.family)
+
 
 @dataclass(frozen=True)
 class FamilyView:
     id: str
     name: str
     machines: tuple[MachineView, ...]
+
+    @property
+    def mark_url(self) -> str | None:
+        return family_mark(self.id)
 
     @property
     def coverage(self) -> Coverage:
@@ -1068,6 +1141,7 @@ def search_index(machines: tuple[MachineView, ...]) -> list[dict]:
                 "type": "machine",
                 "title": machine.name,
                 "subtitle": machine.family_name,
+                "family": machine.family,
                 "url": machine.url,
                 "status": machine.coverage.worst,
                 "text": haystack.lower(),
@@ -1085,6 +1159,7 @@ def search_index(machines: tuple[MachineView, ...]) -> list[dict]:
                     "type": "board",
                     "title": f"{machine.name} — {board.title}",
                     "subtitle": board.verification.label,
+                    "family": machine.family,
                     "url": board.url,
                     "status": board.verification.status,
                     "text": " ".join(words).lower(),
@@ -1096,6 +1171,28 @@ def search_index(machines: tuple[MachineView, ...]) -> list[dict]:
 # --------------------------------------------------------------------------
 # The whole site
 # --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class CapacitorTypeView:
+    """One value of the type enum, for the key on the reference page."""
+
+    id: str
+    label: str
+    icon_url: str
+    polarised: bool
+
+
+def capacitor_type_views() -> tuple[CapacitorTypeView, ...]:
+    return tuple(
+        CapacitorTypeView(
+            id=type_id,
+            label=label,
+            icon_url=f"assets/img/cap-{type_id}.svg",
+            polarised=type_id in POLARISED_TYPES,
+        )
+        for type_id, label in CAPACITOR_TYPE_NAMES.items()
+    )
 
 
 @dataclass(frozen=True)

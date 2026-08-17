@@ -86,7 +86,7 @@ def test_a_board_page_carries_its_designators_and_values(tmp_path: Path) -> None
 def test_a_derived_board_states_the_caution_in_words(tmp_path: Path) -> None:
     out = build_fixture(tmp_path)
     page = (out / "mac-se" / "logic.html").read_text(encoding="utf-8")
-    body = page.split("<body>", 1)[1]
+    body = page.split("<body", 1)[1]
     assert "tone-caution" in body
     assert "tone-verified" not in body
     assert "Nobody has confirmed this list" in body
@@ -202,7 +202,7 @@ def print_block(tmp_path: Path) -> str:
 def test_hazard_panels_survive_the_print_stylesheet(tmp_path: Path) -> None:
     """Two panels can land on one board page; both must print bordered."""
     block = print_block(tmp_path)
-    rules = block.split("page-break-inside: avoid", 1)[0]
+    rules = block.split("page-break-inside:avoid", 1)[0]
     assert ".hazard" in rules
     assert ".battery" in rules
     assert "2px solid #000" in block
@@ -210,7 +210,7 @@ def test_hazard_panels_survive_the_print_stylesheet(tmp_path: Path) -> None:
 
 def test_the_print_stylesheet_never_hides_a_hazard(tmp_path: Path) -> None:
     block = print_block(tmp_path)
-    hidden = block.split("display: none", 1)[0]
+    hidden = block.split("display:none", 1)[0]
     assert ".hazard" not in hidden
     assert ".battery" not in hidden
 
@@ -354,7 +354,7 @@ def test_the_fonts_are_files_and_not_embedded_in_the_stylesheet(
         assert ";base64," not in text, page
         assert "url(data:" not in text, page
         assert 'url("data:' not in text, page
-        assert "font-display: swap" in text, page
+        assert "font-display:swap" in text, page
 
 
 def test_each_font_family_ships_its_licence(tmp_path: Path) -> None:
@@ -383,7 +383,7 @@ def test_the_display_face_never_reaches_the_body_or_a_hazard(
 ) -> None:
     out = build_fixture(tmp_path)
     sheet = (out / "index.html").read_text(encoding="utf-8").split("<style>", 1)[1]
-    body = sheet.split("body {", 1)[1].split("}", 1)[0]
+    body = sheet.split("body{", 1)[1].split("}", 1)[0]
     assert "--display" not in body
     hazard = re.search(r"\.hazard h2,[^{]*\{([^}]*font-family[^}]*)\}", sheet)
     assert hazard is not None

@@ -82,6 +82,50 @@
        body sans, so a heading that loses the font is still a heading. */
     --display: "Silkscreen", "IBM Plex Sans", system-ui, -apple-system,
         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* The bezel a photograph sits in. Dark in both themes — a CRT surround
+       was, and a light frame around a light photograph frames nothing. */
+    --bezel: #3a352d;
+    --bezel-edge: #26221c;
+    --bezel-ink: #efe9db;
+    /* Fallbacks for the family accents below, so a family the palette does
+       not name still renders in the site accent rather than in nothing. */
+    --family-ink: var(--accent);
+    --family-chip: var(--panel-alt);
+}
+
+/* ---------- family accents ----------
+   Four families, four accents, used on the index, the machine pages and the
+   board pages so a page announces which family it belongs to before its
+   heading is read.
+
+   These evoke the era; they are not the manufacturers' brand colours and
+   claim no affiliation. They are also kept clear of the three tones the site
+   uses to mean something — green for verified, amber for caution, red for a
+   hazard — so nothing can read a family accent as a status.
+
+   `--family-ink` carries text and edges, `--family-chip` is a tint it sits
+   on. Measured against `--page`, `--panel` and `--panel-alt`, the worst pair
+   in either theme is 5.09:1, comfortably past AA for body text and past 3:1
+   for edges. */
+
+.fam-amiga {
+    --family-ink: #8a2f8f;
+    --family-chip: #f3e7f4;
+}
+
+.fam-commodore-8bit {
+    --family-ink: #2f47b8;
+    --family-chip: #e4e8fb;
+}
+
+.fam-commodore-drive {
+    --family-ink: #0e6a6a;
+    --family-chip: #dcefee;
+}
+
+.fam-macintosh {
+    --family-ink: #4a5563;
+    --family-chip: #e7e9ec;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -104,6 +148,29 @@
         --warn-bg: #3a1a13;
         --warn-ink: #f4a48f;
         --warn-rule: #c25030;
+        --bezel: #100f0d;
+        --bezel-edge: #060605;
+        --bezel-ink: #cfc8b8;
+    }
+
+    .fam-amiga {
+        --family-ink: #dfa0e4;
+        --family-chip: #33203a;
+    }
+
+    .fam-commodore-8bit {
+        --family-ink: #9db4f5;
+        --family-chip: #1f2540;
+    }
+
+    .fam-commodore-drive {
+        --family-ink: #79cfc9;
+        --family-chip: #152f30;
+    }
+
+    .fam-macintosh {
+        --family-ink: #b9c4d2;
+        --family-chip: #262b32;
     }
 }
 
@@ -148,6 +215,18 @@ code,
 .masthead {
     border-bottom: 3px solid var(--rule-strong);
     background: var(--panel);
+}
+
+/* A strip of board — DIP, two capacitor positions, a few traces — repeated
+   along the foot of the masthead. Purely decorative, which is why it is a
+   background rather than an element: it is not in the accessibility tree and
+   there is nothing for a screen reader to skip. */
+.masthead .motif {
+    height: 15px;
+    background: url("{{ base }}assets/img/masthead-board.svg") repeat-x left
+        center;
+    background-size: auto 15px;
+    opacity: 0.4;
 }
 
 .masthead .wrap {
@@ -533,6 +612,252 @@ footer.site {
     color: var(--ink-soft);
 }
 
+/* ---------- family headings and family-tinted cards ---------- */
+
+h2.family {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--family-ink);
+    border-bottom-width: 2px;
+    border-bottom-color: var(--family-ink);
+}
+
+h2.family .mark {
+    width: 1.7rem;
+    height: 1.7rem;
+    flex: none;
+}
+
+/* The family accent as a chunky left edge — the one place on the index where
+   a card says which family it belongs to without a word. The name is in the
+   heading above it, so nothing depends on the colour. */
+.card {
+    border-left: 5px solid var(--family-ink);
+}
+
+.card .badge {
+    display: inline-block;
+}
+
+@media (hover: hover) {
+    .card {
+        transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 0 var(--rule);
+    }
+}
+
+/* A machine or board page carries its family accent on the title bar and on
+   one chip beside it. Both are redundant: the family is written out in the
+   chip and in the lede. */
+.pagetitle {
+    border-left: 7px solid var(--family-ink);
+    padding-left: 0.7rem;
+}
+
+.famchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--family-ink);
+    border-radius: 0.2rem;
+    background: var(--family-chip);
+    color: var(--family-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.famchip .mark {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* ---------- photographs in a screen bezel ----------
+   A machine photograph sits in a moulded surround with a scanline sheen over
+   it: the period is the point, and a bezel is what these machines were seen
+   through. The sheen is a static gradient at low opacity over a photograph,
+   never over text. */
+
+.shot {
+    margin: 0 0 1rem;
+}
+
+.shot .bezel {
+    position: relative;
+    background: var(--bezel);
+    border: 1px solid var(--bezel-edge);
+    border-radius: 0.55rem;
+    padding: 0.5rem;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+}
+
+.shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+}
+
+.shot .bezel::after {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    border-radius: 0.25rem;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.16) 0 1px,
+        rgba(0, 0, 0, 0) 1px 3px
+    );
+    opacity: 0.5;
+}
+
+.shot .credit {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+}
+
+/* The machine with no freely licensed photograph gets the same box rather
+   than a hole in the layout, and says why it is empty. */
+.shot .missing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 8rem;
+    padding: 1.25rem;
+    text-align: center;
+    color: var(--bezel-ink);
+    font-size: 0.85rem;
+}
+
+.shot .missing .mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.7;
+}
+
+.hero {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+    margin: 1.5rem 0;
+}
+
+@media (min-width: 45rem) {
+    .hero {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    .hero .shot {
+        margin: 0;
+    }
+}
+
+.card .shot {
+    margin-bottom: 0.6rem;
+}
+
+.card .shot .bezel {
+    padding: 0.3rem;
+    border-radius: 0.4rem;
+}
+
+.card .shot .bezel::after {
+    inset: 0.3rem;
+}
+
+/* ---------- capacitor type symbols ----------
+   The drawing supplements the words in the cell; it never replaces them.
+   Radial, axial and snap-in are three phrases that look alike and three
+   parts that do not. */
+
+td.type {
+    min-width: 9rem;
+}
+
+.captype {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+}
+
+.captype img {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    margin-top: -0.1rem;
+}
+
+/* The same symbols at reading size, in the key on the reference page. */
+.typekey {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+/* ---------- polarity diagram ---------- */
+
+.polarity {
+    margin: 1.5rem 0;
+    padding: 1rem 1.1rem 0.75rem;
+    border: 2px solid var(--rule-strong);
+    border-radius: 0.3rem;
+    background: var(--panel);
+}
+
+.polarity h2 {
+    margin: 0 0 0.5rem;
+    border: 0;
+    padding: 0;
+    font-size: 1.05rem;
+}
+
+/* The diagram carries its own captions and they stop being readable below
+   about 30rem. Rather than shrink it past that or drop it on a phone, it
+   keeps its width and scrolls inside its own box — the page never scrolls
+   sideways, and the drawing is never illegible. */
+.polarity .frame {
+    overflow-x: auto;
+}
+
+.polarity svg {
+    display: block;
+    width: 100%;
+    min-width: 30rem;
+    max-width: 34rem;
+    height: auto;
+    margin: 0 auto;
+}
+
+.polarity p {
+    margin: 0.5rem 0 0.35rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        transition: none;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+}
+
 /* ---------- search ---------- */
 
 #search {
@@ -582,7 +907,16 @@ footer.site {
            point of the page. */
         --display: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
             Roboto, "Helvetica Neue", Arial, sans-serif;
+        /* The family accents are decoration, and a colour laser turns them
+           into three greys that mean nothing. On paper everything is black
+           ink on white and the family is a word, not a hue. */
+        --family-ink: #000;
+        --family-chip: #fff;
+        --bezel: #fff;
+        --bezel-edge: #000;
+        --bezel-ink: #000;
     }
+
 
     /* Belt and braces: the custom property above covers anything that uses
        `var(--display)`, and this covers a heading that hard-codes the face
@@ -700,5 +1034,51 @@ footer.site {
     .print-footer .url {
         font-family: var(--mono);
         word-break: break-all;
+    }
+
+    /* The photographs, the family marks, the board motif and the type
+       symbols all come off the sheet. They are referenced SVGs and JPEGs
+       that cannot know the page is being printed — a symbol drawn in a dark
+       theme's ink is invisible on paper — and none of them carries anything
+       the words beside it do not already say. What is left is the table, the
+       designators and the panels. */
+    .shot,
+    .masthead .motif,
+    h2.family .mark,
+    .famchip .mark,
+    .captype img,
+    .typekey {
+        display: none !important;
+    }
+
+    .pagetitle {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+    .famchip {
+        border: 1px solid #000;
+        background: #fff;
+        color: #000;
+    }
+
+    /* The polarity diagram is the exception, and the reason it is inlined
+       rather than referenced: as markup it paints in `currentColor`, so it
+       goes to paper as black line art with the rest of the page. Fitting a
+       part backwards is the mistake this sheet exists to prevent. */
+    .polarity {
+        border: 1px solid #000;
+        background: #fff;
+        page-break-inside: avoid;
+    }
+
+    .polarity .frame {
+        overflow: visible;
+    }
+
+    .polarity svg {
+        display: block;
+        min-width: 0;
+        max-width: 12cm;
     }
 }

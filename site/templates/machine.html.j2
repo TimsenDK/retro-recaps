@@ -1,21 +1,32 @@
 {% extends "base.html.j2" %}
 {% block title %}{{ machine.name }} · {{ site_name }}{% endblock %}
 {% block description %}Capacitor replacement lists for the {{ machine.name }}, board by board.{% endblock %}
+{% block body_class %}fam-{{ machine.family }}{% endblock %}
 {% block content %}
 
 <p class="crumbs"><a href="{{ base }}index.html">Machines</a></p>
 
-<h1>{{ machine.name }}</h1>
-<p class="lede">
-    {{ machine.family_name }}{% if machine.aliases %} · also known as
-    {{ machine.aliases | join(', ') }}{% endif %} ·
-    {{ machine.coverage.summary }}
-</p>
+<h1 class="pagetitle">{{ machine.name }}</h1>
 
-<p>
-    <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>
-    {{ machine.coverage.group_headline }}
-</p>
+<div class="hero">
+    <div>
+        <p class="lede">
+            <a class="famchip" href="{{ base }}index.html#{{ machine.family }}">
+                {% if machine.family_mark_url %}
+                <img class="mark" src="{{ base }}{{ machine.family_mark_url }}" alt="" aria-hidden="true">
+                {% endif %}
+                {{ machine.family_name }}</a>
+            {% if machine.aliases %}Also known as
+            {{ machine.aliases | join(', ') }}.{% endif %}
+            {{ machine.coverage.summary }}.
+        </p>
+        <p>
+            <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>
+            {{ machine.coverage.group_headline }}
+        </p>
+    </div>
+    {% with card = false %}{% include "_photo.html.j2" %}{% endwith %}
+</div>
 
 {% with hazards = machine.hazards %}{% include "_hazards.html.j2" %}{% endwith %}
 

@@ -17,7 +17,10 @@
 
     function card(entry) {
         var li = document.createElement("li");
-        li.className = "card";
+        // The family accent, so a result looks like the card it stands for.
+        // An entry with no family keeps the site accent, which is what the
+        // stylesheet falls back to.
+        li.className = entry.family ? "card fam-" + entry.family : "card";
         var link = document.createElement("a");
         link.href = entry.url;
         link.textContent = entry.title;

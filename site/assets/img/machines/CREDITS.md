@@ -57,4 +57,6 @@ Retrieved: 2026-08-17.
   the plastic-cased 128D, not the metal-cased DCR. No image was substituted.
 - **commodore-1541c**: the file is titled "Commodore 1541 white" but its own
   description (by the photographer) identifies the machine as a 1541C — the white
-  case with the lever-type door.
+  case with the lever-type door. The badge visible in the photograph reads
+  "1541", so the identification does not rest on the machine's own marking; it
+  was confirmed against a physical 1541C by the project owner, 2026-08-17.

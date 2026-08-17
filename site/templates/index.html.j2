@@ -18,10 +18,16 @@
 
 <div id="everything">
 {% for family in site.families %}
-<h2 id="{{ family.id }}">{{ family.name }}</h2>
+<h2 class="family fam-{{ family.id }}" id="{{ family.id }}">
+    {% if family.mark_url %}
+    <img class="mark" src="{{ base }}{{ family.mark_url }}" alt="" aria-hidden="true">
+    {% endif %}
+    {{ family.name }}
+</h2>
 <ul class="cards">
     {% for machine in family.machines %}
-    <li class="card">
+    <li class="card fam-{{ family.id }}">
+        {% with photo = photos.get(machine.id), card = true %}{% include "_photo.html.j2" %}{% endwith %}
         <a href="{{ base }}{{ machine.url }}">{{ machine.name }}</a>
         <span class="meta">{{ machine.coverage.summary }}</span>
         <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>

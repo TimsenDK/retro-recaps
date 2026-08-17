@@ -17,6 +17,52 @@
     one — <em>25 V, was 16 V</em> — so nothing is quietly rewritten.
 </p>
 
+<section class="polarity" role="note">
+    <h2>Which way round</h2>
+    <div class="frame">{{ polarity_svg }}</div>
+    <p>
+        Every board page that lists a polarised part carries this diagram
+        too, because that is the page people print and take to the bench.
+        Tantalums are the exception to the marking: they mark the
+        <strong>plus</strong> lead, where an aluminium electrolytic marks the
+        minus.
+    </p>
+</section>
+
+<h2>Capacitor types</h2>
+<p>
+    The symbol beside a type in a board table is this one. It is drawn from
+    the side, sitting on the board, because lead placement and body shape are
+    what tell radial, axial and snap-in apart in a parts drawer. The written
+    type is always beside it and is what carries the meaning.
+</p>
+<div class="scroller">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Type</th>
+                <th scope="col">Polarity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for type in capacitor_types %}
+            <tr>
+                <td><img class="typekey" src="{{ base }}{{ type.icon_url }}" alt="" aria-hidden="true" width="40" height="40"></td>
+                <td>{{ type.label }}</td>
+                <td>
+                    {% if type.polarised %}
+                    Polarised — fitting it backwards destroys it
+                    {% else %}
+                    Not polarised
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <h2>Series</h2>
 {% if site.series %}
 <div class="scroller">

@@ -9,6 +9,7 @@ board data files alongside their HTML.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -22,8 +23,10 @@ from tools.site.context import (
     VERIFICATION_ORDER,
     SiteContext,
     build_context,
+    capacitor_type_views,
     verification_view,
 )
+from tools.site.images import PhotoView, load_photos
 
 SITE_NAME = "Retro Recaps"
 SITE_TAGLINE = (
@@ -33,6 +36,73 @@ SITE_TAGLINE = (
 REPO_URL = "https://github.com/TimsenDK/retro-recaps"
 SITE_URL = "https://timsendk.github.io/retro-recaps"
 CONTRIBUTE_URL = f"{REPO_URL}/blob/main/CONTRIBUTING.md"
+
+
+_CSS_TIGHTEN = re.compile(r"\s*([{};:,>])\s*")
+_CSS_PARENS = re.compile(r"\(\s+|\s+\)")
+
+
+def compact_css(text: str) -> str:
+    """The stylesheet with its comments and layout removed.
+
+    The sheet is inlined into every page, so a byte of it is written ninety
+    times: the comments alone, which are the most valuable part of the source,
+    cost the built site a few hundred kilobytes. They are stripped here rather
+    than sacrificed in the source — the explanation of why a rule exists is
+    worth more than the rule, and the reader of the source is not the reader
+    of the page.
+
+    Deliberately conservative. It is quote-aware, because `content: "\\26A0 "`
+    holds significant spaces and a font stack holds significant quotes, and it
+    only removes whitespace that CSS cannot miss.
+    """
+    # Twice: a stripped comment leaves a space behind that the first pass
+    # cannot collapse, because it did not exist when the run either side of
+    # it was compacted.
+    return _compact_once(_compact_once(text))
+
+
+def _compact_once(text: str) -> str:
+    out: list[str] = []
+    index = 0
+    length = len(text)
+    while index < length:
+        char = text[index]
+        if char in "\"'":
+            end = index + 1
+            while end < length:
+                if text[end] == "\\":
+                    end += 2
+                    continue
+                if text[end] == char:
+                    end += 1
+                    break
+                end += 1
+            out.append(text[index:end])
+            index = end
+            continue
+        if char == "/" and text.startswith("/*", index):
+            end = text.find("*/", index + 2)
+            index = length if end == -1 else end + 2
+            # A comment is whitespace, not nothing: `a/*x*/b` must not become
+            # `ab`. The collapse below removes the space again where it can.
+            out.append(" ")
+            continue
+        end = index + 1
+        while end < length and text[end] not in "\"'/":
+            end += 1
+        if end < length and text[end] == "/" and not text.startswith("/*", end):
+            end += 1
+        out.append(_compact_run(text[index:end]))
+        index = end
+    return "".join(out).strip()
+
+
+def _compact_run(run: str) -> str:
+    run = re.sub(r"\s+", " ", run)
+    run = _CSS_TIGHTEN.sub(r"\1", run)
+    run = _CSS_PARENS.sub(lambda match: match.group(0).strip(), run)
+    return run.replace(";}", "}")
 
 
 def _environment(templates: Path) -> Environment:
@@ -83,8 +153,22 @@ def render_site(
             # `<style>` is raw text: a `"` escaped to `&#34;` is not decoded
             # back by the browser, it just makes `font-family: "IBM Plex
             # Mono"` unparseable. The sheet is ours, so it goes in as-is.
-            stylesheets[base] = env.get_template("style.css.j2").render(base=base)
+            stylesheets[base] = compact_css(
+                env.get_template("style.css.j2").render(base=base)
+            )
         return Markup(stylesheets[base])
+
+    # A photograph is only ever handed to a template together with the credit
+    # its licence requires, so the two cannot be separated by a template edit.
+    photos: dict[str, PhotoView] = load_photos(
+        assets, {machine.id: machine.name for machine in context.machines}
+    )
+
+    # Inlined rather than referenced: as markup it paints in `currentColor`,
+    # so it follows the theme and prints as black line art, which a
+    # referenced SVG cannot do. It is the one drawing that goes on the sheet
+    # carried to the bench, and it is worth its bytes there.
+    polarity_svg = Markup(_read_text(assets / "img" / "polarity.svg").strip())
 
     written: list[Path] = []
 
@@ -102,7 +186,7 @@ def render_site(
         _write(target, html)
         written.append(target)
 
-    page("index.html.j2", out / "index.html", "")
+    page("index.html.j2", out / "index.html", "", photos=photos)
 
     readme = _read_text(root / "README.md")
     conventions = markdown.section(readme, "Conventions")
@@ -116,6 +200,8 @@ def render_site(
             else "<p>The conventions are not recorded in this build.</p>"
         ),
         verifications=[verification_view(s) for s in VERIFICATION_ORDER],
+        capacitor_types=capacitor_type_views(),
+        polarity_svg=polarity_svg,
     )
 
     safety = _read_text(root / "SAFETY.md")
@@ -138,6 +224,7 @@ def render_site(
             out / machine.id / "index.html",
             "../",
             machine=machine,
+            photo=photos.get(machine.id),
         )
         for board in machine.boards:
             page(
@@ -145,6 +232,7 @@ def render_site(
                 out / machine.id / f"{board.slug}.html",
                 "../",
                 board=board,
+                polarity_svg=polarity_svg,
             )
 
     written.extend(_write_board_data(context, root, out))

@@ -9,7 +9,7 @@
 {{ stylesheet }}
 </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <header class="masthead no-print">
     <div class="wrap">
         <a class="brand" href="{{ base }}index.html">Retro <span>Recaps</span></a>
@@ -20,6 +20,9 @@
             <a href="{{ base }}safety.html">Safety</a>
         </nav>
     </div>
+    {# Decorative board fragment along the foot of the masthead. Empty, and
+       hidden from the accessibility tree: there is nothing here to read. #}
+    <div class="motif" aria-hidden="true"></div>
 </header>
 <main class="wrap">
 {% block content %}{% endblock %}

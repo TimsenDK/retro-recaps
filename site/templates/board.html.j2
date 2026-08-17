@@ -2,6 +2,7 @@
 {% set v = board.verification %}
 {% block title %}{{ board.machine_name }} — {{ board.title }} · {{ site_name }}{% endblock %}
 {% block description %}Capacitor replacement list for the {{ board.machine_name }} {{ board.kind_label | lower }} ({{ v.label }}).{% endblock %}
+{% block body_class %}fam-{{ board.family }}{% endblock %}
 {% block content %}
 
 <p class="crumbs">
@@ -9,7 +10,7 @@
     <a href="{{ base }}{{ board.machine_url }}">{{ board.machine_name }}</a>
 </p>
 
-<h1>{{ board.machine_name }} — {{ board.title }}</h1>
+<h1 class="pagetitle">{{ board.machine_name }} — {{ board.title }}</h1>
 <p class="lede">
     {{ board.kind_label }}{% if board.revision_label %}, {{ board.revision_label }}{% endif %}.
     {% if board.capacitor_count %}
@@ -77,7 +78,19 @@
                     <span class="was">{{ row.original_voltage_note }}</span>
                     {% endif %}
                 </td>
-                <td>{{ row.type_label }}</td>
+                <td class="type">
+                    {# The symbol supplements the words and never replaces
+                       them: X2 and Y2 are not interchangeable on a mains
+                       board and their lettering is not legible this small,
+                       and a tantalum marks the lead an electrolytic does
+                       not. The label is what carries the meaning. #}
+                    <span class="captype">
+                        {% if row.icon_url %}
+                        <img src="{{ base }}{{ row.icon_url }}" alt="" aria-hidden="true" width="26" height="26">
+                        {% endif %}
+                        <span>{{ row.type_label }}</span>
+                    </span>
+                </td>
                 <td>
                     {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
                     {% if row.part %}
@@ -98,6 +111,22 @@
         </tbody>
     </table>
 </div>
+
+{% if board.has_polarised %}
+{# Inlined rather than referenced, so it paints in `currentColor` and reaches
+   paper as black line art. It appears on a board page only when that board
+   holds a part that can be fitted the wrong way round. #}
+<section class="polarity" role="note">
+    <h2>Which way round</h2>
+    <div class="frame">{{ polarity_svg }}</div>
+    <p>
+        Note how each part sits before you pull it, and match the stripe to
+        the shaded half of the silkscreen. Tantalums are the exception to the
+        marking: they mark the <strong>plus</strong> lead, where an aluminium
+        electrolytic marks the minus.
+    </p>
+</section>
+{% endif %}
 
 {% if board.rows_without_designators %}
 <p class="lede">

@@ -1,0 +1,42 @@
+{# A machine photograph in its bezel, with the credit its licence requires.
+
+   `photo` is a PhotoView or none, `machine` is the MachineView it belongs to,
+   and `card` selects the small variant. The credit is rendered here and
+   nowhere else, so a photograph cannot reach a page without it: CC BY and
+   CC BY-SA oblige us to name the photographer wherever the image is shown.
+
+   `width`/`height` come off the file itself, so the box is reserved before
+   the image lands and nothing below it moves. #}
+<figure class="shot">
+    {% if photo %}
+    <div class="bezel">
+        <img src="{{ base }}assets/{{ photo.card_url if card else photo.url }}"
+             alt="{{ photo.alt }}"
+             loading="lazy" decoding="async"
+             {% if card %}
+             {% if photo.card_width %}width="{{ photo.card_width }}" height="{{ photo.card_height }}"{% endif %}
+             {% else %}
+             {% if photo.width %}width="{{ photo.width }}" height="{{ photo.height }}"{% endif %}
+             {% endif %}>
+    </div>
+    <figcaption class="credit">
+        Photo
+        {% if photo.source_url %}<a href="{{ photo.source_url }}">{{ photo.author }}</a>{% else %}{{ photo.author }}{% endif %}
+        ·
+        {% if photo.licence_url %}<a href="{{ photo.licence_url }}">{{ photo.licence }}</a>{% else %}{{ photo.licence }}{% endif %}
+    </figcaption>
+    {% else %}
+    <div class="bezel">
+        <div class="missing">
+            {% if machine.family_mark_url %}
+            <img class="mark" src="{{ base }}{{ machine.family_mark_url }}" alt="">
+            {% endif %}
+            <span>No freely licensed photograph of the {{ machine.name }} exists yet.</span>
+        </div>
+    </div>
+    <figcaption class="credit">
+        A photograph of your own, released under a free licence, would fill
+        this frame.
+    </figcaption>
+    {% endif %}
+</figure>
