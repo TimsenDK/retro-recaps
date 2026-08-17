@@ -4,6 +4,7 @@ board: mainboard
 revisions:
   - 4.x
 verification: derived
+battery: true
 sources:
   - url: https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Amiga-2000-repair-kit::989.html
     note: >-

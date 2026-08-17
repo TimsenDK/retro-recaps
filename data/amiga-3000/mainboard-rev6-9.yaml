@@ -7,6 +7,7 @@ revisions:
   - 8.x
   - 9.x
 verification: verified
+battery: true
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
     note: >-

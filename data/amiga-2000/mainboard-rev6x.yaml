@@ -4,6 +4,7 @@ board: mainboard
 revisions:
   - 6.x
 verification: derived
+battery: true
 sources:
   - url: https://support.retrorewind.ca/en/blog/amiga-2000-cap-list
     note: >-

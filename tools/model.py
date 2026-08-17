@@ -92,6 +92,8 @@ class Board:
     capacitors: tuple[Capacitor, ...]
     mains: bool | None = None
     x2_filter: str | None = None
+    battery: bool | None = None
+    external: bool = False
     sources: tuple[Source, ...] = ()
     notes: tuple[str, ...] = ()
     path: Path | None = field(default=None, compare=False)
@@ -106,6 +108,8 @@ class Board:
             verification=document["verification"],
             mains=document.get("mains"),
             x2_filter=document.get("x2_filter"),
+            battery=document.get("battery"),
+            external=bool(document.get("external", False)),
             capacitors=tuple(
                 Capacitor.from_dict(item) for item in document["capacitors"]
             ),

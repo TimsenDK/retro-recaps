@@ -4,6 +4,7 @@ board: logic
 revisions:
   - all known
 verification: derived
+battery: true
 capacitors:
   - designators:
       - C2

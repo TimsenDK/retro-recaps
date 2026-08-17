@@ -602,6 +602,35 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                 )
             )
 
+    # A machine with a cell whose boards all stay silent about it means the
+    # warning reaches nobody's printed board sheet. The inverse - a board
+    # claiming a battery its machine does not record - is a contradiction.
+    for machine_id, machine in dataset.machines.items():
+        boards = [b for b in dataset.boards.values() if b.machine == machine_id]
+        if machine.batteries and not any(board.battery for board in boards):
+            issues.append(
+                Issue(
+                    WARNING,
+                    "battery-on-no-board",
+                    _machine_location(machine),
+                    "the machine records a battery but no board declares "
+                    "'battery: true', so no board sheet carries the warning",
+                )
+            )
+        if not machine.batteries:
+            for board in boards:
+                if not board.battery:
+                    continue
+                issues.append(
+                    Issue(
+                        ERROR,
+                        "battery-without-machine",
+                        _board_location(board),
+                        f"the board declares a battery but machine "
+                        f"{machine_id!r} records none",
+                    )
+                )
+
     for machine_id, machine in dataset.machines.items():
         if machine.path is not None:
             parent = machine.path.parent.name

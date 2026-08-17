@@ -15,6 +15,14 @@
       "type": "boolean",
       "$comment": "Whether this PCB carries mains or mains-derived high voltage. Board kind is not a reliable proxy: the 1541 longboard mainboard carries the machine's linear supply, and the 1541-II analog board is low-voltage motor control."
     },
+    "battery": {
+      "type": "boolean",
+      "$comment": "Whether the machine's battery is fitted to THIS board. Machine-level `batteries` says the machine has a cell; this says which PCB it is soldered to. The A500's is on rev 8A alone, so rev 3, 5 and 6A must not carry the warning."
+    },
+    "external": {
+      "type": "boolean",
+      "$comment": "Whether this board lives outside the machine's case, in a separate brick. An external supply carries mains on its own page, but opening the machine does not expose the reader to it, so the machine page must not claim it does."
+    },
     "x2_filter": {
       "enum": ["listed", "absent", "unknown"],
       "$comment": "State of the mains input filter on a mains-carrying board. 'listed' - an X- or Y-class film position appears below. 'absent' - a source positively establishes there is none. 'unknown' - not inventoried. Silence is not the same as absence; RIFA-style parts fail explosively."

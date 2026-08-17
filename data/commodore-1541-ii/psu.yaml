@@ -2,6 +2,7 @@ id: commodore-1541-ii-psu
 machine: commodore-1541-ii
 board: psu
 mains: true
+external: true
 x2_filter: unknown
 revisions:
   - "312551-01"

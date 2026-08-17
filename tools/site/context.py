@@ -68,16 +68,14 @@ buried in a template as an `if family == ...`.
 """
 
 BATTERY_BOARD_KINDS = frozenset({"mainboard", "logic"})
-"""Board kinds a machine's battery warning is repeated onto.
+"""Board kinds that may carry a machine's battery, for validation only.
 
-``batteries`` is recorded on the machine, but the cell is soldered to a board
-— the A2000 rev 6.x mainboard, the A3000 mainboard — and the sheet someone
-prints and carries to the bench is the *board* page. A machine-level warning
-that never reaches that sheet is a warning the reader does not get.
-
-Not every board of these kinds carries the cell (the A500's is on rev 8A
-alone), so the panel says which machine the battery belongs to and leaves the
-reader to look; it never claims the cell is on this particular PCB.
+Which board a cell is actually soldered to is recorded per board, in
+``battery``. Board kind was tried as a proxy and was wrong in exactly the way
+board kind is always wrong here: it put a battery warning on the A500 rev 3,
+rev 5 and rev 6A pages, none of which have a cell, hedged with a note telling
+the reader to go and check. A warning that cannot say whether it applies
+teaches the reader to skip warnings.
 """
 
 
@@ -483,7 +481,7 @@ def machine_mains_hazard(boards: list[Board]) -> Hazard:
     """The mains panel for a machine page, naming the boards it applies to."""
     names: list[str] = []
     for board in boards:
-        if not board.carries_mains:
+        if not board.carries_mains or board.external:
             continue
         name = label_for(BOARD_KIND_NAMES, board.board).lower()
         if name not in names:
@@ -554,9 +552,15 @@ def hazards_for(board: Board, machine: Machine | None) -> tuple[Hazard, ...]:
 
 
 def machine_hazards(boards: list[Board], machine: Machine) -> tuple[Hazard, ...]:
-    """The warning a machine page carries, given the boards it holds."""
+    """The warning a machine page carries, given the boards it holds.
+
+    Only mains *inside the case* counts. An A500, a C128 or a 1541-II runs
+    from a sealed external brick: the brick's own page warns about it, but
+    someone opening the machine is never near mains. Telling them otherwise
+    is how a warning stops being read.
+    """
     hazards: list[Hazard] = []
-    if any(board.carries_mains for board in boards):
+    if any(board.carries_mains and not board.external for board in boards):
         hazards.append(machine_mains_hazard(boards))
     if machine.family in CRT_FAMILIES:
         hazards.append(CRT_MACHINE_HAZARD)
@@ -808,9 +812,7 @@ def board_view(
         notes=board.notes,
         linked_notes=note_views(board.notes, targets),
         batteries=(
-            machine.batteries
-            if machine is not None and board.board in BATTERY_BOARD_KINDS
-            else ()
+            machine.batteries if machine is not None and board.battery else ()
         ),
         rows_without_designators=sum(1 for row in rows if not row.has_designators),
         mixed_verification=any(row.differs_from_board for row in rows),

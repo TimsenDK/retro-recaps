@@ -2,6 +2,7 @@ id: commodore-128-psu-mitsumi
 machine: commodore-128
 board: psu
 mains: true
+external: true
 x2_filter: unknown
 revisions:
   - Mitsumi

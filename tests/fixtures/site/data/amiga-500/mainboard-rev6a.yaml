@@ -4,6 +4,7 @@ board: mainboard
 revisions:
   - 6A
 verification: verified
+battery: true
 sources:
   - url: https://example.invalid/a500-rev6a
     note: Full list with reference designators.

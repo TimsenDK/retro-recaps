@@ -2,6 +2,7 @@ id: amiga-500-psu-312503-03
 machine: amiga-500
 board: psu
 mains: true
+external: true
 x2_filter: unknown
 revisions:
   - "312503-03"

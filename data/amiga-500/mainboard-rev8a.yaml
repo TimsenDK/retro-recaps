@@ -6,6 +6,7 @@ revisions:
   - 8A.1
   - "312812"
 verification: derived
+battery: true
 sources:
   - url: https://www.amibay.com/threads/a500-rev-8a-1-which-capacitors-i-need.47238/
     note: >-

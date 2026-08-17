@@ -4,6 +4,7 @@ board: logic
 revisions:
   - A
 verification: derived
+battery: true
 sources:
   - url: https://wiki.console5.com/wiki/Macintosh_Classic_II
     note: >-

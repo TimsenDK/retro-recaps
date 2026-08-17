@@ -16,6 +16,7 @@ from tools.site.context import (
     MAINS_HAZARD,
     Coverage,
     SiteContext,
+    board_view,
     build_context,
     format_capacitance,
     format_voltage,
@@ -534,9 +535,27 @@ def test_a_crt_machine_warns_about_the_tube_with_no_mains_board() -> None:
 # --------------------------------------------------------------------------
 
 
-def test_a_mainboard_page_carries_the_machines_battery(site: SiteContext) -> None:
+def test_a_board_that_holds_the_cell_carries_the_battery(site: SiteContext) -> None:
     batteries = board(site, "amiga-500-mainboard-rev6a").batteries
     assert [b.kind for b in batteries] == ["nicd"]
+
+
+def test_a_board_without_the_cell_stays_silent(dataset: Dataset) -> None:
+    """The A500's battery is on rev 8A alone.
+
+    Deciding this by board kind put the warning on rev 3, rev 5 and rev 6A
+    too, hedged with a note telling the reader to go and check. A warning
+    that cannot say whether it applies teaches the reader to skip warnings.
+    """
+    without = Board(
+        id="amiga-500-mainboard-rev3",
+        machine="amiga-500",
+        board="mainboard",
+        revisions=("3",),
+        verification="derived",
+        capacitors=(),
+    )
+    assert board_view(without, dataset, disambiguate=True).batteries == ()
 
 
 def test_a_psu_page_does_not_claim_the_battery(site: SiteContext) -> None:

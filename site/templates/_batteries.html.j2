@@ -1,6 +1,7 @@
-{# `batteries` is the machine's battery list. Rendered on the machine page and
-   repeated onto the board pages a cell is soldered to, because the board page
-   is the sheet that gets printed and carried to the bench. #}
+{# `batteries` is the machine's battery list. On a board page it is rendered
+   only when that board declares `battery: true`, i.e. the cell really is on
+   this PCB — the board page is the sheet that gets printed and carried to the
+   bench, and a warning it cannot confirm applies is worse than none. #}
 {% if batteries %}
 <section class="battery" role="note">
     <h2>Battery — deal with this first</h2>
@@ -16,11 +17,5 @@
         </li>
         {% endfor %}
     </ul>
-    {% if scope == 'board' %}
-    <p class="note">
-        Recorded for this machine rather than for this board revision. Check
-        the board in front of you: not every revision is fitted with the cell.
-    </p>
-    {% endif %}
 </section>
 {% endif %}
