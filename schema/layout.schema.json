@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retro-recaps.invalid/schema/layout.schema.json",
+  "title": "Board layout",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "board", "precision", "verification", "orientation", "outline", "features"],
+  "properties": {
+    "id": { "$ref": "#/$defs/slug" },
+    "board": { "$ref": "#/$defs/slug" },
+    "precision": {
+      "enum": ["measured", "approximate"],
+      "$comment": "'measured' - positions read from a board layout drawing. 'approximate' - read off a photograph. The difference is drawn and stated, never hidden."
+    },
+    "verification": { "enum": ["verified", "derived", "unverified"] },
+    "orientation": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "Which way the board is drawn, in words, so the reader can match it to the board in their hands."
+    },
+    "outline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": { "type": "string", "minLength": 1 },
+          "note": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/feature" }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "x", "y"],
+      "allOf": [
+        {
+          "$comment": "A capacitor is placed by designator; anything else by label.",
+          "if": { "properties": { "kind": { "const": "capacitor" } } },
+          "then": { "required": ["designator"] },
+          "else": { "required": ["label"] }
+        }
+      ],
+      "properties": {
+        "kind": {
+          "enum": ["capacitor", "anchor"],
+          "$comment": "'ic' and 'connector' are the planned additions; adding a value here is the whole migration."
+        },
+        "designator": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "approximate": {
+          "const": true,
+          "$comment": "One uncertain position inside an otherwise measured layout. A position may be less certain than its file, never more."
+        }
+      }
+    }
+  }
+}

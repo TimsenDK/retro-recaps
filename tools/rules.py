@@ -6,9 +6,10 @@ so validation and resolution can never disagree.
 """
 
 import re
+from collections import Counter
 
 from tools.issues import ERROR, WARNING, Issue
-from tools.model import Board, Dataset, Machine
+from tools.model import Board, Dataset, Layout, Machine
 from tools.resolve import fit_violations, same_capacitance
 
 X2_MINIMUM_VOLTAGE_V = 275
@@ -89,6 +90,119 @@ def _machine_location(machine: Machine) -> str:
     if machine.path is not None:
         return machine.path.as_posix()
     return machine.id
+
+
+def _layout_location(layout: Layout) -> str:
+    if layout.path is not None:
+        return layout.path.as_posix()
+    return layout.id
+
+
+def _check_layout(layout: Layout, dataset: Dataset) -> list[Issue]:
+    """A map that disagrees with its board is worse than no map at all.
+
+    A position the board does not list was invented. A position the board
+    lists and the map omits is the dangerous one: it reads as "there is no
+    capacitor there" to someone holding the board.
+    """
+    location = _layout_location(layout)
+    issues: list[Issue] = []
+
+    board = dataset.boards.get(layout.board)
+    if board is None:
+        return [
+            Issue(
+                ERROR,
+                "layout-unknown-board",
+                location,
+                f"layout names board {layout.board!r}, which does not exist",
+            )
+        ]
+
+    # A position with no named designators - whether it says so outright via
+    # designators_unknown, or simply has an empty list - has nothing a map
+    # could legitimately point to. One such position means the board as a
+    # whole cannot be fully mapped without inventing a designator for it.
+    if any(
+        capacitor.designators_unknown or not capacitor.designators
+        for capacitor in board.capacitors
+    ):
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-unmappable-board",
+                location,
+                "the board has positions with no named designators, so it "
+                "cannot be mapped without inventing one",
+            )
+        )
+
+    on_board = {
+        designator
+        for capacitor in board.capacitors
+        for designator in capacitor.designators
+    }
+    placed = layout.designators
+
+    for designator in sorted(placed - on_board):
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-designator-not-on-board",
+                location,
+                f"the map places {designator}, which is not in the board's list",
+            )
+        )
+
+    missing = sorted(on_board - placed)
+    if missing:
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-designator-missing",
+                location,
+                "the map leaves out positions the board lists: "
+                + ", ".join(missing),
+            )
+        )
+
+    # A frozenset only ever tells you which designators appear, never how
+    # many times, so a copy-pasted feature that kept the old designator and
+    # a new x/y collapses invisibly into the one already there. The renderer
+    # then emits two `<g id="pos-C1">` elements at different coordinates,
+    # and the highlight script's querySelector lights whichever it finds
+    # first - a second, silently wrong dot on the map.
+    designator_counts = Counter(
+        feature.designator
+        for feature in layout.features
+        if feature.kind == "capacitor" and feature.designator
+    )
+    for designator, count in sorted(designator_counts.items()):
+        if count > 1:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "layout-duplicate-designator",
+                    location,
+                    f"{designator} is placed {count} times in this map; each "
+                    f"designator must have exactly one position, or the "
+                    f"drawing and the highlight script cannot tell which one "
+                    f"is real",
+                )
+            )
+
+    if layout.precision == "approximate" and layout.verification == "verified":
+        issues.append(
+            Issue(
+                WARNING,
+                "layout-approximate-but-verified",
+                location,
+                "positions read off a photograph are approximate; 'verified' "
+                "means checked against a board",
+            )
+        )
+
+    return issues
 
 
 def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
@@ -602,6 +716,31 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                 )
             )
 
+    # Two layout files naming the same board is not a mistake either file
+    # would raise on its own: each can place every designator the board
+    # lists and validate cleanly by itself. layouts_by_board then keeps
+    # only the last one it sees, so the other's positions never reach a
+    # page - a stale layout can silently override a corrected one, and
+    # nothing on the site or in this report would say so without this check.
+    claimed_boards: dict[str, list[Layout]] = {}
+    for layout in dataset.layouts.values():
+        claimed_boards.setdefault(layout.board, []).append(layout)
+    for board_id, layouts in claimed_boards.items():
+        if len(layouts) < 2:
+            continue
+        ids = sorted(layout.id for layout in layouts)
+        for layout in sorted(layouts, key=_layout_location):
+            others = ", ".join(i for i in ids if i != layout.id)
+            issues.append(
+                Issue(
+                    ERROR,
+                    "layout-duplicate-board",
+                    _layout_location(layout),
+                    f"board {board_id!r} is also claimed by layout "
+                    + others,
+                )
+            )
+
     # A machine with a cell whose boards all stay silent about it means the
     # warning reaches nobody's printed board sheet. The inverse - a board
     # claiming a battery its machine does not record - is a contradiction.
@@ -662,5 +801,7 @@ def check(dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
     for board in dataset.boards.values():
         issues.extend(_check_board(board, dataset))
+    for layout in dataset.layouts.values():
+        issues.extend(_check_layout(layout, dataset))
     issues.extend(_check_reference(dataset))
     return issues

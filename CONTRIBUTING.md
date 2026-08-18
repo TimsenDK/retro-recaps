@@ -208,6 +208,31 @@ work and are left as dead text on the page:
 point. A reference that names no file in the dataset stays as plain text rather
 than becoming a broken link, so a typo is silent — check the built page.
 
+### Board maps
+
+A layout file lives at `data/<machine>/layout-<board-file-stem>.yaml` — the
+same machine directory as the board it maps, named after the board file it
+maps. It never carries a capacitance, a voltage, a quantity or a part number;
+those stay in the board file, because a second place for a value is a second
+place for it to be wrong.
+
+`python -m tools validate` checks a layout's capacitor designators against
+its board's list, and the match must be exact: a position the board does not
+list is an error, and a position the board lists that the map leaves out is
+an error too — the second is the more dangerous one, since it reads as "there
+is no capacitor there" to someone holding the board.
+
+Set `precision` honestly. `measured` means the positions were read off a
+board layout drawing; `approximate` means they were read off a photograph.
+Declaring `approximate` is required, not optional — the map renders it as a
+dashed ring and says so on the page, and a photograph-derived position
+claiming `measured` misleads exactly the reader it's supposed to help. A
+layout also carries its own `verification` and `sources`, independent of the
+board's.
+
+A correction to a position is as welcome as a correction to a value, and
+needs the same evidence.
+
 ## Style
 
 Written content in this repository is in English, including YAML notes and

@@ -16,7 +16,7 @@
     "board_order": {
       "type": "array",
       "minItems": 1,
-      "items": { "enum": ["logic", "mainboard", "daughterboard", "analog", "psu"] }
+      "items": { "enum": ["logic", "mainboard", "daughterboard", "paddle", "analog", "psu"] }
     },
     "notes": {
       "type": "array",

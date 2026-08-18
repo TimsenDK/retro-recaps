@@ -1,0 +1,71 @@
+{% extends "base.html.j2" %}
+{% block title %}Image credits · {{ site_name }}{% endblock %}
+{% block description %}Photographers, licences and source pages for every machine picture on this site.{% endblock %}
+{% block content %}
+
+<h1>Image credits</h1>
+<p class="lede">
+    Four of the machine pictures on this site began as freely licensed
+    photographs taken by someone else. This page is where they are credited —
+    and where the other fifteen are declared for what they are.
+</p>
+
+<p>
+    The photographs are not shown as they were taken. Each one was cropped to
+    a common shape and put through a cel-shading filter — the
+    texture smoothed away, the colour reduced to a small palette, the edges
+    inked back in — so that a page of machines reads as one set. The
+    processing is
+    <a href="{{ contribute_url }}">reproducible from the repository</a>; the
+    photographs beneath it are the photographers' work.
+</p>
+
+<p>
+    A picture made from someone else's photograph is not licensed under this
+    site's own CC BY-SA 4.0: it keeps the licence of the photograph it was
+    made from, listed below, and an adaptation of a CC BY-SA photograph stays
+    under that same licence. Reuse those under their own terms, and keep the
+    credit with the image.
+</p>
+
+<p>
+    Most of the pictures are not photographs at all. Every machine except the
+    Commodore 128 and the three compact Macintoshes is a generated
+    illustration, marked as such in the table below and in the alt text of
+    every appearance. Read them as placeholders for the shape of the machine,
+    never as a record of what a particular case, port or board looks like —
+    nothing in the dataset is derived from them, and a capacitor list is never
+    checked against a picture.
+</p>
+
+<table class="credits">
+    <thead>
+        <tr>
+            <th scope="col">Machine</th>
+            <th scope="col">Photograph by</th>
+            <th scope="col">Licence</th>
+            <th scope="col">Source</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for photo in photos %}
+        <tr>
+            <th scope="row"><a href="{{ base }}{{ photo.machine_id }}/index.html">{{ photo.machine_name }}</a></th>
+            <td>{{ photo.author }}{% if photo.generated %} <span class="meta">(generated illustration)</span>{% endif %}</td>
+            <td>
+                {% if photo.licence_url %}<a href="{{ photo.licence_url }}">{{ photo.licence }}</a>{% else %}{{ photo.licence }}{% endif %}
+            </td>
+            <td>
+                {% if photo.source_url %}<a href="{{ photo.source_url }}">Wikimedia Commons</a>{% else %}—{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p class="meta">
+    Cropped and cel-shaded by this project. A machine with no row here has no
+    picture at all, and its frame on the site says so.
+</p>
+
+{% endblock %}

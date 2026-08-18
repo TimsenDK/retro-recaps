@@ -3,7 +3,15 @@
 Hand-written SVG. No editor metadata, no rasters, no external references —
 every file is safe to inline or to reference with `<img>`.
 
-Photographs under `machines/` are a separate set and are not described here.
+The pictures under `machines/` are a separate set: freely licensed Commons
+photographs and illustrations generated for the project, brought to 8:5 —
+centre-cropped, or scaled to fit where the crop would have cut the machine —
+and cel-shaded offline, at 1280 x 800 with a 640 x 400 card variant. The
+processing is not part of the build and no source picture is kept here; the
+committed JPEGs are the whole set. Every one of them is the same shape,
+so the cards and the hero boxes are too. `machines/CREDITS.md` records where
+each photograph came from and under what licence, and the site renders the
+same record as `image_credits.html`.
 
 ## How to use them
 

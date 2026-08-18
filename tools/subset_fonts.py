@@ -137,6 +137,9 @@ def _instance(source: Path, target: Path, axes: list[str]) -> None:
 
 # (upstream family directory, upstream file, output name)
 STATIC_FONTS = (
+    # Bungee has one weight by design — the family varies by cut, not by
+    # weight — so the masthead and the family headings take it at 400.
+    ("bungee", "Bungee-Regular.ttf", "bungee-400.woff2"),
     ("chakrapetch", "ChakraPetch-Regular.ttf", "chakra-petch-400.woff2"),
     ("chakrapetch", "ChakraPetch-Bold.ttf", "chakra-petch-700.woff2"),
     ("ibmplexmono", "IBMPlexMono-Regular.ttf", "ibm-plex-mono-400.woff2"),
@@ -153,6 +156,7 @@ VARIABLE_FONT = (
 )
 
 LICENCES = (
+    ("bungee", "OFL.txt", "Bungee-OFL.txt"),
     ("chakrapetch", "OFL.txt", "ChakraPetch-OFL.txt"),
     ("ibmplexsans", "OFL.txt", "IBMPlex-OFL.txt"),
 )

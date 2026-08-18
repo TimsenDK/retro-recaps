@@ -158,8 +158,9 @@ def render_site(
             )
         return Markup(stylesheets[base])
 
-    # A photograph is only ever handed to a template together with the credit
-    # its licence requires, so the two cannot be separated by a template edit.
+    # A picture and the credit its licence requires come from one record, so
+    # a template edit cannot separate them: the same mapping feeds the pages
+    # that show the pictures and the page that credits them.
     photos: dict[str, PhotoView] = load_photos(
         assets, {machine.id: machine.name for machine in context.machines}
     )
@@ -217,6 +218,16 @@ def render_site(
     )
 
     page("status.html.j2", out / "status.html", "", status=context.status)
+
+    # Every picture the site shows is credited here and nowhere else: the
+    # page is generated from the same record the pictures themselves come
+    # from, so an image cannot be published without its credit appearing.
+    page(
+        "image_credits.html.j2",
+        out / "image_credits.html",
+        "",
+        photos=sorted(photos.values(), key=lambda photo: photo.machine_name),
+    )
 
     for machine in context.machines:
         page(

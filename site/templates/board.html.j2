@@ -43,6 +43,20 @@
 </section>
 {% else %}
 
+{% if board.layout %}
+<figure class="boardmap">
+    {{ board.layout.svg }}
+    <figcaption>
+        {{ board.layout.orientation }}
+        {% if board.layout.is_approximate %}
+        Positions on this map are approximate: they were read from a photograph,
+        not from a board layout drawing. Use the map to find the area and the
+        silkscreen to find the part.
+        {% endif %}
+    </figcaption>
+</figure>
+{% endif %}
+
 <h2>Capacitors</h2>
 <div class="scroller">
     <table>
@@ -63,7 +77,7 @@
         </thead>
         <tbody>
             {% for row in board.rows %}
-            <tr>
+            <tr{% if row.has_designators %} data-designator="{{ row.designators | join(' ') }}"{% endif %}>
                 <td class="tick"><span></span></td>
                 <td class="designators">
                     {{ row.designator_label }}
@@ -182,4 +196,10 @@
         newer list.
     </p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if board.layout %}
+<script src="{{ base }}boardmap.js"></script>
+{% endif %}
 {% endblock %}

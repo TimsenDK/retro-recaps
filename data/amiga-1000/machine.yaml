@@ -1,7 +1,8 @@
 id: amiga-1000
-name: Commodore Amiga 1000
+name: Amiga 1000
 family: amiga
 aliases:
+  - Commodore Amiga 1000
   - A1000
 board_order:
   - mainboard

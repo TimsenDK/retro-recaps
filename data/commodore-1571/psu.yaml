@@ -1,0 +1,60 @@
+id: commodore-1571-psu
+machine: commodore-1571
+board: psu
+mains: true
+external: false
+x2_filter: unknown
+revisions:
+  - "250772-01"
+verification: unverified
+sources:
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/02.html
+    note: >-
+      Commodore 1571 service manual, system parts list. Gives the supply as
+      Power Supply Assembly C 250772-01, a separate assembly from the logic
+      board, and lists a Power Cord C 252164-01 with it. The manual carries
+      no schematic and no parts list for the supply itself.
+  - url: https://archive.org/stream/sams-computerfacts-cd12-1571/SamsComputerfacts_Cd12_1571_djvu.txt
+    note: >-
+      Sams Computerfacts CD12 (1987). Its Power Supply Board location guide
+      names the positions that exist - C101 to C110 and C201 to C205 - while
+      its parts list gives ratings for none of them: the only electrolytic
+      row in the whole document is C33 on the logic board. The ratings are
+      printed on its fold-out schematic sheet, and that page is a corrupt
+      one-pixel placeholder in the scan. Describes a switching supply:
+      120 V AC across rectifier D101, 166 V at its DC output, oscillator
+      transistor Q102, opto-coupler PC101 regulation, fuse F101 2 A 125 V
+      fast acting, and an EMI filter ahead of switch SW101. Tells the reader
+      to use an isolation transformer when servicing it.
+  - url: https://www.c64-wiki.de/wiki/Commodore_1571
+    note: >-
+      Records the supply as built into the case and fed from an IEC inlet,
+      like the 1541's, at 220 V 50 Hz and about 25 W.
+notes:
+  - >-
+    Open: no capacitor values are published for this assembly. The positions
+    are known by designator from the service literature - C101 to C110 on the
+    primary side and C201 to C205 on the secondary - but no source gives what
+    goes in them, so nothing is listed here rather than guessed.
+  - >-
+    Two physically different supplies were fitted, and one list would not
+    cover both. The service manual specifies the machine at 117 V 60 Hz and
+    under 25 W; the European machine is documented at 220 V 50 Hz. Machines sold in North America carry a compact switching
+    supply; European machines are reported with a larger linear supply on a
+    transformer with 220 V and 240 V taps. Establish which one is in the case
+    before sourcing anything.
+  - >-
+    This assembly carries mains voltage and stores it. It sits inside the
+    drive case, on its own PCB, connected to the logic board through CN1 -
+    disconnect that connector before working on either.
+  - >-
+    Whether a mains film capacitor sits in the input filter is not
+    established. The service literature names an EMI filter block ahead of
+    the power switch but never its parts, so a RIFA-style X-class capacitor
+    may well be in there. Treat one as present until the board in front of
+    you says otherwise.
+  - >-
+    The fuse is F101, 2 A 125 V fast acting on the switching supply. A
+    replacement must match the rating printed beside it, not the one recorded
+    here for a supply that may not be the one in front of you.
+capacitors: []

@@ -5,7 +5,7 @@ aliases:
   - SFS 481
 board_order:
   - mainboard
-  - daughterboard
+  - paddle
 notes:
   - >-
     The 1551 has an internal power supply: the transformer, the two bridge

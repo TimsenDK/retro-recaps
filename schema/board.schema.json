@@ -9,7 +9,7 @@
     "id": { "$ref": "#/$defs/slug" },
     "machine": { "$ref": "#/$defs/slug" },
     "board": {
-      "enum": ["mainboard", "psu", "analog", "logic", "daughterboard"]
+      "enum": ["mainboard", "psu", "analog", "logic", "daughterboard", "paddle"]
     },
     "mains": {
       "type": "boolean",

@@ -10,31 +10,51 @@ Licence and author were read from each file's own metadata on Commons
 file page's wikitext. Only CC0, CC BY, CC BY-SA and public-domain files were
 accepted; nothing carrying NC, ND, "fair use" or an unclear licence is included.
 
-Each machine has a `<machine-id>.jpg` (1200 px on the long edge) and a
-`<machine-id>-card.jpg` (480 px) variant. Both are derived from the same Commons
-original by downscaling and JPEG re-encoding — no cropping, so the original
-aspect ratio and framing are preserved.
+**These files are modified.** Each machine has a `<machine-id>.jpg`
+(1280 x 800) and a `<machine-id>-card.jpg` (640 x 400) variant, and both are
+adaptations of the Commons original rather than copies of it:
+
+- brought to 8:5, which changes the framing — the site shows the pictures in a
+  row of equal boxes, and one shape is what makes that possible. Most are
+  centre-cropped; the Amiga 3000 and the three compact Macintoshes are scaled
+  to fit instead, with their own background colour filling the rest, because
+  the crop would have cut the machine itself;
+- resampled to the two sizes above;
+- cel-shaded: the texture median-smoothed away, the colour reduced to a
+  14-entry palette, and the remaining edges inked back in in the site's ink
+  colour.
+
+The processing is a fixed pipeline run offline; the script that runs it and the
+untouched sources are kept privately, and the originals of the photographs are
+the Commons files linked below. Every parameter that changes the picture is
+named above, so what was done to each file is on the record here whether or not
+the script is. An adaptation of a CC BY-SA
+photograph carries that same licence onward; the CC BY files keep their
+attribution requirement. The site credits every one of them on its
+`image_credits.html` page, linked from the footer of every page.
 
 Retrieved: 2026-08-17.
 
 | Machine | File | Photographer as credited | Licence | Commons file page |
 |---|---|---|---|---|
-| amiga-500 | `amiga-500.jpg` | Thomas Vogt | CC BY 4.0 | [File:Commodore Amiga 500 (54862761626).jpg](https://commons.wikimedia.org/wiki/File:Commodore_Amiga_500_%2854862761626%29.jpg) |
-| amiga-1000 | `amiga-1000.jpg` | Kaiiv | CC BY-SA 3.0 DE | [File:Amiga 1000 PAL.jpg](https://commons.wikimedia.org/wiki/File:Amiga_1000_PAL.jpg) |
-| amiga-2000 | `amiga-2000.jpg` | Trafalgarcircle (edit by Ubcule) | Public domain (PD-self) | [File:Amiga 2000 computer (filtered sharpened).jpg](https://commons.wikimedia.org/wiki/File:Amiga_2000_computer_%28filtered_sharpened%29.jpg) |
-| amiga-3000 | `amiga-3000.jpg` | "Joe Smith" / Joeinwap (edit by Ubcule) | Public domain | [File:Amiga 3000 Front with White BG.jpg](https://commons.wikimedia.org/wiki/File:Amiga_3000_Front_with_White_BG.jpg) |
-| commodore-64 | `commodore-64.jpg` | Evan-Amos | Public domain (PD-self) | [File:Commodore-64-Computer-FL.jpg](https://commons.wikimedia.org/wiki/File:Commodore-64-Computer-FL.jpg) |
+| amiga-500 | `amiga-500.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| amiga-1000 | `amiga-1000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| amiga-2000 | `amiga-2000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| amiga-3000 | `amiga-3000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-64 | `commodore-64.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-64c | `commodore-64c.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (no photograph ever stood here) |
 | commodore-128 | `commodore-128.jpg` | Evan-Amos | CC BY-SA 3.0 | [File:Commodore-128.jpg](https://commons.wikimedia.org/wiki/File:Commodore-128.jpg) |
-| commodore-128d | `commodore-128d.jpg` | Rama & Musée Bolo | CC BY-SA 2.0 FR | [File:Commodore 128D-IMG 1726.jpg](https://commons.wikimedia.org/wiki/File:Commodore_128D-IMG_1726.jpg) |
-| commodore-128dcr | — | — | — | no acceptably licensed photograph found |
-| commodore-16 | `commodore-16.jpg` | Thomas Conté | CC BY-SA 2.0 | [File:Commodore 16 (Thomas Conté) (1).jpg](https://commons.wikimedia.org/wiki/File:Commodore_16_%28Thomas_Cont%C3%A9%29_%281%29.jpg) |
-| commodore-plus4 | `commodore-plus4.jpg` | Thomas Conté | CC BY-SA 2.0 | [File:Commodore Plus-4 (T Conté) (1).jpg](https://commons.wikimedia.org/wiki/File:Commodore_Plus-4_%28T_Cont%C3%A9%29_%281%29.jpg) |
-| commodore-vic-20 | `commodore-vic-20.jpg` | Evan-Amos | Public domain (PD-self) | [File:Commodore-VIC-20-FL.jpg](https://commons.wikimedia.org/wiki/File:Commodore-VIC-20-FL.jpg) |
-| commodore-1541 | `commodore-1541.jpg` | Evan-Amos | Public domain (PD-self) | [File:Commodore-64-1541-Floppy-Drive-01.jpg](https://commons.wikimedia.org/wiki/File:Commodore-64-1541-Floppy-Drive-01.jpg) |
-| commodore-1541c | `commodore-1541c.jpg` | afrank99 | CC BY-SA 2.5 | [File:Commodore 1541 white.jpg](https://commons.wikimedia.org/wiki/File:Commodore_1541_white.jpg) |
-| commodore-1541-ii | `commodore-1541-ii.jpg` | Ahoerstemeier | CC BY-SA 3.0 (GFDL 1.2+ dual, migration relicense) | [File:Commodore 1541-II.jpg](https://commons.wikimedia.org/wiki/File:Commodore_1541-II.jpg) |
-| commodore-1551 | `commodore-1551.jpg` | Jumbo1435 | CC BY-SA 3.0 | [File:Commodore 1551 topfront.jpg](https://commons.wikimedia.org/wiki/File:Commodore_1551_topfront.jpg) |
-| commodore-1581 | `commodore-1581.jpg` | Ajne01 | CC BY-SA 4.0 | [File:Commodore 1581 Floppy Disk Drive.jpg](https://commons.wikimedia.org/wiki/File:Commodore_1581_Floppy_Disk_Drive.jpg) |
+| commodore-128d | `commodore-128d.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-128dcr | `commodore-128dcr.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (no freely licensed photograph exists) |
+| commodore-16 | `commodore-16.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-plus4 | `commodore-plus4.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-vic-20 | `commodore-vic-20.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-1541 | `commodore-1541.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-1541c | `commodore-1541c.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-1541-ii | `commodore-1541-ii.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-1551 | `commodore-1551.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| commodore-1571 | `commodore-1571.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (no photograph ever stood here) |
+| commodore-1581 | `commodore-1581.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
 | mac-classic-ii | `mac-classic-ii.jpg` | Chi Ho Chan | CC BY 2.0 | [File:Apple Macintosh Classic ii (51925669608).jpg](https://commons.wikimedia.org/wiki/File:Apple_Macintosh_Classic_ii_%2851925669608%29.jpg) |
 | mac-se | `mac-se.jpg` | Shelby Jueden | CC BY 4.0 | [File:Macintosh SE cropped.jpg](https://commons.wikimedia.org/wiki/File:Macintosh_SE_cropped.jpg) |
 | mac-se30 | `mac-se30.jpg` | Shelby Jueden | CC BY 4.0 | [File:Macintosh SE30 cropped.jpg](https://commons.wikimedia.org/wiki/File:Macintosh_SE30_cropped.jpg) |
@@ -60,3 +80,23 @@ Retrieved: 2026-08-17.
   case with the lever-type door. The badge visible in the photograph reads
   "1541", so the identification does not rest on the machine's own marking; it
   was confirmed against a physical 1541C by the project owner, 2026-08-17.
+
+## The generated pictures
+
+Most of the pictures are not photographs and are not derived from any. Only
+four remain photographs — `commodore-128.jpg`, `mac-classic-ii.jpg`,
+`mac-se.jpg` and `mac-se30.jpg`. Every other machine carries a generated
+illustration, so the Amiga family, the 8-bit Commodores and the drives are
+drawn end to end. They were generated for this project and put through
+the same processing as the rest. The 128DCR had no acceptably licensed
+photograph at all; the other four had one, and it was replaced deliberately.
+The Commons originals stay recorded in the git history and in this file's own
+history, so a swap back is never blocked.
+
+Nothing on the page marks them out — the site carries no caption under a
+picture — so the record has to. Their alt text says they are generated
+illustrations, the credits page says so, and this file says so. Treat them as
+placeholders for the shape of the machine: they are not evidence of what a
+case, a port, a lamp or a board looks like, and **nothing in `data/` may be
+derived from them**. Replace them with real photographs whenever ones become
+available under a free licence.
