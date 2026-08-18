@@ -1,0 +1,36 @@
+id: commodore-64c
+name: Commodore 64C
+family: commodore-8bit
+aliases:
+  - C64C
+  - C64-C
+  - Commodore 64C
+  - C64G
+  - C64GS
+  - Aldi C64
+board_order:
+  - mainboard
+notes:
+  - >-
+    The wedge-cased restyling of the Commodore 64, built on the 250469
+    shortboard (C64-E). The machine is a C64 in a different case and with a
+    different board: the recapping list here does not apply to a breadbin
+    longboard, and a longboard list does not apply to this machine. See
+    commodore-64 for the boards the earlier cases carry.
+  - >-
+    The case does not decide the board. A late breadbin can carry a 250469
+    and takes this list; an early 64C sold before the changeover can carry a
+    250466 and takes the list under commodore-64. Read the assembly number
+    printed on the board before ordering parts.
+  - >-
+    The bare PCB number 252311 belongs to the same assembly and takes this
+    list.
+  - >-
+    Several models are this board in another package: the C64GS games console
+    is a repackaged ASSY 250469 rev B, and the Aldi C64 an ASSY 250469 rev 3.
+    The C64G is reported as a standard-board rebadge, but which assembly it
+    carries is not established here - read the number off the board.
+  - >-
+    The external power supply brick is potted and fails by over-voltage,
+    which destroys the machine. It is replaced as a unit, not recapped, so
+    no PSU board file exists for this machine.

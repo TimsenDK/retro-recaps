@@ -4,8 +4,8 @@ family: commodore-8bit
 aliases:
   - C64
   - C-64
-  - C64C
   - Commodore 64
+  - breadbin
 board_order:
   - mainboard
 notes:
@@ -14,15 +14,17 @@ notes:
     production run, and they are not interchangeable for recapping
     purposes: 326298 and 250407 are longboards with 8 chips of RAM; 250425
     (and the circuit-identical 250441) is a longboard with a reduced
-    decoupling scheme; 250466 and 250469 are shortboards with a different
-    power section and a smaller capacitor complement. Match the board's
-    printed assembly number to the correct file before ordering parts.
+    decoupling scheme; 250466 is a shortboard with a different power section
+    and a smaller capacitor complement. Match the board's printed assembly
+    number to the correct file before ordering parts.
   - >-
-    250466 and 250469 are both shortboards but are not the same board:
-    250466 (C64-B3) keeps the longboard-style designators and a 470 uF 50 V
-    filter position reduced to 25 V, while 250469 (C64-E, used in the C64C)
-    uses an entirely different set of designators and a single-rail power
-    section.
+    The other shortboard, 250469 (C64-E), is not covered here: it is the
+    board the 64C was built on and it lives under commodore-64c. The two
+    shortboards are not the same board - 250466 (C64-B3) keeps the
+    longboard-style designators and a 470 uF 50 V filter position reduced to
+    25 V, while 250469 uses an entirely different set of designators and a
+    single-rail power section. A late breadbin carrying a 250469 takes the
+    list under commodore-64c, not any list here.
   - >-
     A sixth board exists that this dataset does not cover: KU-14194HB, a
     1982/83 European PAL-only interim board with no assembly number, bare
@@ -31,12 +33,11 @@ notes:
     capacitor list for it has been found. A board carrying that marking is
     not one of the five listed here and none of these lists applies to it.
   - >-
-    Several C64 model names are case and packaging variants on boards
-    already covered here rather than boards of their own: the Golden Edition
-    is an ASSY 250407, the Aldi C64 an ASSY 250469 rev 3, and the C64GS a
-    repackaged ASSY 250469 rev B. The C64G and the Educator 64 are also
-    reported as standard-board rebadges, but which assembly each carries is
-    not established here - read the number off the board.
+    Some C64 model names are case and packaging variants on boards already
+    covered here rather than boards of their own: the Golden Edition is an
+    ASSY 250407, and the Educator 64 is reported as a standard-board rebadge
+    whose assembly is not established here - read the number off the board.
+    The models built on 250469 are listed under commodore-64c.
   - >-
     The external power supply brick is potted and fails by over-voltage,
     which destroys the machine. It is replaced as a unit, not recapped, so
