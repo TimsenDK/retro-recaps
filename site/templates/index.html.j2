@@ -27,7 +27,7 @@
 <ul class="cards">
     {% for machine in family.machines %}
     <li class="card fam-{{ family.id }}">
-        {% with photo = photos.get(machine.id), card = true %}{% include "_photo.html.j2" %}{% endwith %}
+        {% with photo = photos.get(machine.id), card = true, link = machine.url %}{% include "_photo.html.j2" %}{% endwith %}
         <a href="{{ base }}{{ machine.url }}">{{ machine.name }}</a>
         <span class="meta">{{ machine.coverage.summary }}</span>
         <span class="badge tone-{{ machine.coverage.tone }}">{{ machine.coverage.group_label }}</span>

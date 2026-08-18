@@ -16,6 +16,18 @@
    ohm sign. This sets the same string in 9.42 em against IBM Plex Sans's
    9.06, so the print substitution barely moves the line. */
 
+/* Bungee: a signwriter's face, drawn for shopfronts and arcade cabinets. It
+   carries the masthead and the family headings on the index — the two places
+   the site announces itself rather than explains something. One weight is the
+   whole family by design, so it is never asked for bold. */
+@font-face {
+    font-family: "Bungee";
+    src: url("{{ base }}assets/fonts/bungee-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 @font-face {
     font-family: "Chakra Petch";
     src: url("{{ base }}assets/fonts/chakra-petch-400.woff2") format("woff2");
@@ -88,6 +100,11 @@
        sentence, a table cell, or a hazard warning. The fallback is the
        body sans, so a heading that loses the font is still a heading. */
     --display: "Chakra Petch", "IBM Plex Sans", system-ui, -apple-system,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* The two shopfront places: the masthead and the family headings. It
+       falls back through the display face, so a heading that loses Bungee is
+       still set in something squared rather than in the body sans. */
+    --lead: "Bungee", "Chakra Petch", "IBM Plex Sans", system-ui, -apple-system,
         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     /* The bezel a photograph sits in. Dark in both themes — a CRT surround
        was, and a light frame around a light photograph frames nothing. */
@@ -246,10 +263,16 @@ code,
     justify-content: space-between;
 }
 
+/* Bungee is a wide face and the masthead is the one line that may not wrap
+   on a phone: "Retro Recaps" is 9.1 em of it, so the clamp tops out where
+   that still fits a 360 px viewport beside the nav. Weight 400 is the only
+   weight the family has — asking for 700 would get a synthesised bold. */
 .masthead a.brand {
-    font-weight: 700;
-    font-size: 1.15rem;
-    letter-spacing: 0.02em;
+    font-family: var(--lead);
+    font-weight: 400;
+    font-size: clamp(1.35rem, 1.05rem + 1.3vw, 1.75rem);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
     text-decoration: none;
     color: var(--ink);
 }
@@ -558,6 +581,7 @@ td .note {
     border-radius: 0.3rem;
     background: var(--panel);
     padding: 0.85rem 1rem;
+    position: relative;
 }
 
 .card a {
@@ -567,6 +591,33 @@ td .note {
 
 .card a:hover {
     text-decoration: underline;
+}
+
+/* The whole box opens the page. The card's own link is stretched over it
+   rather than the card being wrapped in an anchor: one link in the
+   accessibility tree, no anchor nested inside another, and the meta line and
+   the badge stay ordinary text rather than becoming link text read aloud.
+
+   `> a` is the card's own link and never the picture's - that one is a child
+   of the figure, and it points at the same page anyway. */
+.card > a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+/* Keyboard focus lands on the link but the hit area is the box, so the ring
+   goes round the box. */
+.card:focus-within {
+    outline: 3px solid var(--family-ink, var(--accent));
+    outline-offset: 2px;
+}
+
+/* The stretched link is on top of the card, so the focus ring on the picture
+   inside it would be invisible and redundant with the one above. */
+.card .shot .shotlink:focus-visible {
+    outline: none;
 }
 
 .card .meta {
@@ -625,6 +676,14 @@ h2.family {
     display: flex;
     align-items: center;
     gap: 0.55rem;
+    /* The family name is the index's other shopfront line. Bungee is bigger
+       on the body than the display face at the same size, so this asks for
+       less than the 1.3rem an ordinary h2 gets and still reads larger. */
+    font-family: var(--lead);
+    font-weight: 400;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
     color: var(--family-ink);
     border-bottom-width: 2px;
     border-bottom-color: var(--family-ink);
@@ -687,11 +746,16 @@ h2.family .mark {
     height: 1.1rem;
 }
 
-/* ---------- photographs in a screen bezel ----------
-   A machine photograph sits in a moulded surround with a scanline sheen over
-   it: the period is the point, and a bezel is what these machines were seen
-   through. The sheen is a static gradient at low opacity over a photograph,
-   never over text. */
+/* ---------- pictures in a screen bezel ----------
+   A machine picture sits in a moulded surround with a scanline sheen over it:
+   the period is the point, and a bezel is what these machines were seen
+   through. The sheen is a static gradient at low opacity over the picture,
+   never over text.
+
+   Every picture is processed to one shape — 8:5, cropped and cel-shaded
+   offline before it is committed — so the boxes are one shape too and a row of cards
+   keeps its baseline whatever machine is in it. No credit sits under a
+   picture; `image_credits.html` carries all of them. */
 
 .shot {
     margin: 0 0 1rem;
@@ -713,6 +777,19 @@ h2.family .mark {
     border-radius: 0.25rem;
 }
 
+/* On the index the picture is a second door into the machine's page. It sits
+   under the sheen, so the focus ring goes on the link rather than on the
+   image and is offset outward to clear the bezel's padding. */
+.shot .shotlink {
+    display: block;
+    border-radius: 0.25rem;
+}
+
+.shot .shotlink:focus-visible {
+    outline: 3px solid var(--family-ink, var(--accent));
+    outline-offset: 3px;
+}
+
 .shot .bezel::after {
     content: "";
     position: absolute;
@@ -727,16 +804,8 @@ h2.family .mark {
     opacity: 0.5;
 }
 
-.shot .credit {
-    display: block;
-    margin-top: 0.4rem;
-    font-size: 0.8rem;
-    line-height: 1.4;
-    color: var(--ink-soft);
-}
-
-/* The machine with no freely licensed photograph gets the same box rather
-   than a hole in the layout, and says why it is empty. */
+/* The machine with no picture gets the same box rather than a hole in the
+   layout, and says why it is empty. */
 .shot .missing {
     display: flex;
     flex-direction: column;
@@ -1103,12 +1172,12 @@ tr.pinned {
         word-break: break-all;
     }
 
-    /* The photographs, the family marks, the board motif and the type
-       symbols all come off the sheet. They are referenced SVGs and JPEGs
-       that cannot know the page is being printed — a symbol drawn in a dark
-       theme's ink is invisible on paper — and none of them carries anything
-       the words beside it do not already say. What is left is the table, the
-       designators and the panels. */
+    /* The pictures, the family marks, the board motif and the type symbols
+       all come off the sheet. They are referenced files that cannot know the
+       page is being printed — a symbol drawn in a dark theme's ink is
+       invisible on paper — and none of them carries anything the words beside
+       it do not already say. What is left is the table, the designators and
+       the panels. */
     .shot,
     .masthead .motif,
     h2.family .mark,

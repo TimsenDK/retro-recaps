@@ -25,7 +25,7 @@
             {{ machine.coverage.group_headline }}
         </p>
     </div>
-    {% with card = false %}{% include "_photo.html.j2" %}{% endwith %}
+    {% with card = false, link = none %}{% include "_photo.html.j2" %}{% endwith %}
 </div>
 
 {% with hazards = machine.hazards %}{% include "_hazards.html.j2" %}{% endwith %}
