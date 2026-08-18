@@ -1123,4 +1123,23 @@ figure > figcaption {
         min-width: 0;
         max-width: 12cm;
     }
+
+    /* The one picture that stays on the sheet. The table says what to buy
+       and the map says where it goes; separating them at the bench is the
+       whole problem this feature exists to solve. Reached by shape, the same
+       way the screen rules above reach it: a class named `.boardmap` would
+       print that word into the stylesheet inlined on every page, including
+       ones with no map. */
+    figure {
+        break-inside: avoid;
+        max-width: 12cm;
+    }
+
+    figure > svg {
+        color: #000;
+    }
+
+    .pos circle {
+        fill: #fff;
+    }
 }

@@ -381,6 +381,28 @@ def test_every_row_in_the_table_is_addressable(site_out: Path) -> None:
     assert 'data-designator="C321"' in page
 
 
+def test_the_board_map_is_the_one_picture_that_prints(site_out: Path) -> None:
+    """The map stays on the printed sheet.
+
+    Styled by shape, not by the `.boardmap` class: the stylesheet is inlined
+    into every page, and a class rule naming "boardmap" would put that word
+    into the print block of a page with no map, tripping
+    test_a_board_with_no_map_renders_none_of_its_furniture. `figure` reaches
+    it the same way the screen rules do (see the "board map" section above).
+    """
+    sheet = stylesheet(site_out)
+    print_block = sheet.split("@media print", 1)[1]
+    hidden = " ".join(
+        re.findall(r"([^{}]*)\{[^{}]*display:\s*none[^{}]*\}", print_block)
+    )
+    assert ".shot" in hidden
+    assert "figure" not in hidden
+    compact = print_block.replace(" ", "").replace("\n", "")
+    assert "figure{break-inside:avoid" in compact
+    assert ".poscircle{fill:#fff}" in compact
+    assert "boardmap" not in print_block
+
+
 def demo_layout(designators: list[str], *, precision: str = "measured") -> Layout:
     """A minimal, otherwise-unremarkable layout placing the given designators."""
     return Layout(
