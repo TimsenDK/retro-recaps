@@ -1,0 +1,102 @@
+id: amiga-500-layout-mainboard-rev5
+board: amiga-500-mainboard-rev5
+precision: measured
+verification: derived
+orientation: >-
+  As drawn here (the source page rotated 90 degrees clockwise so its text
+  reads left to right), the top edge carries the keyboard, floppy and
+  expansion ribbon-cable headers (silkscreened CN5, CN6, CN7); the bottom
+  edge carries the CIA/Gary support components and the 512K RAM expansion
+  connector (ASSY 312604); the left edge carries the video output, Denise,
+  CPU and ROM; the right edge is blank margin, captioned "A500 SYSTEM
+  SCHEMATICS" in the source document.
+outline:
+  width: 1445
+  height: 1000
+sources:
+  - url: https://archive.org/details/system-schematics-a-500-revisions-5-6a-7
+    note: >-
+      Commodore, "System Schematics A500 Revisions 5, 6A, 7", PN-314981-02,
+      August 1989. Page 3, captioned "Board Layout PCB Assembly #312511-02,
+      Rev. 5", is the assembly drawing this map was read from.
+notes:
+  - >-
+    The drawing gives no scale or physical dimensions, so positions are
+    normalised to the drawn board outline rather than to millimetres.
+features:
+  - kind: capacitor
+    designator: C303
+    x: 0.73
+    y: 0.56
+  - kind: capacitor
+    designator: C304
+    x: 0.73
+    y: 0.58
+  - kind: capacitor
+    designator: C306
+    x: 0.82
+    y: 0.58
+  - kind: capacitor
+    designator: C307
+    x: 0.23
+    y: 0.36
+  - kind: capacitor
+    designator: C324
+    x: 0.73
+    y: 0.14
+  - kind: capacitor
+    designator: C334
+    x: 0.77
+    y: 0.14
+  - kind: capacitor
+    designator: C401
+    x: 0.18
+    y: 0.12
+  - kind: capacitor
+    designator: C402
+    x: 0.03
+    y: 0.13
+  - kind: capacitor
+    designator: C712
+    x: 0.70
+    y: 0.31
+  - kind: capacitor
+    designator: C811
+    x: 0.72
+    y: 0.19
+  - kind: capacitor
+    designator: C812
+    x: 0.51
+    y: 0.68
+  - kind: capacitor
+    designator: C813
+    x: 0.65
+    y: 0.45
+  - kind: capacitor
+    designator: C814
+    x: 0.09
+    y: 0.82
+  - kind: capacitor
+    designator: C815
+    x: 0.15
+    y: 0.81
+  - kind: capacitor
+    designator: C821
+    x: 0.54
+    y: 0.22
+  - kind: capacitor
+    designator: C822
+    x: 0.72
+    y: 0.25
+  - kind: anchor
+    label: Power connector (CN8)
+    x: 0.18
+    y: 0.06
+  - kind: anchor
+    label: Keyboard connector
+    x: 0.47
+    y: 0.14
+  - kind: anchor
+    label: Gary/Agnus socket (Fat Agnus, U2)
+    x: 0.31
+    y: 0.55
