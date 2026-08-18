@@ -30,6 +30,13 @@ the factual substance of the responses.
 Exception to the English rule: prompts are recorded verbatim, so the transcript
 stays in whatever language the dialogue was held in.
 
+**The transcript is shared with the private repository.** A session held there
+appends to the same dated file, because a day's work crosses between the two and
+splitting it would make neither half readable. Mark every switch of repository
+with a heading — `## Continued in the private repository` or `## Continued in the
+public repository` — so a reader can tell which checkout a path is relative to.
+Unmarked entries are from wherever the file last said.
+
 ## Execution style
 
 - Prefer subagents where the work allows it. Make them self-contained so they do
