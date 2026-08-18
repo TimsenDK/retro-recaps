@@ -902,6 +902,22 @@ figure > figcaption {
     color: var(--ink-soft);
 }
 
+/* A colour change alone is not enough: the stroke also widens, so the
+   highlight still reads for someone who cannot tell the accent from the
+   ring's own outline. Hover and pin share the same look because a pin is
+   just a hover a reader chose not to let go of. */
+.pos.lit circle,
+.pos.pinned circle {
+    stroke: var(--accent);
+    stroke-width: 4;
+}
+
+tr.lit,
+tr.pinned {
+    background: var(--panel-alt);
+    outline: 2px solid var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .card {
         transition: none;

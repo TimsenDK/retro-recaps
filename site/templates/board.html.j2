@@ -197,3 +197,9 @@
     </p>
 </div>
 {% endblock %}
+
+{% block scripts %}
+{% if board.layout %}
+<script src="{{ base }}boardmap.js"></script>
+{% endif %}
+{% endblock %}

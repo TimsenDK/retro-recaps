@@ -403,6 +403,16 @@ def test_the_board_map_is_the_one_picture_that_prints(site_out: Path) -> None:
     assert "boardmap" not in print_block
 
 
+def test_the_board_page_ships_the_highlight_script_and_degrades_without_it(
+    site_out: Path,
+) -> None:
+    page = read(site_out, "amiga-500/mainboard-rev6a.html")
+    assert "boardmap.js" in page
+    assert (site_out / "boardmap.js").is_file()
+    # With no JS at all the designator is still printed beside the ring.
+    assert ">C321<" in page
+
+
 def demo_layout(designators: list[str], *, precision: str = "measured") -> Layout:
     """A minimal, otherwise-unremarkable layout placing the given designators."""
     return Layout(
