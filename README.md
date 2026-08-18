@@ -69,6 +69,18 @@ value used on a dozen boards is described once.
 - NiCd batteries are removed; Mac PRAM batteries are replaced.
 - On Macs, the logic board is recapped before the analog board.
 
+### Board maps
+
+Some boards carry a map: a picture of the board showing where each capacitor
+sits, for finding a position that a designator alone does not make obvious.
+A map never carries a value — capacitance, voltage, quantity or part number
+stay in the capacitor list, which is the one place with sources behind it.
+Positions come with their own precision, marked in words on the page:
+
+- **measured** — read off a board layout drawing.
+- **approximate** — read off a photograph, and drawn with a dashed ring
+  rather than a solid one.
+
 ## Safety
 
 Power supply work involves mains voltage and capacitors that hold a charge after

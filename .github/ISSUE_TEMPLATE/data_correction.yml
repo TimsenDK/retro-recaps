@@ -1,5 +1,5 @@
 name: Data correction
-description: A capacitor list is wrong, incomplete, or missing an entry
+description: A capacitor list or board map position is wrong, incomplete, or missing an entry
 title: "[data] "
 labels: ["data"]
 body:
@@ -22,7 +22,7 @@ body:
     id: board
     attributes:
       label: Board
-      description: Mainboard, PSU, analog board, logic board, daughterboard
+      description: Mainboard, PSU, analog board, logic board, daughterboard, paddle
       placeholder: PSU
     validations:
       required: true
@@ -41,7 +41,8 @@ body:
       label: What it should say
       description: |
         Designators, capacitance, voltage, type and quantity as far as you know
-        them. Say which parts you are unsure about.
+        them — or, for a board map position, where the capacitor actually is.
+        Say which parts you are unsure about.
     validations:
       required: true
 
