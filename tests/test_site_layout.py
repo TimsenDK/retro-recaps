@@ -12,6 +12,7 @@ def demo_layout(
     designators: Iterable[str],
     approximate_designators: frozenset[str] = frozenset(),
     anchors: tuple[tuple[str, float, float], ...] = (),
+    precision: str = "measured",
 ) -> Layout:
     """A minimal, self-consistent `Layout` for renderer tests.
 
@@ -35,7 +36,7 @@ def demo_layout(
     return Layout(
         id="demo-layout",
         board="demo-board",
-        precision="measured",
+        precision=precision,
         verification="verified",
         orientation="component side up",
         width=1000,
@@ -63,6 +64,12 @@ def test_the_drawing_states_its_own_frame_and_nothing_else() -> None:
 
 def test_an_approximate_position_is_drawn_differently() -> None:
     layout = demo_layout(["C1"], approximate_designators={"C1"})
+    svg = render_layout(layout)
+    assert 'class="pos approx"' in svg
+
+
+def test_a_file_level_approximate_precision_marks_every_position() -> None:
+    layout = demo_layout(["C1"], precision="approximate")
     svg = render_layout(layout)
     assert 'class="pos approx"' in svg
 

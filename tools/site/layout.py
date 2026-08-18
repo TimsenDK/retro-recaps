@@ -67,11 +67,19 @@ def _is_approximate(layout: Layout) -> bool:
 
 
 def _capacitor_markup(
-    feature: LayoutFeature, cx: float, cy: float, radius: float, label_y: float
+    feature: LayoutFeature,
+    cx: float,
+    cy: float,
+    radius: float,
+    label_y: float,
+    layout_approximate: bool,
 ) -> str:
     designator = escape(feature.designator or "")
-    classes = "pos approx" if feature.approximate else "pos"
-    dash = ' stroke-dasharray="2 2"' if feature.approximate else ""
+    # A layout marked approximate as a whole is a floor, not a default: it
+    # must show through even on a feature that never set its own flag.
+    approximate = feature.approximate or layout_approximate
+    classes = "pos approx" if approximate else "pos"
+    dash = ' stroke-dasharray="2 2"' if approximate else ""
     return (
         f'<g class="{classes}" id="pos-{designator}">'
         f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{radius:.2f}" '
@@ -111,6 +119,7 @@ def render_layout(layout: Layout) -> str:
     anchor_size = width * _ANCHOR_SIZE_FRACTION
     label_offset = width * _LABEL_OFFSET_FRACTION
     title = escape(layout.board)
+    layout_approximate = layout.precision == "approximate"
 
     parts: list[str] = [
         '<svg xmlns="http://www.w3.org/2000/svg" '
@@ -125,7 +134,9 @@ def render_layout(layout: Layout) -> str:
         if feature.kind == "capacitor":
             label_y = cy + capacitor_radius + label_offset
             parts.append(
-                _capacitor_markup(feature, cx, cy, capacitor_radius, label_y)
+                _capacitor_markup(
+                    feature, cx, cy, capacitor_radius, label_y, layout_approximate
+                )
             )
         elif feature.kind == "anchor":
             label_y = cy + anchor_size / 2 + label_offset
