@@ -1,6 +1,6 @@
 id: commodore-1551-interface-paddle
 machine: commodore-1551
-board: daughterboard
+board: paddle
 revisions:
   - "250453"
 verification: unverified

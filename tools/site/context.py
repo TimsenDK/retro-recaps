@@ -42,6 +42,11 @@ BOARD_KIND_NAMES = {
     "mainboard": "Mainboard",
     "logic": "Logic board",
     "daughterboard": "Daughterboard",
+    # A paddle is not a daughterboard: it does not sit on another board at
+    # all. It is the PCB on the end of a drive cable that plugs into the
+    # computer, and calling it what its own machine's documentation calls it
+    # is how a reader finds it in their hand.
+    "paddle": "Paddle",
     "analog": "Analog board",
     "psu": "Power supply",
 }
