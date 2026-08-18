@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from tools.loader import load_dataset
-from tools.model import Board, Dataset, Machine, Part, Series, Supplier
+from tools.model import Board, Dataset, Layout, Machine, Part, Series, Supplier
 from tools.rules import check
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -1137,3 +1137,170 @@ def test_the_y2_floor_does_not_fire_on_an_x2_position() -> None:
         {"type": "film-x2", "capacitance_uf": 0.1, "voltage_v": 275}
     )
     assert "y2-voltage-too-low" not in codes(make_dataset(document))
+
+
+def demo_machine() -> Machine:
+    return Machine.from_dict(
+        {
+            "id": "demo",
+            "name": "Demo Machine",
+            "family": "demo",
+            "board_order": ["mainboard"],
+        }
+    )
+
+
+def demo_board(designators: list[str], **overrides: object) -> Board:
+    document = {
+        "id": "demo-mainboard",
+        "machine": "demo",
+        "board": "mainboard",
+        "revisions": ["A"],
+        "verification": "unverified",
+        "capacitors": [
+            {
+                "designators": designators,
+                "type": "electrolytic-radial",
+                "capacitance_uf": 100,
+                "voltage_v": 16,
+                "quantity": len(designators),
+            }
+        ],
+    }
+    document.update(overrides)
+    return Board.from_dict(document, path=Path("data/demo/mainboard.yaml"))
+
+
+def layout_document(features: list[dict], **overrides: object) -> dict:
+    document = {
+        "id": "demo-layout-mainboard",
+        "board": "demo-mainboard",
+        "precision": "measured",
+        "verification": "derived",
+        "orientation": "Component side up.",
+        "outline": {"width": 1000, "height": 620},
+        "features": features,
+    }
+    document.update(overrides)
+    return document
+
+
+def dataset_with_layout(
+    board_designators: list[str],
+    features: list[dict],
+    board_ref: str | None = None,
+    precision: str = "measured",
+    verification: str = "derived",
+) -> Dataset:
+    machine = demo_machine()
+    board = demo_board(board_designators)
+    layout = Layout.from_dict(
+        layout_document(
+            features,
+            board=board_ref or board.id,
+            precision=precision,
+            verification=verification,
+        ),
+        path=Path("data/demo/layout-mainboard.yaml"),
+    )
+    return Dataset(
+        machines={machine.id: machine},
+        boards={board.id: board},
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+        layouts={layout.id: layout},
+    )
+
+
+def dataset_with_unmappable_board() -> Dataset:
+    """A board whose one position never named its designators.
+
+    A layout cannot legitimately place a designator that does not appear
+    anywhere on the board, so this board can never be fully mapped.
+    """
+    machine = demo_machine()
+    board = demo_board(
+        [],
+        capacitors=[
+            {
+                "designators_unknown": True,
+                "type": "electrolytic-radial",
+                "capacitance_uf": 100,
+                "voltage_v": 16,
+                "quantity": 1,
+            }
+        ],
+    )
+    layout = Layout.from_dict(
+        layout_document([], board=board.id),
+        path=Path("data/demo/layout-mainboard.yaml"),
+    )
+    return Dataset(
+        machines={machine.id: machine},
+        boards={board.id: board},
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+        layouts={layout.id: layout},
+    )
+
+
+def test_a_layout_may_not_place_a_designator_the_board_does_not_list() -> None:
+    dataset = dataset_with_layout(
+        board_designators=["C1"],
+        features=[
+            {"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1},
+            {"kind": "capacitor", "designator": "C9", "x": 0.2, "y": 0.2},
+        ],
+    )
+    assert "layout-designator-not-on-board" in codes(dataset)
+
+
+def test_a_layout_may_not_leave_out_a_designator_the_board_lists() -> None:
+    dataset = dataset_with_layout(
+        board_designators=["C1", "C2"],
+        features=[{"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1}],
+    )
+    issues = [i for i in check(dataset) if i.code == "layout-designator-missing"]
+    assert issues and issues[0].level == "error"
+    assert "C2" in issues[0].message
+
+
+def test_a_complete_layout_raises_nothing() -> None:
+    dataset = dataset_with_layout(
+        board_designators=["C1", "C2"],
+        features=[
+            {"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1},
+            {"kind": "capacitor", "designator": "C2", "x": 0.2, "y": 0.2},
+            {"kind": "anchor", "label": "Power connector", "x": 0.9, "y": 0.5},
+        ],
+    )
+    assert [i for i in check(dataset) if i.code.startswith("layout-")] == []
+
+
+def test_a_layout_for_an_unknown_board_is_an_error() -> None:
+    dataset = dataset_with_layout(
+        board_designators=["C1"],
+        features=[{"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1}],
+        board_ref="demo-nonexistent",
+    )
+    assert "layout-unknown-board" in codes(dataset)
+
+
+def test_a_board_with_unnamed_designators_cannot_be_mapped() -> None:
+    dataset = dataset_with_unmappable_board()
+    assert "layout-unmappable-board" in codes(dataset)
+
+
+def test_an_approximate_layout_may_not_claim_to_be_verified() -> None:
+    dataset = dataset_with_layout(
+        board_designators=["C1"],
+        features=[{"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1}],
+        precision="approximate",
+        verification="verified",
+    )
+    issues = [i for i in check(dataset) if i.code == "layout-approximate-but-verified"]
+    assert issues and issues[0].level == "warning"

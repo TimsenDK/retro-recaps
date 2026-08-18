@@ -8,7 +8,7 @@ so validation and resolution can never disagree.
 import re
 
 from tools.issues import ERROR, WARNING, Issue
-from tools.model import Board, Dataset, Machine
+from tools.model import Board, Dataset, Layout, Machine
 from tools.resolve import fit_violations, same_capacitance
 
 X2_MINIMUM_VOLTAGE_V = 275
@@ -89,6 +89,94 @@ def _machine_location(machine: Machine) -> str:
     if machine.path is not None:
         return machine.path.as_posix()
     return machine.id
+
+
+def _layout_location(layout: Layout) -> str:
+    if layout.path is not None:
+        return layout.path.as_posix()
+    return layout.id
+
+
+def _check_layout(layout: Layout, dataset: Dataset) -> list[Issue]:
+    """A map that disagrees with its board is worse than no map at all.
+
+    A position the board does not list was invented. A position the board
+    lists and the map omits is the dangerous one: it reads as "there is no
+    capacitor there" to someone holding the board.
+    """
+    location = _layout_location(layout)
+    issues: list[Issue] = []
+
+    board = dataset.boards.get(layout.board)
+    if board is None:
+        return [
+            Issue(
+                ERROR,
+                "layout-unknown-board",
+                location,
+                f"layout names board {layout.board!r}, which does not exist",
+            )
+        ]
+
+    # A position with no named designators - whether it says so outright via
+    # designators_unknown, or simply has an empty list - has nothing a map
+    # could legitimately point to. One such position means the board as a
+    # whole cannot be fully mapped without inventing a designator for it.
+    if any(
+        capacitor.designators_unknown or not capacitor.designators
+        for capacitor in board.capacitors
+    ):
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-unmappable-board",
+                location,
+                "the board has positions with no named designators, so it "
+                "cannot be mapped without inventing one",
+            )
+        )
+
+    on_board = {
+        designator
+        for capacitor in board.capacitors
+        for designator in capacitor.designators
+    }
+    placed = layout.designators
+
+    for designator in sorted(placed - on_board):
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-designator-not-on-board",
+                location,
+                f"the map places {designator}, which is not in the board's list",
+            )
+        )
+
+    missing = sorted(on_board - placed)
+    if missing:
+        issues.append(
+            Issue(
+                ERROR,
+                "layout-designator-missing",
+                location,
+                "the map leaves out positions the board lists: "
+                + ", ".join(missing),
+            )
+        )
+
+    if layout.precision == "approximate" and layout.verification == "verified":
+        issues.append(
+            Issue(
+                WARNING,
+                "layout-approximate-but-verified",
+                location,
+                "positions read off a photograph are approximate; 'verified' "
+                "means checked against a board",
+            )
+        )
+
+    return issues
 
 
 def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
@@ -662,5 +750,7 @@ def check(dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
     for board in dataset.boards.values():
         issues.extend(_check_board(board, dataset))
+    for layout in dataset.layouts.values():
+        issues.extend(_check_layout(layout, dataset))
     issues.extend(_check_reference(dataset))
     return issues
