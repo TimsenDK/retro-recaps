@@ -18,7 +18,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Literal
 
-from tools.model import Board, Capacitor, Dataset, Machine, Part, Series, Source
+from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series, Source
+from tools.site.layout import LayoutView, layout_view
 
 VERIFICATION_ORDER = ("verified", "derived", "unverified")
 """Best to worst. Anything unrecognised sorts after all of these."""
@@ -795,6 +796,7 @@ class BoardView:
     batteries: tuple
     rows_without_designators: int
     mixed_verification: bool
+    layout: LayoutView | None = None
 
     @property
     def has_polarised(self) -> bool:
@@ -831,6 +833,7 @@ def board_view(
     *,
     disambiguate: bool,
     targets: dict[str, tuple[str, str]] | None = None,
+    layout: Layout | None = None,
 ) -> BoardView:
     if targets is None:
         targets = reference_targets(dataset)
@@ -881,6 +884,7 @@ def board_view(
         ),
         rows_without_designators=sum(1 for row in rows if not row.has_designators),
         mixed_verification=any(row.differs_from_board for row in rows),
+        layout=layout_view(layout) if layout is not None else None,
     )
 
 
@@ -934,14 +938,27 @@ class FamilyView:
         )
 
 
+def layouts_by_board(dataset: Dataset) -> dict[str, Layout]:
+    """Every layout, keyed by the board id it draws.
+
+    A board carries at most one map in this dataset, so the last layout
+    found for a board id wins; nothing here enforces uniqueness, because
+    that is the validator's job, not the view layer's.
+    """
+    return {layout.board: layout for layout in dataset.layouts.values()}
+
+
 def machine_view(
     machine: Machine,
     dataset: Dataset,
     *,
     targets: dict[str, tuple[str, str]] | None = None,
+    layouts: dict[str, Layout] | None = None,
 ) -> MachineView:
     if targets is None:
         targets = reference_targets(dataset)
+    if layouts is None:
+        layouts = layouts_by_board(dataset)
     boards = dataset.boards_for(machine.id)
     kind_counts: dict[str, int] = {}
     for board in boards:
@@ -952,6 +969,7 @@ def machine_view(
             dataset,
             disambiguate=kind_counts[board.board] > 1,
             targets=targets,
+            layout=layouts.get(board.id),
         )
         for board in boards
     )
@@ -1222,8 +1240,9 @@ class SiteContext:
 def build_context(dataset: Dataset) -> SiteContext:
     """Everything the templates need, worked out once."""
     targets = reference_targets(dataset)
+    layouts = layouts_by_board(dataset)
     machines = tuple(
-        machine_view(machine, dataset, targets=targets)
+        machine_view(machine, dataset, targets=targets, layouts=layouts)
         for machine in sorted(
             dataset.machines.values(), key=lambda m: natural_key(m.name)
         )

@@ -855,6 +855,53 @@ td.type {
     color: var(--ink-soft);
 }
 
+/* ---------- board map ---------- */
+
+/* Targeted by shape, not by class name: the map is the only figure on the
+   site that wraps a bare `<svg>` and carries a caption, so `figure > svg`
+   and `figure > figcaption` reach it without help from a selector, and a
+   board with no map leaves no trace of these rules' own name in the page it
+   renders — nothing here is styled by a class the page text would echo. */
+figure {
+    margin: 1.5rem 0;
+}
+
+figure > svg {
+    width: 100%;
+    height: auto;
+}
+
+figure > figcaption {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: 0.2rem;
+}
+
+/* A ring is a hollow marker so the designator inside it stays legible; the
+   panel colour behind it stops a stray table rule or grid line from showing
+   through the circle where currentColor is a light ink. */
+.pos circle {
+    fill: var(--panel);
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+/* Dashed rather than solid: the caption is the disclosure a reader can act
+   on, but the ring still has to look different from a measured one for
+   anybody scanning the drawing rather than reading the words beside it. */
+.pos.approx circle {
+    stroke-dasharray: 4 3;
+}
+
+.pos text {
+    font-size: 18px;
+    font-family: var(--mono);
+}
+
+.anchor {
+    color: var(--ink-soft);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .card {
         transition: none;

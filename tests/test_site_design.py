@@ -9,13 +9,15 @@ backgrounds they actually sit on rather than judged by eye.
 
 from __future__ import annotations
 
+import dataclasses
 import re
 from pathlib import Path
 
 import pytest
+from markupsafe import Markup
 
 from tools.loader import load_dataset
-from tools.model import Board, Capacitor, Dataset
+from tools.model import Board, Capacitor, Dataset, Layout, LayoutFeature
 from tools.site.build import compact_css, render_site
 from tools.site.context import (
     CAPACITOR_TYPE_NAMES,
@@ -26,6 +28,7 @@ from tools.site.context import (
     family_mark,
 )
 from tools.site.images import jpeg_size, load_photos
+from tools.site.layout import LayoutView, layout_view
 
 ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -354,6 +357,87 @@ def test_photographs_and_decoration_come_off_the_printed_sheet(
     )
     for selector in (".shot", ".motif", ".captype img"):
         assert selector in hidden, selector
+
+
+# --------------------------------------------------------------------------
+# The board map
+# --------------------------------------------------------------------------
+
+
+def test_a_board_with_a_map_renders_it_inline(site_out: Path) -> None:
+    page = read(site_out, "amiga-500/mainboard-rev6a.html")
+    assert '<figure class="boardmap">' in page
+    assert "<svg" in page
+    assert 'id="pos-' in page
+
+
+def test_a_board_with_no_map_renders_none_of_its_furniture(site_out: Path) -> None:
+    page = read(site_out, "amiga-500/psu.html")
+    assert "boardmap" not in page
+
+
+def test_every_row_in_the_table_is_addressable(site_out: Path) -> None:
+    page = read(site_out, "amiga-500/mainboard-rev6a.html")
+    assert 'data-designator="C321"' in page
+
+
+def demo_layout(designators: list[str], *, precision: str = "measured") -> Layout:
+    """A minimal, otherwise-unremarkable layout placing the given designators."""
+    return Layout(
+        id="demo-layout",
+        board="amiga-500-mainboard-rev6a",
+        precision=precision,
+        verification="derived",
+        orientation="Drawn for a test, not for a bench.",
+        width=100,
+        height=100,
+        features=tuple(
+            LayoutFeature(kind="capacitor", x=0.5, y=0.5, designator=designator)
+            for designator in designators
+        ),
+    )
+
+
+def render_board_page_with(layout: LayoutView) -> str:
+    """The Amiga 500 rev 6A board page rendered with a stand-in layout.
+
+    Reuses the fixture board's own view rather than hand-building one: a
+    `BoardView` carries dozens of fields the template touches, and the point
+    of this test is the caption wording, not re-deriving every one of them.
+    """
+    from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
+
+    dataset, _ = load_dataset(FIXTURES / "site")
+    context = build_context(dataset)
+    board = next(b for b in context.boards if b.id == "amiga-500-mainboard-rev6a")
+    board = dataclasses.replace(board, layout=layout)
+    env = Environment(
+        loader=FileSystemLoader(str(ROOT / "site" / "templates")),
+        autoescape=select_autoescape(["html", "html.j2"], default_for_string=True),
+        undefined=StrictUndefined,
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    return env.get_template("board.html.j2").render(
+        base="../",
+        site=context,
+        site_name="Retro Recaps",
+        site_tagline="",
+        site_url="",
+        contribute_url="",
+        stylesheet="",
+        board=board,
+        polarity_svg=Markup(""),
+    )
+
+
+def test_an_approximate_map_says_so_in_words() -> None:
+    """A dash pattern is not a disclosure — someone has to be able to read it."""
+    view = layout_view(demo_layout(["C1"], precision="approximate"))
+    assert view.is_approximate
+    rendered = render_board_page_with(view)
+    assert "approximate" in rendered
+    assert "read from a photograph" in rendered
 
 
 # --------------------------------------------------------------------------

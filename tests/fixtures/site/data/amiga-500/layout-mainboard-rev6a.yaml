@@ -1,0 +1,27 @@
+id: amiga-500-layout-mainboard-rev6a
+board: amiga-500-mainboard-rev6a
+precision: measured
+verification: derived
+orientation: >-
+  Fixture data, not a real board reading: the connector edge is drawn at the
+  top for the test suite's own purposes.
+outline:
+  width: 100
+  height: 80
+notes:
+  - >-
+    This layout exists only for the test fixtures and does not describe a
+    real Amiga 500 rev 6A board.
+features:
+  - kind: capacitor
+    designator: C8
+    x: 0.2
+    y: 0.3
+  - kind: capacitor
+    designator: C321
+    x: 0.7
+    y: 0.6
+  - kind: anchor
+    label: Fixture connector
+    x: 0.5
+    y: 0.05
