@@ -6,6 +6,7 @@ so validation and resolution can never disagree.
 """
 
 import re
+from collections import Counter
 
 from tools.issues import ERROR, WARNING, Issue
 from tools.model import Board, Dataset, Layout, Machine
@@ -164,6 +165,31 @@ def _check_layout(layout: Layout, dataset: Dataset) -> list[Issue]:
                 + ", ".join(missing),
             )
         )
+
+    # A frozenset only ever tells you which designators appear, never how
+    # many times, so a copy-pasted feature that kept the old designator and
+    # a new x/y collapses invisibly into the one already there. The renderer
+    # then emits two `<g id="pos-C1">` elements at different coordinates,
+    # and the highlight script's querySelector lights whichever it finds
+    # first - a second, silently wrong dot on the map.
+    designator_counts = Counter(
+        feature.designator
+        for feature in layout.features
+        if feature.kind == "capacitor" and feature.designator
+    )
+    for designator, count in sorted(designator_counts.items()):
+        if count > 1:
+            issues.append(
+                Issue(
+                    ERROR,
+                    "layout-duplicate-designator",
+                    location,
+                    f"{designator} is placed {count} times in this map; each "
+                    f"designator must have exactly one position, or the "
+                    f"drawing and the highlight script cannot tell which one "
+                    f"is real",
+                )
+            )
 
     if layout.precision == "approximate" and layout.verification == "verified":
         issues.append(
@@ -687,6 +713,31 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
                     f"revision {revision!r} of the {machine_id} {kind} is also "
                     f"claimed by "
                     + ", ".join(other for other in sorted(locations) if other != location),
+                )
+            )
+
+    # Two layout files naming the same board is not a mistake either file
+    # would raise on its own: each can place every designator the board
+    # lists and validate cleanly by itself. layouts_by_board then keeps
+    # only the last one it sees, so the other's positions never reach a
+    # page - a stale layout can silently override a corrected one, and
+    # nothing on the site or in this report would say so without this check.
+    claimed_boards: dict[str, list[Layout]] = {}
+    for layout in dataset.layouts.values():
+        claimed_boards.setdefault(layout.board, []).append(layout)
+    for board_id, layouts in claimed_boards.items():
+        if len(layouts) < 2:
+            continue
+        ids = sorted(layout.id for layout in layouts)
+        for layout in sorted(layouts, key=_layout_location):
+            others = ", ".join(i for i in ids if i != layout.id)
+            issues.append(
+                Issue(
+                    ERROR,
+                    "layout-duplicate-board",
+                    _layout_location(layout),
+                    f"board {board_id!r} is also claimed by layout "
+                    + others,
                 )
             )
 

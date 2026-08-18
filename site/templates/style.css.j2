@@ -893,13 +893,22 @@ figure > figcaption {
     stroke-dasharray: 4 3;
 }
 
+/* SVG text is filled black by default and does not pick up `color` on its
+   own, so without this the designator is unreadable in dark mode: black
+   text on the near-black --panel behind it. currentColor ties the fill to
+   whatever ink the ring around it is already drawn in. */
 .pos text {
     font-size: 18px;
     font-family: var(--mono);
+    fill: currentColor;
 }
 
 .anchor {
     color: var(--ink-soft);
+}
+
+.anchor text {
+    fill: currentColor;
 }
 
 /* A colour change alone is not enough: the stroke also widens, so the

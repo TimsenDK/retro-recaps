@@ -1304,3 +1304,60 @@ def test_an_approximate_layout_may_not_claim_to_be_verified() -> None:
     )
     issues = [i for i in check(dataset) if i.code == "layout-approximate-but-verified"]
     assert issues and issues[0].level == "warning"
+
+
+def test_a_designator_placed_twice_in_one_layout_is_an_error() -> None:
+    # Layout.designators is a frozenset, so this pair would otherwise pass
+    # the set-equality checks above cleanly: the board wants C1, the map
+    # "has" C1. Only counting the features catches that two of them do.
+    dataset = dataset_with_layout(
+        board_designators=["C1"],
+        features=[
+            {"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1},
+            {"kind": "capacitor", "designator": "C1", "x": 0.8, "y": 0.8},
+        ],
+    )
+    issues = [i for i in check(dataset) if i.code == "layout-duplicate-designator"]
+    assert issues and issues[0].level == "error"
+    assert "C1" in issues[0].message
+
+
+def test_two_layouts_claiming_the_same_board_is_an_error() -> None:
+    machine = demo_machine()
+    board = demo_board(["C1"])
+    first = Layout.from_dict(
+        layout_document(
+            [{"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.1}],
+            id="demo-layout-mainboard",
+            board=board.id,
+        ),
+        path=Path("data/demo/layout-mainboard.yaml"),
+    )
+    second = Layout.from_dict(
+        layout_document(
+            [{"kind": "capacitor", "designator": "C1", "x": 0.2, "y": 0.2}],
+            id="demo-layout-mainboard-old",
+            board=board.id,
+        ),
+        path=Path("data/demo/layout-mainboard-old.yaml"),
+    )
+    dataset = Dataset(
+        machines={machine.id: machine},
+        boards={board.id: board},
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+        layouts={first.id: first, second.id: second},
+    )
+    issues = [i for i in check(dataset) if i.code == "layout-duplicate-board"]
+    assert len(issues) == 2
+    assert all(issue.level == "error" for issue in issues)
+    locations = {issue.location for issue in issues}
+    assert locations == {
+        "data/demo/layout-mainboard.yaml",
+        "data/demo/layout-mainboard-old.yaml",
+    }
+    assert "demo-layout-mainboard-old" in issues[0].message or (
+        "demo-layout-mainboard-old" in issues[1].message
+    )

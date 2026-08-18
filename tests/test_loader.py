@@ -196,3 +196,41 @@ def test_a_layout_file_is_loaded_as_a_layout_not_a_board(tmp_path: Path) -> None
     assert set(dataset.boards) == {"demo-mainboard"}
     assert set(dataset.layouts) == {"demo-layout-mainboard"}
     assert dataset.layouts["demo-layout-mainboard"].board == "demo-mainboard"
+
+
+def test_a_layout_coordinate_outside_the_board_is_a_schema_error(
+    tmp_path: Path,
+) -> None:
+    # Coordinates are normalised fractions of the outline, 0 to 1; a feature
+    # placed at x: 1.5 would draw off the edge of the board entirely, which
+    # spec section 8 requires the schema itself to catch.
+    machine_dir = tmp_path / "data" / "demo"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "machine.yaml").write_text(
+        "id: demo\nname: Demo\nfamily: amiga\nboard_order:\n  - mainboard\n",
+        encoding="utf-8",
+    )
+    (machine_dir / "mainboard.yaml").write_text(
+        "id: demo-mainboard\nmachine: demo\nboard: mainboard\n"
+        "revisions:\n  - '1'\nverification: derived\n"
+        "capacitors:\n"
+        "  - designators: [C1]\n    type: electrolytic-radial\n"
+        "    capacitance_uf: 10\n    voltage_v: 25\n    quantity: 1\n",
+        encoding="utf-8",
+    )
+    (machine_dir / "layout-mainboard.yaml").write_text(
+        "id: demo-layout-mainboard\nboard: demo-mainboard\n"
+        "precision: measured\nverification: derived\n"
+        "orientation: Component side up.\n"
+        "outline:\n  width: 1000\n  height: 620\n"
+        "features:\n"
+        "  - kind: capacitor\n    designator: C1\n    x: 1.5\n    y: 0.5\n",
+        encoding="utf-8",
+    )
+
+    dataset, issues = load_dataset(tmp_path)
+
+    assert set(dataset.layouts) == set()
+    assert [issue.code for issue in issues] == ["schema"]
+    assert issues[0].location.startswith("data/demo/layout-mainboard.yaml")

@@ -79,11 +79,14 @@ def _capacitor_markup(
     # must show through even on a feature that never set its own flag.
     approximate = feature.approximate or layout_approximate
     classes = "pos approx" if approximate else "pos"
-    dash = ' stroke-dasharray="2 2"' if approximate else ""
+    # The dashed ring is drawn by `.pos.approx circle` in the stylesheet,
+    # which is author CSS and so always wins over an SVG presentation
+    # attribute; an inline stroke-dasharray here would be dead weight,
+    # not a fallback.
     return (
         f'<g class="{classes}" id="pos-{designator}">'
         f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{radius:.2f}" '
-        f'fill="none" stroke="currentColor"{dash}/>'
+        f'fill="none" stroke="currentColor"/>'
         f'<text x="{cx:.2f}" y="{label_y:.2f}" text-anchor="middle">'
         f"{designator}</text>"
         f"</g>"
