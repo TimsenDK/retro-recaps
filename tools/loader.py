@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 
 from tools.issues import ERROR, Issue
-from tools.model import Board, Dataset, Machine, Part, Series, Supplier
+from tools.model import Board, Dataset, Layout, Machine, Part, Series, Supplier
 from tools.schemas import schema_issues
 
 
@@ -74,12 +74,13 @@ def _checked(
 
 def _load_machines_and_boards(
     root: Path, issues: list[Issue]
-) -> tuple[dict[str, Machine], dict[str, Board]]:
+) -> tuple[dict[str, Machine], dict[str, Board], dict[str, Layout]]:
     machines: dict[str, Machine] = {}
     boards: dict[str, Board] = {}
+    layouts: dict[str, Layout] = {}
     data_dir = root / "data"
     if not data_dir.is_dir():
-        return machines, boards
+        return machines, boards, layouts
 
     for machine_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()):
         if machine_dir.name.startswith("_"):
@@ -115,6 +116,22 @@ def _load_machines_and_boards(
                     )
                     continue
                 machines[machine.id] = machine
+            elif path.name.startswith("layout-"):
+                document = _checked(path, root, "layout", issues)
+                if document is None:
+                    continue
+                layout = Layout.from_dict(document, path=path)
+                if layout.id in layouts:
+                    issues.append(
+                        Issue(
+                            ERROR,
+                            "duplicate-id",
+                            _relative(path, root),
+                            f"layout id {layout.id!r} is already defined",
+                        )
+                    )
+                    continue
+                layouts[layout.id] = layout
             else:
                 document = _checked(path, root, "board", issues)
                 if document is None:
@@ -132,7 +149,7 @@ def _load_machines_and_boards(
                     continue
                 boards[board.id] = board
 
-    return machines, boards
+    return machines, boards, layouts
 
 
 def _load_list(
@@ -181,7 +198,7 @@ def _load_offers(root: Path, issues: list[Issue]) -> dict[str, dict[str, str]]:
 def load_dataset(root: Path) -> tuple[Dataset, list[Issue]]:
     """Load everything under root, collecting problems instead of raising."""
     issues: list[Issue] = []
-    machines, boards = _load_machines_and_boards(root, issues)
+    machines, boards, layouts = _load_machines_and_boards(root, issues)
     dataset = Dataset(
         machines=machines,
         boards=boards,
@@ -191,5 +208,6 @@ def load_dataset(root: Path) -> tuple[Dataset, list[Issue]]:
             root, "suppliers", "suppliers", Supplier.from_dict, issues
         ),
         offers=_load_offers(root, issues),
+        layouts=layouts,
     )
     return dataset, issues

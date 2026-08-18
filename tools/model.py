@@ -140,6 +140,77 @@ class Board:
 
 
 @dataclass(frozen=True)
+class LayoutFeature:
+    """One thing drawn on a board map, placed in normalised coordinates."""
+
+    kind: str
+    x: float
+    y: float
+    designator: str | None = None
+    label: str | None = None
+    approximate: bool = False
+
+
+@dataclass(frozen=True)
+class Layout:
+    """Where the parts of one board sit, as read off a source.
+
+    Separate from the board it describes: the geometry has its own source,
+    its own accuracy and its own way of being wrong.
+    """
+
+    id: str
+    board: str
+    precision: str
+    verification: str
+    orientation: str
+    width: float
+    height: float
+    features: tuple[LayoutFeature, ...]
+    sources: tuple[Source, ...] = ()
+    notes: tuple[str, ...] = ()
+    path: Path | None = field(default=None, compare=False)
+
+    @classmethod
+    def from_dict(cls, document: dict, path: Path | None = None) -> Layout:
+        outline = document["outline"]
+        return cls(
+            id=document["id"],
+            board=document["board"],
+            precision=document["precision"],
+            verification=document["verification"],
+            orientation=document["orientation"],
+            width=float(outline["width"]),
+            height=float(outline["height"]),
+            features=tuple(
+                LayoutFeature(
+                    kind=feature["kind"],
+                    x=float(feature["x"]),
+                    y=float(feature["y"]),
+                    designator=feature.get("designator"),
+                    label=feature.get("label"),
+                    approximate=bool(feature.get("approximate", False)),
+                )
+                for feature in document.get("features", ())
+            ),
+            sources=tuple(
+                Source.from_dict(item) for item in document.get("sources", ())
+            ),
+            notes=tuple(document.get("notes", ())),
+            path=path,
+        )
+
+    @property
+    def designators(self) -> frozenset[str]:
+        """Every capacitor designator this map places."""
+        return frozenset(
+            feature.designator
+            for feature in self.features
+            if feature.kind == "capacitor" and feature.designator
+        )
+
+
+@dataclass(frozen=True)
 class Machine:
     id: str
     name: str
@@ -277,6 +348,7 @@ class Dataset:
     series: dict[str, Series]
     suppliers: dict[str, Supplier]
     offers: dict[str, dict[str, str]]
+    layouts: dict[str, Layout] = field(default_factory=dict)
 
     def boards_for(self, machine_id: str) -> list[Board]:
         """Boards of one machine, in the order they should be recapped."""

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tools.model import Board, Capacitor, Dataset, Machine
+from tools.model import Board, Capacitor, Dataset, Layout, Machine
 
 
 def capacitor(**overrides) -> Capacitor:
@@ -134,3 +134,29 @@ def test_an_undeclared_analog_board_is_not_mains() -> None:
 def test_an_undeclared_logic_or_daughterboard_is_not_mains() -> None:
     assert declared("logic").carries_mains is False
     assert declared("daughterboard").carries_mains is False
+
+
+# --------------------------------------------------------------------------
+# Board layouts
+# --------------------------------------------------------------------------
+
+
+def test_a_layout_reports_the_designators_it_places() -> None:
+    layout = Layout.from_dict(
+        {
+            "id": "demo-layout-mainboard",
+            "board": "demo-mainboard",
+            "precision": "measured",
+            "verification": "derived",
+            "orientation": "Component side up.",
+            "outline": {"width": 1000, "height": 620},
+            "features": [
+                {"kind": "capacitor", "designator": "C1", "x": 0.1, "y": 0.2},
+                {"kind": "capacitor", "designator": "C2", "x": 0.3, "y": 0.4},
+                {"kind": "anchor", "label": "Power connector", "x": 0.9, "y": 0.5},
+            ],
+        }
+    )
+    assert layout.designators == frozenset({"C1", "C2"})
+    assert layout.features[2].label == "Power connector"
+    assert layout.features[0].approximate is False

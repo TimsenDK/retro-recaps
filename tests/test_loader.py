@@ -162,3 +162,37 @@ def test_missing_directories_are_tolerated(tmp_path: Path) -> None:
     dataset, issues = load_dataset(tmp_path)
     assert dataset.machines == {}
     assert issues == []
+
+
+def test_a_layout_file_is_loaded_as_a_layout_not_a_board(tmp_path: Path) -> None:
+    machine_dir = tmp_path / "data" / "demo"
+    machine_dir.mkdir(parents=True)
+    (tmp_path / "reference").mkdir()
+    (machine_dir / "machine.yaml").write_text(
+        "id: demo\nname: Demo\nfamily: amiga\nboard_order:\n  - mainboard\n",
+        encoding="utf-8",
+    )
+    (machine_dir / "mainboard.yaml").write_text(
+        "id: demo-mainboard\nmachine: demo\nboard: mainboard\n"
+        "revisions:\n  - '1'\nverification: derived\n"
+        "capacitors:\n"
+        "  - designators: [C1]\n    type: electrolytic-radial\n"
+        "    capacitance_uf: 10\n    voltage_v: 25\n    quantity: 1\n",
+        encoding="utf-8",
+    )
+    (machine_dir / "layout-mainboard.yaml").write_text(
+        "id: demo-layout-mainboard\nboard: demo-mainboard\n"
+        "precision: measured\nverification: derived\n"
+        "orientation: Component side up.\n"
+        "outline:\n  width: 1000\n  height: 620\n"
+        "features:\n"
+        "  - kind: capacitor\n    designator: C1\n    x: 0.5\n    y: 0.5\n",
+        encoding="utf-8",
+    )
+
+    dataset, issues = load_dataset(tmp_path)
+
+    assert [issue.code for issue in issues] == []
+    assert set(dataset.boards) == {"demo-mainboard"}
+    assert set(dataset.layouts) == {"demo-layout-mainboard"}
+    assert dataset.layouts["demo-layout-mainboard"].board == "demo-mainboard"
