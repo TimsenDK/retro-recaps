@@ -1,4 +1,4 @@
-"""Machine photographs and the credit each one legally requires.
+"""Machine pictures and the credit each one legally requires.
 
 The photographs are not ours. They come from Wikimedia Commons under CC0,
 CC BY, CC BY-SA or a public-domain dedication, and the BY and BY-SA files
@@ -82,6 +82,8 @@ class PhotoView:
     licence: str
     licence_url: str
     source_url: str
+    generated: bool = False
+    """Whether the picture was generated rather than photographed."""
     width: int | None = None
     height: int | None = None
     card_width: int | None = None
@@ -91,10 +93,16 @@ class PhotoView:
     def alt(self) -> str:
         """Alt text describing the subject, not the file.
 
+        A generated picture says so here as well as in the caption: a reader
+        on a screen reader must not be told it is looking at a photograph of a
+        machine nobody photographed.
+
         The credit is rendered as visible text beside the image, so it does
         not belong here as well — a screen reader would read the machine name
         twice and the photographer twice.
         """
+        if self.generated:
+            return f"{self.machine_name}, a generated illustration of the machine."
         return f"{self.machine_name}, photographed from the front."
 
     @property
@@ -157,6 +165,7 @@ def load_photos(
             licence=str(licence),
             licence_url=str(entry.get("licence_url") or ""),
             source_url=str(entry.get("source_url") or ""),
+            generated=bool(entry.get("generated")),
             width=full_size[0] if full_size else None,
             height=full_size[1] if full_size else None,
             card_width=card_size[0] if card_size else None,

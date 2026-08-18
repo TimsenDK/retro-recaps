@@ -1,15 +1,33 @@
-{# A machine photograph in its bezel, with the credit its licence requires.
+{# A machine picture in its bezel.
 
    `photo` is a PhotoView or none, `machine` is the MachineView it belongs to,
-   and `card` selects the small variant. The credit is rendered here and
-   nowhere else, so a photograph cannot reach a page without it: CC BY and
-   CC BY-SA oblige us to name the photographer wherever the image is shown.
+   and `card` selects the smaller variant. `link` is an optional target: on the
+   index the whole picture is a second way into the machine's page, because a
+   picture in a card reads as clickable whether or not it is one. The card's
+   own text link stays where it is - this one is deliberately not hidden from
+   assistive technology either, since its alt text is what says a picture is a
+   generated illustration.
+
+   Nothing is rendered under the picture — no credit, and no label on the
+   generated ones. What a picture is stays in its alt text and on the credits
+   page, which is where the licence obligation is met too.
+
+   No credit is rendered here. The pictures are cartoon-filtered crops of
+   freely licensed Commons photographs, and CC BY and CC BY-SA still oblige us
+   to name the photographer — but they let us do it in a manner reasonable to
+   the medium, which here is one credits page carrying every photographer,
+   licence, source page and the note that the images were altered. It is
+   linked from the footer of every page, and `image_credits.html` is generated
+   from the same record this view is, so a picture cannot reach the site
+   without its entry appearing there.
 
    `width`/`height` come off the file itself, so the box is reserved before
-   the image lands and nothing below it moves. #}
+   the image lands and nothing below it moves. Every picture is processed to
+   one shape, so those boxes are also one shape. #}
 <figure class="shot">
     {% if photo %}
     <div class="bezel">
+        {% if link %}<a class="shotlink" href="{{ base }}{{ link }}">{% endif %}
         <img src="{{ base }}assets/{{ photo.card_url if card else photo.url }}"
              alt="{{ photo.alt }}"
              loading="lazy" decoding="async"
@@ -18,13 +36,8 @@
              {% else %}
              {% if photo.width %}width="{{ photo.width }}" height="{{ photo.height }}"{% endif %}
              {% endif %}>
+        {% if link %}</a>{% endif %}
     </div>
-    <figcaption class="credit">
-        Photo
-        {% if photo.source_url %}<a href="{{ photo.source_url }}">{{ photo.author }}</a>{% else %}{{ photo.author }}{% endif %}
-        ·
-        {% if photo.licence_url %}<a href="{{ photo.licence_url }}">{{ photo.licence }}</a>{% else %}{{ photo.licence }}{% endif %}
-    </figcaption>
     {% else %}
     <div class="bezel">
         <div class="missing">
@@ -34,9 +47,5 @@
             <span>No freely licensed photograph of the {{ machine.name }} exists yet.</span>
         </div>
     </div>
-    <figcaption class="credit">
-        A photograph of your own, released under a free licence, would fill
-        this frame.
-    </figcaption>
     {% endif %}
 </figure>
