@@ -1,0 +1,34 @@
+id: commodore-1571-analog
+machine: commodore-1571
+board: analog
+mains: false
+revisions:
+  - alps
+  - newtronics
+verification: unverified
+sources:
+  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/02.html
+    note: >-
+      Commodore 1571 service manual, system parts list. Names both drive
+      assemblies - Newtronics C 252083-01 and Alps C 252092-01 - each with
+      its own front bezel, so a 1571 has one mechanism or the other.
+  - url: https://archive.org/stream/sams-computerfacts-cd12-1571/SamsComputerfacts_Cd12_1571_djvu.txt
+    note: >-
+      Sams Computerfacts CD12 (1987). Its motor test sends the reader to
+      troubleshoot the Motor Control Board when the spindle will not turn
+      with pin 3 of CN7 grounded, and puts the spindle speed trimmer VR1 on
+      it. Sams gives location guides for the main board and the supply only,
+      and none for this PCB.
+notes:
+  - >-
+    Open: the mechanism carries a separate motor speed control PCB, and no
+    capacitor list for it has been found for either the Alps or the
+    Newtronics build. The positions are not recorded here because no source
+    gives them.
+  - >-
+    The 1541's motor control lists must not be applied to this board. They
+    describe the boards fitted to that drive's mechanisms, and whether the
+    1571's are the same assemblies is exactly what is unestablished.
+  - >-
+    The spindle speed trimmer VR1 is on this PCB, not on the logic board.
+capacitors: []
