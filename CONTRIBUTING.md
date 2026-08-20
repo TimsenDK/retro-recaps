@@ -15,8 +15,9 @@ exists to replace. A pull request that changes values without a source will be
 asked for one before it is merged.
 
 If your source disagrees with what is already recorded, say so in the pull
-request and cite both. Conflicting sources are useful information, and the board
-file can record the disagreement in a note.
+request and cite both. Conflicting sources are useful information. The
+disagreement belongs in the pull request, not in the board file: a note states
+a fact about the hardware, never where a value came from.
 
 ## What to work on
 
@@ -176,14 +177,16 @@ widening a range to fit a position.
 
 ### Sources
 
-A board that lists any capacitor position needs at least one source; that is an
-error, not a warning. A positionless `unverified` stub may cite nothing — it
-asserts nothing, so it owes nothing.
+The board files carry no citations. A source is still required — it goes in the
+pull request, where it is read, weighed and recorded in the maintainers'
+research notes, which are kept outside this repository. What ships here is the
+value and how far it has been confirmed.
 
 A `verified` badge wants two independently retrieved sources covering that
-exact assembly. One source and a `verified` badge is a warning: nothing
-corroborates it if that source turns out to be wrong or unreadable. A position
-may be marked less certain than its board, never more.
+exact assembly, cited in the pull request that sets it. One source supports
+`derived` at best: nothing corroborates it if that source turns out to be wrong
+or unreadable. A position may be marked less certain than its board, never
+more.
 
 ### Referring to another file from a note
 
@@ -227,8 +230,7 @@ board layout drawing; `approximate` means they were read off a photograph.
 Declaring `approximate` is required, not optional — the map renders it as a
 dashed ring and says so on the page, and a photograph-derived position
 claiming `measured` misleads exactly the reader it's supposed to help. A
-layout also carries its own `verification` and `sources`, independent of the
-board's.
+layout also carries its own `verification`, independent of the board's.
 
 A correction to a position is as welcome as a correction to a value, and
 needs the same evidence.

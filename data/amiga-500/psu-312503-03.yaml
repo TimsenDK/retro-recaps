@@ -8,18 +8,6 @@ revisions:
   - "312503-03"
   - "312503-02"
 verification: derived
-sources:
-  - url: http://blog.worldofjani.com/?p=5695
-    note: >-
-      Teardown of a run of Amiga bricks. Publishes four different capacitor
-      complements under the number 312503-03, one of them with reference
-      designators; a commenter reports a 312503-02 identical to one of them
-      except at C1 and C2.
-  - url: https://www.ianstedman.co.uk/amiga-power-supply-guide/
-    note: >-
-      Compares A500 supply part numbers against their measured output
-      ratings and concludes the part number does not predict what the unit
-      is.
 notes:
   - >-
     Identify the brick by the PCB inside it, not by the number on the case.

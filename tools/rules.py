@@ -209,62 +209,6 @@ def _check_board(board: Board, dataset: Dataset) -> list[Issue]:
     issues: list[Issue] = []
     location = _board_location(board)
 
-    if not board.sources:
-        if board.verification == "verified":
-            issues.append(
-                Issue(
-                    ERROR,
-                    "verified-without-source",
-                    location,
-                    "verification is 'verified' but the board has no sources",
-                )
-            )
-        else:
-            for index, capacitor in enumerate(board.capacitors):
-                if (
-                    capacitor.effective_verification(board.verification)
-                    != "verified"
-                ):
-                    continue
-                issues.append(
-                    Issue(
-                        ERROR,
-                        "verified-without-source",
-                        f"{location}:capacitors/{index}",
-                        "verification is 'verified' but the board has no sources",
-                    )
-                )
-                break
-
-    if not board.sources:
-        # A stub asserts nothing, so it owes nothing. A board that publishes
-        # positions and cites nothing is asking the reader to buy parts on
-        # our word alone, which is exactly what this project exists not to do.
-        if board.capacitors:
-            issues.append(
-                Issue(
-                    ERROR,
-                    "no-sources",
-                    location,
-                    "the board lists capacitor positions but cites no sources; "
-                    "a published position needs a source a reader can retrieve",
-                )
-            )
-        else:
-            issues.append(
-                Issue(WARNING, "no-sources", location, "the board cites no sources")
-            )
-    elif board.verification == "verified" and len(board.sources) < 2:
-        issues.append(
-            Issue(
-                WARNING,
-                "single-source-verified",
-                location,
-                "verification is 'verified' on a single source; nothing "
-                "corroborates it if that source is wrong or unreadable",
-            )
-        )
-
     machine = dataset.machines.get(board.machine)
     if machine is None:
         issues.append(

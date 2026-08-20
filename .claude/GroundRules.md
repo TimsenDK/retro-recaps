@@ -70,6 +70,10 @@ Always ask first for operations that are destructive or irreversible:
   everyone but us, and the directory is not here any more.
 - Raw source material lives in `<private>/docs/input/` and is read-only input,
   not project output.
+- **Citations live in `<private>` too**, one file per board under
+  `docs/sources/`, since 2026-08-19. No board file, page, schema or validator
+  rule in this repository refers to a source; a `verified` badge rests on work
+  recorded privately, not on a link the page can show.
 - **Picture sources and the scripts that process them live in `<private>` too**
   (`photo-cache/`, `imagetools/`), since 2026-08-18. Only the finished JPEGs
   under `site/assets/img/machines/` are here. Regenerating a machine picture
@@ -82,7 +86,7 @@ Always ask first for operations that are destructive or irreversible:
   what is true. A value resting only on them is `derived` at best, never
   `verified`, however confident the handover sounds — and where it disagrees
   with a source that was actually retrieved, the retrieved source wins. The
-  handover is never cited in `sources:` and never named in a note. Establishing
+  handover is never cited as a source and never named in a note. Establishing
   these values independently is the reason this repository exists.
 - Stack: YAML data validated by JSON Schema, Python tooling under `tools/`,
   Jinja2 to static HTML, GitHub Pages. Data under `data/` and `reference/`.
@@ -96,8 +100,10 @@ describes, that a value is unconfirmed. Present tense, about the hardware.
 
 Three things never go in a note:
 
-- **Citations.** The `sources:` block is where a source belongs. A note must not
-  name a site, quote one, or say which source a value came from.
+- **Citations.** This repository carries none. Citations live in the private
+  repository, one file per board under `<private>/docs/sources/`; they were
+  moved out of the board files on 2026-08-19. A note must not name a site,
+  quote one, or say which source a value came from.
 - **Provenance narrative.** How a value was arrived at, which source disagreed
   with which, what the spreadsheet said — that is research history, not a fact
   about the board.
@@ -108,8 +114,9 @@ Three things never go in a note:
 
 All three belong in `<private>/docs/NOTES.md` — provenance, disagreements
 between sources, and corrections — with the exact retrieved URLs in
-`<private>/docs/SOURCES.md`. Both are private, so they can be as candid as they
-need to be.
+`<private>/docs/sources/<machine>/<board>.md`, indexed narratively by
+`<private>/docs/SOURCES.md`. All of it is private, so it can be as candid as it
+needs to be.
 
 The test: would this sentence still be worth reading to someone holding the
 board, who has never heard of this project? If not, it goes in the private

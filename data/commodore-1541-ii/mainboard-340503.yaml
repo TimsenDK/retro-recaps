@@ -5,21 +5,6 @@ mains: false
 revisions:
   - "340503"
 verification: verified
-sources:
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1541-II_Service_Manual_Addendum_314862-01_(1988_Mar).pdf
-    note: >-
-      Commodore 1541/1541-II Service Manual Addendum, March 1988
-      (PN 314862-01). Its component parts list for assembly 340503 gives
-      C3, C22 and C23 as "ELEC 25V 10 U", Commodore part 900100-01; every
-      other capacitor on the board is a ceramic or a trimmer.
-  - url: https://wiki.console5.com/wiki/Commodore_1541
-    note: >-
-      1541-II section, listing C3, C22 and C23 at 10 uF 25 V and noting that
-      some boards carry 50 V parts in those positions.
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Independent list labelled "1541-ii (Assm: 340503)" on that page,
-      giving 3x 10 uF 25 V radial for the mainboard.
 notes:
   - >-
     These three positions are the only electrolytics on the board. C1, C2,

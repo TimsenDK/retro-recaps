@@ -164,10 +164,25 @@ def test_a_psu_page_does_not_print_a_battery_panel(tmp_path: Path) -> None:
     assert 'class="battery"' not in page
 
 
-def test_the_machine_page_still_prints_its_battery(tmp_path: Path) -> None:
+def test_machine_notes_come_before_the_board_list(tmp_path: Path) -> None:
+    """The notes say which board file applies, so they precede the list.
+
+    A reader picking between five C64 assemblies needs the note that tells
+    them apart before the links, not underneath them.
+    """
     out = build_fixture(tmp_path)
     page = (out / "amiga-500" / "index.html").read_text(encoding="utf-8")
-    assert 'class="battery"' in page
+    assert "Notes on this machine" in page
+    assert page.index("Notes on this machine") < page.index(
+        "Boards, in the order to recap them"
+    )
+
+
+def test_the_machine_page_prints_no_battery_panel(tmp_path: Path) -> None:
+    """The panel belongs to the board that holds the cell, not to the machine."""
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "index.html").read_text(encoding="utf-8")
+    assert 'class="battery"' not in page
 
 
 # --------------------------------------------------------------------------

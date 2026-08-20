@@ -5,16 +5,6 @@ revisions:
   - 820-0260
 verification: verified
 battery: true
-sources:
-  - url: https://wiki.console5.com/wiki/Macintosh_SE
-    note: >-
-      Designator-level table headed "SE/30 Logic Board: 820-0260", giving the
-      full designator-to-value mapping for all thirteen positions.
-  - url: https://www.oldsilicon.com/personal-computers/mac-se30/
-    note: >-
-      Independent teardown of the same board. Confirms the complement -
-      ten 47 uF/16 V, one 1 uF/50 V, one 220 uF/16 V, one 470 uF/16 V - and
-      the +5 V, +/-12 V and sound rails the positions sit on.
 notes:
   - >-
     The 47 uF and 1 uF positions are surface mount. This project prefers

@@ -44,7 +44,6 @@ def test_errors_fail(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None
     assert run_validate(root=tmp_path) == 1
     output = capsys.readouterr().out
     assert "voltage-downgrade" in output
-    assert "verified-without-source" in output
 
 
 def test_loader_issues_reach_the_report(

@@ -30,7 +30,7 @@ from tools.site.images import PhotoView, load_photos
 
 SITE_NAME = "Retro Recaps"
 SITE_TAGLINE = (
-    "Capacitor replacement lists for retro computers, with sources and an "
+    "Capacitor replacement lists for retro computers, with an "
     "honest verification status."
 )
 REPO_URL = "https://github.com/TimsenDK/retro-recaps"

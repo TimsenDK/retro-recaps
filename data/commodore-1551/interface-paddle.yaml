@@ -4,21 +4,6 @@ board: paddle
 revisions:
   - "250453"
 verification: unverified
-sources:
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/index.html
-    note: >-
-      Archive index describing paddle-251925 as the interface paddle that
-      plugs into the cartridge port, with a PLA address decoder and a 6523
-      TPI.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/parts.txt
-    note: >-
-      Commodore 1551 parts list composed by William Levak. For the interface
-      cartridge it gives U2 = 6523 TPI and U1 = 82S100 PLA (251641-03), and
-      lists no capacitors.
-  - url: https://myoldcomputer.nl/technical-info/mainboards/drive-mainboards/board-250449250453-1551/
-    note: >-
-      Board register entry giving 250453 as the interface paddle assembly and
-      251925 as its schematic.
 notes:
   - >-
     The interface paddle is the small PCB on the end of the 1551's cable that

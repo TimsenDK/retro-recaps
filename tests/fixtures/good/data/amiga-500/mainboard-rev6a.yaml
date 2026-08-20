@@ -4,9 +4,6 @@ board: mainboard
 revisions:
   - 6A
 verification: verified
-sources:
-  - url: https://example.invalid/a500-rev6a
-    note: Full list with reference designators.
 notes:
   - C401 and C402 must not exceed 24 mm in height because of the shield.
 capacitors:

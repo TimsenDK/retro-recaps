@@ -6,13 +6,6 @@ x2_filter: unknown
 revisions:
   - DSP-128DCR
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_128
-    note: >-
-      Designator-level list headed "Power Supply: DVE DSP-128DCR": C5 220uF
-      250v, C11 1000uF 35v, C13/C14/C15 3300uF 10v, C16/C17 1uF 50v,
-      C19/C20 220uF 25v, C23 0.47uF 50v. Records no mains-side film
-      capacitor either way.
 notes:
   - >-
     This is the internal supply of the metal-case C128DCR, a DVE

@@ -12,15 +12,15 @@ and is honest about which entries nobody has verified yet.
 ## Status
 
 **Work in progress. Do not order parts from this dataset without checking the
-sources yourself.**
+board in front of you.**
 
 The schema, the validator and the site generator are in place, and every board
-file cites sources you can retrieve. But the dataset is young, it is still
+file records how far its list has been confirmed. But the dataset is young, it is still
 changing week to week, and a recent audit of it found real errors — including a
 mains-side rating that was wrong on a board marked as verified. Everything it
 found has been acted on; the point is that a dataset this new will have more.
 
-Treat a `verified` badge as "two independent sources agreed", not as "someone
+Treat a `verified` badge as "two independent accounts agreed", not as "someone
 held this board". Where the two differ, the board in your hands wins. Positions
 marked `derived` or `unverified` say so for a reason, and open questions are
 recorded rather than papered over.
@@ -52,8 +52,8 @@ board and analog board are separate files, because they are separate jobs and
 because the same reference designators recur across them with different values.
 
 Every board carries a verification status — `verified`, `derived` or
-`unverified` — and its sources. A list nobody has confirmed says so, rather than
-looking like the ones that have been.
+`unverified`. A list nobody has confirmed says so, rather than looking like the
+ones that have been.
 
 Recommended parts live in `reference/`, keyed by manufacturer part number, so a
 value used on a dozen boards is described once.
@@ -74,7 +74,7 @@ value used on a dozen boards is described once.
 Some boards carry a map: a picture of the board showing where each capacitor
 sits, for finding a position that a designator alone does not make obvious.
 A map never carries a value — capacitance, voltage, quantity or part number
-stay in the capacitor list, which is the one place with sources behind it.
+stay in the capacitor list, which is the one place that establishes them.
 Positions come with their own precision, marked in words on the page:
 
 - **measured** — read off a board layout drawing.

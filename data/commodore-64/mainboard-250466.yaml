@@ -4,29 +4,6 @@ board: mainboard
 revisions:
   - "250466"
 verification: verified
-sources:
-  - url: https://archive.org/stream/C64-C64C_Service_Manual_1992-03_Commodore/C64-C64C_Service_Manual_1992-03_Commodore_djvu.txt
-    note: >-
-      Commodore C64/C64C service manual, parts list for PCB assembly
-      #250466-01, identified there as version C64-B3.
-  - url: https://support.retrorewind.ca/en/blog/c64-assembly-250466
-    note: >-
-      Kit list with designators for ASSY 250466, cross-checked against the
-      service manual above.
-  - url: https://breadbox64.com/c64-hardware/commodore-64c/assy-250466/
-    note: >-
-      Independent confirmation that ASSY 250466 is the C64-B3 shortboard,
-      and of C13's alternate designator C210.
-  - url: https://wiki.console5.com/wiki/Commodore_64
-    note: >-
-      Independent designator-level list headed "ASSY 250466": C13 10uF 25V,
-      C19 2200uF 16V, C24 22uF 25V, C88 1000uF 25V, C90 470uF 25V, C91
-      100uF 16V, C200 2.2uF 50V. Lists no C15.
-  - url: https://www.retroleum.co.uk/c64-capacitors
-    note: >-
-      Independent kit for "PCB Assy 250466" with the same seven electrolytic
-      positions, giving C90 as "470uF 16V/25V axial" and C13 with its
-      alternate designator C210.
 notes:
   - >-
     This is the C64-B3 shortboard, built around two multiplexed DRAM chips
@@ -59,7 +36,7 @@ capacitors:
     voltage_v: 16
     original_voltage_v: 16
     quantity: 1
-    series: kemet-t491
+    series: kemet-t350
     verification: derived
     note: >-
       Value and rating come from the factory parts list; no independent

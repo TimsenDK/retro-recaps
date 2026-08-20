@@ -5,14 +5,6 @@ mains: false
 revisions:
   - 630-0147
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Mac_Analog_Board:_630-0147
-    note: Full designator-level table for the 630-0147 analog board, twelve positions.
-  - url: https://console5.com/store/macintosh-se-se-30-analog-pcb-cap-kit-630-0147-c.html
-    note: >-
-      Kit listing for the same assembly, covering both the SE and the SE/30,
-      and describing C11 and C18 as axial and C15 as a 3.9 uF non-polar
-      low-ESR position.
 notes:
   - >-
     Mains does not reach this board. It runs from the low-voltage rails of

@@ -7,13 +7,6 @@ revisions:
   - 8.x
   - 9.x
 verification: verified
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
-    note: Daughterboard section of the mainboard capacitor list.
-  - url: https://forum.amiga.org/index.php?topic=64983.0
-    note: >-
-      Independent physical reading of "A3000 DAUGHTER BD REV 7/01", quoting
-      original manufacturer part markings per designator.
 notes:
   - Through-hole (radial and axial), not SMD.
   - >-

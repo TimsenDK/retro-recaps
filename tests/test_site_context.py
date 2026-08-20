@@ -332,19 +332,12 @@ def test_status_finds_positions_without_designators(site: SiteContext) -> None:
     assert "1 position" in questions[0].detail
 
 
-def test_status_finds_boards_without_sources(site: SiteContext) -> None:
-    urls = {q.url for q in site.status.boards_without_sources}
-    assert "amiga-500/mainboard-rev6a.html" not in urls
-    assert "amiga-500/psu.html" in urls
-
-
 def test_status_total_is_every_open_question(site: SiteContext) -> None:
     status = site.status
     assert status.total == (
         len(status.empty_boards)
         + len(status.unverified_boards)
         + len(status.derived_boards)
-        + len(status.boards_without_sources)
         + len(status.positions_without_designators)
         + len(status.parts_without_offers)
     )
@@ -572,8 +565,14 @@ def test_an_analog_board_page_does_not_claim_the_battery(site: SiteContext) -> N
     assert board(site, "mac-se-analog").batteries == ()
 
 
-def test_the_machine_page_still_carries_the_battery(site: SiteContext) -> None:
-    assert [b.kind for b in machine(site, "amiga-500").batteries] == ["nicd"]
+def test_the_machine_page_does_not_carry_the_battery(site: SiteContext) -> None:
+    """The cell is on one revision, and only that board page may warn about it.
+
+    A machine-level panel warns every owner of every revision, including the
+    ones whose board has no cell — which is the warning the board pages were
+    made precise to avoid.
+    """
+    assert not hasattr(machine(site, "amiga-500"), "batteries")
 
 
 # --------------------------------------------------------------------------

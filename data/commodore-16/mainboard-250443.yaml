@@ -4,30 +4,6 @@ board: mainboard
 revisions:
   - "250443-01"
 verification: verified
-sources:
-  - url: https://hd.retrorewind.ca/commodore/c16/assy-250443-01
-    note: >-
-      Full designator/value/voltage list, 9 positions: C1 1uF 25V, C2 47uF
-      25V, C3/C4/C16/C18/C19/C31 10uF 25V (x6), C17 1uF 16V.
-  - url: http://blog.worldofjani.com/?p=6705
-    note: >-
-      Independent list; agrees on designators/values/quantities for
-      C3/C4/C16/C18/C19/C31 (10uF) but does not list a C1 position, and
-      gives C2 as 47uF 16V and C17 as 1uF 50V.
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/C16_Service_Manual_314001-03_(1984_Oct).pdf
-    note: >-
-      Commodore factory parts list for C-16 PCB Assembly #250443-01 (service
-      manual 314001-03, Oct. 1984): C1 Elect 1uF 25V, C2 Elect 47uF 25V, C3
-      Elect 10uF 25V, C4 Elect 10uF 25V, C16 Elect 10uF 25V, C17 Elect 1uF
-      16V, C18 Elect 10uF 25V, C19 Elect 10uF 25V, C31 Elect 10uF 25V.
-      Confirms retrorewind's designators and voltages exactly; worldofjani's
-      C2 (16V) and C17 (50V) do not match this factory list.
-  - url: https://wiki.console5.com/wiki/Commodore_16
-    note: >-
-      Fourth designator-level list, headed "C16: 250443-01", matching the
-      factory list position for position including C2 at 25 V and C17 at
-      16 V. The same page carries a second table headed "C16: 251788" with
-      the same eight remaining positions and no C1.
 notes:
   - >-
     C1 is not populated on every board. Where it is fitted the board carries

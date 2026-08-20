@@ -7,16 +7,6 @@ from pathlib import Path
 
 
 @dataclass(frozen=True)
-class Source:
-    url: str
-    note: str | None = None
-
-    @classmethod
-    def from_dict(cls, document: dict) -> Source:
-        return cls(url=document["url"], note=document.get("note"))
-
-
-@dataclass(frozen=True)
 class Battery:
     kind: str
     action: str
@@ -94,7 +84,6 @@ class Board:
     x2_filter: str | None = None
     battery: bool | None = None
     external: bool = False
-    sources: tuple[Source, ...] = ()
     notes: tuple[str, ...] = ()
     path: Path | None = field(default=None, compare=False)
 
@@ -112,9 +101,6 @@ class Board:
             external=bool(document.get("external", False)),
             capacitors=tuple(
                 Capacitor.from_dict(item) for item in document["capacitors"]
-            ),
-            sources=tuple(
-                Source.from_dict(item) for item in document.get("sources", ())
             ),
             notes=tuple(document.get("notes", ())),
             path=path,
@@ -167,7 +153,6 @@ class Layout:
     width: float
     height: float
     features: tuple[LayoutFeature, ...]
-    sources: tuple[Source, ...] = ()
     notes: tuple[str, ...] = ()
     path: Path | None = field(default=None, compare=False)
 
@@ -192,9 +177,6 @@ class Layout:
                     approximate=bool(feature.get("approximate", False)),
                 )
                 for feature in document.get("features", ())
-            ),
-            sources=tuple(
-                Source.from_dict(item) for item in document.get("sources", ())
             ),
             notes=tuple(document.get("notes", ())),
             path=path,

@@ -4,23 +4,6 @@ board: mainboard
 revisions:
   - 310379 rev 6
 verification: derived
-sources:
-  - url: https://hd.retrorewind.ca/commodore/c128/assy-310379
-    note: "States: \"Mainboard is used in the C128 and C128D (Not the C128DCR).\""
-  - url: https://blog.worldofjani.com/?p=1082
-    note: >-
-      Independent confirmation: "The first version of c128d had the same
-      motherboard as the c128"; the C128DCR later used a different board.
-  - url: https://support.retrorewind.ca/en/blog/c128-assembly-310379
-    note: Designator-level list for ASSY 310379, rev 6 and rev 7.
-  - url: https://wiki.console5.com/wiki/Commodore_128
-    note: >-
-      Independent designator-level list headed "310379 Rev. 6", matching all
-      15 positions and their factory voltages.
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=59823
-    note: >-
-      Forum thread "Electrolytic caps in the 64/128" giving the same
-      per-designator values, including C101 at 10 uF 35 V.
 notes:
   - >-
     The C128D uses the same ASSY 310379 mainboard as the flat C128, so this

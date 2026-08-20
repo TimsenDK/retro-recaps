@@ -4,35 +4,6 @@ board: mainboard
 revisions:
   - "310163-01"
 verification: verified
-sources:
-  - url: https://support.retrorewind.ca/en/blog/plus-4-assembly-310163-01
-    note: >-
-      Full designator/value/voltage list, 10 positions: C1 100uF 16V, C7
-      2200uF 16V axial, C8/C17/C18/C20/C22/C27/C30 10uF 16V (x7), C23 1uF
-      16V.
-  - url: https://blog.worldofjani.com/?p=7015
-    note: >-
-      Independent list; agrees on all 10 designators and quantities, and on
-      C7 (2200uF 16V axial), but rates the other nine positions at 50V
-      instead of 16V.
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/manual/p4-05.gif
-    note: >-
-      Commodore factory parts list for Plus/4 PCB Assembly #310163-01, page
-      1: C7 Elect 2200uF 16V, C8 Elect 10uF 16V. Also lists C1 as Elect
-      0.1uF 25V, which does not match either retrieved capacitor-kit
-      listing's 100uF figure for that designator.
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/plus4/manual/p4-06.gif
-    note: >-
-      Same factory parts list, page 2: C17/C18 Elect 10uF 16V, C20 Elect
-      10uF 16V, C22 Elect 10uF 16V, C23 Elect 1uF 16V, C27 Elect 10uF 16V,
-      C30 Elect 10uF 16V. Confirms retrorewind's 16V for all six of these
-      designators; worldofjani's 50V does not match this factory list.
-  - url: https://wiki.console5.com/wiki/Commodore_Plus/4
-    note: >-
-      Independent designator-level list for 310163-01, agreeing with
-      retrorewind on all ten positions at 16 V. Annotates C1 "Beware of
-      service manual misprint (0.1uF)" and C17/C18 "Beware of service manual
-      misprint (listed as ceramic)".
 notes:
   - >-
     C1 is a 100 uF 16 V electrolytic. The factory parts list prints 0.1 uF

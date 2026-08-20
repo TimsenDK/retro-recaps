@@ -7,17 +7,6 @@ x2_filter: unknown
 revisions:
   - "312551-01"
 verification: derived
-sources:
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1581/powersupply.gif
-    note: >-
-      Reverse-engineered schematic "commodore 1541-II/1571-II/1581 POWER
-      SUPPLY", P/N 312551-01, drawn by William Levak from the physical unit
-      (Zimmers/funet CBM archive). Retrieved and read directly for component
-      values and designators.
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=71491
-    note: >-
-      Repair thread reporting these bricks as resin-potted and giving no
-      non-destructive way to open one.
 notes:
   - >-
     The list describes the 120 VAC/60 Hz (US/Japan) input version, which

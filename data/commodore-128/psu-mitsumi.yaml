@@ -7,17 +7,6 @@ x2_filter: unknown
 revisions:
   - Mitsumi
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_128
-    note: >-
-      Designator-level list under the heading "Power Supply: Mitsumi": C3
-      3300uF 25v, C4 3300uF 25v, C7 4700uF 10v ("2200uF 10v on some - larger
-      value works without issue"), C9 220uF 10v, C10 10uF 50v.
-  - url: https://hobbytronics.home.blog/2019/02/23/commodore-128-power-supply-recap/
-    note: >-
-      Recap of a Mitsumi-built C128 brick, internal board marked 252449-01,
-      external label 310416-05. Reports two electrolytics in that unit and
-      gives no values.
 notes:
   - >-
     This is the Mitsumi-built C128 external brick. Three externally similar

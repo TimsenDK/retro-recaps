@@ -5,9 +5,6 @@ revisions:
   - 6A
 verification: verified
 battery: true
-sources:
-  - url: https://example.invalid/a500-rev6a
-    note: Full list with reference designators.
 notes:
   - The machine's supply is a separate board, amiga-500/psu.yaml.
 capacitors:

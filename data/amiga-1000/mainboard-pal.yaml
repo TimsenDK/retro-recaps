@@ -4,11 +4,6 @@ board: mainboard
 revisions:
   - PAL
 verification: derived
-sources:
-  - url: https://amiga1000parceiro.blogspot.com/
-    note: Only source found describing the PAL variant. States the PAL board takes the NTSC mainboard-plus-WCS kit values, plus one extra 220 uF, because the WCS is integrated onto the mainboard. Does not give reference designators.
-  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
-    note: Baseline NTSC mainboard and WCS daughterboard designators and values that the PAL variant is described as extending.
 notes:
   - >-
     PAL boards integrate the WCS onto the mainboard, so this list folds in

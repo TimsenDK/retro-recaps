@@ -5,24 +5,6 @@ revisions:
   - 6A
   - "7"
 verification: verified
-sources:
-  - url: https://archive.org/stream/system-schematics-a-500-revisions-5-6a-7/System%20Schematics%20A500%20Revisions%205%2C%206A%2C%207_djvu.txt
-    note: >-
-      Commodore system schematics and parts list, "PCB ASSEMBLY #312510,
-      AMIGA A500, REV6A/7" - one list covering both revisions, with the
-      factory voltage ratings.
-  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
-    note: Rev 6/6A capacitor list with reference designators.
-  - url: https://shred.zone/en/retro/amiga-500-restauration-part-2/
-    note: >-
-      Independent rev 6A restoration write-up. Matches designators and
-      quantities, confirms radial mounting with 5 mm lead spacing, and
-      independently states the 24 mm height limit on C401/C402.
-  - url: https://forum.amiga.org/index.php?topic=64983.0
-    note: >-
-      Forum transcription of the Commodore A500/A3000 service manuals,
-      giving original (pre-recap) voltages and package sizes for rev 6A
-      positions, e.g. C401/C402 at 3300 uF 10 V, 24x13 mm.
 notes:
   - >-
     Rev 7 carries the same capacitor complement as rev 6A. Commodore gives

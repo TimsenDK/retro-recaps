@@ -18,7 +18,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Literal
 
-from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series, Source
+from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series
 from tools.site.layout import LayoutView, layout_view
 
 VERIFICATION_ORDER = ("verified", "derived", "unverified")
@@ -286,11 +286,11 @@ _VERIFICATION_VIEWS = {
         status="verified",
         label="Verified",
         tone="verified",
-        headline="Checked against a cited source for this board revision.",
+        headline="Checked against two independent accounts of this board revision.",
         guidance=(
-            "Every position below comes from a source listed at the foot of "
-            "this page. Still confirm polarity and physical fit against the "
-            "board in front of you before you order."
+            "Every position below was checked against two independent "
+            "accounts of this board revision. Still confirm polarity and "
+            "physical fit against the board in front of you before you order."
         ),
     ),
     "derived": VerificationView(
@@ -419,8 +419,8 @@ class Coverage:
                 "board's own badge before you order."
             )
         return (
-            "Every board here was read off a source cited on its own page. "
-            "Still check polarity and fit against your board."
+            "Every board here has been confirmed against this exact "
+            "revision. Still check polarity and fit against your board."
         )
 
     @property
@@ -795,7 +795,6 @@ class BoardView:
     is_empty: bool
     open_question: str | None
     hazards: tuple[Hazard, ...]
-    sources: tuple[Source, ...]
     notes: tuple[str, ...]
     linked_notes: tuple[NoteView, ...]
     batteries: tuple
@@ -881,7 +880,6 @@ def board_view(
         is_empty=not board.capacitors,
         open_question=EMPTY_LIST_QUESTION if not board.capacitors else None,
         hazards=hazards_for(board, machine),
-        sources=board.sources,
         notes=board.notes,
         linked_notes=note_views(board.notes, targets),
         batteries=(
@@ -907,7 +905,6 @@ class MachineView:
     aliases: tuple[str, ...]
     notes: tuple[str, ...]
     linked_notes: tuple[NoteView, ...]
-    batteries: tuple
     url: str
     boards: tuple[BoardView, ...]
     coverage: Coverage
@@ -986,7 +983,6 @@ def machine_view(
         aliases=machine.aliases,
         notes=machine.notes,
         linked_notes=note_views(machine.notes, targets),
-        batteries=machine.batteries,
         url=f"{machine.id}/index.html",
         boards=views,
         coverage=coverage_for(boards),
@@ -1037,7 +1033,6 @@ class StatusView:
     empty_boards: tuple[OpenQuestion, ...] = ()
     unverified_boards: tuple[OpenQuestion, ...] = ()
     derived_boards: tuple[OpenQuestion, ...] = ()
-    boards_without_sources: tuple[OpenQuestion, ...] = ()
     positions_without_designators: tuple[OpenQuestion, ...] = ()
     parts_without_offers: tuple[OpenQuestion, ...] = ()
 
@@ -1049,7 +1044,6 @@ class StatusView:
                 self.empty_boards,
                 self.unverified_boards,
                 self.derived_boards,
-                self.boards_without_sources,
                 self.positions_without_designators,
                 self.parts_without_offers,
             )
@@ -1060,7 +1054,6 @@ def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusVi
     empty: list[OpenQuestion] = []
     unverified: list[OpenQuestion] = []
     derived: list[OpenQuestion] = []
-    sourceless: list[OpenQuestion] = []
     designatorless: list[OpenQuestion] = []
 
     for machine in machines:
@@ -1091,15 +1084,6 @@ def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusVi
                         "derived",
                         where,
                         "Not confirmed against this board revision.",
-                        board.url,
-                    )
-                )
-            if not board.sources:
-                sourceless.append(
-                    OpenQuestion(
-                        "no-sources",
-                        where,
-                        "The board cites no sources.",
                         board.url,
                     )
                 )
@@ -1139,7 +1123,6 @@ def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusVi
         empty_boards=tuple(empty),
         unverified_boards=tuple(unverified),
         derived_boards=tuple(derived),
-        boards_without_sources=tuple(sourceless),
         positions_without_designators=tuple(designatorless),
         parts_without_offers=partless,
     )

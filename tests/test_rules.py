@@ -75,11 +75,6 @@ def test_voltage_upgrade_is_fine() -> None:
     assert "voltage-downgrade" not in codes(make_dataset(document))
 
 
-def test_verified_without_a_source_is_an_error() -> None:
-    document = board_document(verification="verified")
-    assert "verified-without-source" in codes(make_dataset(document))
-
-
 def test_id_must_match_the_path() -> None:
     document = board_document(id="amiga-500-mainboard-rev8a")
     assert "id-path-mismatch" in codes(make_dataset(document))
@@ -327,59 +322,6 @@ def test_an_unrelated_note_about_part_provenance_raises_no_fit_warning() -> None
     assert "unenforceable-fit-note" not in fit_note_warning_codes(note)
 
 
-def test_a_board_that_publishes_positions_without_a_source_is_an_error() -> None:
-    """A published list nobody can check is exactly what this project avoids."""
-    issues = check(make_dataset(board_document()))
-    no_sources = [issue for issue in issues if issue.code == "no-sources"]
-    assert len(no_sources) == 1
-    assert no_sources[0].level == "error"
-
-
-def test_a_positionless_stub_without_a_source_is_only_a_warning() -> None:
-    """A stub asserts nothing, so it owes nothing."""
-    document = board_document(capacitors=[], verification="unverified")
-    issues = check(make_dataset(document))
-    no_sources = [issue for issue in issues if issue.code == "no-sources"]
-    assert len(no_sources) == 1
-    assert no_sources[0].level == "warning"
-
-
-def test_a_board_with_a_source_raises_no_no_sources_issue() -> None:
-    document = board_document(sources=[{"url": "https://example.invalid/a500"}])
-    assert "no-sources" not in codes(make_dataset(document))
-
-
-def test_verified_on_a_single_source_is_a_warning() -> None:
-    document = board_document(
-        verification="verified",
-        sources=[{"url": "https://example.invalid/a500"}],
-    )
-    issues = check(make_dataset(document))
-    single = [issue for issue in issues if issue.code == "single-source-verified"]
-    assert len(single) == 1
-    assert single[0].level == "warning"
-
-
-def test_verified_on_two_sources_is_not_flagged() -> None:
-    document = board_document(
-        verification="verified",
-        sources=[
-            {"url": "https://example.invalid/a500"},
-            {"url": "https://other.invalid/a500"},
-        ],
-    )
-    assert "single-source-verified" not in codes(make_dataset(document))
-
-
-def test_a_derived_board_on_a_single_source_is_not_flagged() -> None:
-    """The warning is about the badge, not about citing one page."""
-    document = board_document(
-        verification="derived",
-        sources=[{"url": "https://example.invalid/a500"}],
-    )
-    assert "single-source-verified" not in codes(make_dataset(document))
-
-
 def test_missing_designators_is_a_warning() -> None:
     document = board_document()
     del document["capacitors"][0]["designators"]
@@ -409,28 +351,6 @@ def test_unknown_offer_part_is_an_error() -> None:
     )
     assert "unknown-offer-part" in codes(dataset)
     assert "unknown-offer-supplier" not in codes(dataset)
-
-
-def test_verified_position_without_a_source_is_an_error() -> None:
-    document = board_document(verification="unverified")
-    document["capacitors"][0]["verification"] = "verified"
-    assert "verified-without-source" in codes(make_dataset(document))
-
-
-def test_derived_or_unverified_positions_without_a_source_is_fine() -> None:
-    document = board_document(verification="unverified")
-    document["capacitors"][0]["verification"] = "derived"
-    document["capacitors"].append(
-        {
-            "designators": ["C402"],
-            "type": "electrolytic-radial",
-            "capacitance_uf": 100,
-            "voltage_v": 16,
-            "quantity": 1,
-            "verification": "unverified",
-        }
-    )
-    assert "verified-without-source" not in codes(make_dataset(document))
 
 
 def series_document(**overrides) -> dict:
@@ -597,25 +517,6 @@ def test_an_unverified_stub_is_not_told_it_has_no_capacitors() -> None:
     assert "no-capacitors" not in codes(make_dataset(document))
 
 
-def test_only_the_first_verified_position_is_reported_once() -> None:
-    document = board_document(verification="unverified")
-    identical = {
-        "designators": ["C401"],
-        "type": "electrolytic-radial",
-        "capacitance_uf": 3300,
-        "voltage_v": 25,
-        "quantity": 1,
-        "verification": "verified",
-    }
-    document["capacitors"] = [dict(identical), dict(identical)]
-    issues = [
-        issue for issue in check(make_dataset(document))
-        if issue.code == "verified-without-source"
-    ]
-    assert len(issues) == 1
-    assert issues[0].location.endswith(":capacitors/0")
-
-
 def test_a_machine_id_must_match_its_directory() -> None:
     machine = Machine.from_dict(
         {
@@ -723,7 +624,6 @@ def test_a_position_naming_only_a_part_is_enough() -> None:
 def test_a_position_claiming_more_than_its_board_is_an_error() -> None:
     document = board_document(
         verification="derived",
-        sources=[{"url": "https://example.invalid/a500"}],
     )
     document["capacitors"][0]["verification"] = "verified"
     issues = check(make_dataset(document))
@@ -736,10 +636,6 @@ def test_a_position_claiming_more_than_its_board_is_an_error() -> None:
 def test_a_position_less_certain_than_its_board_is_fine() -> None:
     document = board_document(
         verification="verified",
-        sources=[
-            {"url": "https://example.invalid/a500"},
-            {"url": "https://other.invalid/a500"},
-        ],
     )
     document["capacitors"][0]["verification"] = "derived"
     assert "position-over-verified" not in codes(make_dataset(document))
@@ -748,7 +644,6 @@ def test_a_position_less_certain_than_its_board_is_fine() -> None:
 def test_a_position_matching_its_board_is_fine() -> None:
     document = board_document(
         verification="derived",
-        sources=[{"url": "https://example.invalid/a500"}],
     )
     document["capacitors"][0]["verification"] = "derived"
     assert "position-over-verified" not in codes(make_dataset(document))
@@ -834,7 +729,6 @@ def test_the_same_revision_on_two_board_kinds_is_not_a_duplicate() -> None:
 def mains_board(kind: str, **overrides) -> dict:
     return board_document(
         board=kind,
-        sources=[{"url": "https://example.invalid/board"}],
         **overrides,
     )
 

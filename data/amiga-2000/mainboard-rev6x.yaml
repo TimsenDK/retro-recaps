@@ -5,22 +5,6 @@ revisions:
   - 6.x
 verification: derived
 battery: true
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-2000-cap-list
-    note: >-
-      The only retrievable designator-level list for an Amiga 2000
-      mainboard: 32 electrolytics in five value groups. The page names no
-      motherboard revision.
-  - url: https://hd.retrorewind.ca/commodore/amiga/a2000caplist
-    note: >-
-      The same list on the same vendor's wiki. Not an independent
-      confirmation of it.
-  - url: https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Amiga-2000-repair-kit::989.html
-    note: >-
-      Kit vendor selling separate Rev 4 and Rev 6 kits. The declared Rev 6
-      contents match this complement exactly - 3x 4.7 uF, 7x 22 uF, 13x
-      47 uF, 5x 220 uF (one radial, four axial), 4x 470 uF - which is what
-      ties the complement to rev 6.x. No designators or voltages are given.
 notes:
   - >-
     A NiCd barrel battery for the real-time clock is soldered to this board.

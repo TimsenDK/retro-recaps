@@ -13,12 +13,6 @@ orientation: >-
 outline:
   width: 1445
   height: 1000
-sources:
-  - url: https://archive.org/details/system-schematics-a-500-revisions-5-6a-7
-    note: >-
-      Commodore, "System Schematics A500 Revisions 5, 6A, 7", PN-314981-02,
-      August 1989. Page 3, captioned "Board Layout PCB Assembly #312511-02,
-      Rev. 5", is the assembly drawing this map was read from.
 notes:
   - >-
     The drawing gives no scale or physical dimensions, so positions are

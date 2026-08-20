@@ -6,17 +6,6 @@ revisions:
   - chinon
   - ds-50f
 verification: unverified
-sources:
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/parts.txt
-    note: >-
-      Commodore drive parts list composed by William Levak. Names the Chinon
-      FZ-501M REV A, the Digital System DS-50F and the Safronic DS-50F
-      alongside the Newtronics D500 as 1541-II mechanisms.
-  - url: https://portcommodore.com/rcarlsen/cbm/1541/1541-II/1541-II.txt
-    note: >-
-      Repair notes describing the Chinon mechanism as direct drive with no
-      belt and no speed adjustment, against the Mitsumi/Newtronics one with a
-      spindle drive belt and motor speed control on its own PCB.
 notes:
   - >-
     Open: no capacitor list is published for the Chinon FZ-501M or the DS-50F

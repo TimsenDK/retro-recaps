@@ -8,17 +8,6 @@ revisions:
   - 9.x
 verification: verified
 battery: true
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-3000d-cap-list
-    note: >-
-      Full mainboard list with reference designators. Kit description
-      confirms Rubycon/Nichicon/Panasonic through-hole parts.
-  - url: https://forum.amiga.org/index.php?topic=64983.0
-    note: >-
-      Independent physical board reading of "A3000 COMMODORE B2 FAB 313312
-      REV 9/03", quoting original manufacturer part markings and package
-      sizes per designator. Confirms through-hole (radial), not SMD, and
-      gives original (pre-recap) voltage ratings.
 notes:
   - Through-hole (radial), not SMD.
   - >-

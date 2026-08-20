@@ -5,19 +5,6 @@ revisions:
   - "250469"
   - "252311"
 verification: derived
-sources:
-  - url: https://support.retrorewind.ca/en/blog/c64-assembly-250469
-    note: Kit list with designators for ASSY 250469.
-  - url: https://wiki.console5.com/wiki/Commodore_64
-    note: >-
-      Independent designator-level list headed "ASSY 250469 / 252311": C36
-      47uF 16V, C43 220uF 16V, C44 2.2uF 50V, C58 100uF 16V, C59 4.7uF 25V,
-      C63 1000uF 25V, C65 220uF 25V, C66 470uF 25V, C77 10uF 25V. No C19.
-  - url: https://www.retroleum.co.uk/c64-capacitors
-    note: >-
-      Two kits for "PCB Assy 250469-01", one with 2200 uF at C63 and one for
-      "250469-01, PCB 252311 Rev A/B/3/4" with 1000 uF at C63. Both give
-      C66 as 470 uF 35 V and neither includes a C19.
 notes:
   - >-
     This is the C64-E shortboard. It is the board the C64C was built on, and

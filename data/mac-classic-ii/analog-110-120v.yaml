@@ -6,16 +6,6 @@ x2_filter: unknown
 revisions:
   - 630-0525
 verification: verified
-sources:
-  - url: https://wiki.console5.com/wiki/Mac_Analog_Board:_630-0525
-    note: >-
-      Full designator-level table for the 630-0525 analog board, all 25
-      electrolytic positions with factory ratings.
-  - url: https://github.com/daanvdl/Classic-Analogboard-Late
-    note: >-
-      Schematic and PCB recreation of the same 820-0525-A / 630-0525 board,
-      with a full bill of materials and a configuration table giving the
-      component differences between the 110 V and 240 V builds.
 notes:
   - >-
     This is the 100-120 V build of the late Classic II analog board. CP1 is

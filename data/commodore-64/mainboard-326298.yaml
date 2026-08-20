@@ -4,29 +4,6 @@ board: mainboard
 revisions:
   - "326298"
 verification: verified
-sources:
-  - url: https://www.zimmers.net/cbmpics/cbm/c64/C64ServiceManual.txt
-    note: >-
-      Official Commodore service manual parts list for PCB assembly
-      #326298-01, the earliest longboard revision with 5-pin video output.
-  - url: https://archive.org/stream/C64-C64C_Service_Manual_1992-03_Commodore/C64-C64C_Service_Manual_1992-03_Commodore_djvu.txt
-    note: >-
-      Second Commodore service manual printing, parts list for PCB assembly
-      #326298, cross-checked designator by designator against the zimmers
-      copy.
-  - url: https://support.retrorewind.ca/en/blog/c64-assembly-326298
-    note: >-
-      Kit list with designators for ASSY 326298, cross-checked against the
-      two service manual copies above.
-  - url: https://wiki.console5.com/wiki/Commodore_64
-    note: >-
-      Independent designator-level list headed "ASSY 326298" giving the same
-      14-position 10 uF 25 V group including C64, plus C19 2200uF 16V, C88
-      470uF, C90 470uF and C91 100uF 16V.
-  - url: https://www.retroleum.co.uk/c64-capacitors
-    note: >-
-      Independent kit for "PCB Assy 326298 Rev A" with the same 14-position
-      10 uF group and the C88/C90 470 uF pair.
 notes:
   - >-
     This is the earliest longboard revision, identifiable by its 5-pin video

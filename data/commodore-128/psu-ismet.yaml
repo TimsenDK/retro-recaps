@@ -7,16 +7,6 @@ x2_filter: unknown
 revisions:
   - Ismet
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_128
-    note: >-
-      Designator-level list under the heading "Power Supply: Ismet": C4
-      2200uF 35v, C9 4700uF 16v.
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=58011
-    note: >-
-      Owner report of a two-electrolytic C128 brick containing 2200 uF 40 V
-      and 4700 uF 16 V. The complement matches the Ismet list; the 2200 uF
-      voltage rating does not.
 notes:
   - >-
     This is the Ismet-built C128 external brick, a two-electrolytic design.

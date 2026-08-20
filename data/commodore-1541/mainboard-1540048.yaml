@@ -10,27 +10,6 @@ revisions:
   - "250442"
   - "250446"
 verification: verified
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_1541
-    note: >-
-      Per-assembly capacitor table for the later revisions, giving designator,
-      value and factory voltage for all eight positions.
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Independent designator/value list, labelled "Type 2 (PCB Assm:
-      1540048, 1540050, 250442/46)" on that page; no voltage ratings given
-      for this revision.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
-    note: >-
-      Commodore 1540/1541 Disk Drive Service Manual, November 1985
-      (PN 314002-01). Model-identification section ties assemblies 1540048-01,
-      1540048-03, 250442-01 and 250446-01 together as one board family and
-      describes the supply circuit (SW1, F1, T1, CR1, CR3, VR1, VR2).
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=76260
-    note: >-
-      Forum thread giving the generic 1541 capacitor value/voltage set
-      (1 uF, 47 uF, 100 uF, 220 uF radial; 4700 uF and 6800 uF axial), used
-      to cross-check values and voltages against the designator list above.
 notes:
   - >-
     This PCB carries the drive's mains-fed supply section on the same board as

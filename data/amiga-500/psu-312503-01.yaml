@@ -7,11 +7,6 @@ x2_filter: unknown
 revisions:
   - "312503-01"
 verification: derived
-sources:
-  - url: https://jeremykline.us/2026/02/14/amiga-capacitor-lists/
-    note: >-
-      Designator-level list read off a DVE-built brick whose PCB is marked
-      "DSP-A500 Rev2", carrying the part number 312503-01.
 notes:
   - >-
     Identify the brick by the PCB inside it, not by the number on the case.

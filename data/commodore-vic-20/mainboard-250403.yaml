@@ -6,31 +6,6 @@ revisions:
   - "250403"
   - "251040"
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
-    note: >-
-      Designator-level list headed "ASSY 250403 (DIN power connector)": C11
-      1uF 50v, C15 10uF 16v, C17 10uF 16v, C33 100uF 16v, C39 2200uF 16v,
-      C42 10uF 16v. Three 10 uF positions, no 47 uF position.
-  - url: https://retroleum.co.uk/vic20-caps
-    note: >-
-      Independent kit for "Assembly 250403 / Fab 251040 (Cost Reduced short
-      board)": 1x 1 uF radial, 3x 10 uF radial ("2 required for 250403"),
-      1x 47 uF radial ("251040 only"), 1x 100 uF radial, 1x 2200 uF axial.
-  - url: https://www.arcticretro.com/2021/05/05/vic-20-capacitors-list/
-    note: >-
-      Independent rev D list: 1x 2200 uF 16 V axial, 1x 100 uF 16 V radial,
-      2x 10 uF 16 V radial, 1x 47 uF 16 V radial, 1x 1 uF 16 V radial. No
-      designators.
-  - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
-    note: >-
-      Independent guide; states Commodore deleted the on-board 7805 on ASSY
-      250403 so the 4700 uF can is absent and the largest can is the
-      2200 uF.
-  - url: https://www.c64-wiki.com/wiki/VIC-20
-    note: >-
-      Board photograph captioned "Assy No.250403 - Fab.No.251040-01 Rev.D",
-      establishing 251040-01 as the bare-PCB number of assembly 250403.
 notes:
   - >-
     This is the cost-reduced short board with the circular DIN power

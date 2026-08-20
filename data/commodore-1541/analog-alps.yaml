@@ -5,21 +5,6 @@ mains: false
 revisions:
   - alps
 verification: verified
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_1541
-    note: >-
-      Per-mechanism capacitor tables for the motor control PCB. The Alps table
-      gives C1, C5 and C6 at 10 uF 35 V.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
-    note: >-
-      Commodore 1540/1541 Disk Drive Service Manual, November 1985
-      (PN 314002-01). The Alps drive assembly parts list gives every capacitor
-      on the motor control PCB with its construction and rating, and the
-      spindle-motor circuit theory describes the board.
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Replacement pack covering the motor control PCB; its contents span the
-      Alps and both Newtronics variants together rather than one board.
 notes:
   - >-
     Low-voltage motor speed control PCB mounted on the drive mechanism. It
@@ -49,7 +34,7 @@ capacitors:
     voltage_v: 35
     original_voltage_v: 35
     quantity: 2
-    series: kemet-t491
+    series: kemet-t350
     verification: derived
     note: The factory part is a tantalum.
   - designators:
@@ -59,7 +44,7 @@ capacitors:
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
-    series: kemet-t491
+    series: kemet-t350
     verification: derived
     note: >-
       The factory part is a tantalum rated 16 V, which is a thin margin on a

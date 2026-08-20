@@ -6,18 +6,6 @@ revisions:
   - 342002 rev E
   - 324002 rev E
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
-    note: >-
-      Designator-level list headed "342002 Rev E": C1 4700uF 16v, C3 100uF
-      16v, C7 47uF 16v, C9 100uF 16v, C11 1uF 16v, C22 1uF 16v, plus one
-      10uF 16v position whose designator the table leaves as "C??".
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/computers/vic20/index.html
-    note: >-
-      Commodore schematic index for the VIC-20, recording assemblies
-      324001-02 (VIC-20cr NTSC), 324001-03 (VC-20 rev. B, PAL old design)
-      and 251027-01 (VIC-20CR rev. D), plus a separate "Main logic board
-      Version E" drawing. No 342002 assembly appears.
 notes:
   - >-
     This is the earlier VIC-20 long board, the one whose electrolytics are

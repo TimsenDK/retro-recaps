@@ -7,23 +7,6 @@ revisions:
   - "312812"
 verification: derived
 battery: true
-sources:
-  - url: https://www.amibay.com/threads/a500-rev-8a-1-which-capacitors-i-need.47238/
-    note: >-
-      Forum transcription of the A500+ service manual, page 24. Gives
-      values, factory voltage ratings, quantities and package sizes; no
-      3300 uF filter capacitors appear on this board, and no designators
-      are given.
-  - url: https://wiki.console5.com/wiki/Amiga_500
-    note: >-
-      "Main Board: 312812 Rev 8" designator list. The value groups and
-      counts match the service manual transcription exactly and supply the
-      designators it omits.
-  - url: https://www.amibay.com/threads/difference-a500-rev-8a-and-8a-1.82345/
-    note: >-
-      Owner comparison of rev 8A and rev 8A.1 boards. The only difference
-      reported is a routing correction around D911/D912 in the battery
-      charging circuit.
 notes:
   - >-
     This is the A500+ board. It drops the two 3300 uF filter capacitors used

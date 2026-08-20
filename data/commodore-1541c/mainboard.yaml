@@ -8,29 +8,6 @@ revisions:
   - "250448-01"
   - "251854"
 verification: derived
-sources:
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Independent designator/value list, labelled "Type 3 (PCB Assm:
-      250448/251854)" on that page; no voltage ratings given for this
-      assembly.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/boards.txt
-    note: >-
-      Commodore drive board register composed by William Levak. Assigns
-      assembly 250448-01 to the 1541B and 1541C and describes the gate-array
-      and read/write hybrid changes on it.
-  - url: https://cbmmanuals1.classic-computing.de/pcbd.htm
-    note: >-
-      PCB register listing "251854 REV. A" against the VC 1541 C.
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=67398
-    note: >-
-      Forum thread specifically about the 1541C's C22 position, giving
-      47 uF at 16 V.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/parts.txt
-    note: >-
-      Commodore drive parts list composed by William Levak. Gives the
-      Newtronics D500 as the 1541B/1541C mechanism and the 251853 read/write
-      hybrid as specific to those two drives.
 notes:
   - >-
     This PCB carries the drive's mains-fed supply section on the same board as

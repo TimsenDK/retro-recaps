@@ -5,23 +5,6 @@ mains: false
 revisions:
   - "324003"
 verification: verified
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_VIC-20
-    note: >-
-      Designator-level list headed "ASSY 324003": C13 1uF 50v, C16 1uF 50v,
-      C23 10uF 16v, C24 10uF 16v, C25 22uF 16v, C31 100uF 16v, C39 4700uF
-      16v, C44 100uF 16v.
-  - url: https://retroleum.co.uk/vic20-caps
-    note: >-
-      Independent kit for "Assembly 324003 (Original long board)", matching
-      the same eight designators: 2x 1 uF radial (C13, C16), 2x 10 uF radial
-      (C23, C24), 1x 22 uF radial (C25), 2x 100 uF radial (C31, C44), 1x
-      4700 uF axial (C39).
-  - url: https://wiki.retrotechcollection.com/Commodore_VIC-20_Capacitor_Replacement_Guide
-    note: >-
-      Independent guide corroborating eight electrolytics on this board and
-      the single large 4700 uF main +5 V filter can, without a full
-      designator list.
 notes:
   - >-
     This is the long board with the 2-pin locking power connector and an

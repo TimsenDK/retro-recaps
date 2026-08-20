@@ -6,18 +6,6 @@ x2_filter: unknown
 revisions:
   - "310639-02"
 verification: derived
-sources:
-  - url: https://blog.worldofjani.com/?p=7915
-    note: >-
-      "C128D PAL PSU recap / capacitor list & fan" - measured capacitor
-      list, with designators, values, voltages and physical sizes, for the
-      plastic-case C128D's internal switching PSU, part 310639-02 (220 V
-      PAL). Records no mains-side film capacitor either way.
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/computers/c128/power/
-    note: >-
-      Commodore power-supply schematic directory for this family, holding
-      separate drawings ps-128d-german.gif and ps-128d-japanese.gif - two
-      distinct C128D supply designs. Image-only, no parts list readable.
 notes:
   - >-
     This is the plastic-case C128D's internal switching PSU, part 310639-02,

@@ -6,19 +6,6 @@ revisions:
   - alps
   - newtronics
 verification: unverified
-sources:
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/02.html
-    note: >-
-      Commodore 1571 service manual, system parts list. Names both drive
-      assemblies - Newtronics C 252083-01 and Alps C 252092-01 - each with
-      its own front bezel, so a 1571 has one mechanism or the other.
-  - url: https://archive.org/stream/sams-computerfacts-cd12-1571/SamsComputerfacts_Cd12_1571_djvu.txt
-    note: >-
-      Sams Computerfacts CD12 (1987). Its motor test sends the reader to
-      troubleshoot the Motor Control Board when the spindle will not turn
-      with pin 3 of CN7 grounded, and puts the spindle speed trimmer VR1 on
-      it. Sams gives location guides for the main board and the supply only,
-      and none for this PCB.
 notes:
   - >-
     Open: the mechanism carries a separate motor speed control PCB, and no

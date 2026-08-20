@@ -7,13 +7,6 @@ revisions:
   - PE-5161-1
   - PB-5161-1
 verification: derived
-sources:
-  - url: https://amigaretro.com/index.php?topic=182.0
-    note: >-
-      Forum post by user quantum8, who physically rebuilt a real A3000
-      LiteOn PE-5161-1 PSU and posted a corrected designator-level list
-      after finding an error in a previously circulated one. Covers both
-      the main board and the small regulator daughterboard inside the PSU.
 notes:
   - >-
     This is a mains-carrying supply. The primary side holds a lethal charge

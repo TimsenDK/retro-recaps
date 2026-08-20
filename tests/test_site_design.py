@@ -724,3 +724,19 @@ def test_a_search_result_carries_the_family_it_belongs_to(site_out: Path) -> Non
     assert '"family": "amiga"' in index
     script = read(site_out, "search.js")
     assert 'entry.family ? "card fam-" + entry.family : "card"' in script
+
+
+def test_the_search_keys_come_up_as_a_flex_row(site_out: Path) -> None:
+    """The key row is laid out by the stylesheet, never by the script.
+
+    `#search-keys` carries both `js-only` and `keys`. When the script was the
+    thing that revealed it — an inline `display: block` — it also decided the
+    row's display mode, and `flex-wrap` and `gap` died with it. Whatever
+    reveals the row must reveal it as a flex row, so the script sets a marker
+    on the document and the sheet does the rest.
+    """
+    sheet = stylesheet(site_out)
+    script = read(site_out, "search.js")
+    assert "style.display" not in script
+    assert 'classList.add("js")' in script
+    assert ".js .keys{display:flex" in sheet

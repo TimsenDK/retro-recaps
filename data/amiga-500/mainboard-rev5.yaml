@@ -4,20 +4,6 @@ board: mainboard
 revisions:
   - "5"
 verification: verified
-sources:
-  - url: https://archive.org/stream/system-schematics-a-500-revisions-5-6a-7/System%20Schematics%20A500%20Revisions%205%2C%206A%2C%207_djvu.txt
-    note: >-
-      Commodore system schematics and parts list, "PCB ASSEMBLY #312510,
-      A500, REV. 5". Gives the designator groups and values directly from
-      the factory document.
-  - url: https://jeremykline.us/2026/02/14/amiga-capacitor-lists/
-    note: >-
-      Independent transcription of the Rev 5 board (Artwork No 312513, Assy
-      312510) with the factory voltage rating against every designator.
-  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
-    note: >-
-      Third list of the same designators and values, published as a
-      combined Rev 3/5 kit list.
 notes:
   - >-
     Rev 3 and rev 5 use the same capacitor values and quantities. The two

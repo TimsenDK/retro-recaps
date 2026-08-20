@@ -6,11 +6,6 @@ revisions:
   - 820-0250
 verification: derived
 battery: true
-sources:
-  - url: https://wiki.console5.com/wiki/Macintosh_SE
-    note: >-
-      Designator-level table headed "SE Logic Board: 820-0176 / 820-0250",
-      eleven positions in two values.
 notes:
   - >-
     Through-hole axial electrolytics, not surface mount. They do not carry

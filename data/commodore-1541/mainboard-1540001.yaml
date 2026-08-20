@@ -9,28 +9,6 @@ revisions:
   - "1540008-01"
   - "1540008-03"
 verification: verified
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_1541
-    note: >-
-      Per-assembly capacitor table for the early revisions, giving designator,
-      value and factory voltage for all eight positions.
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Independent designator/value list broken out by PCB assembly number,
-      labelled "Type 1 (PCB Assm: 1540001)" on that page; no voltage ratings
-      given for this revision.
-  - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=29
-    note: >-
-      Scanned Commodore 1541 maintenance manual parts list (page F-5),
-      corroborates designators C51 and C52 and their capacitance values.
-  - url: https://www.manualslib.com/manual/1355893/Commodore-1541.html?page=28
-    note: >-
-      Scanned manual page cross-referencing VIC-1541 and 1541 reference
-      designators; corroborates C1/C4 = 1 uF and C2/C5 = 47 uF.
-  - url: https://www.lemon64.com/forum/viewtopic.php?t=76260
-    note: >-
-      Forum thread giving the generic (non-designator) 1541 capacitor value
-      set, used to cross-check values but not designators.
 notes:
   - >-
     This PCB carries the drive's mains-fed supply section on the same board as

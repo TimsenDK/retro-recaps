@@ -33,22 +33,6 @@
       "items": { "type": "string", "minLength": 1 }
     },
     "verification": { "$ref": "#/$defs/verification" },
-    "sources": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["url"],
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://[^/\\s]+\\.[^/\\s]+"
-          },
-          "note": { "type": "string", "minLength": 1 }
-        }
-      }
-    },
     "notes": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
@@ -106,8 +90,10 @@
             "electrolytic-smd",
             "bipolar",
             "tantalum",
+            "film",
             "film-x2",
-            "film-y2"
+            "film-y2",
+            "ceramic"
           ]
         },
         "capacitance_uf": { "type": "number", "exclusiveMinimum": 0 },

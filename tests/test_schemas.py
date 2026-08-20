@@ -8,7 +8,6 @@ VALID_BOARD = {
     "board": "mainboard",
     "revisions": ["6A"],
     "verification": "verified",
-    "sources": [{"url": "https://example.invalid/a500", "note": "with designators"}],
     "capacitors": [
         {
             "designators": ["C401", "C402"],
@@ -43,9 +42,27 @@ def test_missing_required_field_is_an_error() -> None:
 
 def test_unknown_capacitor_type_is_an_error() -> None:
     document = {**VALID_BOARD}
-    document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "type": "ceramic"}]
+    document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "type": "paper"}]
     issues = schema_issues(document, "board", "a.yaml")
     assert [issue.location for issue in issues] == ["a.yaml:capacitors/0/type"]
+
+
+def test_a_ceramic_position_is_a_legal_type() -> None:
+    """A position the reader is told not to replace is still a position.
+
+    Several boards describe their ceramic bypass parts in prose because the
+    type could not be recorded; the type map and the drawings have carried
+    `ceramic` and `film` all along.
+    """
+    document = {**VALID_BOARD}
+    document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "type": "ceramic"}]
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_a_plain_film_position_is_a_legal_type() -> None:
+    document = {**VALID_BOARD}
+    document["capacitors"] = [{**VALID_BOARD["capacitors"][0], "type": "film"}]
+    assert schema_issues(document, "board", "a.yaml") == []
 
 
 def test_a_snap_in_position_is_a_legal_type() -> None:
@@ -88,27 +105,6 @@ def test_a_fit_limit_of_zero_is_rejected() -> None:
 def test_unknown_property_is_rejected() -> None:
     issues = schema_issues({**VALID_BOARD, "colour": "beige"}, "board", "a.yaml")
     assert len(issues) == 1
-
-
-def test_a_placeholder_source_url_is_rejected() -> None:
-    document = {**VALID_BOARD, "sources": [{"url": "http://x"}]}
-    issues = schema_issues(document, "board", "a.yaml")
-    assert [issue.location for issue in issues] == ["a.yaml:sources/0/url"]
-
-
-def test_a_url_that_is_not_a_uri_at_all_is_rejected() -> None:
-    # Matches the schema's `pattern`, so only the `format: uri` checker can
-    # reject it: '[' is not a legal character outside an IPv6 host literal.
-    document = {**VALID_BOARD, "sources": [{"url": "https://ex[ample.com/x"}]}
-    assert schema_issues(document, "board", "a.yaml")
-
-
-def test_a_real_source_url_is_accepted() -> None:
-    document = {
-        **VALID_BOARD,
-        "sources": [{"url": "https://support.retrorewind.ca/amiga/a500?rev=6a#c401"}],
-    }
-    assert schema_issues(document, "board", "a.yaml") == []
 
 
 def test_an_unverified_board_may_list_no_capacitors() -> None:

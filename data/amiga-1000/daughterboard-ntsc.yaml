@@ -4,11 +4,6 @@ board: daughterboard
 revisions:
   - NTSC
 verification: verified
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
-    note: Full WCS daughterboard list with reference designators, NTSC.
-  - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
-    note: Independent confirmation of the same designators and values.
 notes:
   - >-
     WCS (Writable Control Store) piggyback daughterboard, fitted to the NTSC

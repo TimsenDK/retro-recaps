@@ -1,7 +1,10 @@
-{# `batteries` is the machine's battery list. On a board page it is rendered
-   only when that board declares `battery: true`, i.e. the cell really is on
-   this PCB — the board page is the sheet that gets printed and carried to the
-   bench, and a warning it cannot confirm applies is worse than none. #}
+{# `batteries` is the machine's battery list, rendered on a board page and
+   nowhere else, and only when that board declares `battery: true`, i.e. the
+   cell really is on this PCB. The board page is the sheet that gets printed
+   and carried to the bench, and a warning it cannot confirm applies is worse
+   than none: the A500's cell is on rev 8A alone, so the same panel on the
+   machine page told a rev 3 owner to deal with a battery their board has
+   never had. #}
 {% if batteries %}
 <section class="battery" role="note">
     <h2>Battery — deal with this first</h2>

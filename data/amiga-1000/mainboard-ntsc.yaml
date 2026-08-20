@@ -4,16 +4,6 @@ board: mainboard
 revisions:
   - NTSC
 verification: verified
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-1000-cap-list
-    note: >-
-      Mainboard and WCS daughterboard designator list. Carries neither C92
-      nor C94, and states no revision or region.
-  - url: https://www.tsb.space/knowledge-base/commodore-amiga-capacitor-lists/
-    note: >-
-      Independent confirmation of the same designators and values, and the
-      only retrieved list carrying C92 and recording C94 as empty. States no
-      revision or region.
 notes:
   - >-
     This is the list for the board that carries the WCS on a piggyback

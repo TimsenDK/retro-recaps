@@ -5,24 +5,6 @@ revisions:
   - A
 verification: derived
 battery: true
-sources:
-  - url: https://wiki.console5.com/wiki/Macintosh_Classic_II
-    note: >-
-      Designator-level table for the Classic II logic board, covering
-      630-0055-B / 820-0326-B and 630-0401-B / 820-0401-B, and marking C21,
-      C74, C79 and C106 as appearing only on the 630-0055 revision.
-  - url: https://recapamac.com.au/macintosh-classic-ii-a/
-    note: >-
-      Names this board the earlier revision and gives the visual
-      discriminator - 13 surface-mount electrolytics and four ROM chips in
-      the bottom right corner.
-  - url: https://wiki.retrotechcollection.com/Macintosh_Classic_II_Capacitor_Replacement_Guide
-    note: Confirms the 13-position complement, 3 x 47 uF, 8 x 10 uF, 2 x 1 uF.
-  - url: https://www.macdat.net/repair/cap_reference/apple/compact/classic2.php
-    note: >-
-      Confirms the same 13-position versus 17-position split and per-value
-      counts, and states the 47 uF positions must be 25 V rated if replaced
-      with tantalum.
 notes:
   - >-
     This is the 13-position board. Count the ROM chips in the bottom right

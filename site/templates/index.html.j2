@@ -14,6 +14,15 @@
     <input type="search" id="search" autocomplete="off"
            placeholder="A500, C401, 3300 µF, power supply…">
 </p>
+{# The µ is on no keyboard anyone owns. Typing 'uf' works too — the filter
+   folds it — but a reader cannot know that, and a button they can see beats a
+   tolerance they have to guess at. #}
+<p class="js-only keys" id="search-keys" role="group"
+   aria-label="Insert a character the keyboard does not have">
+    <button type="button" data-insert="µ">µ</button>
+    <button type="button" data-insert="µF">µF</button>
+    <button type="button" data-insert=" V">V</button>
+</p>
 <ul class="cards" id="search-results" hidden></ul>
 
 <div id="everything">
@@ -40,10 +49,10 @@
 <h2>How to read these pages</h2>
 <p>
     Every board page opens with a verification badge. <strong>Verified</strong>
-    means the list was read off a source cited at the foot of that page for
-    that board revision. <strong>Derived</strong> means it was worked out from
-    related boards or partial sources and nobody has confirmed it — treat it as
-    a starting point for your own count.
+    means the list was confirmed against two independent accounts of that
+    board revision. <strong>Derived</strong> means it was worked out from
+    related boards or partial evidence and nobody has confirmed it — treat it
+    as a starting point for your own count.
     <strong>Unverified</strong> means nothing has been checked at all.
 </p>
 <p>

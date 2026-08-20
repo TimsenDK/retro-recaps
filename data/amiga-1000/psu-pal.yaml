@@ -6,11 +6,6 @@ x2_filter: unknown
 revisions:
   - PAL / 240V
 verification: verified
-sources:
-  - url: https://funwithretrocomputers.blogspot.com/2019/09/amiga-1000-psu-recap.html
-    note: Shindengen CA1000PS/EC (PAL/240V) teardown with full reference designators.
-  - url: https://jbretro.wordpress.com/2020/04/15/ca1000ps/
-    note: Independent confirmation of the same PAL/240V board and values. Its table omits C04; otherwise matches exactly.
 notes:
   - >-
     This is a mains-carrying supply. The primary side holds a lethal charge

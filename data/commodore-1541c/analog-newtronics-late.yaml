@@ -5,21 +5,6 @@ mains: false
 revisions:
   - newtronics-late
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_1541
-    note: >-
-      Per-mechanism capacitor tables for the motor control PCB. The later
-      Newtronics table lists four positions, C1, C3, C4 and C6, all at 35 V.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1541/1540-1541_Disk_Drive_Service_Manual_314002-01_(1985_Nov).pdf
-    note: >-
-      Commodore 1540/1541 Disk Drive Service Manual, November 1985
-      (PN 314002-01). States that the Newtronics motor speed PCB is
-      electronically the same as the Alps one with some discrete components
-      integrated, and gives the spindle-motor circuit theory for both.
-  - url: https://www.retroleum.co.uk/1541capacitors
-    note: >-
-      Replacement pack covering the motor control PCB; its contents span the
-      Alps and both Newtronics variants together rather than one board.
 notes:
   - >-
     Low-voltage motor speed control PCB mounted on a Newtronics/Mitsumi D500

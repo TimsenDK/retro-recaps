@@ -6,22 +6,6 @@ x2_filter: unknown
 revisions:
   - "250449"
 verification: derived
-sources:
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/251860.gif
-    note: >-
-      Official Commodore engineering schematic "SCHEMATIC DIAGRAM, 1551",
-      drawing 251860 rev. 4, drawn by R. Vida, checked by S. Katayama (Zimmers
-      / funet CBM archive). Read directly for the internal PSU section (bridge
-      rectifiers DB1/DB2, REG1 = LM340-12, REG2 = LM340-05) and its capacitor
-      designators and values. It is a scanned image with no text layer.
-  - url: https://myoldcomputer.nl/technical-info/mainboards/drive-mainboards/board-250449250453-1551/
-    note: >-
-      Board register entry giving 250449 as the 1551 drive assembly and
-      250453 as the interface paddle, with schematics 251860 and 251925.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1551/parts.txt
-    note: >-
-      Commodore 1551 parts list composed by William Levak. Covers the
-      integrated circuits on both boards; it lists no capacitors.
 notes:
   - >-
     This PCB carries the drive's mains-fed supply section on the same board as

@@ -7,13 +7,6 @@ x2_filter: unknown
 revisions:
   - "252449-03"
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Commodore_128
-    note: >-
-      Designator-level list under the heading "Power Supply: Dee Van
-      252449-03", carrying the qualifier "Unconfirmed list from schematic":
-      C1 3300uF 25v, C2 3300uF 25v, C4 1000uF 10v, C5 220uF 25v, C6 1uF 16v,
-      C9 10uF 25v.
 notes:
   - >-
     This is the Dee Van-built C128 external brick, board number 252449-03.

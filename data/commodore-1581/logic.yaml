@@ -5,19 +5,6 @@ mains: false
 revisions:
   - "250471-01"
 verification: derived
-sources:
-  - url: https://www.manualslib.com/manual/1441735/Commodore-Computers-1581.html?page=15
-    note: >-
-      Scan of the official Commodore 1581 Service Manual (314982-01),
-      "Parts List - Major/Component" page. Lists reference designators,
-      values and Commodore stock part numbers for every capacitor on the
-      logic board.
-  - url: https://www.devili.iki.fi/Computers/Commodore/C1581/Service_Manual/Page_12.html
-    note: >-
-      A second rendering of the same service manual parts list, from a
-      different transcription of the document. It gives C18 and C22 as
-      10 uF 25 V electrolytic (900100-01), C20 as 47 uF 10 V -10/+50%
-      electrolytic (900100-12) and C15 as 0.01 uF 50 V ceramic (251069-20).
 notes:
   - >-
     The board carries three electrolytic positions: C18 and C22 (10 uF 25 V)

@@ -7,22 +7,6 @@ revisions:
   - "4.4"
   - 6.x
 verification: derived
-sources:
-  - url: https://www.arcticretro.com/amiga/amiga-2000-power-supply-capacitors/
-    note: >-
-      Covers the EU/230 V Amiga 2000 supply and states that rev 4.4 and rev 6
-      machines carried the same supply with the same capacitors. Full
-      electrolytic list with package dimensions; no film capacitors listed.
-  - url: http://blog.worldofjani.com/?p=6375
-    note: >-
-      Independent teardown listing fourteen capacitor types, including X2 and
-      Y class film. Its electrolytic figures differ from Arctic Retro's on
-      most rows. Names no manufacturer, model or mains rating.
-  - url: https://www.eevblog.com/forum/beginners/commodore-amiga-2000-power-supply-rifa-capacitor-value/
-    note: >-
-      Photograph of a failed Amiga 2000 PSU film capacitor identified as a
-      "RIFA PME 271 M". The poster could not read the value off the damaged
-      part and no one in the thread supplied one.
 notes:
   - >-
     This is a mains-carrying supply. The primary side holds a lethal charge

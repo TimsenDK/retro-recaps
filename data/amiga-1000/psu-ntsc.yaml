@@ -6,11 +6,6 @@ x2_filter: unknown
 revisions:
   - NTSC / 110V
 verification: derived
-sources:
-  - url: https://blog.worldofjani.com/?p=6238
-    note: NTSC/110V Amiga 1000 PSU teardown and capacitor list with dimensions, no reference designators.
-  - url: https://funwithretrocomputers.blogspot.com/2019/09/amiga-1000-psu-recap.html
-    note: Sibling PAL/240V board with designators, used to cross-check the shared secondary-side values (all match except the primary bulk capacitor, which differs by mains voltage as expected).
 notes:
   - >-
     This is a mains-carrying supply. The primary side holds a lethal charge

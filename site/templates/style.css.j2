@@ -639,20 +639,6 @@ td .note {
     margin-bottom: 0.4rem;
 }
 
-.sources li {
-    margin-bottom: 0.75rem;
-}
-
-.sources .note {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-}
-
-.sources a {
-    word-break: break-word;
-}
-
 .datalinks {
     font-size: 0.9rem;
     color: var(--ink-soft);
@@ -1022,8 +1008,46 @@ tr.pinned {
     margin-bottom: 0.4rem;
 }
 
+/* The character keys under the box. They are a convenience, not the way in:
+   the filter folds 'uf' to 'µf' too, so a reader who never notices them can
+   still type what they mean. */
+.keys {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.keys button {
+    font: inherit;
+    line-height: 1;
+    padding: 0.35rem 0.6rem;
+    color: var(--ink-soft);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.keys button:hover,
+.keys button:focus-visible {
+    color: var(--ink);
+    border-color: var(--rule-strong);
+}
+
 .js-only {
     display: none;
+}
+
+/* `search.js` marks the document when it runs. Revealing these is the
+   script's decision; laying them out stays the sheet's, so the key row
+   comes up as the flex row it is declared to be. */
+.js .js-only {
+    display: block;
+}
+
+.js .keys {
+    display: flex;
 }
 
 /* ---------- print ---------- */
@@ -1077,6 +1101,7 @@ tr.pinned {
     .no-print,
     #search,
     #search-results,
+    .keys,
     .js-only {
         display: none !important;
     }

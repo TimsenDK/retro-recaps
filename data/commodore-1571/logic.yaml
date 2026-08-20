@@ -6,45 +6,6 @@ revisions:
   - "310420"
   - "310420-01"
 verification: derived
-sources:
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/17.html
-    note: >-
-      Commodore 1571 Service Manual (Preliminary), PN-314002-04, October
-      1986, "PARTS LIST / PCB ASSEMBLY #310420".
-      Gives every capacitor by designator with type and rating: C21 10 uF
-      25 V electrolytic, C28 47 uF 10 V -10/+50% electrolytic, C29 10 uF
-      25 V electrolytic, C31 1 uF 16 V electrolytic, C33 1 uF 35 V +/-10%
-      tantalum. The rest of the list is ceramic and NPO bypass. EMI 1-4 and
-      FB 1-7 are ferrite beads, not capacitors.
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/02.html
-    note: >-
-      Same manual, system parts list. Gives the logic board as PCB Assembly
-      C 310420-01 and the supply as a separate Power Supply Assembly
-      C 250772-01, confirming the two are different boards.
-  - url: https://archive.org/download/sams-computerfacts-cd12-1571/SamsComputerfacts_Cd12_1571.pdf
-    note: >-
-      Sams Computerfacts CD12 (1987), the independent check on the parts
-      list. Its Main Board location guide runs C24, C27, C28, C29, C31,
-      skipping C25, C26 and C30, the same gaps the Commodore list has. Its
-      own electrolytic parts table has a single row, C33 1 uF tantalum, so it
-      adds no ratings of its own. It instructs the reader to disconnect CN1
-      from the drive board before servicing the supply, and gives the board's
-      rails as 12 V on CN1A pin 2 and 5 V on pin 4.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/1571_Service_Manual_Preliminary_314002-04_(1986_Oct).pdf
-    note: >-
-      The scanned original of the same manual, read as a second rendering of
-      the parts list. The capacitor rows are identical to the HTML
-      transcription.
-  - url: https://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/c1571-top-1.gif
-    note: >-
-      Sheet 1 of the scanned page 19 schematic for assembly 310420. Shows
-      CN1, the four-pin power header, with C29 across the 12 V rail and C21
-      across the 5 V rail, and no rectifier, regulator or transformer
-      anywhere on the board. The schematic prints values but no voltages.
-  - url: https://myoldcomputer.nl/technical-info/mainboards/drive-mainboards/board-310420-15701571/
-    note: >-
-      Board register entry for 310420, recording it as the board used in both
-      the 1570 and the 1571.
 notes:
   - >-
     The board has four electrolytic positions - C21, C28, C29 and C31 - and
@@ -109,7 +70,7 @@ capacitors:
     voltage_v: 35
     original_voltage_v: 35
     quantity: 1
-    series: kemet-t491
+    series: kemet-t350
     note: >-
       A tantalum, and the parts list marks it +/-10%. Tantalums mark the plus
       lead, the opposite convention to the electrolytics beside it.

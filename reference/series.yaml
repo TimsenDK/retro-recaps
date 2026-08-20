@@ -135,3 +135,17 @@
     Tantalum for Macintosh surface-mount positions. The 47 uF positions must be
     rated 25 V. Rated to 85 °C with derating above that, so the 125 °C figure
     is the category limit and not a working rating.
+
+- id: kemet-t350
+  manufacturer: Kemet
+  name: T350
+  type: tantalum
+  temperature_c: 125
+  voltage_min_v: 3
+  voltage_max_v: 50
+  note: >-
+    Leaded tantalum for the through-hole positions the 1980s boards use, where
+    the surface-mount T491 does not fit. Radial dipped, 2.54 mm lead spacing on
+    the small case sizes and 5.08 mm from case J up. Rated to 85 °C with
+    derating above that, so the 125 °C figure is the category limit and not a
+    working rating.

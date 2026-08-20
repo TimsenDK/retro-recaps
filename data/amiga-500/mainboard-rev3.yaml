@@ -4,11 +4,6 @@ board: mainboard
 revisions:
   - "3"
 verification: derived
-sources:
-  - url: https://support.retrorewind.ca/en/blog/amiga-500-cap-list
-    note: >-
-      Combined Rev 3/5 capacitor list with quantities and values. The
-      designators it gives belong to the rev 5 board.
 notes:
   - >-
     Rev 3 and rev 5 use the same capacitor values and quantities. The two

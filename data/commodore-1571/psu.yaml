@@ -7,29 +7,6 @@ x2_filter: unknown
 revisions:
   - "250772-01"
 verification: unverified
-sources:
-  - url: http://www.zimmers.net/anonftp/pub/cbm/schematics/drives/new/1571/manual/02.html
-    note: >-
-      Commodore 1571 service manual, system parts list. Gives the supply as
-      Power Supply Assembly C 250772-01, a separate assembly from the logic
-      board, and lists a Power Cord C 252164-01 with it. The manual carries
-      no schematic and no parts list for the supply itself.
-  - url: https://archive.org/stream/sams-computerfacts-cd12-1571/SamsComputerfacts_Cd12_1571_djvu.txt
-    note: >-
-      Sams Computerfacts CD12 (1987). Its Power Supply Board location guide
-      names the positions that exist - C101 to C110 and C201 to C205 - while
-      its parts list gives ratings for none of them: the only electrolytic
-      row in the whole document is C33 on the logic board. The ratings are
-      printed on its fold-out schematic sheet, and that page is a corrupt
-      one-pixel placeholder in the scan. Describes a switching supply:
-      120 V AC across rectifier D101, 166 V at its DC output, oscillator
-      transistor Q102, opto-coupler PC101 regulation, fuse F101 2 A 125 V
-      fast acting, and an EMI filter ahead of switch SW101. Tells the reader
-      to use an isolation transformer when servicing it.
-  - url: https://www.c64-wiki.de/wiki/Commodore_1571
-    note: >-
-      Records the supply as built into the case and fed from an IEC inlet,
-      like the 1541's, at 220 V 50 Hz and about 25 W.
 notes:
   - >-
     Open: no capacitor values are published for this assembly. The positions

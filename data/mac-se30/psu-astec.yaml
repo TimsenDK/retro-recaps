@@ -6,11 +6,6 @@ x2_filter: listed
 revisions:
   - Astec AA13800
 verification: derived
-sources:
-  - url: https://wiki.console5.com/wiki/Macintosh_SE
-    note: >-
-      Designator-level table headed "Power Supply: Apple 699-5047 / ASTEC
-      AA13800", plus the safety-capacitor note quoted below.
 notes:
   - >-
     Off-line switching supply. The primary side stays charged after the

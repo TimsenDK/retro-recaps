@@ -5,18 +5,6 @@ revisions:
   - 4.x
 verification: derived
 battery: true
-sources:
-  - url: https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Amiga-2000-repair-kit::989.html
-    note: >-
-      Kit vendor selling separate Rev 4 and Rev 6 kits with different
-      declared contents; the Rev 4 contents are the complement recorded
-      here. No designators and no voltage ratings are given, and no board
-      revision beyond "Rev 4" is named.
-  - url: http://amiga.resource.cx/mod/a2000.html
-    note: >-
-      Revision register for the Amiga 2000 family, distinguishing the
-      unnumbered rev 4 A2000-A from the numbered revs 4.0 to 4.5 and
-      recording that rev 4.2 removes filter capacitors.
 notes:
   - >-
     A NiCd barrel battery for the real-time clock is soldered to this board.
