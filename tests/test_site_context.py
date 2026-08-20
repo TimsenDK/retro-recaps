@@ -582,7 +582,8 @@ def test_the_machine_page_does_not_carry_the_battery(site: SiteContext) -> None:
 
 def test_a_reference_to_a_sibling_board_becomes_a_link(dataset: Dataset) -> None:
     targets = reference_targets(dataset)
-    view = note_view("Shares a supply with amiga-500/psu.yaml on this machine.", targets)
+    note = "Shares a supply with amiga-500/psu.yaml on this machine."
+    view = note_view(note, targets)
     assert [segment.url for segment in view.segments] == [
         None,
         "amiga-500/psu.html",

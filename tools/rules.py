@@ -649,14 +649,14 @@ def _check_reference(dataset: Dataset) -> list[Issue]:
         if len(locations) < 2:
             continue
         for location in sorted(locations):
+            others = [other for other in sorted(locations) if other != location]
             issues.append(
                 Issue(
                     ERROR,
                     "duplicate-revision",
                     location,
                     f"revision {revision!r} of the {machine_id} {kind} is also "
-                    f"claimed by "
-                    + ", ".join(other for other in sorted(locations) if other != location),
+                    f"claimed by " + ", ".join(others),
                 )
             )
 
