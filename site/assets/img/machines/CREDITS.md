@@ -19,10 +19,17 @@ adaptations of the Commons original rather than copies of it:
   centre-cropped; the Amiga 3000 and the three compact Macintoshes are scaled
   to fit instead, with their own background colour filling the rest, because
   the crop would have cut the machine itself;
-- resampled to the two sizes above;
-- cel-shaded: the texture median-smoothed away, the colour reduced to a
-  14-entry palette, and the remaining edges inked back in in the site's ink
-  colour.
+- cel-shaded, which is three things done to the picture and not one: the
+  lightness is cut into ten levels, placed where the picture's own histogram is
+  empty so that a level boundary falls between two surfaces rather than across
+  one, and each boundary is a short ramp rather than a step; the colour is
+  median-smoothed in proportion to how flat it already is, so a plain case is
+  cleaned while a saturated marking is left exactly as photographed; and the
+  fine detail the smoothing removed is added back over the levels, so lettering
+  and mouldings survive the flattening. Saturation is raised slightly and the
+  result is sharpened. Nothing is outlined;
+- resampled to the two sizes above, which happens *after* everything above, at
+  the original's own resolution.
 
 The processing is a fixed pipeline run offline; the script that runs it and the
 untouched sources are kept privately, and the originals of the photographs are
