@@ -38,7 +38,9 @@ Retrieved: 2026-08-17.
 | Machine | File | Photographer as credited | Licence | Commons file page |
 |---|---|---|---|---|
 | amiga-500 | `amiga-500.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| amiga-600 | `amiga-600.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (no photograph ever stood here) |
 | amiga-1000 | `amiga-1000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
+| amiga-1200 | `amiga-1200.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (no photograph ever stood here) |
 | amiga-2000 | `amiga-2000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
 | amiga-3000 | `amiga-3000.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |
 | commodore-64 | `commodore-64.jpg` | Generated for Retro Recaps — not a photograph | CC BY-SA 4.0 | — (replaced the Commons photograph that stood here) |

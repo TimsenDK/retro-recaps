@@ -27,11 +27,35 @@ machines:
     source_url: ''
     generated: true
 
+  # Generated for the project. No acceptably licensed Commons
+  # photograph stood here. Not a photograph, and not evidence of the
+  # hardware.
+  amiga-600:
+    file: amiga-600.jpg
+    card: amiga-600-card.jpg
+    author: Generated for Retro Recaps
+    licence: CC BY-SA 4.0
+    licence_url: https://creativecommons.org/licenses/by-sa/4.0/
+    source_url: ''
+    generated: true
+
   # Generated for the project, replacing the Commons photograph that
   # stood here. Not a photograph, and not evidence of the hardware.
   amiga-1000:
     file: amiga-1000.jpg
     card: amiga-1000-card.jpg
+    author: Generated for Retro Recaps
+    licence: CC BY-SA 4.0
+    licence_url: https://creativecommons.org/licenses/by-sa/4.0/
+    source_url: ''
+    generated: true
+
+  # Generated for the project. No acceptably licensed Commons
+  # photograph stood here. Not a photograph, and not evidence of the
+  # hardware.
+  amiga-1200:
+    file: amiga-1200.jpg
+    card: amiga-1200-card.jpg
     author: Generated for Retro Recaps
     licence: CC BY-SA 4.0
     licence_url: https://creativecommons.org/licenses/by-sa/4.0/
