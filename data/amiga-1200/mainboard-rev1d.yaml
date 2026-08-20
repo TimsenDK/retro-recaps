@@ -1,0 +1,141 @@
+id: amiga-1200-mainboard-rev1d
+machine: amiga-1200
+board: mainboard
+external: false
+revisions:
+  - 1D
+  - 1D1
+  - 1D4
+verification: verified
+notes:
+  - >-
+    Eighteen electrolytic positions. Fourteen are surface-mount aluminium
+    electrolytics; C237, C307, C408 and C811 are through-hole radial parts.
+    No tantalum is fitted anywhere on this board.
+  - >-
+    C324 and C334 are the audio coupling positions, and the schematic
+    specifies them as 22 uF non-polarised. The silkscreen at these two
+    prints a polarity that the schematic does not give them, so the board
+    print is not a guide. Fit non-polarised parts here. Where a polarised
+    part is used instead, its positive terminal goes towards U15, not where
+    the silkscreen puts it.
+  - >-
+    C305 is not an electrolytic. The schematic gives it as 0.22 uF, a
+    ceramic. The 10 uF electrolytic beside it is C306, which is in the list
+    below.
+  - >-
+    C460 is drawn as an optional position and no capacitor value is given
+    for it. Whether any board carries a part there is unresolved, so no
+    position is recorded for it below.
+  - >-
+    Some published voltage ratings disagree with one another. Where they do,
+    the position below declares its original rating unknown and the
+    replacement rating is safe under every figure in circulation.
+  - >-
+    A higher-rated surface-mount electrolytic comes in a taller and often
+    wider can. Check the can against the space around the position before
+    ordering.
+  - >-
+    This board is marked verified on its designators, its capacitance values
+    and the split between surface-mount and through-hole parts, all of which
+    the schematic and the published lists agree on. It is not verified on the
+    voltage ratings, two groups of which are recorded as unknown. Nobody
+    involved has held one of these boards.
+  - >-
+    Whether rev 2B carries this same complement is not established. Do not
+    apply this list to a rev 2B board; see amiga-1200/mainboard-rev2b.yaml.
+capacitors:
+  - designators:
+      - C214
+      - C306
+      - C407
+    type: electrolytic-smd
+    capacitance_uf: 10
+    voltage_v: 35
+    original_voltage_unknown: true
+    quantity: 3
+    max_diameter_mm: 5
+    series: panasonic-fk
+    note: >-
+      Small 5 mm can. A 35 V part in this value is made in a 6.3 mm can in
+      most ranges; check the clearance around the pads.
+  - designators:
+      - C303
+      - C304
+      - C459
+    type: electrolytic-smd
+    capacitance_uf: 22
+    voltage_v: 35
+    original_voltage_v: 35
+    quantity: 3
+    max_diameter_mm: 6.3
+    series: panasonic-fk
+  - designators:
+      - C324
+      - C334
+    type: electrolytic-smd
+    capacitance_uf: 22
+    voltage_v: 35
+    original_voltage_unknown: true
+    quantity: 2
+    max_diameter_mm: 6.3
+    series: panasonic-fk
+    note: >-
+      Audio coupling. The factory part is non-polarised. No non-polarised
+      surface-mount series is recommended by this project, so the series
+      named here is a polarised part; fit a non-polarised one if one can be
+      sourced in the case size. Where a polarised part is fitted, its
+      positive terminal goes towards U15 and not where the silkscreen puts
+      it.
+  - designators:
+      - C821
+      - C822
+    type: electrolytic-smd
+    capacitance_uf: 47
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 2
+    max_diameter_mm: 6.3
+    series: panasonic-fk
+  - designators:
+      - C235
+      - C236
+      - C239
+      - C409
+    type: electrolytic-smd
+    capacitance_uf: 100
+    voltage_v: 16
+    original_voltage_v: 6.3
+    quantity: 4
+    max_diameter_mm: 6.3
+    series: panasonic-fk
+  - designators:
+      - C237
+      - C307
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 16
+    original_voltage_v: 16
+    quantity: 2
+    max_diameter_mm: 10
+    max_height_mm: 12.5
+    max_lead_spacing_mm: 5
+    series: panasonic-fr
+    note: >-
+      Through-hole radial. C237 sits in a tighter footprint than C307 and
+      takes the smaller can of the two; check its clearance separately.
+  - designators:
+      - C408
+      - C811
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 10
+    original_voltage_v: 10
+    quantity: 2
+    max_diameter_mm: 10
+    max_height_mm: 16
+    max_lead_spacing_mm: 5
+    series: panasonic-fr
+    note: >-
+      Through-hole radial. The space above these is shallow; a taller can
+      fouls the shielding.

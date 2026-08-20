@@ -1,0 +1,97 @@
+id: amiga-600-psu-391029-03
+machine: amiga-600
+board: psu
+mains: true
+external: true
+x2_filter: unknown
+revisions:
+  - "391029-03"
+verification: derived
+notes:
+  - >-
+    The external brick with the five-pin square DIN plug, rated 3.0 A at
+    +5 V, 0.5 A at +12 V and 0.1 A at -12 V. The same supply is used on the
+    Amiga 1200; see amiga-1200/psu-391029-03.yaml.
+  - >-
+    This is a mains-carrying supply in a sealed case with no user-
+    serviceable parts marking. The primary side holds a lethal charge after
+    the unit is unplugged; discharge it before touching anything on that
+    side of the transformer.
+  - >-
+    A 391029-01 brick carries an entirely different board with no capacitor
+    value in common with this one. Read the full dash number off the case
+    and then confirm it against the board inside before ordering. The
+    391029-01 list is at amiga-1200/psu-391029-01.yaml.
+  - >-
+    No source names the reference designators on this board, so every
+    position below is identified by value and quantity only. Count the parts
+    in the unit in hand and match them to the list.
+  - >-
+    The mains input filter is not inventoried. Film capacitors are fitted at
+    the mains input of these supplies but no retrievable record gives their
+    values, so they are not listed below. Replace any RIFA-marked film found
+    there unconditionally, whatever its rating.
+  - >-
+    The original electrolytics are low-ESR types. Replacing them with
+    general-purpose parts raises output ripple.
+capacitors:
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 400
+    original_voltage_v: 385
+    quantity: 1
+    max_diameter_mm: 18
+    max_height_mm: 36
+    series: nichicon-ucy
+    note: >-
+      Primary bulk capacitor, on the mains side of the transformer. It holds
+      a lethal charge. The rating must not be reduced.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 1
+    max_diameter_mm: 4.3
+    max_height_mm: 8
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    max_diameter_mm: 5.3
+    max_height_mm: 12
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 82
+    voltage_v: 50
+    original_voltage_v: 35
+    quantity: 3
+    max_diameter_mm: 6.5
+    max_height_mm: 13
+    series: panasonic-fr
+    note: >-
+      82 uF is not a stocked value in modern ranges; 100 uF is the usual
+      substitute and fits the same space.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 330
+    voltage_v: 25
+    original_voltage_v: 10
+    quantity: 1
+    max_diameter_mm: 10
+    max_height_mm: 20
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 1000
+    voltage_v: 16
+    original_voltage_v: 10
+    quantity: 3
+    max_diameter_mm: 10
+    max_height_mm: 20
+    series: panasonic-fr

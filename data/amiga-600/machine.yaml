@@ -1,0 +1,35 @@
+id: amiga-600
+name: Amiga 600
+family: amiga
+aliases:
+  - Commodore Amiga 600
+  - A600
+  - A600HD
+board_order:
+  - mainboard
+  - psu
+notes:
+  - >-
+    Six mainboard revisions are known - 1.0/1.1, 1.3, 1.5, 2A, 2B and 2D -
+    and they share one capacitor complement of nineteen positions. Only the
+    physical placement moves between them, so a single board file covers
+    them all. Rev 1.5 is reported to have added a capacitor near the video
+    encoder; the position is not identified anywhere retrievable and is not
+    in the list.
+  - >-
+    Most of the mainboard electrolytics are surface mount. Four large
+    positions are through-hole radial. Fitting leaded radial capacitors into
+    surface-mount pads is a common shortcut and a bad one: the pads have no
+    mechanical anchor and lift off the board.
+  - >-
+    The mainboard carries no battery. The real-time clock and its
+    rechargeable cell are on the A601 trapdoor RAM expansion, which is an
+    option rather than part of the machine. If an A601 is fitted, that cell
+    leaks and corrodes the expansion board and the traces under it; remove
+    it. A machine with an empty trapdoor has nothing to remove. The A601 has
+    no capacitor list here because none is published.
+  - >-
+    The machine takes an external mains brick with a five-pin square DIN
+    plug, supplying +5 V, +12 V and -12 V. Several different supplies were
+    shipped, and the number on the case does not describe what is inside.
+    Identify the supply by the board in it before ordering anything.

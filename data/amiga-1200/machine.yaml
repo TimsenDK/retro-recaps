@@ -1,0 +1,33 @@
+id: amiga-1200
+name: Amiga 1200
+family: amiga
+aliases:
+  - Commodore Amiga 1200
+  - A1200
+board_order:
+  - mainboard
+  - psu
+notes:
+  - >-
+    Two mainboard families are in scope. The rev 1D file covers the 1D, 1D1
+    and 1D4 boards, which are the ones with a published capacitor list. Rev
+    2B is a different board - different chip RAM organisation, the mouse
+    port on a separate panel, no +12 V on the RGB connector - and no
+    capacitor list has been published for it, so it is a stub.
+  - >-
+    Earlier revisions 1A, 1B, 1C and 1E, and the intermediate 1D2 and 1D3,
+    exist in small numbers. No capacitor list is published for any of them
+    and none has an entry here.
+  - >-
+    Most of the mainboard electrolytics are surface mount. Four large
+    positions are through-hole radial. Fitting leaded radial capacitors into
+    surface-mount pads is a common shortcut and a bad one: the pads have no
+    mechanical anchor and lift off the board.
+  - >-
+    The mainboard carries no battery.
+  - >-
+    The machine takes an external mains brick with a five-pin square DIN
+    plug, supplying +5 V, +12 V and -12 V, shared with the Amiga 600. The
+    number on the case does not describe what is inside: the 391029-01 and
+    391029-03 boards are different designs with no capacitor value in
+    common. Identify the supply by the board in it before ordering anything.

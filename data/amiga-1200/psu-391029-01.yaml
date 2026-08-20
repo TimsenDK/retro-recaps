@@ -1,0 +1,102 @@
+id: amiga-1200-psu-391029-01
+machine: amiga-1200
+board: psu
+mains: true
+external: true
+x2_filter: unknown
+revisions:
+  - "391029-01"
+verification: derived
+notes:
+  - >-
+    The external brick with the five-pin square DIN plug, in the 110 V
+    build. The board inside is marked PB-3230-1.
+  - >-
+    This board shares no capacitor value with the 391029-03 board at
+    amiga-1200/psu-391029-03.yaml. They are different supply designs behind
+    the same 391029 prefix, so the dash number decides which list applies
+    and neither list is a substitute for the other. Open the case and match
+    the parts before ordering.
+  - >-
+    This is a mains-carrying supply in a sealed case with no user-
+    serviceable parts marking. The 450 V and 200 V positions sit on the
+    mains side of the transformer and hold a lethal charge after the unit is
+    unplugged; discharge them before touching anything on that side.
+  - >-
+    No source names the reference designators on this board, so every
+    position below is identified by value and quantity only. Count the parts
+    in the unit in hand and match them to the list.
+  - >-
+    The mains input filter is not inventoried. Film capacitors are fitted at
+    the mains input of these supplies but no retrievable record gives their
+    values, so they are not listed below. Replace any RIFA-marked film found
+    there unconditionally, whatever its rating.
+capacitors:
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 200
+    original_voltage_v: 200
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Primary bulk capacitor, on the mains side of the transformer. It holds
+      a lethal charge. The rating must not be reduced.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 450
+    original_voltage_v: 450
+    quantity: 1
+    series: nichicon-ucy
+    note: >-
+      Mains side of the transformer. The rating must not be reduced.
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 1
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 2
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 4.7
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 47
+    voltage_v: 50
+    original_voltage_v: 50
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 220
+    voltage_v: 25
+    original_voltage_v: 25
+    quantity: 3
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 470
+    voltage_v: 25
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 2200
+    voltage_v: 16
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr
+  - designators_unknown: true
+    type: electrolytic-radial
+    capacitance_uf: 3300
+    voltage_v: 16
+    original_voltage_v: 16
+    quantity: 1
+    series: panasonic-fr

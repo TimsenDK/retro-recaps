@@ -1,0 +1,26 @@
+id: amiga-1200-mainboard-rev2b
+machine: amiga-1200
+board: mainboard
+external: false
+revisions:
+  - 2B
+verification: unverified
+notes:
+  - >-
+    Open: no capacitor list has been published for this board, so none is
+    recorded here. The positions are not carried over from rev 1D because
+    whether they are the same is exactly what is unestablished.
+  - >-
+    This is a different PCB from the rev 1D family, not a minor variant of
+    it. It uses 512k x 8 chip RAM instead of 256k x 16, carries a later
+    Budgie, puts the mouse port on a separate panel, and drops +12 V from
+    the RGB connector. The power section is where an unchanged capacitor
+    complement is least safe to assume.
+  - >-
+    The rev 1D list at amiga-1200/mainboard-rev1d.yaml must not be applied
+    to this board.
+  - >-
+    Boards assembled in the Escom era are reported both as rev 1D4 and as
+    rev 2B. Whether an Escom-built rev 2B exists as a distinct variant, and
+    whether it differs electrically, is unresolved.
+capacitors: []
