@@ -1,6 +1,12 @@
 id: commodore-128dcr
 name: Commodore 128DCR
 family: commodore-8bit
+released: '1986'
+about: >-
+    The 128D revised for cost and shipped in a metal case, with a
+    switched-mode supply and a single-board layout. It is the last machine in
+    the Commodore 128 line.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_128
 aliases:
   - C128DCR
   - C128D-CR

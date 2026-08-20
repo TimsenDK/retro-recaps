@@ -1,6 +1,12 @@
 id: commodore-128d
 name: Commodore 128D
 family: commodore-8bit
+released: '1985'
+about: >-
+    The Commodore 128 in a plastic desktop chassis with the 1571 drive built
+    in and a detachable keyboard, sold mainly in Europe. The electronics are
+    the 128's.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_128
 aliases:
   - C128D
   - C-128D

@@ -1,6 +1,12 @@
 id: commodore-1551
 name: Commodore 1551
 family: commodore-drive
+released: '1984'
+about: >-
+    A 5¼-inch drive for the Commodore 16 and Plus/4 that connects through the
+    cartridge port rather than the serial bus, which makes it markedly faster
+    than a 1541 at the same 170 KB a disk.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1551
 aliases:
   - SFS 481
 board_order:

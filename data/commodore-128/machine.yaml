@@ -1,6 +1,12 @@
 id: commodore-128
 name: Commodore 128
 family: commodore-8bit
+released: '1985-01'
+about: >-
+    The last 8-bit home computer Commodore released, carrying two processors —
+    an 8502 and a Z80 — and 128 KB of RAM. It runs nearly all Commodore 64
+    software, drives an 80-column display of its own, and boots CP/M.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_128
 aliases:
   - C128
   - C-128

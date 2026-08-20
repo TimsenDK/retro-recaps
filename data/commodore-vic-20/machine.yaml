@@ -1,6 +1,13 @@
 id: commodore-vic-20
 name: Commodore VIC-20
 family: commodore-8bit
+released: '1980'
+about: >-
+    Commodore's first colour home computer, built around a 6502 at about 1 MHz
+    with 5 KB of RAM. It was sold through high-street shops rather than
+    computer dealers, and became the first computer of any kind to pass a
+    million units.
+wikipedia: https://en.wikipedia.org/wiki/VIC-20
 aliases:
   - VIC-20
   - VIC20

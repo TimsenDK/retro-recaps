@@ -902,6 +902,9 @@ class MachineView:
     name: str
     family: str
     family_name: str
+    released: str
+    about: str | None
+    wikipedia: str | None
     aliases: tuple[str, ...]
     notes: tuple[str, ...]
     linked_notes: tuple[NoteView, ...]
@@ -917,6 +920,18 @@ class MachineView:
     @property
     def family_mark_url(self) -> str | None:
         return family_mark(self.family)
+
+    @property
+    def released_year(self) -> str:
+        """The year alone. A month is worth recording and rarely worth showing."""
+        return self.released[:4]
+
+    @property
+    def wikipedia_title(self) -> str | None:
+        """The article's own title, as a reader would see it on Wikipedia."""
+        if not self.wikipedia:
+            return None
+        return self.wikipedia.rsplit("/", 1)[-1].replace("_", " ")
 
 
 @dataclass(frozen=True)
@@ -980,6 +995,9 @@ def machine_view(
         name=machine.name,
         family=machine.family,
         family_name=label_for(FAMILY_NAMES, machine.family),
+        released=machine.released,
+        about=machine.about,
+        wikipedia=machine.wikipedia,
         aliases=machine.aliases,
         notes=machine.notes,
         linked_notes=note_views(machine.notes, targets),
@@ -988,6 +1006,31 @@ def machine_view(
         coverage=coverage_for(boards),
         hazards=machine_hazards(boards, machine),
     )
+
+
+def _release_sort_key(machine: MachineView) -> tuple[int, int, int, tuple]:
+    """Oldest first, within a family.
+
+    A reader scanning a family is following the line as it was built, so the
+    order is the order the machines appeared in.
+
+    `released` may be a bare year, a year and month, or a full date, and the
+    missing parts count as the *end* of what is known rather than the start.
+    That is a choice and worth stating: where a machine is dated only to a year
+    and another in the same year is dated to a month, the vague one is almost
+    always a variant that followed — the 128D is dated 1985 against the 128's
+    January 1985, and the Commodore 16 is dated 1984 against the Plus/4's June.
+    Counting the year as January put both variants ahead of the machines they
+    derive from.
+
+    Machines sharing a date fall back to the natural order of their names, so
+    the list is stable whatever the dataset does next.
+    """
+    parts = machine.released.split("-")
+    year = int(parts[0])
+    month = int(parts[1]) if len(parts) > 1 else 12
+    day = int(parts[2]) if len(parts) > 2 else 31
+    return (year, month, day, natural_key(machine.name))
 
 
 def _family_sort_key(family_id: str) -> tuple[int, str]:
@@ -1003,7 +1046,7 @@ def family_views(machines: list[MachineView]) -> tuple[FamilyView, ...]:
         grouped.setdefault(machine.family, []).append(machine)
     families = []
     for family_id in sorted(grouped, key=_family_sort_key):
-        members = tuple(sorted(grouped[family_id], key=lambda m: natural_key(m.name)))
+        members = tuple(sorted(grouped[family_id], key=_release_sort_key))
         families.append(
             FamilyView(
                 id=family_id,

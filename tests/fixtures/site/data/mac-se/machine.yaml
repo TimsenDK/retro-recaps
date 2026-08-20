@@ -1,6 +1,7 @@
 id: mac-se
 name: Macintosh SE
 family: macintosh
+released: '1987-03'
 board_order:
   - logic
   - analog

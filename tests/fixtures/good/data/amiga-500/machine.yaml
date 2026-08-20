@@ -1,6 +1,7 @@
 id: amiga-500
 name: Commodore Amiga 500
 family: amiga
+released: '1987-04'
 aliases:
   - A500
 board_order:

@@ -1,6 +1,12 @@
 id: commodore-1581
 name: Commodore 1581
 family: commodore-drive
+released: '1987'
+about: >-
+    A 3½-inch drive holding 800 KB a disk — the largest-capacity serial bus
+    drive Commodore made. It supports partitions and a far larger directory
+    than its predecessors, and was a favourite of bulletin board operators.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1581
 aliases:
   - CBM 1581
   - 1581 3.5"

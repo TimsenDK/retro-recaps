@@ -1,6 +1,12 @@
 id: commodore-64
 name: Commodore 64
 family: commodore-8bit
+released: '1982-08'
+about: >-
+    An 8-bit home computer on a 6510, remembered for the VIC-II video chip and
+    the SID sound chip, which gave it graphics and audio no rival at the price
+    could match. It is the best-selling desktop computer model ever made.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_64
 aliases:
   - C64
   - C-64

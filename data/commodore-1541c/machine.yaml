@@ -1,6 +1,12 @@
 id: commodore-1541c
 name: Commodore 1541C
 family: commodore-drive
+released: '1986'
+about: >-
+    The 1541 in the lighter case Commodore moved to in 1986, with a track
+    sensor that stops the head knocking against the end stop during a reset.
+    Same 170 KB, same serial bus.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1541
 aliases:
   - VC 1541 C
   - 1541-C

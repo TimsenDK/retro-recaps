@@ -1,6 +1,12 @@
 id: amiga-1200
 name: Amiga 1200
 family: amiga
+released: '1992-10'
+about: >-
+    The AGA Amiga for the home: a 32-bit 68EC020 at 14 MHz with 2 MB of RAM
+    and a palette of 16.8 million colours. It is the last Amiga Commodore
+    brought to volume before the company failed in 1994.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_1200
 aliases:
   - Commodore Amiga 1200
   - A1200

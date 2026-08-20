@@ -1,6 +1,13 @@
 id: commodore-16
 name: Commodore 16
 family: commodore-8bit
+released: '1984'
+about: >-
+    An entry-level machine meant to replace the VIC-20, with 16 KB of RAM and
+    a TED chip offering 121 colours. It shares nothing with the Commodore 64's
+    software library, which is much of why it failed in the United States
+    while selling modestly in Europe.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_16
 aliases:
   - C16
   - C-16

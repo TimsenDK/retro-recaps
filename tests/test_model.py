@@ -63,6 +63,7 @@ def test_boards_are_returned_in_recap_order() -> None:
             "id": "mac-se30",
             "name": "Macintosh SE/30",
             "family": "macintosh",
+            "released": "1989",
             "board_order": ["logic", "analog", "psu"],
         }
     )

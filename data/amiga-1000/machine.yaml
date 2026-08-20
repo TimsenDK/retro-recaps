@@ -1,6 +1,13 @@
 id: amiga-1000
 name: Amiga 1000
 family: amiga
+released: '1985-07'
+about: >-
+    The first Amiga, on a 68000 at 7.16 MHz, with pre-emptive multitasking and
+    a custom chipset for graphics and sound. Its operating system is loaded
+    from disk into writable memory rather than held in ROM, which no later
+    Amiga repeats.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_1000
 aliases:
   - Commodore Amiga 1000
   - A1000

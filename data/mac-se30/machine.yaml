@@ -1,6 +1,12 @@
 id: mac-se30
 name: Macintosh SE/30
 family: macintosh
+released: '1989-01'
+about: >-
+    The SE's case around a 32-bit 68030 at 15.7 MHz, with a high-density
+    floppy drive and room for far more RAM than any compact Mac before it. It
+    is the fastest of the black-and-white compacts.
+wikipedia: https://en.wikipedia.org/wiki/Macintosh_SE/30
 aliases:
   - Mac SE/30
   - SE/30

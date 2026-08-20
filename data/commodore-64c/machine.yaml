@@ -1,6 +1,12 @@
 id: commodore-64c
 name: Commodore 64C
 family: commodore-8bit
+released: '1986'
+about: >-
+    The Commodore 64 in the wedge-free case Commodore adopted across the
+    range, sold from 1986. Later boards moved to the cost-reduced 8500 and
+    8580 chips, so what is inside a 64C is not one thing.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_64
 aliases:
   - C64C
   - C64-C

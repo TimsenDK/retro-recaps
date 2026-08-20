@@ -1,6 +1,12 @@
 id: mac-se
 name: Macintosh SE
 family: macintosh
+released: '1987-03'
+about: >-
+    A compact Macintosh on a 68000 at 7.8 MHz, adding an internal drive bay,
+    an expansion slot and the Apple Desktop Bus to what the Macintosh Plus
+    offered. It stayed in production until 1990.
+wikipedia: https://en.wikipedia.org/wiki/Macintosh_SE
 aliases:
   - Mac SE
   - SE

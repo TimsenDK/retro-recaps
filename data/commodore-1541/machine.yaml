@@ -1,6 +1,13 @@
 id: commodore-1541
 name: Commodore 1541
 family: commodore-drive
+released: '1982'
+about: >-
+    The single-sided 5¼-inch floppy drive that came with the Commodore 64,
+    holding 170 KB a disk. Around nine in ten C64 owners bought one, and its
+    head-alignment failures — often caused by copy protection hammering the
+    mechanism — are as well remembered as the drive is.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1541
 aliases:
   - VIC-1541
   - CBM 1541

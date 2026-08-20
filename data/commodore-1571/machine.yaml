@@ -1,6 +1,12 @@
 id: commodore-1571
 name: Commodore 1571
 family: commodore-drive
+released: '1985'
+about: >-
+    The double-sided drive built for the Commodore 128, holding 340 KB a disk.
+    It reads MFM as well as Commodore's own GCR, which is what lets the 128
+    boot CP/M, and it has a burst mode for faster transfers.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1571
 aliases:
   - CBM 1571
   - 1571 double-sided

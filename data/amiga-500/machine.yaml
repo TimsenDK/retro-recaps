@@ -1,6 +1,12 @@
 id: amiga-500
 name: Amiga 500
 family: amiga
+released: '1987-04'
+about: >-
+    The Amiga that sold: a 68000 at 7.16 MHz in a keyboard-case wedge, at a
+    price a household would pay. It was Commodore's best-seller in Europe and,
+    for most of a decade, the games machine to have.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_500
 aliases:
   - Commodore Amiga 500
   - A500

@@ -1,6 +1,12 @@
 id: amiga-600
 name: Amiga 600
 family: amiga
+released: '1992-03'
+about: >-
+    A compact Amiga on the same 68000 as the 500, with PCMCIA and an internal
+    IDE drive but no numeric keypad. It arrived as the line was moving to AGA,
+    and sat awkwardly beside the 500 Plus it replaced.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_600
 aliases:
   - Commodore Amiga 600
   - A600

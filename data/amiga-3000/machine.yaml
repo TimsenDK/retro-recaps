@@ -1,6 +1,12 @@
 id: amiga-3000
 name: Amiga 3000
 family: amiga
+released: '1990-06'
+about: >-
+    The high-end Amiga, on a 32-bit 68030 at 16 or 25 MHz with Zorro III
+    slots, SCSI on the board and the Enhanced Chip Set. It is a workstation
+    rather than a home computer.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_3000
 aliases:
   - Commodore Amiga 3000
   - A3000

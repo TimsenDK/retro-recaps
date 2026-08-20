@@ -80,6 +80,19 @@ Always ask first for operations that are destructive or irreversible:
   means running `python -m imagetools.cartoonify` from the private checkout; it
   writes into this repository and reads the machine list from `images.yaml`
   here. Nothing in this repository may name those paths.
+- **Machine-level context may name Wikipedia, and only Wikipedia.** Added
+  2026-08-20 at the owner's request. A `machine.yaml` carries `released`, a
+  short `about` summary in broad terms, and the `wikipedia` article that
+  summary was read from; the machine page renders them as a panel below the
+  board list. This is the one exception to the rule above, and it holds because
+  the two are different kinds of claim: what a machine *was* is encyclopaedic
+  context a reader can check for themselves, while what is on its board is
+  research this project did and records privately. The exception does not reach
+  board files, capacitor positions, or anything a `verified` badge rests on —
+  those still carry no source. Summaries are written in our own words rather
+  than quoted, so no licence obligation follows the text; the link is there so
+  a reader can go further, and because the article earned the credit.
+
 - **The handover is a lead, not an authority.** `docs/input/HANDOVER_retro_recap_BOM.md`
   and the spreadsheet beside it were an exploratory clarification written before
   this repository existed. They say where someone once looked; they do not say

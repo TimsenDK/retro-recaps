@@ -58,7 +58,8 @@ def test_duplicate_board_id_is_an_issue(tmp_path: Path) -> None:
     machine_dir.mkdir(parents=True)
     (tmp_path / "reference").mkdir()
     (machine_dir / "machine.yaml").write_text(
-        "id: amiga-500\nname: A500\nfamily: amiga\nboard_order: [mainboard]\n",
+        "id: amiga-500\nname: A500\nfamily: amiga\nreleased: \'1987\'\n"
+        "board_order: [mainboard]\n",
         encoding="utf-8",
     )
     body = (
@@ -96,7 +97,8 @@ def test_an_empty_board_file_is_an_issue(tmp_path: Path) -> None:
     machine_dir.mkdir(parents=True)
     (tmp_path / "reference").mkdir()
     (machine_dir / "machine.yaml").write_text(
-        "id: amiga-2000\nname: A2000\nfamily: amiga\nboard_order: [mainboard]\n",
+        "id: amiga-2000\nname: A2000\nfamily: amiga\nreleased: \'1987\'\n"
+        "board_order: [mainboard]\n",
         encoding="utf-8",
     )
     (machine_dir / "mainboard-rev6x.yaml").write_text(
@@ -169,7 +171,8 @@ def test_a_layout_file_is_loaded_as_a_layout_not_a_board(tmp_path: Path) -> None
     machine_dir.mkdir(parents=True)
     (tmp_path / "reference").mkdir()
     (machine_dir / "machine.yaml").write_text(
-        "id: demo\nname: Demo\nfamily: amiga\nboard_order:\n  - mainboard\n",
+        "id: demo\nname: Demo\nfamily: amiga\nreleased: \'1987\'\n"
+        "board_order:\n  - mainboard\n",
         encoding="utf-8",
     )
     (machine_dir / "mainboard.yaml").write_text(
@@ -208,7 +211,8 @@ def test_a_layout_coordinate_outside_the_board_is_a_schema_error(
     machine_dir.mkdir(parents=True)
     (tmp_path / "reference").mkdir()
     (machine_dir / "machine.yaml").write_text(
-        "id: demo\nname: Demo\nfamily: amiga\nboard_order:\n  - mainboard\n",
+        "id: demo\nname: Demo\nfamily: amiga\nreleased: \'1987\'\n"
+        "board_order:\n  - mainboard\n",
         encoding="utf-8",
     )
     (machine_dir / "mainboard.yaml").write_text(

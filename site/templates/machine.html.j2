@@ -59,4 +59,19 @@
 <p>No board files exist for this machine yet.</p>
 {% endif %}
 
+{# Context, not capacitor data. It sits at the foot of the page because a
+   reader arrives here holding the board and wanting the list; what the machine
+   was is worth having and is never the reason they came. #}
+{% if machine.about %}
+<aside class="about">
+    <h2>About the {{ machine.name }}</h2>
+    <p class="released"><span>Introduced</span> {{ machine.released_year }}</p>
+    <p>{{ machine.about }}</p>
+    {% if machine.wikipedia %}
+    <p class="onward">Read more: <a href="{{ machine.wikipedia }}"
+       rel="noopener">{{ machine.wikipedia_title }}</a> on Wikipedia.</p>
+    {% endif %}
+</aside>
+{% endif %}
+
 {% endblock %}

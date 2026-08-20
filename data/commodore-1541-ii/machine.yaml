@@ -1,6 +1,12 @@
 id: commodore-1541-ii
 name: Commodore 1541-II
 family: commodore-drive
+released: '1988'
+about: >-
+    The last of the 1541 line: a smaller case, an external power brick, and a
+    mechanism sourced from more than one supplier. It reads and writes exactly
+    what a 1541 does.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_1541
 aliases:
   - 1541 II
   - 1541-2

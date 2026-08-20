@@ -9,6 +9,7 @@ import pytest
 from tools.loader import load_dataset
 from tools.model import Board, Dataset, Machine
 from tools.site.context import (
+    _release_sort_key,
     ANALOG_HAZARD,
     CRT_ANALOG_HAZARD,
     CRT_MACHINE_HAZARD,
@@ -403,6 +404,7 @@ def hazard_machine(family: str, **overrides) -> Machine:
         "id": "m",
         "name": "A machine",
         "family": family,
+        "released": "1987",
         "board_order": ["mainboard", "logic", "analog", "psu"],
     }
     return Machine.from_dict({**document, **overrides})
@@ -669,3 +671,41 @@ def test_machine_notes_arrive_at_the_template_already_split(
 ) -> None:
     view = machine(site, "amiga-500")
     assert len(view.linked_notes) == len(view.notes)
+
+
+def test_a_family_lists_its_machines_oldest_first() -> None:
+    """A reader scanning a family is following the line as it was built.
+
+    The order was alphabetical by name, which put the Amiga 1000 after the
+    Amiga 500 and the 1541-II in the middle of the drives. `released` orders
+    them instead, and it is required of every machine so the order cannot
+    silently fall back to something else.
+    """
+    dataset, issues = load_dataset(Path(__file__).resolve().parent.parent)
+    assert issues == []
+    context = build_context(dataset)
+    for family in context.families:
+        keys = [_release_sort_key(machine) for machine in family.machines]
+        assert keys == sorted(keys), family.id
+
+
+def test_a_year_alone_sorts_after_a_month_in_the_same_year() -> None:
+    """A bare year counts as the end of that year, not the start.
+
+    Where one machine in a year is dated to a month and another only to the
+    year, the vague one is almost always the variant that followed: the 128D
+    against the 128, the Commodore 16 against the Plus/4. Treating the year as
+    January put every such variant ahead of what it derives from.
+    """
+    early = hazard_machine("amiga", id="early", name="Early", released="1984-06")
+    late = hazard_machine("amiga", id="late", name="Late", released="1984")
+    dataset = Dataset(
+        machines={m.id: m for m in (early, late)},
+        boards={},
+        parts={},
+        series={},
+        suppliers={},
+        offers={},
+    )
+    context = build_context(dataset)
+    assert [m.id for m in context.families[0].machines] == ["early", "late"]

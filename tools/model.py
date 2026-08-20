@@ -197,7 +197,10 @@ class Machine:
     id: str
     name: str
     family: str
+    released: str
     board_order: tuple[str, ...]
+    about: str | None = None
+    wikipedia: str | None = None
     aliases: tuple[str, ...] = ()
     notes: tuple[str, ...] = ()
     batteries: tuple[Battery, ...] = ()
@@ -209,7 +212,10 @@ class Machine:
             id=document["id"],
             name=document["name"],
             family=document["family"],
+            released=document["released"],
             board_order=tuple(document["board_order"]),
+            about=document.get("about"),
+            wikipedia=document.get("wikipedia"),
             aliases=tuple(document.get("aliases", ())),
             notes=tuple(document.get("notes", ())),
             batteries=tuple(

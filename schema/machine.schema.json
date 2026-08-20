@@ -4,39 +4,108 @@
   "title": "Machine",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "name", "family", "board_order"],
+  "required": [
+    "id",
+    "name",
+    "family",
+    "released",
+    "board_order"
+  ],
   "properties": {
-    "id": { "$ref": "#/$defs/slug" },
-    "name": { "type": "string", "minLength": 1 },
-    "family": { "enum": ["amiga", "commodore-8bit", "commodore-drive", "macintosh"] },
+    "id": {
+      "$ref": "#/$defs/slug"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family": {
+      "enum": [
+        "amiga",
+        "commodore-8bit",
+        "commodore-drive",
+        "macintosh"
+      ]
+    },
+    "released": {
+      "description": "When the machine was first sold, as YYYY, YYYY-MM or YYYY-MM-DD. It orders the machines within a family, oldest first.",
+      "type": "string",
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "about": {
+      "description": "Two or three sentences on what the machine is, in broad terms. Context for a reader who is recapping one, not capacitor data.",
+      "type": "string",
+      "minLength": 1
+    },
+    "wikipedia": {
+      "description": "The Wikipedia article the `about` summary was read from, linked from the machine page.",
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[a-z]{2}\\.wikipedia\\.org/wiki/"
+    },
     "aliases": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "board_order": {
       "type": "array",
       "minItems": 1,
-      "items": { "enum": ["logic", "mainboard", "daughterboard", "paddle", "analog", "psu"] }
+      "items": {
+        "enum": [
+          "logic",
+          "mainboard",
+          "daughterboard",
+          "paddle",
+          "analog",
+          "psu"
+        ]
+      }
     },
     "notes": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "batteries": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["kind", "action"],
+        "required": [
+          "kind",
+          "action"
+        ],
         "properties": {
-          "kind": { "enum": ["nicd", "pram", "other"] },
-          "action": { "enum": ["remove", "replace"] },
-          "note": { "type": "string", "minLength": 1 }
+          "kind": {
+            "enum": [
+              "nicd",
+              "pram",
+              "other"
+            ]
+          },
+          "action": {
+            "enum": [
+              "remove",
+              "replace"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }
   },
   "$defs": {
-    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    }
   }
 }

@@ -19,6 +19,7 @@ def make_dataset(board_document: dict, **overrides) -> Dataset:
             "id": "amiga-500",
             "name": "Commodore Amiga 500",
             "family": "amiga",
+            "released": "1987",
             "board_order": ["mainboard"],
         }
     )
@@ -523,6 +524,7 @@ def test_a_machine_id_must_match_its_directory() -> None:
             "id": "amiga-2000",
             "name": "Commodore Amiga 2000",
             "family": "amiga",
+            "released": "1987",
             "board_order": ["mainboard"],
         },
         path=Path("data/amiga-500/machine.yaml"),
@@ -549,6 +551,7 @@ def test_a_machine_in_its_own_directory_is_fine() -> None:
             "id": "amiga-500",
             "name": "Commodore Amiga 500",
             "family": "amiga",
+            "released": "1987",
             "board_order": ["mainboard"],
         },
         path=Path("data/amiga-500/machine.yaml"),
@@ -570,6 +573,7 @@ def test_machine_without_boards_is_a_warning() -> None:
             "id": "amiga-500",
             "name": "Commodore Amiga 500",
             "family": "amiga",
+            "released": "1987",
             "board_order": ["mainboard"],
         }
     )
@@ -660,6 +664,7 @@ def two_board_dataset(first: dict, second: dict) -> Dataset:
             "id": "commodore-1541",
             "name": "Commodore 1541",
             "family": "commodore-drive",
+            "released": "1982",
             "board_order": ["mainboard", "psu"],
         }
     )
@@ -739,6 +744,7 @@ def mains_dataset(document: dict) -> Dataset:
             "id": "amiga-500",
             "name": "Commodore Amiga 500",
             "family": "amiga",
+            "released": "1987",
             "board_order": ["mainboard", "psu", "analog"],
         }
     )
@@ -1039,6 +1045,7 @@ def demo_machine() -> Machine:
             "id": "demo",
             "name": "Demo Machine",
             "family": "demo",
+            "released": "1987",
             "board_order": ["mainboard"],
         }
     )

@@ -1035,6 +1035,47 @@ tr.pinned {
     border-color: var(--rule-strong);
 }
 
+/* The context panel at the foot of a machine page. It is set apart from the
+   recapping material above it rather than styled to match: what the machine
+   was is a different kind of claim from what is on its board, and a reader
+   should be able to see the join. */
+.about {
+    margin: 3rem 0 0;
+    padding: 1.25rem 1.4rem 1.4rem;
+    background: var(--panel-alt);
+    border-radius: 0.4rem;
+    border-top: 3px solid var(--family-ink);
+}
+
+.about h2 {
+    margin-top: 0;
+    font-size: 1.15rem;
+}
+
+.about p {
+    max-width: 60ch;
+}
+
+.about .released {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin: -0.35rem 0 0.75rem;
+}
+
+.about .released span {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    margin-right: 0.4rem;
+}
+
+.about .onward {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
 .js-only {
     display: none;
 }

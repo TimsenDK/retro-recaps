@@ -1,6 +1,12 @@
 id: mac-classic-ii
 name: Macintosh Classic II
 family: macintosh
+released: '1991-10'
+about: >-
+    The last black-and-white compact Macintosh, on a 68030 at 16 MHz. Its data
+    bus is 16 bits wide to save cost, which leaves it about a third slower
+    than the SE/30 despite the same processor.
+wikipedia: https://en.wikipedia.org/wiki/Macintosh_Classic_II
 aliases:
   - Classic II
   - Performa 200

@@ -1,6 +1,12 @@
 id: amiga-2000
 name: Amiga 2000
 family: amiga
+released: '1987-03'
+about: >-
+    The expandable desktop Amiga: the same 68000 as the 500, in a case with
+    five Zorro II slots, video slots and ISA bridge slots. It stayed the most
+    expandable Amiga until the 3000 arrived.
+wikipedia: https://en.wikipedia.org/wiki/Amiga_2000
 aliases:
   - Commodore Amiga 2000
   - A2000

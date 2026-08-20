@@ -740,3 +740,29 @@ def test_the_search_keys_come_up_as_a_flex_row(site_out: Path) -> None:
     assert "style.display" not in script
     assert 'classList.add("js")' in script
     assert ".js .keys{display:flex" in sheet
+
+
+def test_a_machine_page_carries_its_factbox_at_the_foot(site_out: Path) -> None:
+    """Context belongs after the boards, not before them.
+
+    A reader arrives holding the board and wanting the list. What the machine
+    was is worth having and is never why they came, so it sits below the board
+    list — and it links the article it was read from rather than passing the
+    summary off as ours.
+    """
+    page = read(site_out, "amiga-500/index.html")
+    assert '<aside class="about">' in page
+    assert page.index("Boards, in the order to recap them") < page.index(
+        '<aside class="about">'
+    )
+    assert "Introduced</span> 1987" in page
+    assert 'href="https://en.wikipedia.org/wiki/Amiga_500"' in page
+    assert ">Amiga 500</a> on Wikipedia" in page
+
+
+def test_a_machine_with_nothing_written_about_it_gets_no_factbox(
+    site_out: Path,
+) -> None:
+    """An empty panel is worse than no panel."""
+    page = read(site_out, "mac-se/index.html")
+    assert '<aside class="about">' not in page

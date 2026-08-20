@@ -1,6 +1,13 @@
 id: commodore-plus4
 name: Commodore Plus/4
 family: commodore-8bit
+released: '1984-06'
+about: >-
+    Sold as a productivity machine, with a word processor, spreadsheet,
+    database and graphing package built into ROM. It runs a 7501 or 8501 at
+    1.76 MHz with 64 KB of RAM, and like the Commodore 16 it cannot run
+    Commodore 64 software.
+wikipedia: https://en.wikipedia.org/wiki/Commodore_Plus/4
 aliases:
   - Plus/4
   - Plus 4
