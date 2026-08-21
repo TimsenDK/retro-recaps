@@ -37,6 +37,13 @@ with a heading — `## Continued in the private repository` or `## Continued in 
 public repository` — so a reader can tell which checkout a path is relative to.
 Unmarked entries are from wherever the file last said.
 
+## Referring to files
+
+Never name a file in the session scratchpad — or anywhere outside these two
+repositories — without giving its complete path. A bare file name is findable
+only by whoever wrote it; the person reading has no way to know which directory
+it means, and the scratchpad is not somewhere they would think to look.
+
 ## Execution style
 
 - Prefer subagents where the work allows it. Make them self-contained so they do
