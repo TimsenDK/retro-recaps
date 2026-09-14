@@ -119,8 +119,21 @@
                 <td colspan="5">
                     <span class="series"><strong>Series:</strong>
                         {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
-                        {% if row.part %}<span class="mono">{{ row.part.mpn }}</span>{% endif %}
                     </span>
+                    {% if row.part %}
+                    <span class="part">
+                        <strong>Part:</strong> <span class="mono">{{ row.part.mpn }}</span>
+                        {%- if row.part.dimensions %} · {{ row.part.dimensions }}{% endif %}
+                        {%- if row.part.lead_spacing %} · {{ row.part.lead_spacing }} lead spacing{% endif %}
+                    </span>
+                    {% if row.part.links %}
+                    <span class="buy no-print">
+                        {% for link in row.part.links %}
+                        <a href="{{ link.url }}" rel="noopener">{{ link.name }}{% if not link.is_product %} (search){% endif %}</a>{% if not loop.last %} · {% endif %}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                    {% endif %}
                     {% if row.differs_from_board %}
                     <span class="badge tone-{{ row.verification.tone }}">{{ row.verification.status }}</span>
                     {% endif %}

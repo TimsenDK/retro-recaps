@@ -1,0 +1,36 @@
+name: mouser
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mouser
+  cancel-in-progress: true
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: python -m pip install --upgrade pip && python -m pip install -e .
+
+      - name: Look up catalogued parts
+        env:
+          MOUSER_API_KEY: ${{ secrets.MOUSER_API_KEY }}
+        run: python -m tools.mouser --root . --out mouser.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mouser
+          path: mouser.json

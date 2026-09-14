@@ -382,6 +382,17 @@ def test_the_good_fixture_builds_a_coherent_context() -> None:
     assert shielded.fit_limits == ("max height 24 mm",)
 
 
+def test_a_pinned_part_links_a_product_page_where_a_stock_number_is_known() -> None:
+    loaded, _ = load_dataset(FIXTURES / "good")
+    part = build_context(loaded).boards[0].rows[1].part
+    assert part is not None
+    by_name = {link.name: link for link in part.links}
+    assert by_name["Mouser Electronics"].is_product
+    assert by_name["Mouser Electronics"].url.endswith("/ProductDetail/667-EEU-FR1E332")
+    assert not by_name["DigiKey"].is_product
+    assert "keywords=EEU-FR1E332" in by_name["DigiKey"].url
+
+
 # --------------------------------------------------------------------------
 # Hazards, decided by what the board declares it carries
 # --------------------------------------------------------------------------

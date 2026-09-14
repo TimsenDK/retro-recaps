@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series
+from tools.resolve import PRODUCT, supplier_links
 from tools.site.layout import LayoutView, layout_view
 
 VERIFICATION_ORDER = ("verified", "derived", "unverified")
@@ -640,6 +641,13 @@ def series_view(series: Series) -> SeriesView:
 
 
 @dataclass(frozen=True)
+class SupplierLinkView:
+    name: str
+    url: str
+    is_product: bool
+
+
+@dataclass(frozen=True)
 class PartView:
     id: str
     manufacturer: str
@@ -649,7 +657,9 @@ class PartView:
     capacitance: str
     voltage: str
     dimensions: str | None
+    lead_spacing: str | None
     note: str | None
+    links: tuple[SupplierLinkView, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -720,7 +730,20 @@ def _part_view(part: Part, dataset: Dataset) -> PartView:
         capacitance=format_capacitance(part.capacitance_uf),
         voltage=format_voltage(part.voltage_v),
         dimensions=dimensions,
+        lead_spacing=(
+            f"{format_number(part.lead_spacing_mm)} mm"
+            if part.lead_spacing_mm is not None
+            else None
+        ),
         note=part.note,
+        links=tuple(
+            SupplierLinkView(
+                name=dataset.suppliers[link.supplier_id].name,
+                url=link.url,
+                is_product=link.kind == PRODUCT,
+            )
+            for link in supplier_links(part, dataset)
+        ),
     )
 
 

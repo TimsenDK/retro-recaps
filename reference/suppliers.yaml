@@ -11,6 +11,8 @@
 - id: digikey
   name: DigiKey
   region: DK
+  # A DigiKey stock number searched for opens that product's page.
+  product_url: "https://www.digikey.dk/en/products/result?keywords={sku}"
   search_url: "https://www.digikey.dk/en/products/result?keywords={mpn}"
 
 - id: reichelt

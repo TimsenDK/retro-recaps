@@ -1,0 +1,58 @@
+# Concrete parts a position can be pinned to. Dimensions are the nominal
+# figures from the manufacturer's datasheet; the MPN is the straight-lead bulk
+# variant, not a taped one.
+
+- id: eeufr1h4r7
+  manufacturer: Panasonic
+  mpn: EEU-FR1H4R7
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 4.7
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufr1h220
+  manufacturer: Panasonic
+  mpn: EEU-FR1H220
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 22
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufr1e470
+  manufacturer: Panasonic
+  mpn: EEU-FR1E470
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 25
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufr1e101
+  manufacturer: Panasonic
+  mpn: EEU-FR1E101
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 100
+  voltage_v: 25
+  diameter_mm: 6.3
+  height_mm: 11.2
+  lead_spacing_mm: 2.5
+
+- id: eeufr1e471
+  manufacturer: Panasonic
+  mpn: EEU-FR1E471
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 470
+  voltage_v: 25
+  diameter_mm: 10
+  height_mm: 12.5
+  lead_spacing_mm: 5

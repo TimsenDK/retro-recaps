@@ -24,6 +24,9 @@ capacitors:
     original_voltage_v: 35
     quantity: 2
     series: panasonic-fr
+    part: eeufr1h4r7
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C105
       - C107
@@ -38,6 +41,9 @@ capacitors:
     original_voltage_v: 35
     quantity: 7
     series: panasonic-fr
+    part: eeufr1h220
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C112
       - C162
@@ -60,6 +66,9 @@ capacitors:
     original_voltage_v: 16
     quantity: 15
     series: panasonic-fr
+    part: eeufr1e470
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C178
     type: electrolytic-radial
@@ -68,6 +77,9 @@ capacitors:
     original_voltage_v: 16
     quantity: 1
     series: panasonic-fr
+    part: eeufr1e101
+    max_diameter_mm: 6.3
+    max_lead_spacing_mm: 2.5
   - designators:
       - C160
       - C416
@@ -82,3 +94,6 @@ capacitors:
     original_voltage_v: 16
     quantity: 7
     series: panasonic-fr
+    part: eeufr1e471
+    max_diameter_mm: 10
+    max_lead_spacing_mm: 5
