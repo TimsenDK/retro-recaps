@@ -1,0 +1,18 @@
+{
+  "source": "mouser",
+  "fetched_at": "2026-09-14T09:00:00Z",
+  "parts": {
+    "eeufr1e332": {
+      "mouser_part_number": "667-EEU-FR1E332",
+      "in_stock": 0,
+      "lifecycle": null,
+      "url": "https://www.mouser.dk/ProductDetail/667-EEU-FR1E332"
+    },
+    "eeufr1e470": {
+      "mouser_part_number": "667-EEU-FR1E470",
+      "in_stock": 250,
+      "lifecycle": null,
+      "url": "https://www.mouser.dk/ProductDetail/667-EEU-FR1E470"
+    }
+  }
+}

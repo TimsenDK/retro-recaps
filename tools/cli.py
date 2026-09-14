@@ -53,6 +53,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("build"),
         help="Directory to write the site into (default: build).",
     )
+    build.add_argument(
+        "--stock",
+        type=Path,
+        default=None,
+        help=(
+            "Stock file written by `python -m tools.mouser`. Without it, or "
+            "if it is missing, every part's stock is shown as unknown."
+        ),
+    )
 
     return parser
 
@@ -69,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "build-site":
         from tools.site.build import run_build_site
 
-        return run_build_site(root=args.root, out=args.out)
+        return run_build_site(root=args.root, out=args.out, stock=args.stock)
 
     parser.error(f"unhandled command: {args.command}")
     return 2

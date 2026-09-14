@@ -27,6 +27,7 @@ from tools.site.context import (
     verification_view,
 )
 from tools.site.images import PhotoView, load_photos
+from tools.stock import load_stock
 
 SITE_NAME = "Retro Recaps"
 SITE_TAGLINE = (
@@ -357,18 +358,26 @@ def _copy_tree(source_dir: Path, target_dir: Path) -> list[Path]:
     return written
 
 
-def build_site(root: Path, out: Path) -> list[Path]:
+def build_site(root: Path, out: Path, stock: Path | None = None) -> list[Path]:
     """Load the dataset and render it. Loader problems are not fatal here.
 
     `validate` is the command that judges the dataset; the site's job is to
     show what is there. A board that failed to load simply has no page.
+
+    A missing stock file is not fatal either: the Mouser lookup runs just
+    before the build and may have failed, and a site with stock unknown is
+    better than no site.
     """
     dataset, _ = load_dataset(root)
-    return render_site(build_context(dataset), root=root, out=out)
+    return render_site(
+        build_context(dataset, load_stock(stock)), root=root, out=out
+    )
 
 
-def run_build_site(root: Path, out: Path) -> int:
-    written = build_site(root, out)
+def run_build_site(root: Path, out: Path, stock: Path | None = None) -> int:
+    if stock is not None and load_stock(stock) is None:
+        print(f"No usable stock file at {stock}; building with stock unknown")
+    written = build_site(root, out, stock)
     pages = sum(1 for path in written if path.suffix == ".html")
     print(f"Wrote {pages} pages and {len(written)} files to {out}")
     return 0

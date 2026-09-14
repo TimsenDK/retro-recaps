@@ -36,6 +36,10 @@
         "$comment": "Highest working voltage the series is made in. A position rated above this points the reader at a series that cannot supply the part."
       },
       "low_esr": { "type": "boolean" },
+      "hybrid": {
+        "type": "boolean",
+        "$comment": "Default false. A conductive polymer hybrid electrolytic; selection prefers these where the position allows it."
+      },
       "note": { "type": "string", "minLength": 1 }
     }
   },

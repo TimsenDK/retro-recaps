@@ -44,7 +44,9 @@ capacitors:
     voltage_v: 50
     original_voltage_unknown: true
     quantity: 2
-    series: panasonic-fr
+    series: wurth-wcap-atg5
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C26
       - C27
@@ -56,6 +58,8 @@ capacitors:
     original_voltage_unknown: true
     quantity: 4
     series: panasonic-fr
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C25
       - C31
@@ -66,6 +70,9 @@ capacitors:
     original_voltage_unknown: true
     quantity: 3
     series: panasonic-fr
+    max_diameter_mm: 8
+    max_lead_spacing_mm: 3.5
+    allow_hybrid: false
   - designators:
       - C28
       - C30
@@ -87,6 +94,8 @@ capacitors:
     voltage_v: 16
     original_voltage_unknown: true
     quantity: 1
+    max_diameter_mm: 13
+    max_height_mm: 35
     series: panasonic-fr
   - designators:
       - C5
@@ -97,6 +106,7 @@ capacitors:
     original_voltage_unknown: true
     quantity: 2
     series: nichicon-lgn
+    max_lead_spacing_mm: 10
     note: >-
       Series pair on the primary bus, each holding roughly half of the
       rectified mains. Replace both together with identical parts; a single
@@ -108,8 +118,13 @@ capacitors:
     voltage_v: 50
     original_voltage_unknown: true
     quantity: 1
-    series: panasonic-fr
-    note: Regulator daughterboard inside the PSU enclosure.
+    series: wurth-wcap-atg5
+    max_diameter_mm: 5
+    allow_hybrid: false
+    note: >-
+      Regulator daughterboard inside the PSU enclosure. The fitted part is
+      4 × 7 mm on a 1.5 mm pitch; a 5 mm replacement needs its leads formed to
+      that pitch.
   - designators:
       - C16
     type: electrolytic-radial
@@ -118,6 +133,9 @@ capacitors:
     original_voltage_unknown: true
     quantity: 1
     series: panasonic-fr
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
+    allow_hybrid: false
     note: Regulator daughterboard inside the PSU enclosure.
   - designators:
       - C34
@@ -126,6 +144,9 @@ capacitors:
     voltage_v: 16
     quantity: 1
     series: panasonic-fr
+    max_diameter_mm: 6.3
+    max_lead_spacing_mm: 2.5
+    allow_hybrid: false
     verification: derived
     note: >-
       Regulator daughterboard inside the PSU enclosure. Voltage rating

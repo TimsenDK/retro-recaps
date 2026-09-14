@@ -36,6 +36,7 @@ class Capacitor:
     max_lead_spacing_mm: float | None = None
     series: str | None = None
     part: str | None = None
+    allow_hybrid: bool = True
     verification: str | None = None
     note: str | None = None
 
@@ -57,6 +58,7 @@ class Capacitor:
             max_lead_spacing_mm=document.get("max_lead_spacing_mm"),
             series=document.get("series"),
             part=document.get("part"),
+            allow_hybrid=bool(document.get("allow_hybrid", True)),
             verification=document.get("verification"),
             note=document.get("note"),
         )
@@ -235,6 +237,7 @@ class Series:
     voltage_min_v: float | None = None
     voltage_max_v: float | None = None
     low_esr: bool | None = None
+    hybrid: bool = False
     note: str | None = None
 
     @classmethod
@@ -248,6 +251,7 @@ class Series:
             voltage_min_v=document.get("voltage_min_v"),
             voltage_max_v=document.get("voltage_max_v"),
             low_esr=document.get("low_esr"),
+            hybrid=bool(document.get("hybrid", False)),
             note=document.get("note"),
         )
 

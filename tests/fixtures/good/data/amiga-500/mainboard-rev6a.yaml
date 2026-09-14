@@ -26,4 +26,5 @@ capacitors:
     voltage_v: 25
     original_voltage_v: 16
     quantity: 1
+    max_diameter_mm: 6.3
     series: panasonic-fr

@@ -13,6 +13,9 @@
 # states one fixed AC rating per part family rather than a manufacturing span,
 # so the field does not describe them; the X2 and Y2 voltage floors in the
 # validator are what guard those positions.
+#
+# `hybrid` marks a conductive polymer hybrid electrolytic. Selection prefers a
+# hybrid wherever the position allows one.
 
 - id: panasonic-fr
   manufacturer: Panasonic
@@ -22,9 +25,137 @@
   voltage_min_v: 6.3
   voltage_max_v: 100
   low_esr: true
+  hybrid: false
   note: >-
     The default radial choice. Low impedance, long life. Does not reach the
     high-voltage positions; those take the Nichicon UCY.
+
+- id: panasonic-fs
+  manufacturer: Panasonic
+  name: FS
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  low_esr: true
+  hybrid: false
+  note: >-
+    Low ESR, one can size smaller than the FR for the same rating. Useful
+    where height is limited.
+
+- id: panasonic-fm
+  manufacturer: Panasonic
+  name: FM
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 50
+  low_esr: true
+  hybrid: false
+  note: >-
+    Low impedance radial. Shorter rated life than the FR in the small cans.
+
+- id: panasonic-fc
+  manufacturer: Panasonic
+  name: FC
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  low_esr: true
+  hybrid: false
+  note: >-
+    Low impedance radial. Shorter rated life than the FM and FR in the small
+    cans.
+
+- id: panasonic-eb
+  manufacturer: Panasonic
+  name: EB
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 10
+  voltage_max_v: 450
+  low_esr: false
+  hybrid: false
+  note: >-
+    Long-life radial. Not low ESR. Made from 10 V to 63 V and from 160 V to
+    450 V, with no ratings in between.
+
+- id: panasonic-ga
+  manufacturer: Panasonic
+  name: GA
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 10
+  voltage_max_v: 50
+  low_esr: false
+  hybrid: false
+  note: >-
+    General purpose radial with a 7 mm body height, for positions with little
+    clearance. Short rated life.
+
+- id: panasonic-za-a
+  manufacturer: Panasonic
+  name: ZA-A
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 25
+  voltage_max_v: 80
+  low_esr: true
+  hybrid: true
+  note: >-
+    Radial-lead conductive polymer hybrid. Supplied on tape only. The ZA
+    without the -A suffix is a surface-mount part.
+
+- id: panasonic-zc-a
+  manufacturer: Panasonic
+  name: ZC-A
+  type: electrolytic-radial
+  temperature_c: 125
+  voltage_min_v: 25
+  voltage_max_v: 80
+  low_esr: true
+  hybrid: true
+  note: >-
+    Radial-lead conductive polymer hybrid, 125 °C. Supplied on tape only.
+
+- id: panasonic-zk-a
+  manufacturer: Panasonic
+  name: ZK-A
+  type: electrolytic-radial
+  temperature_c: 125
+  voltage_min_v: 25
+  voltage_max_v: 35
+  low_esr: true
+  hybrid: true
+  note: >-
+    Radial-lead conductive polymer hybrid, 125 °C, low-profile cans. Supplied
+    on tape only.
+
+- id: panasonic-zs-a
+  manufacturer: Panasonic
+  name: ZS-A
+  type: electrolytic-radial
+  temperature_c: 125
+  voltage_min_v: 25
+  voltage_max_v: 63
+  low_esr: true
+  hybrid: true
+  note: >-
+    Radial-lead conductive polymer hybrid, 125 °C. Supplied on tape only.
+
+- id: wurth-wcap-atg5
+  manufacturer: Würth Elektronik
+  name: WCAP-ATG5
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 10
+  voltage_max_v: 400
+  low_esr: false
+  hybrid: false
+  note: >-
+    General purpose radial. Covers small values the low-ESR series no longer
+    make.
 
 - id: nichicon-ucy
   manufacturer: Nichicon
@@ -33,6 +164,7 @@
   temperature_c: 105
   voltage_min_v: 160
   voltage_max_v: 500
+  hybrid: false
   note: >-
     The high-voltage radial choice, for the primary-side and CRT-side positions
     the Panasonic FR does not reach. General purpose rather than low ESR; there
@@ -47,6 +179,7 @@
   voltage_min_v: 6.3
   voltage_max_v: 100
   low_esr: true
+  hybrid: false
   note: >-
     Surface mount. Consider tantalum or polymer instead on Macintosh logic
     boards. The leaded FK-A is a different part and stops at 35 V.
@@ -59,9 +192,35 @@
   voltage_min_v: 6.3
   voltage_max_v: 100
   low_esr: true
+  hybrid: false
   note: >-
     Radial alternative to the Panasonic FR where a value or a can size is
     unavailable. Same voltage span, so it substitutes one for one.
+
+- id: nichicon-uhe
+  manufacturer: Nichicon
+  name: UHE
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  low_esr: true
+  hybrid: false
+  note: >-
+    Low impedance, long-life radial. Starts at 8 mm cans; no small values.
+
+- id: nichicon-uhw
+  manufacturer: Nichicon
+  name: UHW
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  low_esr: true
+  hybrid: false
+  note: >-
+    Lower impedance and higher ripple rating than the UHE, in the same kind of
+    can.
 
 - id: nichicon-ues
   manufacturer: Nichicon
@@ -70,6 +229,7 @@
   temperature_c: 85
   voltage_min_v: 16
   voltage_max_v: 50
+  hybrid: false
   note: >-
     Bipolar, for the non-polarised positions on Macintosh analog boards. An
     85 °C part, unlike the rest of this list — no 105 °C bipolar equivalent has
@@ -82,15 +242,41 @@
   temperature_c: 105
   voltage_min_v: 160
   voltage_max_v: 600
+  hybrid: false
   note: >-
     For the large primary filter capacitors in power supplies. Snap-in
     terminals do not fit a radial-leaded footprint.
+
+- id: nichicon-lgu
+  manufacturer: Nichicon
+  name: LGU
+  type: electrolytic-snap-in
+  temperature_c: 105
+  voltage_min_v: 16
+  voltage_max_v: 450
+  hybrid: false
+  note: >-
+    Snap-in alternative to the LGN, two-pin with 10 mm terminal spacing.
+
+- id: cornell-dubilier-sek
+  manufacturer: Cornell Dubilier
+  name: SEK
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 450
+  low_esr: false
+  hybrid: false
+  note: >-
+    General purpose radial. Still makes small values such as 1 uF 50 V that
+    Panasonic and Nichicon have discontinued.
 
 - id: kemet-r46
   manufacturer: Kemet
   name: R46
   type: film-x2
   temperature_c: 110
+  hybrid: false
   note: >-
     X2 mains film, 275 VAC. Replaces the RIFA capacitors, which are replaced
     unconditionally.
@@ -100,6 +286,7 @@
   name: B32922
   type: film-x2
   temperature_c: 110
+  hybrid: false
   note: X2 mains film, 305 VAC. Alternative to the Kemet R46.
 
 - id: tdk-b32021
@@ -107,6 +294,7 @@
   name: B32021
   type: film-y2
   temperature_c: 110
+  hybrid: false
   note: >-
     Y2 mains film, 300 VAC, metallized polypropylene. For the positions that
     bridge the isolation barrier rather than sitting across the line — an X2
@@ -120,10 +308,24 @@
   temperature_c: 85
   voltage_min_v: 6.3
   voltage_max_v: 100
+  hybrid: false
   note: >-
     Axial positions. Check lead spacing, diameter and height before ordering.
     An 85 °C part, unlike the rest of this list — no 105 °C leaded axial
     equivalent has been established.
+
+- id: cornell-dubilier-tta
+  manufacturer: Cornell Dubilier
+  name: TTA
+  type: electrolytic-axial
+  temperature_c: 85
+  voltage_min_v: 10
+  voltage_max_v: 450
+  low_esr: false
+  hybrid: false
+  note: >-
+    Axial alternative to the Vishay 021 ASM, often in a shorter body for the
+    same rating. An 85 °C general purpose part.
 
 - id: kemet-t491
   manufacturer: Kemet
@@ -131,6 +333,7 @@
   type: tantalum
   temperature_c: 125
   voltage_max_v: 50
+  hybrid: false
   note: >-
     Tantalum for Macintosh surface-mount positions. The 47 uF positions must be
     rated 25 V. Rated to 85 °C with derating above that, so the 125 °C figure
@@ -143,6 +346,7 @@
   temperature_c: 125
   voltage_min_v: 3
   voltage_max_v: 50
+  hybrid: false
   note: >-
     Leaded tantalum for the through-hole positions the 1980s boards use, where
     the surface-mount T491 does not fit. Radial dipped, 2.54 mm lead spacing on

@@ -108,6 +108,13 @@ Always ask first for operations that are destructive or irreversible:
   with a source that was actually retrieved, the retrieved source wins. The
   handover is never cited as a source and never named in a note. Establishing
   these values independently is the reason this repository exists.
+- **Part selection preferences** (owner, 2026-09-14). A recommended part is
+  the right replacement first and a preference second. Branded quality parts
+  only, preferring Nichicon, Panasonic, Würth Elektronik and Kemet; conductive
+  polymer hybrids where one exists and suits the position; the best available
+  alternative where no preferred option exists. A higher voltage rating is
+  always acceptable when it makes sense. The site picks, per position, the best
+  matching catalogue part that is in stock at Mouser, checked on every build.
 - Stack: YAML data validated by JSON Schema, Python tooling under `tools/`,
   Jinja2 to static HTML, GitHub Pages. Data under `data/` and `reference/`.
 - Licensing is split: code MIT, data and documentation CC BY-SA 4.0.

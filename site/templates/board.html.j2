@@ -62,8 +62,9 @@
     <table>
         <caption>
             Voltage is the recommended replacement rating; where it was raised,
-            the original is shown beneath it. Select a line for the series to
-            buy and any notes on the position. Tick the box as you go.
+            the original is shown beneath it. Select a line for the part to
+            buy, Mouser's stock when the page was built, and any notes on the
+            position. Tick the box as you go.
         </caption>
         <thead>
             <tr>
@@ -118,18 +119,28 @@
                 <td></td>
                 <td colspan="5">
                     <span class="series"><strong>Series:</strong>
-                        {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
+                        {# The selected part may come from another series than the
+                           position names; the line describes what is bought. #}
+                        {% if row.part %}{{ row.part.series_display }}{% elif row.series %}{{ row.series.display }}{% else %}—{% endif %}
                     </span>
                     {% if row.part %}
                     <span class="part">
                         <strong>Part:</strong> <span class="mono">{{ row.part.mpn }}</span>
                         {%- if row.part.dimensions %} · {{ row.part.dimensions }}{% endif %}
                         {%- if row.part.lead_spacing %} · {{ row.part.lead_spacing }} lead spacing{% endif %}
+                        · <span class="stock">{{ row.part.stock_label }}</span>
                     </span>
                     {% if row.part.links %}
                     <span class="buy no-print">
                         {% for link in row.part.links %}
                         <a href="{{ link.url }}" rel="noopener">{{ link.name }}{% if not link.is_product %} (search){% endif %}</a>{% if not loop.last %} · {% endif %}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                    {% if row.alternatives %}
+                    <span class="alternatives"><strong>Alternatives:</strong>
+                        {% for other in row.alternatives %}
+                        <span class="mono">{{ other.mpn }}</span> ({{ other.stock_label }}){% if not loop.last %} · {% endif %}
                         {% endfor %}
                     </span>
                     {% endif %}

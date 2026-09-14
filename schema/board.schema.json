@@ -104,7 +104,14 @@
         "max_diameter_mm": { "type": "number", "exclusiveMinimum": 0 },
         "max_lead_spacing_mm": { "type": "number", "exclusiveMinimum": 0 },
         "series": { "$ref": "#/$defs/slug" },
-        "part": { "$ref": "#/$defs/slug" },
+        "part": {
+          "$ref": "#/$defs/slug",
+          "$comment": "An override: a pinned part is the only part offered, and stock-aware selection is skipped for the position."
+        },
+        "allow_hybrid": {
+          "type": "boolean",
+          "$comment": "Default true. False where a conductive polymer hybrid does not suit the position, so selection skips hybrid series."
+        },
         "verification": { "$ref": "#/$defs/verification" },
         "note": { "type": "string", "minLength": 1 }
       }

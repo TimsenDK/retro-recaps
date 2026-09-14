@@ -1,6 +1,8 @@
-# Concrete parts a position can be pinned to. Dimensions are the nominal
-# figures from the manufacturer's datasheet; the MPN is the straight-lead bulk
-# variant, not a taped one.
+# The parts catalogue selection chooses from. Dimensions are the nominal
+# figures from the manufacturer's datasheet; for an axial part `diameter_mm` is
+# the body diameter and `height_mm` the body length. The MPN is the
+# straight-lead bulk variant, not a taped one, unless the part's note says it
+# is made on tape only.
 
 - id: eeufr1h4r7
   manufacturer: Panasonic
@@ -56,3 +58,367 @@
   diameter_mm: 10
   height_mm: 12.5
   lead_spacing_mm: 5
+
+- id: eeufs1c332
+  manufacturer: Panasonic
+  mpn: EEU-FS1C332
+  series: panasonic-fs
+  type: electrolytic-radial
+  capacitance_uf: 3300
+  voltage_v: 16
+  diameter_mm: 12.5
+  height_mm: 25
+  lead_spacing_mm: 5
+
+- id: eeufr1c332l
+  manufacturer: Panasonic
+  mpn: EEU-FR1C332L
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 3300
+  voltage_v: 16
+  diameter_mm: 12.5
+  height_mm: 30
+  lead_spacing_mm: 5
+
+- id: eeufr1e221
+  manufacturer: Panasonic
+  mpn: EEU-FR1E221
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 11.5
+  lead_spacing_mm: 3.5
+
+- id: eeufr1v221
+  manufacturer: Panasonic
+  mpn: EEU-FR1V221
+  series: panasonic-fr
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 35
+  diameter_mm: 8
+  height_mm: 11.5
+  lead_spacing_mm: 3.5
+
+- id: eeufm1h220
+  manufacturer: Panasonic
+  mpn: EEU-FM1H220
+  series: panasonic-fm
+  type: electrolytic-radial
+  capacitance_uf: 22
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufm1e470
+  manufacturer: Panasonic
+  mpn: EEU-FM1E470
+  series: panasonic-fm
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 25
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufm1e221
+  manufacturer: Panasonic
+  mpn: EEU-FM1E221
+  series: panasonic-fm
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 11.5
+  lead_spacing_mm: 3.5
+
+- id: eeufc1h4r7
+  manufacturer: Panasonic
+  mpn: EEU-FC1H4R7
+  series: panasonic-fc
+  type: electrolytic-radial
+  capacitance_uf: 4.7
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeufc1h220
+  manufacturer: Panasonic
+  mpn: EEU-FC1H220
+  series: panasonic-fc
+  type: electrolytic-radial
+  capacitance_uf: 22
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeueb1h4r7s
+  manufacturer: Panasonic
+  mpn: EEU-EB1H4R7S
+  series: panasonic-eb
+  type: electrolytic-radial
+  capacitance_uf: 4.7
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeueb1e470s
+  manufacturer: Panasonic
+  mpn: EEU-EB1E470S
+  series: panasonic-eb
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 25
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: eeaga1h4r7
+  manufacturer: Panasonic
+  mpn: EEA-GA1H4R7
+  series: panasonic-ga
+  type: electrolytic-radial
+  capacitance_uf: 4.7
+  voltage_v: 50
+  diameter_mm: 4
+  height_mm: 7
+  lead_spacing_mm: 1.5
+
+- id: eeaga1c470
+  manufacturer: Panasonic
+  mpn: EEA-GA1C470
+  series: panasonic-ga
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 16
+  diameter_mm: 6.3
+  height_mm: 7
+  lead_spacing_mm: 2.5
+
+- id: eehaza1e221b
+  manufacturer: Panasonic
+  mpn: EEH-AZA1E221B
+  series: panasonic-za-a
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 9.5
+  lead_spacing_mm: 3.5
+  note: Made on tape only; there is no bulk variant.
+
+- id: eehazc1e221b
+  manufacturer: Panasonic
+  mpn: EEH-AZC1E221B
+  series: panasonic-zc-a
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 9.5
+  lead_spacing_mm: 3.5
+  note: Made on tape only; there is no bulk variant.
+
+- id: eehazk1e471b
+  manufacturer: Panasonic
+  mpn: EEH-AZK1E471B
+  series: panasonic-zk-a
+  type: electrolytic-radial
+  capacitance_uf: 470
+  voltage_v: 25
+  diameter_mm: 10
+  height_mm: 9.5
+  lead_spacing_mm: 5
+  note: Made on tape only; there is no bulk variant.
+
+- id: eehazs1e471b
+  manufacturer: Panasonic
+  mpn: EEH-AZS1E471B
+  series: panasonic-zs-a
+  type: electrolytic-radial
+  capacitance_uf: 470
+  voltage_v: 25
+  diameter_mm: 10
+  height_mm: 11.7
+  lead_spacing_mm: 5
+  note: Made on tape only; there is no bulk variant.
+
+- id: "860020672005"
+  manufacturer: Würth Elektronik
+  mpn: "860020672005"
+  series: wurth-wcap-atg5
+  type: electrolytic-radial
+  capacitance_uf: 1
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: "860020672008"
+  manufacturer: Würth Elektronik
+  mpn: "860020672008"
+  series: wurth-wcap-atg5
+  type: electrolytic-radial
+  capacitance_uf: 4.7
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: "860020672011"
+  manufacturer: Würth Elektronik
+  mpn: "860020672011"
+  series: wurth-wcap-atg5
+  type: electrolytic-radial
+  capacitance_uf: 22
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: uhe1e221mpd
+  manufacturer: Nichicon
+  mpn: UHE1E221MPD
+  series: nichicon-uhe
+  type: electrolytic-radial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 11.5
+  lead_spacing_mm: 3.5
+
+- id: uhw1c332mhd
+  manufacturer: Nichicon
+  mpn: UHW1C332MHD
+  series: nichicon-uhw
+  type: electrolytic-radial
+  capacitance_uf: 3300
+  voltage_v: 16
+  diameter_mm: 12.5
+  height_mm: 25
+  lead_spacing_mm: 5
+
+- id: lgn2d471melz30
+  manufacturer: Nichicon
+  mpn: LGN2D471MELZ30
+  series: nichicon-lgn
+  type: electrolytic-snap-in
+  capacitance_uf: 470
+  voltage_v: 200
+  diameter_mm: 22
+  height_mm: 30
+  lead_spacing_mm: 10
+
+- id: lgn2d471mely35
+  manufacturer: Nichicon
+  mpn: LGN2D471MELY35
+  series: nichicon-lgn
+  type: electrolytic-snap-in
+  capacitance_uf: 470
+  voltage_v: 200
+  diameter_mm: 20
+  height_mm: 35
+  lead_spacing_mm: 10
+
+- id: lgn2p471melz35
+  manufacturer: Nichicon
+  mpn: LGN2P471MELZ35
+  series: nichicon-lgn
+  type: electrolytic-snap-in
+  capacitance_uf: 470
+  voltage_v: 220
+  diameter_mm: 22
+  height_mm: 35
+  lead_spacing_mm: 10
+
+- id: lgn2e471melz40
+  manufacturer: Nichicon
+  mpn: LGN2E471MELZ40
+  series: nichicon-lgn
+  type: electrolytic-snap-in
+  capacitance_uf: 470
+  voltage_v: 250
+  diameter_mm: 22
+  height_mm: 40
+  lead_spacing_mm: 10
+
+- id: lgu2d471melz
+  manufacturer: Nichicon
+  mpn: LGU2D471MELZ
+  series: nichicon-lgu
+  type: electrolytic-snap-in
+  capacitance_uf: 470
+  voltage_v: 200
+  diameter_mm: 22
+  height_mm: 35
+  lead_spacing_mm: 10
+
+- id: sek010m050st
+  manufacturer: Cornell Dubilier
+  mpn: SEK010M050ST
+  series: cornell-dubilier-sek
+  type: electrolytic-radial
+  capacitance_uf: 1
+  voltage_v: 50
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
+
+- id: mal202136221e3
+  manufacturer: Vishay
+  mpn: MAL202136221E3
+  series: vishay-021-asm
+  type: electrolytic-axial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 6.5
+  height_mm: 18
+  note: Made on tape only in this case size; the leads are straight and are cut from the tape.
+
+- id: mal202190512e3
+  manufacturer: Vishay
+  mpn: MAL202190512E3
+  series: vishay-021-asm
+  type: electrolytic-axial
+  capacitance_uf: 220
+  voltage_v: 63
+  diameter_mm: 10
+  height_mm: 25
+  note: Made on tape only in this case size; the leads are straight and are cut from the tape.
+
+- id: mal202118221e3
+  manufacturer: Vishay
+  mpn: MAL202118221E3
+  series: vishay-021-asm
+  type: electrolytic-axial
+  capacitance_uf: 220
+  voltage_v: 63
+  diameter_mm: 10
+  height_mm: 30
+
+- id: 227tta025m
+  manufacturer: Cornell Dubilier
+  mpn: 227TTA025M
+  series: cornell-dubilier-tta
+  type: electrolytic-axial
+  capacitance_uf: 220
+  voltage_v: 25
+  diameter_mm: 8
+  height_mm: 16
+
+- id: 227tta063m
+  manufacturer: Cornell Dubilier
+  mpn: 227TTA063M
+  series: cornell-dubilier-tta
+  type: electrolytic-axial
+  capacitance_uf: 220
+  voltage_v: 63
+  diameter_mm: 10
+  height_mm: 21

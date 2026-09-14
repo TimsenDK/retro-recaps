@@ -26,6 +26,8 @@ capacitors:
     original_voltage_v: 35
     quantity: 1
     series: panasonic-fr
+    max_diameter_mm: 5
+    max_lead_spacing_mm: 2
   - designators:
       - C600
       - C601
@@ -36,6 +38,7 @@ capacitors:
     original_voltage_v: 16
     quantity: 3
     series: vishay-021-asm
+    max_diameter_mm: 10
   - designators:
       - C603
     type: electrolytic-axial
@@ -43,6 +46,7 @@ capacitors:
     voltage_v: 63
     quantity: 1
     series: vishay-021-asm
+    max_diameter_mm: 10
     verification: derived
     note: >-
       Original voltage unsettled: documented both as 16 V and as 50 V. 63 V

@@ -1,8 +1,8 @@
 name: mouser
 
+# Manual only: the pages workflow runs the same lookup before every build.
+# This one is kept for inspecting the lookup without publishing.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -28,9 +28,9 @@ jobs:
       - name: Look up catalogued parts
         env:
           MOUSER_API_KEY: ${{ secrets.MOUSER_API_KEY }}
-        run: python -m tools.mouser --root . --out mouser.json
+        run: python -m tools.mouser --root . --out stock.json
 
       - uses: actions/upload-artifact@v4
         with:
           name: mouser
-          path: mouser.json
+          path: stock.json

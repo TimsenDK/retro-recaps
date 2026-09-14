@@ -13,6 +13,9 @@ name: pages
 on:
   push:
     branches: [main]
+  # Daily, so the stock shown on the site is never more than a day old.
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
 
 permissions:
@@ -45,8 +48,16 @@ jobs:
       - name: Validate the dataset
         run: python -m tools validate --root .
 
+      # A Mouser outage must not block publishing: the build then runs
+      # without a stock file and shows every part's stock as unknown.
+      - name: Look up Mouser stock
+        continue-on-error: true
+        env:
+          MOUSER_API_KEY: ${{ secrets.MOUSER_API_KEY }}
+        run: python -m tools.mouser --root . --out stock.json
+
       - name: Build the site
-        run: python -m tools build-site --root . --out build
+        run: python -m tools build-site --root . --out build --stock stock.json
 
       - uses: actions/configure-pages@v5
 

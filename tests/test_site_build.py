@@ -424,3 +424,38 @@ def test_the_display_face_never_reaches_the_body_or_a_hazard(
     hazard = re.search(r"\.hazard h2,[^{]*\{([^}]*font-family[^}]*)\}", sheet)
     assert hazard is not None
     assert "var(--sans)" in hazard.group(1)
+
+
+def test_a_capacitor_line_shows_its_part_stock_and_alternatives(
+    tmp_path: Path,
+) -> None:
+    from dataclasses import replace
+
+    from tools.loader import load_dataset
+    from tools.site.build import render_site
+    from tools.site.context import build_context
+    from tools.stock import load_stock
+
+    dataset, issues = load_dataset(FIXTURES / "good")
+    assert issues == []
+    base = dataset.parts["eeufr1e470"]
+    spare = replace(base, id="spare", mpn="SPARE-470", voltage_v=35)
+    dataset = replace(dataset, parts={**dataset.parts, "spare": spare})
+    out = tmp_path / "build"
+    render_site(
+        build_context(dataset, load_stock(FIXTURES / "stock-good.json")),
+        root=FIXTURES / "good",
+        out=out,
+        templates=ROOT / "site" / "templates",
+        static=ROOT / "site" / "static",
+        assets=ROOT / "site" / "assets",
+    )
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    detail = page.split('<tr class="detail">', 1)[1].split("</tr>", 1)[0]
+    assert "EEU-FR1E470" in detail
+    assert "in stock at Mouser: 250" in detail
+    assert "ProductDetail/667-EEU-FR1E470" in detail
+    assert "Alternatives:" in detail
+    assert "SPARE-470" in detail
+    assert "out of stock at Mouser" in page
+

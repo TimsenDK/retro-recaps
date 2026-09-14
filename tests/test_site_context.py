@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -27,10 +28,13 @@ from tools.site.context import (
     natural_key,
     note_view,
     reference_targets,
+    series_view,
     verification_view,
 )
+from tools.stock import load_stock
 
 FIXTURES = Path(__file__).parent / "fixtures"
+STOCK = FIXTURES / "stock-good.json"
 
 
 @pytest.fixture(scope="module")
@@ -720,3 +724,92 @@ def test_a_year_alone_sorts_after_a_month_in_the_same_year() -> None:
     )
     context = build_context(dataset)
     assert [m.id for m in context.families[0].machines] == ["early", "late"]
+
+
+# --------------------------------------------------------------------------
+# The part a position shows, and what Mouser held when the page was built
+# --------------------------------------------------------------------------
+
+
+def good_with_alternatives() -> Dataset:
+    """The good fixture, with four more 47 µF parts for the C321 position."""
+    loaded, issues = load_dataset(FIXTURES / "good")
+    assert issues == []
+    base = loaded.parts["eeufr1e470"]
+    extra = {
+        f"alt{index}": replace(
+            base, id=f"alt{index}", mpn=f"ALT-{index}", voltage_v=25 + 10 * index
+        )
+        for index in range(1, 5)
+    }
+    return replace(loaded, parts={**loaded.parts, **extra})
+
+
+def test_an_unpinned_position_shows_the_resolvers_first_choice() -> None:
+    loaded, _ = load_dataset(FIXTURES / "good")
+    row = build_context(loaded).boards[0].rows[0]
+    assert row.designators == ("C321",)
+    assert row.part is not None
+    assert row.part.mpn == "EEU-FR1E470"
+    assert row.part.stock_label == "stock unknown"
+    assert row.alternatives == ()
+
+
+def test_a_position_with_no_recorded_footprint_is_offered_no_part() -> None:
+    loaded, _ = load_dataset(FIXTURES / "good")
+    board = loaded.boards["amiga-500-mainboard-rev6a"]
+    unmeasured = [
+        capacitor if capacitor.part else replace(capacitor, max_diameter_mm=None)
+        for capacitor in board.capacitors
+    ]
+    loaded = replace(
+        loaded,
+        boards={board.id: replace(board, capacitors=tuple(unmeasured))},
+    )
+    rows = build_context(loaded).boards[0].rows
+    assert rows[0].designators == ("C321",)
+    assert rows[0].part is None
+    assert rows[1].part is not None
+
+
+def test_the_stock_file_labels_the_part_and_links_its_product_page() -> None:
+    loaded, _ = load_dataset(FIXTURES / "good")
+    rows = build_context(loaded, load_stock(STOCK)).boards[0].rows
+    unpinned, pinned = rows
+    assert unpinned.part.stock_label == "in stock at Mouser: 250"
+    assert pinned.part.stock_label == "out of stock at Mouser"
+    mouser = next(
+        link for link in unpinned.part.links if link.name == "Mouser Electronics"
+    )
+    assert mouser.is_product
+    assert mouser.url.endswith("/ProductDetail/667-EEU-FR1E470")
+
+
+def test_a_position_names_up_to_three_alternatives_with_their_stock() -> None:
+    row = build_context(good_with_alternatives(), load_stock(STOCK)).boards[0].rows[0]
+    assert row.part.mpn == "EEU-FR1E470"
+    assert [(alt.mpn, alt.stock_label) for alt in row.alternatives] == [
+        ("ALT-1", "stock unknown"),
+        ("ALT-2", "stock unknown"),
+        ("ALT-3", "stock unknown"),
+    ]
+
+
+def test_a_pinned_position_names_no_alternatives() -> None:
+    row = build_context(good_with_alternatives()).boards[0].rows[1]
+    assert row.part.mpn == "EEU-FR1E332"
+    assert row.alternatives == ()
+
+
+def test_a_part_the_lookup_found_is_not_listed_as_without_an_offer() -> None:
+    loaded, _ = load_dataset(FIXTURES / "good")
+    without = build_context(loaded).status.parts_without_offers
+    assert [question.title for question in without] == ["Panasonic EEU-FR1E470"]
+    with_stock = build_context(loaded, load_stock(STOCK)).status
+    assert with_stock.parts_without_offers == ()
+
+
+def test_the_series_view_carries_the_hybrid_flag(dataset: Dataset) -> None:
+    hybrid = replace(dataset.series["panasonic-fr"], hybrid=True)
+    assert series_view(hybrid).hybrid
+    assert not series_view(dataset.series["panasonic-fr"]).hybrid

@@ -4,9 +4,10 @@ from dataclasses import replace
 from pathlib import Path
 
 from tools.loader import load_dataset
-from tools.model import Capacitor
+from tools.model import Capacitor, Dataset, Part, Series
 from tools.resolve import candidate_parts, matches, supplier_links
 from tools.rules import check
+from tools.stock import Stock, StockEntry
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -183,3 +184,148 @@ def test_mpn_is_url_quoted() -> None:
     )
     links = supplier_links(quoted, dataset)
     assert all("EEU%20FR1E332" in link.url for link in links)
+
+
+# --------------------------------------------------------------------------
+# Stock-aware selection
+# --------------------------------------------------------------------------
+
+
+def catalogue(*parts: Part) -> Dataset:
+    """The good fixture's suppliers, with a hybrid series and these parts."""
+    dataset = load()
+    hybrid = Series(
+        id="panasonic-zs",
+        manufacturer="Panasonic",
+        name="ZS",
+        type="electrolytic-radial",
+        hybrid=True,
+    )
+    other = Series(
+        id="cde-std",
+        manufacturer="Cornell Dubilier",
+        name="STD",
+        type="electrolytic-radial",
+    )
+    return replace(
+        dataset,
+        series={**dataset.series, hybrid.id: hybrid, other.id: other},
+        parts={part.id: part for part in parts},
+        offers={},
+    )
+
+
+def radial(part_id: str, **overrides) -> Part:
+    base = {
+        "id": part_id,
+        "manufacturer": "Panasonic",
+        "mpn": part_id.upper(),
+        "series": "panasonic-fr",
+        "type": "electrolytic-radial",
+        "capacitance_uf": 3300,
+        "voltage_v": 25,
+        "height_mm": 20,
+    }
+    return Part.from_dict({**base, **overrides})
+
+
+def stock(**levels: int | tuple[int, str]) -> Stock:
+    """Stock by part id: a count, or (count, lifecycle)."""
+    entries = {}
+    for part_id, level in levels.items():
+        count, lifecycle = level if isinstance(level, tuple) else (level, None)
+        entries[part_id] = StockEntry(f"667-{part_id}", count, lifecycle)
+    return Stock(fetched_at=None, parts=entries)
+
+
+def ids(parts: list[Part]) -> list[str]:
+    return [part.id for part in parts]
+
+
+def test_an_in_stock_part_beats_a_hybrid_out_of_stock() -> None:
+    dataset = catalogue(radial("plain"), radial("hyb", series="panasonic-zs"))
+    chosen = candidate_parts(position(), dataset, stock(plain=10, hyb=0))
+    assert ids(chosen) == ["plain", "hyb"]
+
+
+def test_a_hybrid_beats_a_plain_part_when_both_are_in_stock() -> None:
+    dataset = catalogue(radial("plain"), radial("hyb", series="panasonic-zs"))
+    chosen = candidate_parts(position(), dataset, stock(plain=10, hyb=10))
+    assert ids(chosen) == ["hyb", "plain"]
+
+
+def test_a_position_that_forbids_hybrids_is_offered_none() -> None:
+    dataset = catalogue(radial("plain"), radial("hyb", series="panasonic-zs"))
+    chosen = candidate_parts(position(allow_hybrid=False), dataset)
+    assert ids(chosen) == ["plain"]
+
+
+def test_a_preferred_brand_beats_another_brand() -> None:
+    dataset = catalogue(
+        radial("cde", manufacturer="Cornell Dubilier", series="cde-std"),
+        radial("pana"),
+    )
+    chosen = candidate_parts(position(), dataset, stock(cde=10, pana=10))
+    assert ids(chosen) == ["pana", "cde"]
+
+
+def test_unknown_stock_sorts_between_in_stock_and_out_of_stock() -> None:
+    dataset = catalogue(radial("a-out"), radial("b-unknown"), radial("c-in"))
+    levels = stock(**{"a-out": 0, "c-in": 5})
+    assert ids(candidate_parts(position(), dataset, levels)) == [
+        "c-in",
+        "b-unknown",
+        "a-out",
+    ]
+
+
+def test_without_a_stock_file_every_part_is_unknown_and_the_rest_decides() -> None:
+    dataset = catalogue(radial("plain"), radial("hyb", series="panasonic-zs"))
+    assert ids(candidate_parts(position(), dataset)) == ["hyb", "plain"]
+
+
+def test_an_obsolete_part_is_not_offered() -> None:
+    dataset = catalogue(radial("old"), radial("eol"), radial("new"))
+    levels = stock(old=(900, "Obsolete"), eol=(900, "End of Life"), new=0)
+    assert ids(candidate_parts(position(), dataset, levels)) == ["new"]
+
+
+def test_the_position_series_breaks_a_tie_before_voltage_and_height() -> None:
+    dataset = catalogue(
+        radial("tall", height_mm=25),
+        radial("short", height_mm=16),
+        radial("higher", voltage_v=35, height_mm=10),
+        radial("unmeasured", height_mm=None),
+        radial("elsewhere", series="cde-std", height_mm=5),
+    )
+    chosen = candidate_parts(position(series="panasonic-fr"), dataset)
+    assert ids(chosen) == ["short", "tall", "unmeasured", "higher", "elsewhere"]
+
+
+def test_selection_still_enforces_the_fit_limits() -> None:
+    dataset = catalogue(radial("tall", height_mm=25), radial("short", height_mm=16))
+    chosen = candidate_parts(position(max_height_mm=20), dataset, stock(tall=99))
+    assert ids(chosen) == ["short"]
+
+
+def test_a_pinned_part_overrides_selection_whatever_its_stock() -> None:
+    dataset = catalogue(radial("plain"), radial("hyb", series="panasonic-zs"))
+    pinned = position(part="plain")
+    chosen = candidate_parts(pinned, dataset, stock(plain=(0, "Obsolete"), hyb=9))
+    assert ids(chosen) == ["plain"]
+
+
+def test_the_stock_files_mouser_number_links_a_product_page() -> None:
+    dataset = catalogue(radial("plain"))
+    links = supplier_links(dataset.parts["plain"], dataset, stock(plain=3))
+    mouser = next(link for link in links if link.supplier_id == "mouser")
+    assert mouser.kind == "product"
+    assert mouser.url == "https://www.mouser.dk/ProductDetail/667-plain"
+
+
+def test_a_recorded_offer_wins_over_the_stock_file() -> None:
+    dataset = load()
+    part = dataset.parts["eeufr1e332"]
+    links = supplier_links(part, dataset, stock(eeufr1e332=3))
+    mouser = next(link for link in links if link.supplier_id == "mouser")
+    assert mouser.url.endswith("/ProductDetail/667-EEU-FR1E332")

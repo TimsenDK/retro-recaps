@@ -19,8 +19,16 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series
-from tools.resolve import PRODUCT, supplier_links
+from tools.resolve import (
+    IN_STOCK,
+    OUT_OF_STOCK,
+    PRODUCT,
+    candidate_parts,
+    stock_state,
+    supplier_links,
+)
 from tools.site.layout import LayoutView, layout_view
+from tools.stock import Stock
 
 VERIFICATION_ORDER = ("verified", "derived", "unverified")
 """Best to worst. Anything unrecognised sorts after all of these."""
@@ -621,6 +629,7 @@ class SeriesView:
     voltage_range: str | None
     low_esr: bool | None
     note: str | None
+    hybrid: bool = False
 
     @property
     def display(self) -> str:
@@ -637,6 +646,7 @@ def series_view(series: Series) -> SeriesView:
         voltage_range=series.voltage_range,
         low_esr=series.low_esr,
         note=series.note,
+        hybrid=series.hybrid,
     )
 
 
@@ -660,6 +670,20 @@ class PartView:
     lead_spacing: str | None
     note: str | None
     links: tuple[SupplierLinkView, ...] = ()
+    stock_label: str = "stock unknown"
+
+
+@dataclass(frozen=True)
+class AlternativeView:
+    """A runner-up part, named briefly beneath the one a position shows."""
+
+    mpn: str
+    stock_label: str
+
+
+ALTERNATIVE_COUNT = 3
+"""How many runners-up a position names. Enough to fall back on when the first
+choice sells out between builds, few enough to stay one line on the page."""
 
 
 @dataclass(frozen=True)
@@ -683,6 +707,7 @@ class CapacitorRow:
     note: str | None
     verification: VerificationView
     differs_from_board: bool
+    alternatives: tuple[AlternativeView, ...] = ()
 
     @property
     def icon_url(self) -> str | None:
@@ -711,7 +736,18 @@ def _fit_limits(capacitor: Capacitor) -> tuple[str, ...]:
     return tuple(limits)
 
 
-def _part_view(part: Part, dataset: Dataset) -> PartView:
+def stock_label(part: Part, stock: Stock | None) -> str:
+    """What the build knew about Mouser's stock, in words for the page."""
+    state = stock_state(part, stock)
+    if state == IN_STOCK and stock is not None:
+        entry = stock.get(part.id)
+        return f"in stock at Mouser: {entry.in_stock}"
+    if state == OUT_OF_STOCK:
+        return "out of stock at Mouser"
+    return "stock unknown"
+
+
+def _part_view(part: Part, dataset: Dataset, stock: Stock | None = None) -> PartView:
     series = dataset.series.get(part.series)
     dimensions = None
     if part.diameter_mm is not None and part.height_mm is not None:
@@ -742,17 +778,40 @@ def _part_view(part: Part, dataset: Dataset) -> PartView:
                 url=link.url,
                 is_product=link.kind == PRODUCT,
             )
-            for link in supplier_links(part, dataset)
+            for link in supplier_links(part, dataset, stock)
         ),
+        stock_label=stock_label(part, stock),
+    )
+
+
+def _has_fit_limit(capacitor: Capacitor) -> bool:
+    return any(
+        limit is not None
+        for limit in (
+            capacitor.max_height_mm,
+            capacitor.max_diameter_mm,
+            capacitor.max_lead_spacing_mm,
+        )
     )
 
 
 def capacitor_row(
-    capacitor: Capacitor, board: Board, dataset: Dataset
+    capacitor: Capacitor,
+    board: Board,
+    dataset: Dataset,
+    stock: Stock | None = None,
 ) -> CapacitorRow:
     effective = capacitor.effective_verification(board.verification)
     series = dataset.series.get(capacitor.series) if capacitor.series else None
-    part = dataset.parts.get(capacitor.part) if capacitor.part else None
+    # The resolver's first choice, or the pinned part alone. A position with no
+    # fit limit has never had its footprint recorded, so a catalogue part that
+    # matches it electrically may still be the wrong can; it gets none.
+    candidates = (
+        candidate_parts(capacitor, dataset, stock)
+        if capacitor.part is not None or _has_fit_limit(capacitor)
+        else []
+    )
+    part = candidates[0] if candidates else None
     original = None
     if (
         capacitor.original_voltage_v is not None
@@ -776,11 +835,15 @@ def capacitor_row(
             if series
             else (capacitor.series or "")
         ),
-        part=_part_view(part, dataset) if part else None,
+        part=_part_view(part, dataset, stock) if part else None,
         fit_limits=_fit_limits(capacitor),
         note=capacitor.note,
         verification=verification_view(effective),
         differs_from_board=effective != board.verification,
+        alternatives=tuple(
+            AlternativeView(mpn=other.mpn, stock_label=stock_label(other, stock))
+            for other in candidates[1 : 1 + ALTERNATIVE_COUNT]
+        ),
     )
 
 
@@ -861,6 +924,7 @@ def board_view(
     disambiguate: bool,
     targets: dict[str, tuple[str, str]] | None = None,
     layout: Layout | None = None,
+    stock: Stock | None = None,
 ) -> BoardView:
     if targets is None:
         targets = reference_targets(dataset)
@@ -874,7 +938,7 @@ def board_view(
     slug = _board_slug(board)
     rows = tuple(
         sorted(
-            (capacitor_row(c, board, dataset) for c in board.capacitors),
+            (capacitor_row(c, board, dataset, stock) for c in board.capacitors),
             key=lambda row: _designator_sort_key(row.designators),
         )
     )
@@ -994,6 +1058,7 @@ def machine_view(
     *,
     targets: dict[str, tuple[str, str]] | None = None,
     layouts: dict[str, Layout] | None = None,
+    stock: Stock | None = None,
 ) -> MachineView:
     if targets is None:
         targets = reference_targets(dataset)
@@ -1010,6 +1075,7 @@ def machine_view(
             disambiguate=kind_counts[board.board] > 1,
             targets=targets,
             layout=layouts.get(board.id),
+            stock=stock,
         )
         for board in boards
     )
@@ -1116,7 +1182,11 @@ class StatusView:
         )
 
 
-def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusView:
+def status_view(
+    machines: tuple[MachineView, ...],
+    dataset: Dataset,
+    stock: Stock | None = None,
+) -> StatusView:
     empty: list[OpenQuestion] = []
     unverified: list[OpenQuestion] = []
     derived: list[OpenQuestion] = []
@@ -1166,6 +1236,9 @@ def status_view(machines: tuple[MachineView, ...], dataset: Dataset) -> StatusVi
                 )
 
     offered = {part_id for entries in dataset.offers.values() for part_id in entries}
+    # A Mouser number found by this build's lookup is a stock number too.
+    if stock is not None:
+        offered.update(stock.parts)
     partless = tuple(
         OpenQuestion(
             "no-offer",
@@ -1291,18 +1364,24 @@ class SiteContext:
         return sum(board.capacitor_count for board in self.boards)
 
 
-def build_context(dataset: Dataset) -> SiteContext:
-    """Everything the templates need, worked out once."""
+def build_context(dataset: Dataset, stock: Stock | None = None) -> SiteContext:
+    """Everything the templates need, worked out once.
+
+    `stock` is what Mouser held when the build ran. Without it every part's
+    stock is unknown, and selection falls back on the rest of its order.
+    """
     targets = reference_targets(dataset)
     layouts = layouts_by_board(dataset)
     machines = tuple(
-        machine_view(machine, dataset, targets=targets, layouts=layouts)
+        machine_view(
+            machine, dataset, targets=targets, layouts=layouts, stock=stock
+        )
         for machine in sorted(
             dataset.machines.values(), key=lambda m: natural_key(m.name)
         )
     )
     boards = tuple(board for machine in machines for board in machine.boards)
-    status = status_view(machines, dataset)
+    status = status_view(machines, dataset, stock)
     return SiteContext(
         machines=machines,
         families=family_views(list(machines)),
@@ -1313,7 +1392,7 @@ def build_context(dataset: Dataset) -> SiteContext:
             for series in sorted(dataset.series.values(), key=lambda s: s.id)
         ),
         parts=tuple(
-            _part_view(part, dataset)
+            _part_view(part, dataset, stock)
             for part in sorted(dataset.parts.values(), key=lambda p: p.id)
         ),
         coverage=status.coverage,

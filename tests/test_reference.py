@@ -38,6 +38,8 @@ BELOW_105C = {
     # original temperature class rather than being mislabelled as 105 °C.
     "nichicon-ues": 85,
     "vishay-021-asm": 85,
+    # The other active axial option, for the same reason.
+    "cornell-dubilier-tta": 85,
 }
 
 
@@ -59,7 +61,7 @@ def test_every_series_is_rated_at_least_105c_where_it_applies() -> None:
         assert series.temperature_c >= 105, series.id
 
 
-def test_the_two_sub_105c_series_are_labelled_honestly() -> None:
+def test_the_sub_105c_series_are_labelled_honestly() -> None:
     """They may not drift back to a 105 °C label without a source for it."""
     dataset, _ = load_dataset(ROOT)
     for series_id, temperature in BELOW_105C.items():
