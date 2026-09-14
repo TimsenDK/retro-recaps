@@ -529,9 +529,11 @@ tbody tr:last-child td {
     border-bottom: 0;
 }
 
+/* A list wraps between designators, never inside one: a designator holds no
+   space, so ordinary wrapping breaks only after the separating comma. */
 td.designators {
     font-weight: 700;
-    white-space: nowrap;
+    min-width: 8rem;
 }
 
 td.value {
