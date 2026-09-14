@@ -83,6 +83,20 @@ def test_a_board_page_carries_its_designators_and_values(tmp_path: Path) -> None
     assert "was 16 V" in page
 
 
+def test_a_capacitor_line_folds_its_series_and_notes_away(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    head = page.split("<thead>", 1)[1].split("</thead>", 1)[0]
+    assert ">Series<" not in head
+    assert ">Notes<" not in head
+    assert 'class="detail"' in page
+    assert "Series:" in page
+    assert '<input type="checkbox"' in page
+    assert " off<" not in page
+    assert "captable.js" in page
+    assert (out / "captable.js").is_file()
+
+
 def test_a_derived_board_states_the_caution_in_words(tmp_path: Path) -> None:
     out = build_fixture(tmp_path)
     page = (out / "mac-se" / "logic.html").read_text(encoding="utf-8")

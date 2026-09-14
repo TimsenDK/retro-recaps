@@ -62,7 +62,8 @@
     <table>
         <caption>
             Voltage is the recommended replacement rating; where it was raised,
-            the original is shown beneath it. Tick the box as you go.
+            the original is shown beneath it. Select a line for the series to
+            buy and any notes on the position. Tick the box as you go.
         </caption>
         <thead>
             <tr>
@@ -71,18 +72,18 @@
                 <th scope="col">Value</th>
                 <th scope="col">Voltage</th>
                 <th scope="col">Type</th>
-                <th scope="col">Series</th>
-                <th scope="col">Notes</th>
+                <th class="more" scope="col"><span class="visually-hidden">Details</span></th>
             </tr>
         </thead>
         <tbody>
             {% for row in board.rows %}
-            <tr{% if row.has_designators %} data-designator="{{ row.designators | join(' ') }}"{% endif %}>
-                <td class="tick"><span></span></td>
+            {% set has_note = row.differs_from_board or row.fit_limits or row.note %}
+            <tr class="cap{% if has_note %} has-note{% endif %}"{% if row.has_designators %} data-designator="{{ row.designators | join(' ') }}"{% endif %}>
+                <td class="tick"><input type="checkbox" aria-label="Done: {{ row.designator_label }}"></td>
                 <td class="designators">
                     {{ row.designator_label }}
                     {% if row.has_designators and row.quantity > 1 %}
-                    <span class="was">{{ row.quantity }} off</span>
+                    <span class="was">({{ row.quantity }} capacitors)</span>
                     {% endif %}
                 </td>
                 <td class="value">{{ row.capacitance }}</td>
@@ -105,13 +106,21 @@
                         <span>{{ row.type_label }}</span>
                     </span>
                 </td>
-                <td>
-                    {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
-                    {% if row.part %}
-                    <span class="was mono">{{ row.part.mpn }}</span>
-                    {% endif %}
+                <td class="more">
+                    {# A note on the position is marked on the line itself, so a
+                       fit limit is not left for a reader to stumble on. #}
+                    <button type="button" class="fold" aria-expanded="false" hidden>
+                        <span class="visually-hidden">Details{% if has_note %}, has notes{% endif %}</span>
+                    </button>
                 </td>
-                <td>
+            </tr>
+            <tr class="detail">
+                <td></td>
+                <td colspan="5">
+                    <span class="series"><strong>Series:</strong>
+                        {% if row.series %}{{ row.series.display }}{% else %}—{% endif %}
+                        {% if row.part %}<span class="mono">{{ row.part.mpn }}</span>{% endif %}
+                    </span>
                     {% if row.differs_from_board %}
                     <span class="badge tone-{{ row.verification.tone }}">{{ row.verification.status }}</span>
                     {% endif %}
@@ -182,6 +191,9 @@
 {% endblock %}
 
 {% block scripts %}
+{% if not board.is_empty %}
+<script src="{{ base }}captable.js"></script>
+{% endif %}
 {% if board.layout %}
 <script src="{{ base }}boardmap.js"></script>
 {% endif %}

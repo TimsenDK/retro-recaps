@@ -552,19 +552,112 @@ td.value {
     text-align: center;
 }
 
-.tick span {
-    display: inline-block;
+.tick input {
     width: 1rem;
     height: 1rem;
-    border: 1px solid var(--rule-strong);
-    border-radius: 0.15rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+td.type .captype > span {
+    white-space: nowrap;
+}
+
+/* ---------- folding capacitor lines ---------- */
+
+/* The series and notes sit in a line of their own under each capacitor.
+   Without the script that line simply shows; `captable.js` marks the table
+   and from then on it shows only while its capacitor is open. */
+.folds tr.detail {
+    display: none;
+}
+
+.folds tr.cap.open + tr.detail {
+    display: table-row;
+}
+
+.folds tr.cap {
+    cursor: pointer;
+}
+
+/* The line above carries the rule between capacitors, not the one between a
+   capacitor and its own details. */
+table:not(.folds) tr.cap td,
+tr.cap.open td {
+    border-bottom: 0;
+}
+
+tr.detail td {
+    padding-top: 0;
+    font-size: 0.88rem;
+}
+
+tr.detail .series {
+    display: block;
+}
+
+tr.detail .badge {
+    margin-top: 0.3rem;
+}
+
+td.more {
+    width: 1.6rem;
+    text-align: center;
+}
+
+.fold {
+    position: relative;
+    width: 1.4rem;
+    height: 1.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.fold::before {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 90ms ease-out;
+}
+
+tr.cap.open .fold::before {
+    transform: rotate(45deg);
+}
+
+/* A position with a note is marked before it is opened. */
+tr.has-note .fold::after {
+    content: "";
+    position: absolute;
+    top: -0.05rem;
+    right: -0.3rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--accent);
 }
 
 td .note {
     display: block;
     font-size: 0.85rem;
     color: var(--ink-soft);
-    max-width: 26rem;
+    max-width: 40rem;
 }
 
 /* ---------- cards ---------- */
@@ -1174,6 +1267,25 @@ tr.pinned {
 
     thead {
         display: table-header-group;
+    }
+
+    /* Every capacitor goes to paper opened: the sheet at the bench has no
+       line to click, and a fit limit left folded is a part that will not fit. */
+    .folds tr.detail {
+        display: table-row;
+    }
+
+    .folds tr.cap td {
+        border-bottom: 0;
+    }
+
+    .more {
+        display: none;
+    }
+
+    tr.cap,
+    tr.cap + tr.detail {
+        break-after: avoid;
     }
 
     tr,
