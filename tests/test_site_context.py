@@ -9,7 +9,6 @@ import pytest
 from tools.loader import load_dataset
 from tools.model import Board, Dataset, Machine
 from tools.site.context import (
-    _release_sort_key,
     ANALOG_HAZARD,
     CRT_ANALOG_HAZARD,
     CRT_MACHINE_HAZARD,
@@ -17,6 +16,7 @@ from tools.site.context import (
     MAINS_HAZARD,
     Coverage,
     SiteContext,
+    _release_sort_key,
     board_view,
     build_context,
     format_capacitance,
