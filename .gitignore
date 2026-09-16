@@ -24,6 +24,9 @@ htmlcov/
 # Migration scratch — drafts are reviewed and moved into data/, never committed
 /data/_draft/
 
+# Local scratch space
+/tmp/
+
 # Controller scratch (system design documents, task briefs, reports)
 /.superpowers/
 
