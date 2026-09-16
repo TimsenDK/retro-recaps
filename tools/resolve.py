@@ -92,22 +92,29 @@ def matches(part: Part, capacitor: Capacitor) -> bool:
     return not fit_violations(part, capacitor)
 
 
-def stock_state(part: Part, stock: Stock | None) -> int:
+def stock_state(part: Part, stock: Stock | None, needed: int = 1) -> int:
     """In stock, unknown or out of stock, in the order selection prefers them.
 
     Unknown sits between the two: no stock file, or Mouser not listing the
     MPN, says nothing about whether the part can be bought elsewhere, so it
-    must not sink below a part Mouser has confirmed it cannot supply.
+    must not sink below a part Mouser has confirmed it cannot supply. Fewer on
+    the shelf than the position needs counts as out of stock: a pair across
+    the mains has to be bought together.
     """
     entry = stock.get(part.id) if stock is not None else None
     if entry is None:
         return STOCK_UNKNOWN
-    return IN_STOCK if entry.in_stock > 0 else OUT_OF_STOCK
+    return IN_STOCK if entry.in_stock >= max(needed, 1) else OUT_OF_STOCK
 
 
 def is_hybrid(part: Part, dataset: Dataset) -> bool:
     series = dataset.series.get(part.series)
     return series is not None and series.hybrid
+
+
+def is_low_esr(part: Part, dataset: Dataset) -> bool:
+    series = dataset.series.get(part.series)
+    return series is not None and bool(series.low_esr)
 
 
 def candidate_parts(
@@ -118,7 +125,8 @@ def candidate_parts(
     A pinned part is an override and is returned alone, whatever its stock.
     Otherwise fit decides what is offered and the sort decides what is shown
     first: something buyable today, then a hybrid where the position allows
-    one, then a preferred brand, then the series the position names, then the
+    one, then low ESR, then a preferred brand, then the series the position
+    names, then the
     lowest sufficient voltage and the shortest body.
     """
     if capacitor.part is not None:
@@ -139,8 +147,12 @@ def candidate_parts(
     return sorted(
         fitting,
         key=lambda part: (
-            stock_state(part, stock),
+            stock_state(part, stock, capacitor.quantity),
             0 if is_hybrid(part, dataset) else 1,
+            # The owner's rule: low ESR whenever one is on offer. A recap
+            # replaces parts that were chosen for a job, and a general-purpose
+            # can is never the better guess.
+            0 if is_low_esr(part, dataset) else 1,
             0 if part.manufacturer in PREFERRED_MANUFACTURERS else 1,
             0 if capacitor.series and part.series == capacitor.series else 1,
             part.voltage_v,

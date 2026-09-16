@@ -207,9 +207,24 @@ def catalogue(*parts: Part) -> Dataset:
         name="STD",
         type="electrolytic-radial",
     )
+    general = Series(
+        id="panasonic-gp",
+        manufacturer="Panasonic",
+        name="GP",
+        type="electrolytic-radial",
+        low_esr=False,
+    )
+    low_esr_other = Series(
+        id="cde-low",
+        manufacturer="Cornell Dubilier",
+        name="LOW",
+        type="electrolytic-radial",
+        low_esr=True,
+    )
+    extra = {s.id: s for s in (hybrid, other, general, low_esr_other)}
     return replace(
         dataset,
-        series={**dataset.series, hybrid.id: hybrid, other.id: other},
+        series={**dataset.series, **extra},
         parts={part.id: part for part in parts},
         offers={},
     )
@@ -267,6 +282,32 @@ def test_a_preferred_brand_beats_another_brand() -> None:
     )
     chosen = candidate_parts(position(), dataset, stock(cde=10, pana=10))
     assert ids(chosen) == ["pana", "cde"]
+
+
+def test_low_esr_beats_a_general_purpose_part_of_a_preferred_brand() -> None:
+    dataset = catalogue(
+        radial("a-general", series="panasonic-gp"),
+        radial("b-low", manufacturer="Cornell Dubilier", series="cde-low"),
+    )
+    chosen = candidate_parts(position(), dataset, stock(**{"a-general": 9, "b-low": 9}))
+    assert ids(chosen) == ["b-low", "a-general"]
+
+
+def test_fewer_on_the_shelf_than_the_position_needs_is_out_of_stock() -> None:
+    dataset = catalogue(radial("a-short"), radial("b-enough"))
+    chosen = candidate_parts(
+        position(quantity=3), dataset, stock(**{"a-short": 1, "b-enough": 3})
+    )
+    assert ids(chosen) == ["b-enough", "a-short"]
+
+
+def test_stock_still_outranks_low_esr() -> None:
+    dataset = catalogue(
+        radial("a-general", series="panasonic-gp"),
+        radial("b-low", manufacturer="Cornell Dubilier", series="cde-low"),
+    )
+    chosen = candidate_parts(position(), dataset, stock(**{"a-general": 9, "b-low": 0}))
+    assert ids(chosen) == ["a-general", "b-low"]
 
 
 def test_unknown_stock_sorts_between_in_stock_and_out_of_stock() -> None:

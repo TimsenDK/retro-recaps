@@ -111,7 +111,8 @@ Always ask first for operations that are destructive or irreversible:
 - **Part selection preferences** (owner, 2026-09-14). A recommended part is
   the right replacement first and a preference second. Branded quality parts
   only, preferring Nichicon, Panasonic, Würth Elektronik and Kemet; conductive
-  polymer hybrids where one exists and suits the position; the best available
+  polymer hybrids where one exists and suits the position; always low ESR
+  where the need is there, which selection treats as everywhere; the best available
   alternative where no preferred option exists. A higher voltage rating is
   always acceptable when it makes sense. The site picks, per position, the best
   matching catalogue part that is in stock at Mouser, checked on every build.
