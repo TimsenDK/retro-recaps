@@ -353,3 +353,16 @@
     the small case sizes and 5.08 mm from case J up. Rated to 85 °C with
     derating above that, so the 125 °C figure is the category limit and not a
     working rating.
+
+- id: rubycon-zlh
+  manufacturer: Rubycon
+  name: ZLH
+  type: electrolytic-radial
+  temperature_c: 105
+  voltage_min_v: 6.3
+  voltage_max_v: 100
+  low_esr: true
+  hybrid: false
+  note: >-
+    Low impedance radial. Carries 47 uF 35 V in a 5 mm can, which neither the
+    Panasonic FR nor any Nichicon series still in production does.

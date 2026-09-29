@@ -422,3 +422,25 @@
   voltage_v: 63
   diameter_mm: 10
   height_mm: 21
+
+- id: eeufc1h470
+  manufacturer: Panasonic
+  mpn: EEU-FC1H470
+  series: panasonic-fc
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 50
+  diameter_mm: 6.3
+  height_mm: 11.2
+  lead_spacing_mm: 2.5
+
+- id: 35zlh47mefc5x11
+  manufacturer: Rubycon
+  mpn: 35ZLH47MEFC5X11
+  series: rubycon-zlh
+  type: electrolytic-radial
+  capacitance_uf: 47
+  voltage_v: 35
+  diameter_mm: 5
+  height_mm: 11
+  lead_spacing_mm: 2
