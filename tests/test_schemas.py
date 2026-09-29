@@ -249,3 +249,62 @@ def test_a_film_y2_position_is_a_legal_type() -> None:
     }
     capacitor |= {"type": "film-y2", "capacitance_uf": 0.0047, "voltage_v": 250}
     assert schema_issues(board_with(capacitor), "board", "a.yaml") == []
+
+
+VALID_CONVERSION = {
+    "title": "Converting a 120 V unit to 230 V",
+    "steps": ["Remove the doubler link.", "Replace the varistor."],
+    "parts": [
+        {
+            "designators": ["RV21"],
+            "description": "Metal-oxide varistor, 275 VAC",
+            "manufacturer": "Littelfuse",
+            "mpn": "V275LA20AP",
+            "quantity": 1,
+            "note": "Check the lead pitch.",
+        }
+    ],
+    "notes": ["Both units share one board."],
+}
+
+
+def test_a_conversion_is_accepted() -> None:
+    document = {**VALID_BOARD, "conversions": [VALID_CONVERSION]}
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_a_conversion_needs_only_a_title_and_steps() -> None:
+    conversion = {"title": "Rewire", "steps": ["Move the link."]}
+    document = {**VALID_BOARD, "conversions": [conversion]}
+    assert schema_issues(document, "board", "a.yaml") == []
+
+
+def test_a_conversion_without_steps_is_rejected() -> None:
+    conversion = {key: v for key, v in VALID_CONVERSION.items() if key != "steps"}
+    document = {**VALID_BOARD, "conversions": [conversion]}
+    issues = schema_issues(document, "board", "a.yaml")
+    assert [issue.location for issue in issues] == ["a.yaml:conversions/0"]
+
+
+def test_a_conversion_with_no_steps_listed_is_rejected() -> None:
+    document = {**VALID_BOARD, "conversions": [{**VALID_CONVERSION, "steps": []}]}
+    assert schema_issues(document, "board", "a.yaml") != []
+
+
+def test_an_unknown_conversion_property_is_rejected() -> None:
+    conversion = {**VALID_CONVERSION, "voltage": 230}
+    document = {**VALID_BOARD, "conversions": [conversion]}
+    assert schema_issues(document, "board", "a.yaml") != []
+
+
+def test_a_conversion_part_without_an_mpn_is_rejected() -> None:
+    part = {k: v for k, v in VALID_CONVERSION["parts"][0].items() if k != "mpn"}
+    document = {**VALID_BOARD, "conversions": [{**VALID_CONVERSION, "parts": [part]}]}
+    issues = schema_issues(document, "board", "a.yaml")
+    assert [issue.location for issue in issues] == ["a.yaml:conversions/0/parts/0"]
+
+
+def test_an_unknown_conversion_part_property_is_rejected() -> None:
+    part = {**VALID_CONVERSION["parts"][0], "series": "panasonic-fr"}
+    document = {**VALID_BOARD, "conversions": [{**VALID_CONVERSION, "parts": [part]}]}
+    assert schema_issues(document, "board", "a.yaml") != []

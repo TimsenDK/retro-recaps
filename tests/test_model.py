@@ -161,3 +161,45 @@ def test_a_layout_reports_the_designators_it_places() -> None:
     assert layout.designators == frozenset({"C1", "C2"})
     assert layout.features[2].label == "Power connector"
     assert layout.features[0].approximate is False
+
+
+def test_a_board_carries_no_conversion_by_default() -> None:
+    assert board("psu", "mac-se30-psu").conversions == ()
+
+
+def test_a_conversion_is_read_with_its_steps_parts_and_notes() -> None:
+    document = {
+        "id": "amiga-3000-psu",
+        "machine": "amiga-3000",
+        "board": "psu",
+        "revisions": ["PB-5161-1"],
+        "verification": "derived",
+        "capacitors": [],
+        "conversions": [
+            {
+                "title": "To 230 V",
+                "steps": ["Remove the link.", "Replace RV21."],
+                "parts": [
+                    {
+                        "designators": ["RV21"],
+                        "description": "Varistor",
+                        "manufacturer": "Littelfuse",
+                        "mpn": "V275LA20AP",
+                        "quantity": 1,
+                    }
+                ],
+                "notes": ["One board, two units."],
+            }
+        ],
+    }
+    loaded = Board.from_dict(document)
+    (conversion,) = loaded.conversions
+    assert conversion.title == "To 230 V"
+    assert conversion.steps == ("Remove the link.", "Replace RV21.")
+    assert conversion.notes == ("One board, two units.",)
+    (part,) = conversion.parts
+    assert part.designators == ("RV21",)
+    assert part.mpn == "V275LA20AP"
+    assert part.quantity == 1
+    assert part.note is None
+    assert Board.from_dict(document) == loaded

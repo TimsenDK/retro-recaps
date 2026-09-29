@@ -33,8 +33,44 @@ notes:
     documented inconsistently as 10 V and as 16 V; 16 V is recorded here,
     matching C29.
   - >-
-    C34's rating is documented inconsistently as 16 V and as 25 V; 16 V is
-    recorded here.
+    C34's factory rating is not established. Replacement lists give it as
+    16 V, 25 V and 50 V; 50 V is recommended here, the highest of the three.
+conversions:
+  - title: Converting a 120 V unit (PB-5161-1) to 230 V
+    steps:
+      - >-
+        Unplug the supply and discharge C5 and C6 before touching the primary
+        side.
+      - >-
+        Remove the wire link between the C5/C6 junction and the pad marked
+        110V beside bridge rectifier BD1. It makes the input a voltage
+        doubler; left in place on 230 V mains it puts roughly twice the rated
+        voltage across C5 and C6.
+      - >-
+        Replace the varistor RV21, between the AC inlet and L3, with a
+        275 VAC part. The rating fitted to a 120 V unit is not recorded and
+        may be too low for 230 V mains. Some boards print it as RV2.
+      - >-
+        Leave fuse F1 as it is; F5A 250 V suits 230 V operation.
+      - >-
+        On the mainboard, set jumper J200 to PAL for 50 Hz mains.
+      - >-
+        Relabel the input voltage on the supply and on the chassis.
+    parts:
+      - designators:
+          - RV21
+        description: Metal-oxide varistor, 275 VAC, 14 mm disc
+        manufacturer: Littelfuse
+        mpn: V275LA20AP
+        quantity: 1
+        note: >-
+          Check the lead pitch against the RV21 holes before ordering; it is
+          not recorded for the fitted part.
+    notes:
+      - >-
+        PB-5161-1 and PE-5161-1 share one printed circuit board. Beyond the
+        link and the varistor, no source lists what else differs between
+        them.
 capacitors:
   - designators:
       - C9
@@ -54,7 +90,7 @@ capacitors:
       - C39
     type: electrolytic-radial
     capacitance_uf: 47
-    voltage_v: 25
+    voltage_v: 35
     original_voltage_unknown: true
     quantity: 4
     series: panasonic-fr
@@ -141,7 +177,7 @@ capacitors:
       - C34
     type: electrolytic-radial
     capacitance_uf: 47
-    voltage_v: 16
+    voltage_v: 50
     quantity: 1
     series: panasonic-fr
     max_diameter_mm: 6.3
@@ -149,6 +185,5 @@ capacitors:
     allow_hybrid: false
     verification: derived
     note: >-
-      Regulator daughterboard inside the PSU enclosure. Voltage rating
-      documented inconsistently as 16 V and 25 V; 16 V is used. See board
-      notes.
+      Regulator daughterboard inside the PSU enclosure. Replacement lists
+      give 16 V, 25 V and 50 V; 50 V is recommended. See board notes.

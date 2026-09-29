@@ -75,6 +75,50 @@ class Capacitor:
 
 
 @dataclass(frozen=True)
+class ConversionPart:
+    """A non-capacitor part a conversion needs; never a capacitor position."""
+
+    description: str
+    manufacturer: str
+    mpn: str
+    quantity: int
+    designators: tuple[str, ...] = ()
+    note: str | None = None
+
+    @classmethod
+    def from_dict(cls, document: dict) -> ConversionPart:
+        return cls(
+            description=document["description"],
+            manufacturer=document["manufacturer"],
+            mpn=document["mpn"],
+            quantity=document["quantity"],
+            designators=tuple(document.get("designators", ())),
+            note=document.get("note"),
+        )
+
+
+@dataclass(frozen=True)
+class Conversion:
+    """A procedure on a board, such as a change of mains voltage."""
+
+    title: str
+    steps: tuple[str, ...]
+    parts: tuple[ConversionPart, ...] = ()
+    notes: tuple[str, ...] = ()
+
+    @classmethod
+    def from_dict(cls, document: dict) -> Conversion:
+        return cls(
+            title=document["title"],
+            steps=tuple(document["steps"]),
+            parts=tuple(
+                ConversionPart.from_dict(item) for item in document.get("parts", ())
+            ),
+            notes=tuple(document.get("notes", ())),
+        )
+
+
+@dataclass(frozen=True)
 class Board:
     id: str
     machine: str
@@ -87,6 +131,7 @@ class Board:
     battery: bool | None = None
     external: bool = False
     notes: tuple[str, ...] = ()
+    conversions: tuple[Conversion, ...] = ()
     path: Path | None = field(default=None, compare=False)
 
     @classmethod
@@ -105,6 +150,9 @@ class Board:
                 Capacitor.from_dict(item) for item in document["capacitors"]
             ),
             notes=tuple(document.get("notes", ())),
+            conversions=tuple(
+                Conversion.from_dict(item) for item in document.get("conversions", ())
+            ),
             path=path,
         )
 

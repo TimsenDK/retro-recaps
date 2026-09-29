@@ -185,6 +185,53 @@
 {% endif %}
 {% endif %}
 
+{# The parts a conversion needs are not capacitor positions: they sit in a
+   table of their own and are never counted with the list above. #}
+{% for conversion in board.conversions %}
+<section class="conversion">
+    <h2>{{ conversion.title }}</h2>
+    <ol class="steps">
+        {% for step in conversion.steps %}
+        <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+    {% if conversion.parts %}
+    <div class="scroller">
+        <table>
+            <caption>Parts this conversion needs besides the capacitors.</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Designators</th>
+                    <th scope="col">Part</th>
+                    <th scope="col">Manufacturer and MPN</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for part in conversion.parts %}
+                <tr>
+                    <td class="designators">{{ part.designators | join(', ') if part.designators else '—' }}</td>
+                    <td>{{ part.description }}</td>
+                    <td>{{ part.manufacturer }} <span class="mono">{{ part.mpn }}</span></td>
+                    <td class="value">{{ part.quantity }}</td>
+                    <td>{{ part.note or '' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% if conversion.notes %}
+    <ul class="notes">
+        {% for note in conversion.notes %}
+        <li>{{ note }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</section>
+{% endfor %}
+
 {% if board.notes and not board.is_empty %}
 <h2>Notes on this board</h2>
 {% with notes = board.linked_notes %}{% include "_notes.html.j2" %}{% endwith %}

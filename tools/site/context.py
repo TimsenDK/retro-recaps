@@ -18,7 +18,16 @@ import re
 from dataclasses import dataclass, field
 from typing import Literal
 
-from tools.model import Board, Capacitor, Dataset, Layout, Machine, Part, Series
+from tools.model import (
+    Board,
+    Capacitor,
+    Conversion,
+    Dataset,
+    Layout,
+    Machine,
+    Part,
+    Series,
+)
 from tools.resolve import (
     IN_STOCK,
     OUT_OF_STOCK,
@@ -887,6 +896,7 @@ class BoardView:
     rows_without_designators: int
     mixed_verification: bool
     layout: LayoutView | None = None
+    conversions: tuple[Conversion, ...] = ()
 
     @property
     def has_polarised(self) -> bool:
@@ -975,6 +985,7 @@ def board_view(
         rows_without_designators=sum(1 for row in rows if not row.has_designators),
         mixed_verification=any(row.differs_from_board for row in rows),
         layout=layout_view(layout) if layout is not None else None,
+        conversions=board.conversions,
     )
 
 

@@ -459,3 +459,46 @@ def test_a_capacitor_line_shows_its_part_stock_and_alternatives(
     assert "SPARE-470" in detail
     assert "out of stock at Mouser" in page
 
+
+
+def test_a_conversion_renders_after_the_capacitor_list(tmp_path: Path) -> None:
+    data = copied_fixture(tmp_path)
+    board_file = data / "data" / "amiga-500" / "mainboard-rev6a.yaml"
+    source = board_file.read_text(encoding="utf-8")
+    board_file.write_text(
+        source.replace(
+            "capacitors:",
+            "conversions:\n"
+            "  - title: Converting the unit to 230 V\n"
+            "    steps:\n"
+            "      - First remove the doubler link.\n"
+            "      - Then replace the varistor.\n"
+            "    parts:\n"
+            "      - designators: [RV21]\n"
+            "        description: Metal-oxide varistor\n"
+            "        manufacturer: Littelfuse\n"
+            "        mpn: V275LA20AP\n"
+            "        quantity: 1\n"
+            "    notes:\n"
+            "      - Both units share one board.\n"
+            "capacitors:",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "build"
+    build_into(out, data)
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    assert "Converting the unit to 230 V" in page
+    assert page.index("<h2>Capacitors</h2>") < page.index("Converting the unit")
+    assert page.index("First remove the doubler link.") < page.index(
+        "Then replace the varistor."
+    )
+    assert "V275LA20AP" in page
+    assert "Both units share one board." in page
+
+
+def test_a_board_without_a_conversion_renders_no_conversion(tmp_path: Path) -> None:
+    out = build_fixture(tmp_path)
+    page = (out / "amiga-500" / "mainboard-rev6a.html").read_text(encoding="utf-8")
+    assert 'class="conversion"' not in page

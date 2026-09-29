@@ -37,6 +37,10 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
+    "conversions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conversion" }
+    },
     "capacitors": {
       "type": "array",
       "items": { "$ref": "#/$defs/capacitor" }
@@ -55,6 +59,44 @@
   "$defs": {
     "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
     "verification": { "enum": ["verified", "derived", "unverified"] },
+    "conversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "steps"],
+      "$comment": "A procedure on the board, such as a change of mains voltage, and the non-capacitor parts it needs. Those parts are not capacitor positions and are never selected from the capacitor catalogue.",
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "parts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conversion_part" }
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "conversion_part": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "manufacturer", "mpn", "quantity"],
+      "properties": {
+        "designators": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "manufacturer": { "type": "string", "minLength": 1 },
+        "mpn": { "type": "string", "minLength": 1 },
+        "quantity": { "type": "integer", "minimum": 1 },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
     "capacitor": {
       "type": "object",
       "additionalProperties": false,
